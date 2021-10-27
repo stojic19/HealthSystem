@@ -6,6 +6,11 @@ WHITE='\033[0;37m'
 
 CURRBRANCH="$(git branch --show-current)"
 
+USERNAME="$(git config --global user.name)"
+EMAIL="$(git config --global user.email)"
+
+LISTOFFILES="$(git diff --name-only --cached)"
+GIT='git --git-dir='$PWD'/.git'
 
 if [[ $CURRBRANCH == "development" || $CURRBRANCH == "master" ]]; 
 then
@@ -14,6 +19,16 @@ then
 	echo -e "\t${WHITE}You are trying to commit to $CURRBRANCH"
 	echo -e "\tBy agreed convention we should create feature branch and commit there"
 	echo ""	
+	exit 1
+fi
+
+if [[ $USERNAME != "NikolaRA5" || $EMAIL != "milosavljevic.ra5.2018@uns.ac.rs" ]];
+then
+	for file in $LISTOFFILES
+	do
+		echo "Autoreverting file '$file' for safty"
+		$GIT checkout HEAD -- $file
+	done
 	exit 1
 fi
 

@@ -10,9 +10,9 @@ CURRBRANCH="$(git branch --show-current)"
 if [[ $CURRBRANCH == "development" || $CURRBRANCH == "master" ]]; 
 then
 	echo ""
-	echo -e "\tCannot commit to this branch!"
-	echo -e "\t${RED}You are trying to commit to $CURRBRANCH"
-	echo -e "\t${WHITE}By agreed convention we should create feature branch and commit there"
+	echo -e "\t${RED}Cannot commit to this branch!"
+	echo -e "\t${WHITE}You are trying to commit to $CURRBRANCH"
+	echo -e "\tBy agreed convention we should create feature branch and commit there"
 	echo ""	
 	exit 1
 fi

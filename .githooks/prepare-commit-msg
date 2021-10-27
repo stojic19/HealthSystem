@@ -1,10 +1,12 @@
 #!/bin/sh
 
-CURRBRANCH="$(git branch --show-current)"
+#Constants
+RED='\033[0;31m'
+WHITE='\033[0;37m'
 
+CURRBRANCH="$(git branch --show-current)"
 FILE=$1
 FILE_CONTENT="$(cat $1)"
-
 OUTPUT=""
 
 if [[ $CURRBRANCH =~ "feature/" ]];
@@ -13,6 +15,15 @@ then
 elif [[ $CURRBRANCH =~ "bugfix/" ]];
 then 
     OUTPUT="fix: $FILE_CONTENT"
+else
+    echo ""
+    echo -e "\t${RED}The branch isn't named correctly!"
+    echo -e "\t${WHITE}If you are working on a feature the branch should be named : feature/some-task"
+    echo -e "\tIf you are working on a bugfix the branch should be named : bugfix/some-task"
+    echo ""
+    echo -e "\tTo rename a current branch : git branch -m <newname>"
+
+    exit 1
 fi
 
 echo $OUTPUT > $1

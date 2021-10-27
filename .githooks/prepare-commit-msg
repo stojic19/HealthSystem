@@ -1,0 +1,20 @@
+#!/bin/sh
+
+CURRBRANCH="$(git branch --show-current)"
+
+FILE=$1
+FILE_CONTENT="$(cat $1)"
+
+OUTPUT=""
+
+if [[ $CURRBRANCH =~ "feature/" ]];
+then
+    OUTPUT="feat: $FILE_CONTENT"
+elif [[ $CURRBRANCH =~ "bugfix/" ]];
+then 
+    OUTPUT="fix: $FILE_CONTENT"
+fi
+
+echo $OUTPUT > $1
+
+exit 0

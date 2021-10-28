@@ -29,7 +29,6 @@ then
 		echo "Autoreverting file '$file' for safty"
 		$GIT checkout HEAD -- $file
 	done
-	exit 1
 fi
 
 exit 0

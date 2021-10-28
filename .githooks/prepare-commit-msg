@@ -40,6 +40,7 @@ else
     echo -e "\tIf you are working on a bugfix the branch should be named : bugfix/some-task"
     echo ""
     echo -e "\tTo rename a current branch : git branch -m <newname>"
+    echo ""
 
     exit 1
 fi

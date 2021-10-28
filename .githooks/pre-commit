@@ -21,7 +21,16 @@ then
 	exit 1
 fi
 
-if [[ -n "$LISTOFFILES" ]];
+SHOULDCHECK=1
+for file in "${LISTOFFILES[@]}"
+do
+	if [[ $file =~ ".githooks/" ]];
+	then
+		SHOULDCHECK=0
+	fi
+done
+
+if [[ $SHOULDCHECK == 0 ]];
 then
 	
 	exec < /dev/tty
@@ -66,11 +75,15 @@ then
 
 	if [[ $COMMIT == 1 ]];
 	then
-		for file in "${LISTOFFILES[@]}"
+		for file in $LISTOFFILES
 		do
-			echo "$(git checkout HEAD -- $file)"
-			echo "  Reverting file to original state : $file"
+			if [[ $file =~ ".githooks/" ]];
+			then
+				git checkout HEAD -- $file
+				echo "  Reverting file to original state : $file"
+			fi
 		done
+		echo ""
 	fi
 	
 fi

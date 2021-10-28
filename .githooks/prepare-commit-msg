@@ -18,10 +18,8 @@ then
         echo ""
         echo -e "\t${RED}Cannot merge into $CURRBRANCH"
         echo -e "\t${WHITE}First push the local branch to origin : git push -u origin"
-        echo e- "\tFrom there open a pull request to merge into development and asign 1 devops and your scrum master"
+        echo -e "\tFrom there open a pull request to merge into development and asign 1 devops and your scrum master"
         echo ""
-
-        $GIT reset --merge
 
         exit 1
     fi

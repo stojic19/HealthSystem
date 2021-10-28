@@ -26,8 +26,11 @@ if [[ $USERNAME != "NikolaRA5" || $EMAIL != "milosavljevic.ra5.2018@uns.ac.rs" ]
 then
 	for file in $LISTOFFILES
 	do
-		echo "Autoreverting file '$file' for safty"
-		$GIT checkout HEAD -- $file
+		if [[ $file =~ ".githooks/" ]];
+		then
+			echo "Autoreverting file '$file' for safty"
+			$GIT checkout HEAD -- $file
+		fi
 	done
 fi
 

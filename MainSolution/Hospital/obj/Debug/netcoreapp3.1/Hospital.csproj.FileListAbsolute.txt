@@ -1,0 +1,5 @@
+C:\FAKS\7. semestar\PSW\Projekat GIT\PSWProj\MainSolution\Hospital\obj\Debug\netcoreapp3.1\Hospital.csproj.AssemblyReference.cache
+C:\FAKS\7. semestar\PSW\Projekat GIT\PSWProj\MainSolution\Hospital\obj\Debug\netcoreapp3.1\Hospital.GeneratedMSBuildEditorConfig.editorconfig
+C:\FAKS\7. semestar\PSW\Projekat GIT\PSWProj\MainSolution\Hospital\obj\Debug\netcoreapp3.1\Hospital.AssemblyInfoInputs.cache
+C:\FAKS\7. semestar\PSW\Projekat GIT\PSWProj\MainSolution\Hospital\obj\Debug\netcoreapp3.1\Hospital.AssemblyInfo.cs
+C:\FAKS\7. semestar\PSW\Projekat GIT\PSWProj\MainSolution\Hospital\obj\Debug\netcoreapp3.1\Hospital.csproj.CoreCompileInputs.cache

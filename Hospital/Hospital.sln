@@ -9,6 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HospitalClassLib", "Hospita
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hospital", "HospitalClassLib\Hospital.csproj", "{F345FDEF-1199-411B-B429-14F060F8D24E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HospitalApi", "HospitalApi\HospitalApi.csproj", "{5288384E-845E-4497-9D19-05A4DD778966}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,12 +21,17 @@ Global
 		{F345FDEF-1199-411B-B429-14F060F8D24E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F345FDEF-1199-411B-B429-14F060F8D24E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F345FDEF-1199-411B-B429-14F060F8D24E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5288384E-845E-4497-9D19-05A4DD778966}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5288384E-845E-4497-9D19-05A4DD778966}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5288384E-845E-4497-9D19-05A4DD778966}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5288384E-845E-4497-9D19-05A4DD778966}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F345FDEF-1199-411B-B429-14F060F8D24E} = {D75CED97-77A8-4DAB-8DD0-B13E39884F9E}
+		{5288384E-845E-4497-9D19-05A4DD778966} = {6322FFA3-55FF-43C6-B168-875E8EEAC054}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {56306E37-2382-46CF-B47C-BEAF0941BF14}

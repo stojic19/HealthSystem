@@ -12,7 +12,7 @@ namespace Integration.Model
         public string StreetName { get; set; }
 
         public int CityId { get; set; }
-        public virtual City City { get; set; }
+        public City City { get; set; }
 
         public Guid ApiKey { get; set; }
 

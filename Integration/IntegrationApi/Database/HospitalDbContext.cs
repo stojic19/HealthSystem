@@ -13,8 +13,6 @@ namespace Integration.Database
 
         public DbSet<Complaint> Complaints { get; set; }
 
-        public DbSet<ComplaintResponse> ComplaintResponses { get; set; }
-
         public HospitalDbContext(DbContextOptions<HospitalDbContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

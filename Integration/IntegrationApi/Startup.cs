@@ -31,10 +31,6 @@ namespace Integration
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-            services.AddDbContext<HospitalDbContext>(options =>
-                options.UseSqlServer(ConfigurationExtensions.
-                GetConnectionString(Configuration, "HospitalDbContextConnectionString")).UseLazyLoadingProxies());
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -50,7 +46,7 @@ namespace Integration
                 {
                     typeof (CityReadRepository).Assembly
                 },
-                Namespace = "Hospital.Repositories"
+                Namespace = "Integration.Repositories"
 
 
             });
@@ -63,26 +59,6 @@ namespace Integration
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            /*if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Error");
-            }
-
-            app.UseStaticFiles();
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });*/
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

@@ -27,6 +27,20 @@ then
         git reset --hard origin/$CURRBRANCH
 
         exit 1
+    
+    elif [[ $CURRBRANCH == "nuget/integration" || $CURRBRANCH == "nuget/hospital" ]];
+    then
+        echo ""
+        echo -e "\tYou merged into $CURRBRANCH"
+        echo -e "\tWhen you push to the repo the $CURRBRANCH will be closed for some time"
+        echo -e "\tso do not abuse this!"
+        echo -e "\tPushing this branch will automatically generate a new version of the nuget"
+        echo -e "\tfor the module that this branch represents"
+        echo -e "\tSince it is possible somebody else already changed something while you were"
+        echo -e "\tworking on your feature, check if there are new migrations you should apply!"
+        echo ""
+
+        exit 0
     fi
 fi
 
@@ -36,6 +50,21 @@ then
 elif [[ $CURRBRANCH =~ "bugfix/" ]];
 then 
     OUTPUT="fix: $FILE_CONTENT"
+elif [[ $CURRBRANCH == "nuget/integration" || $CURRBRANCH == "nuget/hospital" ]];
+then
+    echo ""
+    
+    echo -e "\t${RED}You are trying to commit to $CURRBRANCH!"
+    echo -e "\t${WHITE}You cannot commit to this branch but you can merge into it!"
+    echo -e "\tThe agreed flow is that you rebase your feature branch onto this branch"
+    echo -e "\tThen solve the conflicts there."
+    echo -e "\tAnd then merge back into this branch"
+    echo ""
+
+    exit 1
+elif [[ $CURRBRANCH == "" ]];
+then
+    echo ""
 else
     echo ""
     echo -e "\t${RED}The branch isn't named correctly!"

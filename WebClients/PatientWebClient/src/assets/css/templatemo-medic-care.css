@@ -272,6 +272,8 @@ strong {
   right: 0;
   padding: 1.5rem 2.5rem;
   width: 50%;
+  border-bottom-right-radius: 10%;
+  border-top-left-radius: 10px;
 }
 
 .contact-phone {

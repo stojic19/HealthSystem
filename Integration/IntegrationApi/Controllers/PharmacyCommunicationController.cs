@@ -11,10 +11,11 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using RestSharp;
+using IntegrationAPI.DTO;
 
 namespace Integration.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class PharmacyCommunicationController : ControllerBase
     {
@@ -25,7 +26,7 @@ namespace Integration.Controllers
             this.dbContext = context;
         }
 
-        [HttpGet("RequestApiKey")]
+        [HttpGet]
         public IActionResult RequestApiKey(string url, string pharmacyName)
         {
             string targetUrl = url + "/api/hospitalCommunication/GetApiKey";
@@ -46,7 +47,7 @@ namespace Integration.Controllers
             return Ok(newPharmacy);
         }
 
-        [HttpGet("PingPharmacy")]
+        [HttpGet]
         public IActionResult PingPharmacy(string pharmacyName)
         {
             Pharmacy pharmacy = dbContext.Pharmacies.FirstOrDefault(pharmacy => pharmacy.Name.Equals(pharmacyName));
@@ -63,7 +64,7 @@ namespace Integration.Controllers
             return Ok(response);*/
         }
 
-        [HttpGet("PingResponse")]
+        [HttpGet]
         public IActionResult PingResponse(string apiKey)
         {
             Pharmacy pharmacy = dbContext.Pharmacies.FirstOrDefault(pharmacy => pharmacy.ApiKey.Equals(apiKey));
@@ -75,35 +76,45 @@ namespace Integration.Controllers
         }
 
         //Ne radi
-        [HttpPost("PostComplaint")]
+        [HttpPost]
         public IActionResult PostComplaint()
         {
             CreateComplaintDTO createComplaintdto = new CreateComplaintDTO { Title = "Zalba", Description = "Opis zalbe", PharmacyName = "pharmacy1" };
             Complaint complaint = new Complaint();
-            //complaint.Pharmacy.Name = createComplaintdto.PharmacyName;
             complaint.Description = createComplaintdto.Description;
             complaint.Title = createComplaintdto.Title;
             complaint.Pharmacy = dbContext.Pharmacies.FirstOrDefault(pharmacy => pharmacy.Name.Equals(createComplaintdto.PharmacyName));
             complaint.CreatedDate = DateTime.Now;
+            dbContext.Complaints.Add(complaint);
+            dbContext.SaveChanges();
             ComplaintDTO dto = new ComplaintDTO 
-            { ApiKey = complaint.Pharmacy.ApiKey.ToString(), CreatedDate = complaint.CreatedDate, Description = complaint.Description, Title = complaint.Title };
+            { ComplaintId = complaint.Id, ApiKey = complaint.Pharmacy.ApiKey.ToString(),
+                CreatedDate = complaint.CreatedDate, Description = complaint.Description, Title = complaint.Title };
             RestClient client = new RestSharp.RestClient();
             RestRequest request = new RestRequest(complaint.Pharmacy.BaseUrl + "/api/hospitalCommunication/PostComplaint");
             request.AddJsonBody(dto);
             IRestResponse response = client.Post(request);
-            /*var content = new StringContent(JsonConvert.SerializeObject(dto), Encoding.UTF8, "application/json");
-            HttpClient client = new HttpClient();
-            var result = client.PostAsync(complaint.Pharmacy.NetworkAdress + "/hospitalCommunication/PostComplaint", content);
-            string response = result.Result.Content.ReadAsStringAsync().Result;*/
-            if (response.StatusCode == System.Net.HttpStatusCode.BadRequest) return BadRequest(response);
-            dbContext.Complaints.Add(complaint);
-            dbContext.SaveChanges();
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                dbContext.Complaints.Remove(complaint);
+                dbContext.SaveChanges();
+                return BadRequest("Complaint failed to send, try again!");
+            }
             return Ok(response);
         }
 
+        [HttpPost]
+        public IActionResult PostComplaintResponse(ComplaintResponseDTO dto)
+        {
+            Complaint complaint = dbContext.Complaints.FirstOrDefault(complaint => complaint.Id == dto.HospitalComplaintId);
+            ComplaintResponse complaintResponse = new ComplaintResponse { CreatedDate = dto.createdDate, Text = dto.Text, ComplaintId = dto.HospitalComplaintId };
+            dbContext.ComplaintResponses.Add(complaintResponse);
+            dbContext.SaveChanges();
+            return Ok("Complaint response received!");
+        }
 
         //Test metode
-        [HttpGet("GetAppUrl")]
+        [HttpGet]
         public IActionResult GetAppUrl()
         {
             return Ok(HttpContext.Request.Headers["Host"]);

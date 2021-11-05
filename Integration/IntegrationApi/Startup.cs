@@ -31,10 +31,10 @@ namespace Integration
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            /*services.AddControllers();
+            services.AddControllers();
             services.AddDbContext<HospitalDbContext>(options =>
                 options.UseSqlServer(ConfigurationExtensions.
-                GetConnectionString(Configuration, "HospitalDbContextConnectionString")).UseLazyLoadingProxies());*/
+                GetConnectionString(Configuration, "HospitalDbContextConnectionString")).UseLazyLoadingProxies());
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

@@ -6,10 +6,6 @@ WHITE='\033[0;37m'
 
 CURRBRANCH="$(git branch --show-current)"
 
-SECRETFILE=".githooks/secret.txt"
-
-LISTOFFILES="$(git diff --name-only --cached)"
-GIT='git --git-dir='$PWD'/.git'
 
 if [[ $CURRBRANCH == "development" || $CURRBRANCH == "master" ]]; 
 then
@@ -19,73 +15,6 @@ then
 	echo -e "\tBy agreed convention we should create feature branch and commit there"
 	echo ""	
 	exit 1
-fi
-
-SHOULDCHECK=1
-for file in "${LISTOFFILES[@]}"
-do
-	if [[ $file =~ ".githooks/" ]];
-	then
-		SHOULDCHECK=0
-	fi
-done
-
-if [[ $SHOULDCHECK == 0 ]];
-then
-	
-	exec < /dev/tty
-	
-	cd $BASEDIRPSW
-
-	if [[ -f "$SECRETFILE" ]];
-	then
-		SECRET="$(cat .githooks/secret.txt)"
-		EXISTS=0
-	else
-		EXISTS=1
-	fi
-
-	if [[ $EXISTS == 0 ]];
-	then
-		echo "$(clear)"
-		echo -e "  Changes were made to .githooks..."
-		echo -e "  To verify your identity enter password"
-		read -sp "  Enter your password: " PASSWD
-		echo ""
-
-		INPUTHASHED="$(openssl passwd -1 -salt "salt" $PASSWD)"
-		if [[ $INPUTHASHED == $SECRET ]];
-		then
-			COMMIT=0
-			echo "$(clear)"
-			echo -e "  Access granted, commiting changes to hooks"
-			echo ""
-		else
-			COMMIT=1
-			echo "$(clear)"
-			echo -e "  Access denied, reverting changes for hook files"
-			echo ""
-		fi
-	else
-		COMMIT=1
-		echo "$(clear)"
-		echo -e "  secret.txt doesn't exist, contact devs"
-		echo ""
-	fi
-
-	if [[ $COMMIT == 1 ]];
-	then
-		for file in $LISTOFFILES
-		do
-			if [[ $file =~ ".githooks/" ]];
-			then
-				git checkout HEAD -- $file
-				echo "  Reverting file to original state : $file"
-			fi
-		done
-		echo ""
-	fi
-	
 fi
 
 exit 0

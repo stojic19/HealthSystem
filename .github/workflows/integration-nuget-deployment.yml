@@ -2,7 +2,7 @@ name: Automated deployment of integration nuget
 
 on:
   push:
-    branches: [ nuget/intergation ]
+    branches: [ nuget/integration ]
     tags: 
       - 'v*'
 

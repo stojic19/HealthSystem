@@ -3,15 +3,6 @@
   border-bottom: 1px solid lightgray;
 }
 
-.legend {
-  margin-top: 10rem;
-  margin-left: 5rem;
-  width: 20rem;
-  border-radius: 10px;
-  border: 1px solid lightgray;
-  padding: 20px;
-}
-
 .selected {
   background-color: rgb(159, 215, 250);
   border: none;

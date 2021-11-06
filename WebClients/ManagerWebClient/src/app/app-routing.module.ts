@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HopsitalOverviewComponent } from './hopsital-overview/hopsital-overview.component';
+import { HospitalOverviewComponent } from './hospital-overview/hospital-overview.component';
 
 const routes: Routes = [
-  { path: 'overview', component: HopsitalOverviewComponent },
+  { path: 'overview', component: HospitalOverviewComponent },
 ];
 
 @NgModule({
@@ -11,4 +11,4 @@ const routes: Routes = [
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
-export const routingComponents = [HopsitalOverviewComponent];
+export const routingComponents = [HospitalOverviewComponent];

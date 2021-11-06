@@ -1,0 +1,73 @@
+<div class="row" style="width: 90%; margin: auto;">
+    <h4 class="mt-3 mb-5 title" style="text-align: center;">H O S P I T A L <span class="ms-4">O V E R V I E W</span>
+    </h4>
+    <div class="col-md-4">
+        <app-legend></app-legend>
+    </div>
+    <div class="col-md-8">
+        <svg height="480" width="775" style="background-color:#a4c3b2">
+            <g class="currentLayout">
+
+                <!-- ROAD -->
+                <rect attr.fill={{grayColor}} stroke-width="2" stroke-linejoin="round" x="124" y="-0.095" width="44"
+                    height="480" />
+                <rect attr.fill={{grayColor}} stroke-width="2" stroke-linejoin="round" x="0" y="90" width="125"
+                    height="480" />
+                <rect attr.fill={{grayColor}} stroke-width="2" stroke-linejoin="round" x="0" y="64" width="777"
+                    height="34" />
+                <rect attr.fill={{grayColor}} stroke-width="2" stroke-linejoin="round" x="608" y="92" width="45"
+                    height="26" />
+                <rect attr.fill={{grayColor}} stroke-width="2" stroke-linejoin="round" x="167" y="354" width="42"
+                    height="36" />
+                <rect attr.fill={{grayColor}} stroke-width="2" stroke-linejoin="round" x="150" y="176" width="300"
+                    height="43" />
+                <!-- END OF ROAD -->
+
+                <!-- BUILDINGS -->
+                <rect attr.fill={{lightPinkColor}} stroke="#222222" stroke-width="2" stroke-linejoin="round" x="210"
+                    y="307" width="283" height="131" />
+                <text x="350" y="375" text-anchor="middle" fill="black" font-size="14"
+                    font-weight="bold">{{buildings[0]}}</text>
+
+                <rect attr.fill={{blueColor}} stroke="#222222" stroke-width="2" stroke-linejoin="round" x="520" y="119"
+                    width="227" height="318" />
+                <text x="635" y="275" text-anchor="middle" fill="black" font-size="14"
+                    font-weight="bold">{{buildings[1]}}</text>
+                <!-- END OF BUILDINGS -->
+
+                <!-- STAFF PARKING -->
+                <g *ngFor="let i of [0, 1, 2, 3, 4, 5, 6, 7, 8]" [attr.data-index]="i">
+                    <rect attr.fill={{beigeColor}} stroke="#000000" stroke-width="2" stroke-linejoin="round" x="39.65"
+                        [attr.y]="126.35 + i*35" height="35" width="51" />
+                    <text [attr.x]="65 - i*35" y="152" text-anchor="middle" fill="black" font-size="20"
+                        font-weight="bold" transform="rotate(-90,65, 145)">P</text>
+                </g>
+                <!-- END OF STAFF PARKING -->
+
+                <!-- PARKING -->
+                <g *ngFor="let i of [0, 1, 2, 3, 4, 5]" [attr.data-index]="i">
+                    <rect attr.fill={{darkPinkColor}} stroke="#000000" stroke-width="2" stroke-linejoin="round"
+                        [attr.x]="239 + i*35" y="124" width="35" height="51" />
+                    <text [attr.x]="254 + i*35" y="155" text-anchor="middle" fill="black" font-size="20"
+                        font-weight="bold">P</text>
+                </g>
+
+                <g *ngFor="let i of [0, 1, 2, 3, 4, 5]" [attr.data-index]="i">
+                    <rect attr.fill={{darkPinkColor}} stroke="#000000" stroke-width="2" stroke-linejoin="round"
+                        [attr.x]="239 + i*35" y="220.2" width="35" height="51" />
+                    <text [attr.x]="254 +i*35" y="255" text-anchor="middle" fill="black" font-size="20"
+                        font-weight="bold">P</text>
+                </g>
+                <!-- END OF PARKING -->
+
+                <!-- DOORS -->
+                <path fill="#000000" stroke="#000000" stroke-opacity="1" stroke-width="6" stroke-linejoin="round"
+                    stroke-linecap="butt" opacity="1" d="M616.7,116.52 L644.67,116.52 " />
+                <path fill="#000000" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="6"
+                    stroke-dasharray="none" stroke-linejoin="round" stroke-linecap="butt" opacity="1"
+                    d="M206.53,360.96 L206.53,380.36 " />
+                <!-- END OF DOORS -->
+            </g>
+        </svg>
+    </div>
+</div>

@@ -180,11 +180,17 @@ namespace Integration.Controllers
 
         [HttpPost]
         public IActionResult PostComplaintResponse(ComplaintResponseDTO dto)
-        {
-            //var complaintRepo = unitOfWork.GetRepository<IComplaintReadRepository>();
-            var responseRepo = unitOfWork.GetRepository<IComplaintResponseWriteRepository>();
-            //Complaint complaint = complaintRepo.GetById(dto.HospitalComplaintId);
+        {           
+            var pharmacyRepo = unitOfWork.GetRepository<IPharmacyReadRepository>();
+            DbSet<Pharmacy> existingPharmacies = pharmacyRepo.GetAll();
+            Pharmacy pharmacy = existingPharmacies.FirstOrDefault(pharmacy => pharmacy.ApiKey.ToString().Equals(dto.ApiKey));
+            if (pharmacy == null) return BadRequest("Pharmacy not registered");
+
+            var complaintRepo = unitOfWork.GetRepository<IComplaintReadRepository>();
+            Complaint complaint = complaintRepo.GetById(dto.HospitalComplaintId);
+
             ComplaintResponse complaintResponse = new ComplaintResponse { CreatedDate = dto.createdDate, Text = dto.Text, ComplaintId = dto.HospitalComplaintId };
+            var responseRepo = unitOfWork.GetRepository<IComplaintResponseWriteRepository>();
             responseRepo.Add(complaintResponse);
 
             return Ok("Complaint response received!");

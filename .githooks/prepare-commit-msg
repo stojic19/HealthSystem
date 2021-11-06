@@ -43,8 +43,15 @@ then
         echo -e "\tLast version : $LATESTGITTAG"
         echo ""
         echo -e "\tWe use <breaking>.<feature>.<bugfix>-beta notation"
-        echo -e "\tUse 'git tag v<new-version>-beta' to add a new version"
-        echo -e "\tExample: git tag v1.5.3-beta"
+		echo ""
+		if [[ $CURRBRANCH == "nuget/integration" ]];
+		then
+			echo -e "\tUse 'git tag -a v<new-version>-beta' to add a new version"
+			echo -e "\tExample: git tag v1.5.3-beta"
+		else
+			echo -e "\tUse 'git tag -a v<new-version>-snapshot' to add a new version"
+			echo -e "\tExample: git tag v1.5.3-snapshot"
+		fi
         echo ""
 
         exit 0

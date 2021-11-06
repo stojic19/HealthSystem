@@ -3,8 +3,6 @@ name: Automated deployment of integration nuget
 on:
   push:
     branches: [ nuget/integration ]
-    tags: 
-      - 'v*'
 
 env:
   INTEGRATION-DLL-PATH : 'Integration/IntegrationClassLib/Integration.csproj'

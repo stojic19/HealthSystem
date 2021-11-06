@@ -39,18 +39,22 @@ then
         echo -e "\tSince it is possible somebody else already changed something while you were"
         echo -e "\tworking on your feature, check if there are new migrations you should apply!"
         echo ""
-        LATESTGITTAG="$(git describe --tags)"
-        echo -e "\tLast version : $LATESTGITTAG"
-        echo ""
-        echo -e "\tWe use <breaking>.<feature>.<bugfix>-beta notation"
-		echo ""
 		if [[ $CURRBRANCH == "nuget/integration" ]];
 		then
+            echo -e "\tWe use <breaking>.<feature>.<bugfix>-beta notation"
+            echo ""
 			echo -e "\tUse 'git tag -a v<new-version>-beta' to add a new version"
 			echo -e "\tExample: git tag v1.5.3-beta"
+            echo ""
+            LATESTGITTAG="$(git describe --match "v*-beta" --abbrev=0)"
+            echo -e "\tLast version : $LATESTGITTAG"
 		else
+            echo -e "\tWe use <breaking>.<feature>.<bugfix>-snapshot notation"
+            echo ""
 			echo -e "\tUse 'git tag -a v<new-version>-snapshot' to add a new version"
 			echo -e "\tExample: git tag v1.5.3-snapshot"
+            LATESTGITTAG="$(git describe --match "v*-snapshot" --abbrev=0)"
+            echo -e "\tLast version : $LATESTGITTAG"
 		fi
         echo ""
 

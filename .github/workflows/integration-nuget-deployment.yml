@@ -7,7 +7,7 @@ on:
       - 'v*'
 
 env:
-  INTEGRATION-DLL-PATH : 'mainrepo/Integration/IntegrationClassLib/Integration.csproj'
+  INTEGRATION-DLL-PATH : 'Integration/IntegrationClassLib/Integration.csproj'
   OUTPUT-DLL-DIR : '${{ github.workspace }}\output'
   NUGET-SOURCE-URL : 'https://api.nuget.org/v3/index.json'
 

@@ -39,6 +39,13 @@ then
         echo -e "\tSince it is possible somebody else already changed something while you were"
         echo -e "\tworking on your feature, check if there are new migrations you should apply!"
         echo ""
+        LATESTGITTAG="$(git describe --tags $(git rev-list --tags --max-count=1))"
+        echo -e "\tLast version : $LATESTGITTAG"
+        echo ""
+        echo -e "\tWe use <breaking>.<feature>.<bugfix>-beta notation"
+        echo -e "\tUse 'git tag v<new-version>-beta' to add a new version"
+        echo -e "\tExample: git tag v1.5.3-beta"
+        echo ""
 
         exit 0
     fi

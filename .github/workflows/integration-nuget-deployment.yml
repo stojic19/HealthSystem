@@ -31,11 +31,16 @@ jobs:
         run : dotnet build ${{ env.INTEGRATION-DLL-PATH }} --configuration Release
 
       - name : Determining the version
-        id : version-step
+        id : get_version
         uses : battila7/get-version-action@v2
 
+      - name : Found version
+        run: |
+          echo ${{ steps.get_version.outputs.version }}
+          echo ${{ steps.get_version.outputs.version-without-v }}
+      
       - name : Packaging the dll
-        run: dotnet pack ${{ env.INTEGRATION-DLL-PATH }} --no-restore --no-build --configuration Release  -p:PackageVersion=${{steps.version-step.outputs.version-without-v}} --output ${{ env.OUTPUT-DLL-DIR }}
+        run: dotnet pack ${{ env.INTEGRATION-DLL-PATH }} --no-restore --no-build --configuration Release  -p:PackageVersion=${{steps.get_version.outputs.version-without-v}} --output ${{ env.OUTPUT-DLL-DIR }}
 
       - name : Pushing to nuget repository
         run: dotnet nuget push ${{ env.OUTPUT-DLL-DIR }}/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s ${{ env.NUGET-SOURCE-URL }}

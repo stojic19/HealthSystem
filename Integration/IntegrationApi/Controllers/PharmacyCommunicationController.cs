@@ -14,6 +14,7 @@ using RestSharp;
 using Integration.Repositories.Base;
 using Integration.Repositories;
 using Microsoft.EntityFrameworkCore;
+using IntegrationAPI.DTO;
 
 namespace Integration.Controllers
 {
@@ -28,6 +29,28 @@ namespace Integration.Controllers
             this.unitOfWork = unitOfWork;
         }
 
+        [HttpPost]
+        public string RegisterPharmacy(PharmacyDTO pharmacyDTO)
+        {
+            string targetUrl = pharmacyDTO.BaseUrl + "/api/HospitalCommunication/AcceptHospitalRegistration";
+            Pharmacy pharmacy = new Pharmacy();
+            pharmacy.City = pharmacyDTO.City;
+            pharmacy.BaseUrl = pharmacyDTO.BaseUrl;
+            pharmacy.StreetName = pharmacyDTO.StreetName;
+            pharmacy.StreetNumber = pharmacy.StreetNumber;
+            pharmacy.ApiKey = Guid.NewGuid();
+            string hospitalUrl = "http://localhost:3187/";
+            Country country = new Country { Name = "Srbija" };
+            City city = new City { Name = "Novi Sad", PostalCode = 21000 };
+            HospitalDTO dto = new HospitalDTO { ApiKey = pharmacy.ApiKey, BaseUrl = hospitalUrl, Name = "Nasa bolnica", StreetName = "Vojvode Stepe", StreetNumber = "14", City = city};
+            RestClient client = new RestClient();
+            RestRequest request = new RestRequest(targetUrl);
+            request.AddJsonBody(dto);
+            IRestResponse response = client.Post(request);
+            /*var repo = unitOfWork.GetRepository<IPharmacyWriteRepository>();
+            repo.Add(pharmacy);*/
+            return response.Content;
+        }
         //[HttpGet("RequestApiKey")]
         //public IActionResult RequestApiKey(string url, string pharmacyName)
         //{

@@ -47,16 +47,16 @@ namespace Integration.Controllers
             City city = new City { Name = "Novi Sad", PostalCode = 21000 };
             HospitalDTO dto = new HospitalDTO { ApiKey = pharmacy.ApiKey, BaseUrl = hospitalUrl, Name = "Nasa bolnica", StreetName = "Vojvode Stepe", StreetNumber = "14", City = city };
             dto.City.Country = pharmacyDTO.City.Country;
-            IRestResponse response = SendREgistrationPost(pharmacyDTO, dto);
+            IRestResponse response = SendRegistrationPost(pharmacyDTO, dto);
             SavePharmacy(pharmacy);
             if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
             {
-                return "Hospital failed to register at pharmacy, possible resaon: hospital is already registered";
+                return "Hospital failed to register at pharmacy, possible reason: hospital is already registered";
             }
             return "Pharmacy registered";
         }
 
-        private static IRestResponse SendREgistrationPost(PharmacyDTO pharmacyDTO, HospitalDTO dto)
+        private static IRestResponse SendRegistrationPost(PharmacyDTO pharmacyDTO, HospitalDTO dto)
         {
             RestClient client = new RestClient();
             string targetUrl = pharmacyDTO.BaseUrl + "/api/HospitalCommunication/AcceptHospitalRegistration";
@@ -140,7 +140,7 @@ namespace Integration.Controllers
             {
                 return Ok("Pharmacy is not registered");
             }
-            return Ok("Hospital responds to ping");
+            return Ok("Hospital responds to ping from " + existingPharmacy.Name);
         }
 
         ////Ne radi
@@ -178,15 +178,17 @@ namespace Integration.Controllers
             return Ok("Complaint saved and sent to pharmacy!");
         }
 
-        /*[HttpPost]
+        [HttpPost]
         public IActionResult PostComplaintResponse(ComplaintResponseDTO dto)
         {
-            Complaint complaint = dbContext.Complaints.FirstOrDefault(complaint => complaint.Id == dto.HospitalComplaintId);
+            //var complaintRepo = unitOfWork.GetRepository<IComplaintReadRepository>();
+            var responseRepo = unitOfWork.GetRepository<IComplaintResponseWriteRepository>();
+            //Complaint complaint = complaintRepo.GetById(dto.HospitalComplaintId);
             ComplaintResponse complaintResponse = new ComplaintResponse { CreatedDate = dto.createdDate, Text = dto.Text, ComplaintId = dto.HospitalComplaintId };
-            dbContext.ComplaintResponses.Add(complaintResponse);
-            dbContext.SaveChanges();
+            responseRepo.Add(complaintResponse);
+
             return Ok("Complaint response received!");
-        }*/
+        }
 
         ////Test metode
         //[HttpGet("GetAppUrl")]
@@ -215,11 +217,11 @@ namespace Integration.Controllers
 
         
 
-        [HttpPost]
+        /*[HttpPost]
         public void AddPharmacy(Pharmacy pharmacy)
         {
             var repo = unitOfWork.GetRepository<IPharmacyWriteRepository>();
             repo.Add(pharmacy);
-        }
+        }*/
     }
 }

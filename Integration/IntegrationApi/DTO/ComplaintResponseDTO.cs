@@ -10,5 +10,6 @@ namespace IntegrationAPI.DTO
         public int HospitalComplaintId { get; set; }
         public string Text { get; set; }
         public DateTime createdDate { get; set; }
+        public string ApiKey { get; set; }
     }
 }

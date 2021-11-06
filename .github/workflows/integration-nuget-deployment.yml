@@ -2,7 +2,14 @@ name: Automated deployment of integration nuget
 
 on:
   push:
-    branches: [ nuget/integration ]
+    branches: 
+      - '!integration/hospital'
+      - '!feature/**'
+      - '!bugfix/**'
+      - '!master'
+      - '!development'
+    tags:
+      - 'v**-beta'
 
 env:
   INTEGRATION-DLL-PATH : 'Integration/IntegrationClassLib/Integration.csproj'

@@ -2,7 +2,14 @@ name: Automated deployment of hospital nuget
 
 on:
   push:
-    branches: [ nuget/hospital ]
+    branches: 
+      - '!integration/integration'
+      - '!feature/**'
+      - '!bugfix/**'
+      - '!master'
+      - '!development'
+    tags:
+      - 'v**-snapshot'
 
 env:
   HOSPITAL-DLL-PATH : 'Hospital/HospitalClassLib/Hospital.csproj'

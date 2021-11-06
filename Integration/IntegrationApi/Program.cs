@@ -1,3 +1,4 @@
+using Integration.Model;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +17,8 @@ namespace Integration
         {
             CreateHostBuilder(args).Run();
         }
+
+        public static int ManagerId = 1;
 
         public static IWebHost CreateHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)

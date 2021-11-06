@@ -10,6 +10,7 @@ namespace Integration.DTO
         public string Title { get; set; }
         public string Description { get; set; }
         public string PharmacyName { get; set; }
+        public int PharmacyId { get; set; }
         public CreateComplaintDTO() { }
     }
 }

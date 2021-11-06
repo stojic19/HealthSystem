@@ -1,0 +1,9 @@
+.title {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid lightgray;
+}
+
+.selected {
+  background-color: rgb(159, 215, 250);
+  border: none;
+}

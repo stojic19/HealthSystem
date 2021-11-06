@@ -2,6 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+	<PackageId>PSW.F2.Integration</PackageId>
+    <Authors>Devops team</Authors>
+    <Company>FTN</Company>
   </PropertyGroup>
 
   <ItemGroup>

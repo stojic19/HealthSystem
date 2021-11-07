@@ -42,7 +42,7 @@ namespace Integration.Controllers
             }
             Pharmacy pharmacy = PharmacyAdapter.PharmacyDTOToPharmacy(pharmacyDTO);
             pharmacy.ApiKey = Guid.NewGuid();
-            string hospitalUrl = "http://localhost:3187/";
+            string hospitalUrl = "http://localhost:5000/";
             Country country = new Country { Name = "Srbija" };
             City city = new City { Name = "Novi Sad", PostalCode = 21000 };
             HospitalDTO dto = new HospitalDTO { ApiKey = pharmacy.ApiKey, BaseUrl = hospitalUrl, Name = "Nasa bolnica", StreetName = "Vojvode Stepe", StreetNumber = "14", City = city };
@@ -89,28 +89,6 @@ namespace Integration.Controllers
             repo.Add(pharmacy);
         }
 
-        //[HttpGet("RequestApiKey")]
-        //public IActionResult RequestApiKey(string url, string pharmacyName)
-        //{
-        //    string targetUrl = url + "/api/hospitalCommunication/GetApiKey";
-        //    string hospitalUrl = "http://" + HttpContext.Request.Headers["Host"];
-        //    RestClient pharmacy = new RestClient();
-        //    RestRequest request = new RestRequest(targetUrl + "/?hospitalName=Hospital1&hospitalUrl=" + hospitalUrl);
-        //    IRestResponse apiKey = pharmacy.Get(request);
-        //    //HttpClient pharmacy = new HttpClient();
-        //    /*Task<HttpResponseMessage> result = pharmacy.GetAsync(targetUrl + "/?hospitalName=" + Program.HospitalName + "&hospitalUrl=" + hospitalUrl);
-        //    string apiKey = result.Result.Content.ReadAsStringAsync().Result;
-        //    if (result.Result.StatusCode == System.Net.HttpStatusCode.BadRequest)
-        //    {
-        //        return BadRequest("This hospital is already registered in that pharmacy");
-        //    }*/
-        //    Pharmacy newPharmacy = new Pharmacy { ApiKey = Guid.Parse(apiKey.Content.Substring(1, apiKey.Content.Length - 2)), Name = pharmacyName, BaseUrl = url };
-        //    var repo = unitOfWork.GetRepository<IPharmacyWriteRepository>();
-        //    repo.Add(newPharmacy);
-        //    unitOfWork.SaveChanges();
-        //    return Ok(newPharmacy);
-        //}
-
         [HttpGet]
         public IActionResult PingPharmacy(string pharmacyName)
         {
@@ -122,12 +100,6 @@ namespace Integration.Controllers
             RestRequest request = new RestRequest(existingPharmacy.BaseUrl + "/api/hospitalCommunication/PingResponse/?apiKey=" + existingPharmacy.ApiKey);
             IRestResponse response = client.Get(request);
             return Ok(response.Content);
-            /*Pharmacy pharmacy = dbContext.Pharmacies.FirstOrDefault(pharmacy => pharmacy.Name.Equals(pharmacyName));
-            if (pharmacy == null) return BadRequest("Pharmacy with that name does not exist in database");
-            HttpClient client = new HttpClient();
-            Task<HttpResponseMessage> result = client.GetAsync(pharmacy.NetworkAdress + "/api/hospitalCommunication/PingResponse/?apiKey=" + pharmacy.ApiKey);
-            string response = result.Result.Content.ReadAsStringAsync().Result;
-            return Ok(response);*/
         }
 
         [HttpGet]
@@ -143,14 +115,11 @@ namespace Integration.Controllers
             return Ok("Hospital responds to ping from " + existingPharmacy.Name);
         }
 
-        ////Ne radi
         [HttpPost]
         public IActionResult PostComplaint(CreateComplaintDTO createComplaintDTO)
         {
             var repo = unitOfWork.GetRepository<IPharmacyReadRepository>();
-            //CreateComplaintDTO createComplaintdto = new CreateComplaintDTO { Title = "Zalba", Description = "Opis zalbe", PharmacyName = "pharmacy1" };
             Complaint complaint = new Complaint();
-            //complaint.Pharmacy.Name = createComplaintdto.PharmacyName;
             complaint.Description = createComplaintDTO.Description;
             complaint.Title = createComplaintDTO.Title;
             complaint.Pharmacy = repo.GetById(createComplaintDTO.PharmacyId);
@@ -169,12 +138,6 @@ namespace Integration.Controllers
                 writeRepo.Delete(complaint);
                 return BadRequest("Pharmacy failed to receive complaint! Try again");
             }
-            /*var content = new StringContent(JsonConvert.SerializeObject(dto), Encoding.UTF8, "application/json");
-            HttpClient client = new HttpClient();
-            var result = client.PostAsync(complaint.Pharmacy.NetworkAdress + "/hospitalCommunication/PostComplaint", content);
-            string response = result.Result.Content.ReadAsStringAsync().Result;*/
-            //if (response.StatusCode == System.Net.HttpStatusCode.BadRequest) return BadRequest(response);
-            //return Ok(response);
             return Ok("Complaint saved and sent to pharmacy!");
         }
 
@@ -195,39 +158,5 @@ namespace Integration.Controllers
 
             return Ok("Complaint response received!");
         }
-
-        ////Test metode
-        //[HttpGet("GetAppUrl")]
-        //public IActionResult GetAppUrl()
-        //{
-        //    return Ok(HttpContext.Request.Headers["Host"]);
-        //}
-
-        /*[HttpGet("test")]
-        public IActionResult test()
-        {
-            Hospital hospital = new Hospital();
-            hospital.Name = "hospital";
-            hospital.Id = 2;
-            hospital.ApiKey = "...";
-            RestClient client = new RestSharp.RestClient();
-            RestRequest request = new RestRequest("http://localhost:32689/api/hospitalCommunication/postTest");
-            request.AddJsonBody(hospital);
-            IRestResponse response = client.Post(request);
-            HttpClient client = new HttpClient();
-            var content = new StringContent(JsonConvert.SerializeObject(hospital), Encoding.UTF8, "application/json");
-            var result = client.PostAsync("http://localhost:32689/api/hospitalCommunication/postTest", content);
-            string response = result.Result.Content.ReadAsStringAsync().Result;
-            return Ok(response.Content);
-        }*/
-
-        
-
-        /*[HttpPost]
-        public void AddPharmacy(Pharmacy pharmacy)
-        {
-            var repo = unitOfWork.GetRepository<IPharmacyWriteRepository>();
-            repo.Add(pharmacy);
-        }*/
     }
 }

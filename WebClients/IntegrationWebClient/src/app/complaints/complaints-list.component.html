@@ -1,0 +1,25 @@
+<div class="panel panel-primary">
+    <div class="panel-heading m-3">
+        <h2>Complaints List</h2>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Date</th>
+                    <th>Manager</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor='let complaint of complaints'>
+                    <td>{{complaint.id}}</td>
+                    <td><a [routerLink]="['/complaints', complaint.id]">{{complaint.title}}</a></td>
+                    <td>{{complaint.createdDate}}</td>
+                    <td>{{complaint.managerId}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

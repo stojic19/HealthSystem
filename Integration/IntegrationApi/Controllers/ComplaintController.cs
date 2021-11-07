@@ -34,7 +34,7 @@ namespace IntegrationAPI.Controllers
             }
             return retVal;
         }
-        [HttpGet]
+        [HttpGet("{id:int}")]
         public Complaint GetComplaintById(int id)
         {
             var repo = unitOfWork.GetRepository<IComplaintReadRepository>();

@@ -17,7 +17,6 @@ using System.Reflection;
 using Hospital.Repositories.DbImplementation;
 using Hospital.Repositories.Base;
 using Autofac.Extensions.DependencyInjection;
-using HospitalApi.Services;
 
 namespace HospitalApi
 {
@@ -54,7 +53,6 @@ namespace HospitalApi
 
             }); 
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
-            builder.RegisterType<FeedbackService>().As<IFeedbackService>();
             builder.Populate(services);
             var container = builder.Build();
             return new AutofacServiceProvider(container);

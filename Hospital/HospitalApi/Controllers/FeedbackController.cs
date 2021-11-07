@@ -1,8 +1,10 @@
 ﻿using Hospital.Model;
-using HospitalApi.Services;
+using Hospital.Repositories;
+using Hospital.Repositories.Base;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,25 +17,27 @@ namespace HospitalApi.Controllers
     [EnableCors("MyCorsImplementationPolicy")]
     public class FeedbackController : ControllerBase
     {
-        private readonly IFeedbackService _feedbackService;
+        private readonly IUnitOfWork _uow;
 
-        public FeedbackController(IFeedbackService feedbackService)
+        public FeedbackController(IUnitOfWork uow)
         {
-            _feedbackService = feedbackService;
+            this._uow = uow;
         }
 
         [HttpGet]
         public IEnumerable<Feedback> GetFeedbacks()
         {
-            IEnumerable<Feedback> feeds = _feedbackService.GetFeedbacksForApproval();
-            Console.WriteLine(feeds.Count());
-            return feeds;
+            var feedbackReadRepo = _uow.GetRepository<IFeedbackReadRepository>();
+
+            return feedbackReadRepo.GetAll().Include(x => x.Patient).Where(x => x.IsPublishable == true);
         }
 
         [HttpPost]
         public void InsertFeedback(Feedback feedback)
         {
-            _feedbackService.InsertFeedback(feedback);
+            var feedbackWriteRepo = _uow.GetRepository<IFeedbackWriteRepository>();
+
+            feedbackWriteRepo.Add(feedback);
         }
     }
 }

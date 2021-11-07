@@ -21,4 +21,8 @@ export class HospitalOverviewComponent implements OnInit {
   showFirstBuilding(){
     this.router.navigateByUrl("firstBuilding");
   }
+
+  showSecondBuilding(){
+    this.router.navigateByUrl("secondBuilding");
+  }
 }

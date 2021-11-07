@@ -1,0 +1,8 @@
+.selection {
+    margin-top: 10rem;
+    margin-left: 15rem;
+    width: 20rem;
+    border-radius: 10px;
+    border: 1px solid gray;
+    padding: 20px;
+  }

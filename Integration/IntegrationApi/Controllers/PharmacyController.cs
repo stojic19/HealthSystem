@@ -25,8 +25,9 @@ namespace IntegrationAPI.Controllers
         [HttpGet]
         public IEnumerable<Pharmacy> GetPharmacies()
         {
-            var repo = unitOfWork.GetRepository<IPharmacyReadRepository>();
-            return repo.GetAll().Include(x => x.City).ThenInclude(x => x.Country);
+            var pharmacyRepo = unitOfWork.GetRepository<IPharmacyReadRepository>();
+            IEnumerable<Pharmacy> pharmacies = pharmacyRepo.GetAll().Include(x => x.City).ThenInclude(x => x.Country);
+            return pharmacies;
         }
     }
 }

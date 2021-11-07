@@ -25,24 +25,29 @@ namespace IntegrationAPI.Controllers
         [HttpGet]
         public IEnumerable<Complaint> GetComplaints()
         {
-            var repo = unitOfWork.GetRepository<IComplaintReadRepository>();
-            IEnumerable<Complaint> retVal = repo.GetAll().Include(x => x.ComplaintResponse).Include(x => x.Manager).Include(x => x.Pharmacy);
-            foreach(Complaint complaint in retVal)
+            var complaintsRepo = unitOfWork.GetRepository<IComplaintReadRepository>();
+            IEnumerable<Complaint> complaints = complaintsRepo.GetAll().Include(x => x.ComplaintResponse).Include(x => x.Manager).Include(x => x.Pharmacy);
+
+            foreach(Complaint complaint in complaints)
             {
                 complaint.Pharmacy.Complaints = null;
                 if(complaint.ComplaintResponse != null) complaint.ComplaintResponse.Complaint = null;
             }
-            return retVal;
+
+            return complaints;
         }
         [HttpGet("{id:int}")]
         public Complaint GetComplaintById(int id)
         {
-            var repo = unitOfWork.GetRepository<IComplaintReadRepository>();
-            IEnumerable<Complaint> complaints = repo.GetAll().Include(x => x.ComplaintResponse).Include(x => x.Manager).Include(x => x.Pharmacy);
-            Complaint retVal = complaints.FirstOrDefault(complaint => complaint.Id == id);
-            retVal.Pharmacy.Complaints = null;
-            if(retVal.ComplaintResponse != null)  retVal.ComplaintResponse.Complaint = null;
-            return retVal;
+            var complaintsRepo = unitOfWork.GetRepository<IComplaintReadRepository>();
+            IEnumerable<Complaint> complaints = complaintsRepo.GetAll().Include(x => x.ComplaintResponse).Include(x => x.Manager).Include(x => x.Pharmacy);
+
+            Complaint complaint = complaints.FirstOrDefault(complaint => complaint.Id == id);
+            complaint.Pharmacy.Complaints = null;
+
+            if(complaint.ComplaintResponse != null)  complaint.ComplaintResponse.Complaint = null;
+
+            return complaint;
         }
     }
 }

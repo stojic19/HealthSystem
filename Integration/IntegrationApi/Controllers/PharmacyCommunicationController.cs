@@ -48,11 +48,11 @@ namespace Integration.Controllers
             HospitalDTO dto = new HospitalDTO { ApiKey = pharmacy.ApiKey, BaseUrl = hospitalUrl, Name = "Nasa bolnica", StreetName = "Vojvode Stepe", StreetNumber = "14", City = city };
             dto.City.Country = pharmacyDTO.City.Country;
             IRestResponse response = SendRegistrationPost(pharmacyDTO, dto);
-            SavePharmacy(pharmacy);
             if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
             {
                 return "Hospital failed to register at pharmacy, possible reason: hospital is already registered";
             }
+            SavePharmacy(pharmacy);
             return "Pharmacy registered";
         }
 

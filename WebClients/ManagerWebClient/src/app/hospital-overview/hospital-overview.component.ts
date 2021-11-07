@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-hospital-overview',
@@ -13,7 +14,11 @@ export class HospitalOverviewComponent implements OnInit {
   darkPinkColor = '#e98a8a';
 
   buildings = ['Building 1', 'Building 2'];
-  constructor() {}
+  constructor(private router: Router) {}
 
   ngOnInit(): void {}
+
+  showFirstBuilding(){
+    this.router.navigateByUrl("firstBuilding");
+  }
 }

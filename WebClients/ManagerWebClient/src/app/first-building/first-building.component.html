@@ -1,0 +1,13 @@
+<div class="row">
+  <div class="col-md-4">
+    <app-floor-selection (floorSelection)="selectedFloor=$event"></app-floor-selection>
+  </div>
+  <div class="col-md-8 mt-3">
+    <div  *ngIf="selectedFloor=='first'">
+      <app-first-floor></app-first-floor>
+    </div>
+    <div *ngIf="selectedFloor=='second'">
+      <app-second-floor></app-second-floor>
+    </div>
+  </div>
+</div>

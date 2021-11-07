@@ -16,8 +16,8 @@ export class FeedbacksManagerService {
   }
   
   approveFeedback(feedback: IFeedback) : void  {
-
-    this.http.put<IFeedback>(`${environment.baseUrl}` + 'api/Feedback',feedback );
+    var url =  '/api/Feedback';
+    this.http.put<any>(url, feedback ).subscribe();
  }
  
 }

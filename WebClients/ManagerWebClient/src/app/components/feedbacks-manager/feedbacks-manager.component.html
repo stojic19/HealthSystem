@@ -1,0 +1,46 @@
+<div class="container" style="border-radius: 5rem; background-color: rgb(182, 209, 226);">
+    <div class='container' style="background-color: whitesmoke; border-radius: 5rem;">
+      <section class="section-padding pb-0" id="reviews">
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              <h2 class="text-center mb-lg-2 mb-2">Our patients feedbacks</h2>
+              <div *ngFor='let comment of allComments' class="list-group">
+                <a href="#" class="list-group-item list-group-item-action ">
+                  <div class="d-flex w-100 justify-content-between">
+                    <div class="d-flex w-100 ">
+                      <div class="d-flex   align-self-baseline ">
+                        <h5 class="mb-1">{{comment.patient.firstName}} {{comment.patient.lastName}} </h5>
+                      </div>
+                      <div class="d-flex align-self-baseline">
+                        <p class="small font-weight-light font-italic" style="text-align: bottom;">{{ comment.isPublishable?
+                          'Public' : 'Private'}}</p>
+                      </div>
+  
+                    </div>
+                    <div class="d-flex w-100 justify-content-end">
+                      <small>{{comment.createdDate.toLocaleString()}}</small>
+                    </div>
+  
+                  </div>
+                  <p class="mb-1">{{comment.text}}</p>
+                </a>
+                <!--ZAMJENITI STYLE:zalepiti za desnu ivicu-->
+                <div class="text-right;" style="margin-left: 965px;">
+                  <span>
+                    <button *ngIf = "comment.feedbackStatus == 0"
+                      style="width: 100px;background-color:rgb(104, 183, 231);" class="btn">Approve</button>
+                  </span>
+                </div>
+                <br>
+              </div>
+  
+              <br><br>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+  
+  

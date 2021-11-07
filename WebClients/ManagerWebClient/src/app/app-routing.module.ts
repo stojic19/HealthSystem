@@ -4,11 +4,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { FeedbacksManagerComponent } from './components/feedbacks-manager/feedbacks-manager.component';
 import { FirstBuildingComponent } from './first-building/first-building.component';
 import { HospitalOverviewComponent } from './hospital-overview/hospital-overview.component';
+import { SecondBuildingComponent } from './second-building/second-building.component';
 
 const routes: Routes = [
   { path: 'overview', component: HospitalOverviewComponent },
   { path: 'feedbacks', component: FeedbacksManagerComponent},
-  { path: 'firstBuilding', component: FirstBuildingComponent }
+  { path: 'firstBuilding', component: FirstBuildingComponent },
+  { path: 'secondBuilding', component: SecondBuildingComponent }
 ];
 
 @NgModule({
@@ -16,4 +18,4 @@ const routes: Routes = [
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
-export const routingComponents = [HospitalOverviewComponent, FirstBuildingComponent, FeedbacksManagerComponent];
+export const routingComponents = [HospitalOverviewComponent, FirstBuildingComponent, FeedbacksManagerComponent, SecondBuildingComponent];

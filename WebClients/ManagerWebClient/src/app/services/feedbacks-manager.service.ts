@@ -15,5 +15,10 @@ export class FeedbacksManagerService {
     return  this.http.get<IFeedback[]>(`${environment.baseUrl}` + 'api/Feedback');
   }
   
+  approveFeedback(feedback: IFeedback) : void  {
+
+    this.http.put<IFeedback>(`${environment.baseUrl}` + 'api/Feedback',feedback );
+ }
+ 
 }
 

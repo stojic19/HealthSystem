@@ -39,5 +39,12 @@ namespace HospitalApi.Controllers
 
             feedbackWriteRepo.Add(feedback);
         }
+
+        [HttpPut]
+        public void ApproveFeedback(Feedback feedback)
+        {
+            var feedbackWriteRepo = _uow.GetRepository<IFeedbackWriteRepository>();
+            feedbackWriteRepo.Update(feedback);
+        }
     }
 }

@@ -28,7 +28,7 @@
                 <!--ZAMJENITI STYLE:zalepiti za desnu ivicu-->
                 <div class="text-right;" style="margin-left: 965px;">
                   <span>
-                    <button *ngIf = "comment.feedbackStatus == 0"
+                    <button *ngIf = "comment.feedbackStatus == 0" (click)="approveComment(comment)"
                       style="width: 100px;background-color:rgb(104, 183, 231);" class="btn">Approve</button>
                   </span>
                 </div>

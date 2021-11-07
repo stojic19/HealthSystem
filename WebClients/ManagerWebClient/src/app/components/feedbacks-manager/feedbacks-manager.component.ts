@@ -24,4 +24,13 @@ export class FeedbacksManagerComponent implements OnInit {
     this.sub = this._feedbackService.getFeedback().subscribe({
       next:  com => {this.allComments = com;}
   })}
+
+  approveComment(feedback: IFeedback) {
+    for (let c of this.allComments) {
+      if (c.id === feedback.id) {
+        c.feedbackStatus = 2;
+        this._feedbackService.approveFeedback(c);
+      }
+    }
+  }
 }

@@ -3,18 +3,16 @@
         <div>Complaint ID:  {{complaint.id}}</div>
         <div>Date: {{complaint.createdDate}}</div>
         <div>Author: {{complaint.manager.name}} {{complaint.manager.surname}}</div>
+        <div>Pharmacy: {{complaint.pharmacy.name}}</div>
     </div>
     <div class="card-body">
       <h3 class="card-title text-center m-3">{{complaint.title}}</h3>
       <p class="card-text text-center ">{{complaint.description}}</p>
-      <p class="card-text text-center ">{{complaint.complaintResponse.text}}</p>
 
       <div class="card" *ngIf="complaint.hasOwnProperty('complaintResponse')">
         <div class="card-header">
-            <div class="panel-heading">
-                <h5>Response ID:  {{complaint.id}}</h5>
-            </div>
-            Date: {{complaint.complaintResponse.createdDate}}
+            <div>Response ID:  {{complaint.complaintResponse.id}}</div>
+            <div>Date: {{complaint.complaintResponse.createdDate}}</div>
         </div>
         <div class="card-body">
           <p class="card-text text-center ">{{complaint.complaintResponse.text}}</p>

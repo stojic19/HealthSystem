@@ -11,6 +11,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { PatientFeedbackComponent } from './components/patient-feedback/patient-feedback.component';
 import { HttpClientModule } from '@angular/common/http';
+import { FeedbacksPageComponent } from './components/feedbacks-page/feedbacks-page.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { HttpClientModule } from '@angular/common/http';
     HomePageComponent,
     HeaderComponent,
     FooterComponent,
-    PatientFeedbackComponent
+    PatientFeedbackComponent,
+    FeedbacksPageComponent
   ],
   imports: [
     BrowserModule,

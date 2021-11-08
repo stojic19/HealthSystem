@@ -15,4 +15,7 @@ export class FeedbackService {
   getAll(): Observable<IPatientFeedback[]> {
     return this._http.get<IPatientFeedback[]>(`${environment.baseUrl}` + 'api/Feedback');
   }
+  getApproved(): Observable<IPatientFeedback[]> {
+    return this._http.get<IPatientFeedback[]>(`${environment.baseUrl}` + 'api/Feedback/approved');
+  }
 }

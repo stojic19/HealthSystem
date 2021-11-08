@@ -7,13 +7,13 @@ export enum FeedbackStatus {
 }
 export interface IPatientFeedback {
 
-    Id: number;
-    PatientId: number;
-    Patient: IPatient;
-    FeedbackStatus: FeedbackStatus;
-    CreateDate: Date;
-    Text: String;
-    IsPublishable: Boolean;
+    id: number;
+    patientId: number;
+    patient: IPatient;
+    feedbackStatus: FeedbackStatus;
+    createdDate: Date;
+    text: String;
+    isPublishable: Boolean;
 
 
 

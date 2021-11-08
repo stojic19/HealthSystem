@@ -31,12 +31,12 @@ namespace Integration.Controllers
         }
 
         [HttpPost]
-        public string RegisterPharmacy(PharmacyDTO pharmacyDTO)
+        public IActionResult RegisterPharmacy(PharmacyDTO pharmacyDTO)
         {
             Pharmacy existingPharmacy = FindPharmacyByName(pharmacyDTO.Name);
             if (existingPharmacy != null)
             {
-                return "Pharmacy already exists!";
+                return BadRequest("Pharmacy already exists!");
             }
 
             Pharmacy pharmacy = PharmacyAdapter.PharmacyDTOToPharmacy(pharmacyDTO);
@@ -45,13 +45,13 @@ namespace Integration.Controllers
             HospitalDTO dto = CreatePostData(pharmacyDTO, pharmacy, hospitalUrl);
 
             IRestResponse response = SendRegistrationPost(pharmacyDTO, dto);
-            if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
             {
-                return "Hospital failed to register at pharmacy, possible reason: hospital is already registered";
+                return Ok();
             }
 
             SavePharmacy(pharmacy);
-            return "Pharmacy registered";
+            return Ok("Pharmacy registered");
         }
 
         private static HospitalDTO CreatePostData(PharmacyDTO pharmacyDTO, Pharmacy pharmacy, string hospitalUrl)

@@ -14,6 +14,7 @@ export class ComplaintsListComponent implements OnInit {
   complaints: any = [];
   SearchString:string="";
   nonFilteredComplaints:any=[];
+  isAnswered:string="All";
 
   ngOnInit(): void {
 
@@ -26,16 +27,24 @@ export class ComplaintsListComponent implements OnInit {
   FilterFn(){
     var searchString = this.SearchString.trim().toLowerCase();
     
-    if(searchString == ""){
-      this.complaints = this.nonFilteredComplaints;
-      return;
-    }
-
-    this.complaints = [];
-    for(var i = 0; i < this.nonFilteredComplaints.length; i++){
-        if(this.nonFilteredComplaints[i].title.toLowerCase().includes(searchString) || this.nonFilteredComplaints[i].description.toLowerCase().includes(searchString)){
+    this.complaints = this.nonFilteredComplaints.map((complaint: any) => complaint);
+    if(!(searchString === "")){
+      this.complaints = [];
+      for(var i = 0; i < this.nonFilteredComplaints.length; i++){
+        if(this.nonFilteredComplaints[i].title.toLowerCase().includes(searchString) 
+        || this.nonFilteredComplaints[i].description.toLowerCase().includes(searchString)){
           this.complaints.push(this.nonFilteredComplaints[i]);
         }
+      }
+    }
+
+    if(!(this.isAnswered === "All")){
+      for(var i = 0; i < this.complaints.length; i++){
+          if(!((this.isAnswered === "Answered" && this.complaints[i].complaint != null) || (this.isAnswered === "Not answered" && this.complaints[i].complaint == null)) ){
+            this.complaints.splice(i, 1);
+            i--;
+          }
+      }
     }
   }
 }

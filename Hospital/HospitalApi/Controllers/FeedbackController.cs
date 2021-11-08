@@ -42,17 +42,25 @@ namespace HospitalApi.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<Feedback>> ApproveFeedback(Feedback feedback)
+        public IActionResult ApproveFeedback(Feedback feedback)
         {
-            var feedbackWriteRepo = _uow.GetRepository<IFeedbackWriteRepository>();
             try
             {
                 if(feedback == null)
                 {
-                    return BadRequest();
+                    return BadRequest("Feedback format is wrong!");
                 }
+
+                var feedbackWriteRepo = _uow.GetRepository<IFeedbackWriteRepository>();
                 feedback.FeedbackStatus = FeedbackStatus.Approved;
-                return feedbackWriteRepo.Update(feedback);
+                Feedback approvedFeedback = feedbackWriteRepo.Update(feedback);
+
+                if(approvedFeedback == null)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Couldn't update feedback!");
+                }
+
+                return Ok(approvedFeedback);
             }
             catch(Exception)
             {

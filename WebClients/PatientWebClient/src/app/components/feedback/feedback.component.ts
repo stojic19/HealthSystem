@@ -16,7 +16,7 @@ export class FeedbackComponent implements OnInit {
   isPublishable : boolean = false
   feedbackText : string = '';
   
-  constructor(public dialogRef: MatDialogRef<FeedbackComponent>, private _feedbackService: FeedbackService) {
+  constructor(public dialogRef: MatDialogRef<FeedbackComponent>, private _feedbackService: FeedbackService, private _snackBar: MatSnackBar) {
     this.newFeedback = {} as IFeedback;
   }
 
@@ -27,20 +27,15 @@ export class FeedbackComponent implements OnInit {
     this.feedbackText = ev.target.value;
   }
 
-  stayAnonymousChanged() : void {
-    this.stayAnonymous = !this.stayAnonymous;
-  }
-
-  isPublishableChanged() : void {
-    this.isPublishable = !this.isPublishable;
-  }
-
   submitFeedback() : void {
-    this.newFeedback.text = this.feedbackText;
-    this.newFeedback.isPublishable = this.isPublishable;
-    !this.stayAnonymous ? this.newFeedback.patientId = 1 : true;
-    this._feedbackService.addFeedback(this.newFeedback);
-    this.dialogRef.close;
-  }
+    if(this.feedbackText && this.feedbackText != '') {
+      this.newFeedback.text = this.feedbackText;
+      this.newFeedback.isPublishable = this.isPublishable;
+      !this.stayAnonymous ? this.newFeedback.patientId = 1 : true;
+      this._feedbackService.addFeedback(this.newFeedback);
+      this._snackBar.open("Your feedback has been successfully submitted.", "Dismiss");
+      this.dialogRef.close(true);
+    }
+  } 
 
 }

@@ -5,7 +5,7 @@
           <div class="row">
             <div class="col-12">
               <h2 class="text-center mb-lg-2 mb-2">Our patients feedbacks</h2>
-              <div *ngFor='let comment of allComments' class="list-group">
+              <div *ngFor='let comment of allFeedbacks' class="list-group" style="flex-direction: column;">
                 <div class="list-group-item ">
                   <div class="d-flex w-100 justify-content-between">
                     <div class="d-flex w-100 ">
@@ -26,9 +26,9 @@
                   <p class="mb-1">{{comment.text}}</p>
                 </div>
                 <!--ZAMJENITI STYLE:zalepiti za desnu ivicu-->
-                <div class="text-right;" style="margin-left: 965px;">
+                <div class="text-right;" style="justify-content: flex-end; display: flex;">
                   <span>
-                    <button *ngIf = "comment.feedbackStatus == 0" (click)="approveComment(comment)"
+                    <button *ngIf = "comment.feedbackStatus == 0" (click)="approveFeedback(comment)"
                       style="width: 100px;background-color:rgb(104, 183, 231);" class="btn">Approve</button>
                   </span>
                 </div>

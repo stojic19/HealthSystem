@@ -12,7 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class FeedbacksManagerComponent implements OnInit {
 
-  allComments!: IFeedback[];
+  allFeedbacks!: IFeedback[];
   waiting!: IFeedback[];
   approved: IFeedback[] = [];
   sub! : Subscription;
@@ -21,14 +21,21 @@ export class FeedbacksManagerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.allComments = [];
+    this.allFeedbacks = [];
     this.sub = this._feedbackService.getFeedback().subscribe({
-      next:  com => {this.allComments = com;}
+      next:  com => {this.allFeedbacks = com;}
   })}
 
-  approveComment(feedback: IFeedback) {
-    feedback.feedbackStatus = 2;
-    this._feedbackService.approveFeedback(feedback);
-    this._snackBar.open("Your feedback has been successfully submitted.", "Dismiss");
+  approveFeedback(feedback: IFeedback) {
+    this._feedbackService.approveFeedback(feedback).subscribe(editedFeedback => {
+      let index = this.allFeedbacks.indexOf(feedback);
+      this.allFeedbacks[index] = editedFeedback;
+    },
+      error => {                             
+        console.error('Error approving feedback!' + error.HttpErrorResponse)
+    });
+    this._snackBar.open("Feedback has been successfully approved.", "Dismiss");
   }
+
+  
 }

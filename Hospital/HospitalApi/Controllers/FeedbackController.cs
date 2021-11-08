@@ -1,4 +1,5 @@
 ﻿using Hospital.Model;
+using Hospital.Model.Enumerations;
 using Hospital.Repositories;
 using Hospital.Repositories.Base;
 using Microsoft.AspNetCore.Cors;
@@ -41,10 +42,22 @@ namespace HospitalApi.Controllers
         }
 
         [HttpPut]
-        public void ApproveFeedback(Feedback feedback)
+        public async Task<ActionResult<Feedback>> ApproveFeedback(Feedback feedback)
         {
             var feedbackWriteRepo = _uow.GetRepository<IFeedbackWriteRepository>();
-            feedbackWriteRepo.Update(feedback);
+            try
+            {
+                if(feedback == null)
+                {
+                    return BadRequest();
+                }
+                feedback.FeedbackStatus = FeedbackStatus.Approved;
+                return feedbackWriteRepo.Update(feedback);
+            }
+            catch(Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error updating data in database!");
+            }
         }
     }
 }

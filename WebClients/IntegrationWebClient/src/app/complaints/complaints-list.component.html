@@ -3,7 +3,10 @@
         <h2>Complaints List</h2>
     </div>
     <button class="btn btn-primary m-3" [routerLink]="['/complaint-add']">Add complaint</button>
-    <div class="table-responsive ">
+    <div class="form-control form-control-lg">
+    <input [(ngModel)]="SearchString"  (keyup)="FilterFn()" placeholder="Filter" > 
+    </div>
+    <div class="table-responsive">
         <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>

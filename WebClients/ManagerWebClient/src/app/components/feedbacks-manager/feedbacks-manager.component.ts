@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { IFeedback } from 'src/app/interfaces/feedback';
 import { FeedbacksManagerService } from 'src/app/services/feedbacks-manager.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-feedbacks-manager',
@@ -15,7 +16,7 @@ export class FeedbacksManagerComponent implements OnInit {
   waiting!: IFeedback[];
   approved: IFeedback[] = [];
   sub! : Subscription;
-  constructor(private _feedbackService: FeedbacksManagerService) {
+  constructor(private _feedbackService: FeedbacksManagerService, private _snackBar: MatSnackBar) {
 
   }
 
@@ -28,6 +29,6 @@ export class FeedbacksManagerComponent implements OnInit {
   approveComment(feedback: IFeedback) {
     feedback.feedbackStatus = 2;
     this._feedbackService.approveFeedback(feedback);
-    alert("Odobren komentar:" + feedback.text);
+    this._snackBar.open("Your feedback has been successfully submitted.", "Dismiss");
   }
 }

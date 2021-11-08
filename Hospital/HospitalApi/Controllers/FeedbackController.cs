@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Hospital.Model.Enumerations;
 
 namespace HospitalApi.Controllers
 {
@@ -31,6 +32,12 @@ namespace HospitalApi.Controllers
 
             return feedbackReadRepo.GetAll().Include(x => x.Patient).Where(x => x.IsPublishable == true);
         }
+        [HttpGet("approved")]
+        public IEnumerable<Feedback> GetApprovedFeedbacks()
+        {
+            var feedbackReadRepo = _uow.GetRepository<IFeedbackReadRepository>();
+            return feedbackReadRepo.GetAll().Include(x => x.Patient).Where(x => x.IsPublishable == true && x.FeedbackStatus == FeedbackStatus.Approved);
+        }
 
         [HttpPost]
         public void InsertFeedback(Feedback feedback)
@@ -39,5 +46,14 @@ namespace HospitalApi.Controllers
 
             feedbackWriteRepo.Add(feedback);
         }
+
+        [HttpGet("{Id}")]
+        public Feedback GetFeedback(int Id )
+        {
+            var feedbackReadRepo = _uow.GetRepository<IFeedbackReadRepository>();
+            return feedbackReadRepo.GetById(Id);
+
+        }
+
     }
 }

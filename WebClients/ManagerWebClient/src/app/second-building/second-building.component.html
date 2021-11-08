@@ -1,13 +1,21 @@
 <div class="row">
   <div class="col-md-4">
-      <app-select-floor (selectFloor)="selectedFloor=$event"></app-select-floor>
+    <div class="row ms-5 mt-3">
+      <h4 class="mt-3 mb-5 title" style="text-align: center;">B U I L D I N G<span class="ms-4">2</span></h4>
+    </div> 
+    <app-select-floor (selectFloor)="selectedFloor=$event; selectedRoom.name = ''"></app-select-floor>
+    <div class="row" *ngIf="selectedRoom.name != ''">
+        <div class="col-9 mt-5" style="margin-left: 5.5rem;">
+            <app-room-info [room]="selectedRoom"></app-room-info>
+        </div>
+    </div>
   </div>
-  <div class="col-md-8 mt-3">
+  <div class="col-md-8" style="margin-top: 5rem;">
     <div  *ngIf="selectedFloor=='first'">
-      <app-floor-first></app-floor-first>
+      <app-floor-first (selectedRoom)="roomSelectionChanged($event)"></app-floor-first>
     </div>
     <div *ngIf="selectedFloor=='second'">
-      <app-floor-second></app-floor-second>
+      <app-floor-second (selectedRoom)="roomSelectionChanged($event)"></app-floor-second>
     </div>
   </div>
 </div>

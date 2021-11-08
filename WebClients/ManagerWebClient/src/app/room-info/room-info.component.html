@@ -1,0 +1,2 @@
+<app-display-room-info (messageToEmit)="editingMode = $event" [room]="room" *ngIf="editingMode == false"></app-display-room-info>
+<app-edit-room-info (messageToEmit)="editingMode = $event" [room]="room" *ngIf="editingMode == true"></app-edit-room-info>

@@ -6,12 +6,15 @@ import { FirstBuildingComponent } from './first-building/first-building.componen
 import { HospitalOverviewComponent } from './hospital-overview/hospital-overview.component';
 import { MaterialModule } from './material/material.module';
 import { SecondBuildingComponent } from './second-building/second-building.component';
+import {HomePageComponent} from './components/home-page/home-page.component';
 
 const routes: Routes = [
   { path: 'overview', component: HospitalOverviewComponent },
   { path: 'feedbacks', component: FeedbacksManagerComponent},
   { path: 'firstBuilding', component: FirstBuildingComponent },
-  { path: 'secondBuilding', component: SecondBuildingComponent }
+  { path: 'secondBuilding', component: SecondBuildingComponent },
+  {path: 'home', component: HomePageComponent },
+  {path: '', redirectTo: 'home', pathMatch: 'full'}
 ];
 
 @NgModule({

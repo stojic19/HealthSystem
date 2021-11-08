@@ -1,0 +1,26 @@
+<div class="panel panel-primary">
+    <div class="panel-heading m-3">
+        <h2>Pharmacy List</h2>
+    </div>
+    <button [routerLink]="['/pharmacy-register']">Register pharmacy</button>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Base URL</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor='let pharmacy of pharmacies'>
+                    <td>{{pharmacy.id}}</td>
+                    <td>{{pharmacy.name}}</td>
+                    <td>{{pharmacy.streetName}} {{pharmacy.streetNumber}}, {{pharmacy.city.name}}</td>
+                    <td>{{pharmacy.baseUrl}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

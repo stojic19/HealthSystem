@@ -9,6 +9,7 @@ import { ComplaintsListComponent } from './complaints/complaints-list.component'
 import { ComplaintDetailsComponent } from './complaints/complaint-details.component';
 import { AddComplaintComponent } from './complaints/add-complaint.component';
 import { RegisterPharamcyComponent } from './pharmacy/register-pharamcy.component';
+import { PharmacyListComponent } from './pharmacy-list/pharmacy-list.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { RegisterPharamcyComponent } from './pharmacy/register-pharamcy.componen
     ComplaintsListComponent,
     ComplaintDetailsComponent,
     AddComplaintComponent,
-    RegisterPharamcyComponent
+    RegisterPharamcyComponent,
+    PharmacyListComponent
   ],
   imports: [
     BrowserModule,

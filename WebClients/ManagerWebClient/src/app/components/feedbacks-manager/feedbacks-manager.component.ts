@@ -26,11 +26,8 @@ export class FeedbacksManagerComponent implements OnInit {
   })}
 
   approveComment(feedback: IFeedback) {
-    for (let c of this.allComments) {
-      if (c.id === feedback.id) {
-        c.feedbackStatus = 2;
-        this._feedbackService.approveFeedback(c);
-      }
-    }
+    feedback.feedbackStatus = 2;
+    this._feedbackService.approveFeedback(feedback);
+    alert("Odobren komentar:" + feedback.text);
   }
 }

@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 import { ComplaintsListComponent } from './complaints/complaints-list.component';
 import { ComplaintDetailsComponent } from './complaints/complaint-details.component';
 import { AddComplaintComponent } from './complaints/add-complaint.component';
-import { RegisterPharmacyComponent } from './pharmacy/register-pharmacy.component';
+import { RegisterPharamcyComponent } from './pharmacy/register-pharamcy.component';
 import { PharmacyListComponent } from './pharmacy-list/pharmacy-list.component';
 
 @NgModule({
@@ -17,7 +17,7 @@ import { PharmacyListComponent } from './pharmacy-list/pharmacy-list.component';
     ComplaintsListComponent,
     ComplaintDetailsComponent,
     AddComplaintComponent,
-    RegisterPharmacyComponent,
+    RegisterPharamcyComponent,
     PharmacyListComponent
   ],
   imports: [

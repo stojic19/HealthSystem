@@ -37,22 +37,28 @@ namespace HospitalApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<NewFeedbackDTO>> InsertFeedback(NewFeedbackDTO feedbackDTO)
+        public IActionResult InsertFeedback(NewFeedbackDTO feedbackDTO)
         {
             try
             {
                 if (feedbackDTO == null)
                 {
-                    return BadRequest();
+                    return BadRequest("Incorrect feedback format sent! Please try again.");
                 }
 
                 var feedbackWriteRepo = _uow.GetRepository<IFeedbackWriteRepository>();
                 Feedback addedFeedback = feedbackWriteRepo.Add(createFeedback(feedbackDTO));
-                return _mapper.Map<NewFeedbackDTO>(addedFeedback);
+
+                if(addedFeedback == null)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Could not insert feedback in the database.");
+                }
+
+                return Ok("Your feedback has been submitted.");
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error inserting feedback in the database!");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error inserting feedback in the database.");
             }
         }
         private Feedback createFeedback(NewFeedbackDTO feedbackDTO)

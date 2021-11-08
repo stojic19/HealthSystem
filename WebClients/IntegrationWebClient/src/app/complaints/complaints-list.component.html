@@ -2,6 +2,7 @@
     <div class="panel-heading m-3">
         <h2>Complaints List</h2>
     </div>
+    <button [routerLink]="['/complaint-add']">Add complaint</button>
     <div class="table-responsive">
         <table class="table table-bordered table-striped">
             <thead>
@@ -9,15 +10,17 @@
                     <th>ID</th>
                     <th>Title</th>
                     <th>Date</th>
+                    <th>Pharmacy</th>
                     <th>Manager</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor='let complaint of complaints'>
+                <tr *ngFor='let complaint of complaints' [routerLink]="['/complaints', complaint.id]">
                     <td>{{complaint.id}}</td>
-                    <td><a [routerLink]="['/complaints', complaint.id]">{{complaint.title}}</a></td>
-                    <td>{{complaint.createdDate}}</td>
-                    <td>{{complaint.managerId}}</td>
+                    <td>{{complaint.title}}</td>
+                    <td>{{complaint.createdDate | date: 'dd-MM-yyyy, hh:mm'}}</td>
+                    <td>{{complaint.pharmacy.name}}</td>
+                    <td>{{complaint.manager.name}} {{complaint.manager.surname}}</td>
                 </tr>
             </tbody>
         </table>

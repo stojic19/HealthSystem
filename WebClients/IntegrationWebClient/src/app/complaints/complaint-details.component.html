@@ -1,7 +1,7 @@
 <div class="card" *ngIf='id'>
     <div class="card-header">
         <div>Complaint ID:  {{complaint.id}}</div>
-        <div>Date: {{complaint.createdDate}}</div>
+        <div>Date: {{complaint.createdDate | date: "dd-MM-yyyy, hh:mm"}}</div>
         <div>Author: {{complaint.manager.name}} {{complaint.manager.surname}}</div>
         <div>Pharmacy: {{complaint.pharmacy.name}}</div>
     </div>
@@ -12,7 +12,7 @@
       <div class="card" *ngIf="complaint.hasOwnProperty('complaintResponse')">
         <div class="card-header">
             <div>Response ID:  {{complaint.complaintResponse.id}}</div>
-            <div>Date: {{complaint.complaintResponse.createdDate}}</div>
+            <div>Date: {{complaint.complaintResponse.createdDate | date: "dd-MM-yyyy, hh:mm"}}</div>
         </div>
         <div class="card-body">
           <p class="card-text text-center ">{{complaint.complaintResponse.text}}</p>

@@ -11,7 +11,7 @@ import { FeedbacksManagerService } from 'src/app/services/feedbacks-manager.serv
 })
 export class FeedbacksManagerComponent implements OnInit {
 
-  allComments!: IFeedback[];
+  allFeedbacks!: IFeedback[];
   waiting!: IFeedback[];
   approved: IFeedback[] = [];
   sub! : Subscription;
@@ -20,8 +20,8 @@ export class FeedbacksManagerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.allComments = [];
+    this.allFeedbacks = [];
     this.sub = this._feedbackService.getFeedback().subscribe({
-      next:  com => {this.allComments = com;}
+      next:  com => {this.allFeedbacks = com;}
   })}
 }

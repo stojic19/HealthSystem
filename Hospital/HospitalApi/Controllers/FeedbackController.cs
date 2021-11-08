@@ -1,6 +1,8 @@
-﻿using Hospital.Model;
+﻿using AutoMapper;
+using Hospital.Model;
 using Hospital.Repositories;
 using Hospital.Repositories.Base;
+using HospitalApi.DTOs;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,10 +20,12 @@ namespace HospitalApi.Controllers
     public class FeedbackController : ControllerBase
     {
         private readonly IUnitOfWork _uow;
+        private readonly IMapper _mapper;
 
-        public FeedbackController(IUnitOfWork uow)
+        public FeedbackController(IUnitOfWork uow, IMapper mapper)
         {
             this._uow = uow;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -33,11 +37,14 @@ namespace HospitalApi.Controllers
         }
 
         [HttpPost]
-        public void InsertFeedback(Feedback feedback)
+        public void InsertFeedback(NewFeedbackDTO feedbackDTO)
         {
             var feedbackWriteRepo = _uow.GetRepository<IFeedbackWriteRepository>();
+            Feedback newFeedback = _mapper.Map<Feedback>(feedbackDTO);
+            newFeedback.CreatedDate = DateTime.Now;
+            newFeedback.FeedbackStatus = Hospital.Model.Enumerations.FeedbackStatus.Pending;
 
-            feedbackWriteRepo.Add(feedback);
+            feedbackWriteRepo.Add(newFeedback);
         }
     }
 }

@@ -40,7 +40,7 @@ export class ComplaintsListComponent implements OnInit {
 
     if(!(this.isAnswered === "All")){
       for(var i = 0; i < this.complaints.length; i++){
-          if(!((this.isAnswered === "Answered" && this.complaints[i].complaint != null) || (this.isAnswered === "Not answered" && this.complaints[i].complaint == null)) ){
+          if(!((this.isAnswered === "Answered" && this.complaints[i].complaintResponse != null) || (this.isAnswered === "Not answered" && this.complaints[i].complaintResponse == null)) ){
             this.complaints.splice(i, 1);
             i--;
           }

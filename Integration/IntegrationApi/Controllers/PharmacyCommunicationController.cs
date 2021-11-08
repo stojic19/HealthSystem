@@ -42,7 +42,7 @@ namespace Integration.Controllers
             Pharmacy pharmacy = PharmacyAdapter.PharmacyDTOToPharmacy(pharmacyDTO);
             pharmacy.ApiKey = Guid.NewGuid();
             string hospitalUrl = "http://localhost:5000/";
-            HospitalDTO dto = CreatePostData(pharmacyDTO, pharmacy, hospitalUrl);
+            HospitalDTO dto = CreatePostData(pharmacy, hospitalUrl);
 
             IRestResponse response = SendRegistrationPost(pharmacyDTO, dto);
             if (response.StatusCode != System.Net.HttpStatusCode.OK)
@@ -54,12 +54,11 @@ namespace Integration.Controllers
             return Ok("Pharmacy registered");
         }
 
-        private static HospitalDTO CreatePostData(PharmacyDTO pharmacyDTO, Pharmacy pharmacy, string hospitalUrl)
+        private static HospitalDTO CreatePostData(Pharmacy pharmacy, string hospitalUrl)
         {
             Country country = new Country { Name = "Srbija" };
-            City city = new City { Name = "Novi Sad", PostalCode = 21000 };
+            City city = new City { Name = "Novi Sad", PostalCode = 21000, Country = country };
             HospitalDTO dto = new HospitalDTO { ApiKey = pharmacy.ApiKey, BaseUrl = hospitalUrl, Name = "Nasa bolnica", StreetName = "Vojvode Stepe", StreetNumber = "14", City = city };
-            dto.City.Country = pharmacyDTO.City.Country;
             return dto;
         }
 

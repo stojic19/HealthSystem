@@ -12,7 +12,7 @@ namespace HospitalApi.AutoMapperProfiles
     {
         public AutoMapperProfile()
         {
-            CreateMap<NewFeedbackDTO, Feedback>();
+            CreateMap<NewFeedbackDTO, Feedback>().ReverseMap();
         }
     }
 }

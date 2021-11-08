@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Hospital.Model.Enumerations;
 
 namespace HospitalApi.Controllers
 {
@@ -34,6 +35,12 @@ namespace HospitalApi.Controllers
             var feedbackReadRepo = _uow.GetRepository<IFeedbackReadRepository>();
 
             return feedbackReadRepo.GetAll().Include(x => x.Patient).Where(x => x.IsPublishable == true);
+        }
+        [HttpGet("approved")]
+        public IEnumerable<Feedback> GetApprovedFeedbacks()
+        {
+            var feedbackReadRepo = _uow.GetRepository<IFeedbackReadRepository>();
+            return feedbackReadRepo.GetAll().Include(x => x.Patient).Where(x => x.IsPublishable == true && x.FeedbackStatus == FeedbackStatus.Approved);
         }
 
         [HttpPost]
@@ -68,5 +75,14 @@ namespace HospitalApi.Controllers
             newFeedback.FeedbackStatus = Hospital.Model.Enumerations.FeedbackStatus.Pending;
             return newFeedback;
         }
+
+        [HttpGet("{Id}")]
+        public Feedback GetFeedback(int Id )
+        {
+            var feedbackReadRepo = _uow.GetRepository<IFeedbackReadRepository>();
+            return feedbackReadRepo.GetById(Id);
+
+        }
+
     }
 }

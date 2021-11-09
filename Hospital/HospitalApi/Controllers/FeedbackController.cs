@@ -48,7 +48,7 @@ namespace HospitalApi.Controllers
             feedbackWriteRepo.Add(feedback);
         }
 
-        [HttpPut]
+        [HttpPut("publish")]
         public IActionResult ApproveFeedback(Feedback feedback)
         {
             try
@@ -80,6 +80,33 @@ namespace HospitalApi.Controllers
             var feedbackReadRepo = _uow.GetRepository<IFeedbackReadRepository>();
             return feedbackReadRepo.GetById(Id);
 
+        }
+
+        [HttpPut("unpublish")]
+        public IActionResult UnapproveFeedback(Feedback feedback)
+        {
+            try
+            {
+                if (feedback == null)
+                {
+                    return BadRequest("Feedback format is wrong!");
+                }
+
+                var feedbackWriteRepo = _uow.GetRepository<IFeedbackWriteRepository>();
+                feedback.FeedbackStatus = FeedbackStatus.Pending;
+                Feedback approvedFeedback = feedbackWriteRepo.Update(feedback);
+
+                if (approvedFeedback == null)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Couldn't update feedback!");
+                }
+
+                return Ok(approvedFeedback);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error updating data in database!");
+            }
         }
 
     }

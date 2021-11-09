@@ -37,5 +37,15 @@ export class FeedbacksManagerComponent implements OnInit {
     this._snackBar.open("Feedback has been successfully approved.", "Dismiss");
   }
 
+  unapproveFeedback(feedback: IFeedback) {
+    this._feedbackService.unapproveFeedback(feedback).subscribe(editedFeedback => {
+      let index = this.allFeedbacks.indexOf(feedback);
+      this.allFeedbacks[index] = editedFeedback;
+    },
+      error => {                             
+        console.error('Error approving feedback!' + error.HttpErrorResponse)
+    });
+    this._snackBar.open("Feedback has been successfully approved.", "Dismiss");
+  }
   
 }

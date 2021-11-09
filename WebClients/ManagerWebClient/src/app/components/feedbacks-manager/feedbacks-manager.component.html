@@ -32,6 +32,12 @@
                       style="width: 100px;background-color:rgb(104, 183, 231);" class="btn">Approve</button>
                   </span>
                 </div>
+                <div class="text-right;" style="justify-content: flex-end; display: flex;">
+                  <span>
+                    <button *ngIf = "comment.feedbackStatus == 2" (click)="unapproveFeedback(comment)"
+                      style="width: 100px;background-color:rgb(255, 98, 98);" class="btn">Unapprove</button>
+                  </span>
+                </div>
                 <br>
               </div>
   

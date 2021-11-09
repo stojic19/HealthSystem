@@ -16,9 +16,14 @@ export class FeedbacksManagerService {
   }
   
   approveFeedback(feedback: IFeedback) : Observable<IFeedback>  {
-    var url =  '/api/Feedback';
+    var url =  '/api/Feedback/publish';
     return this.http.put<any>(url, feedback );
  }
+
+  unapproveFeedback(feedback: IFeedback) : Observable<IFeedback>  {
+    var url =  '/api/Feedback/unpublish';
+    return this.http.put<any>(url, feedback );
+  }
  
 }
 

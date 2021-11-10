@@ -1,0 +1,26 @@
+<div class="container">
+  <div class = "col-12 text-center">
+    <h3>Your opinion matters</h3>
+    <hr>
+  </div>
+  <div class = "col-12">
+    <form >
+      <div>
+        <mat-form-field appearance = "fill" style="width:100%;">
+          <mat-label>What could we improve?</mat-label>
+          <textarea matInput (change) = "doTextareaValueChange($event)" required></textarea>
+        </mat-form-field>
+      </div>
+      <div style="width:100%;" >
+        <mat-checkbox [(ngModel)] = "stayAnonymous" [ngModelOptions] = "{standalone: true}">Remain anonymous</mat-checkbox>
+      </div>
+      <div>
+        <mat-checkbox [(ngModel)] = "isPublishable" [ngModelOptions] = "{standalone: true}">Publish feedback  </mat-checkbox>
+  
+      </div>
+      <br>
+      <button mat-raised-button color="accent" (click)="submitFeedback()" class="text-center">Submit</button>
+    </form>
+  </div> 
+
+</div>

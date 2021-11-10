@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { FeedbacksManagerComponent } from './components/feedbacks-manager/feedbacks-manager.component';
 import { FirstBuildingComponent } from './first-building/first-building.component';
 import { HospitalOverviewComponent } from './hospital-overview/hospital-overview.component';
+import { MaterialModule } from './material/material.module';
 import { SecondBuildingComponent } from './second-building/second-building.component';
 import {HomePageComponent} from './components/home-page/home-page.component';
 
@@ -17,7 +18,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes), CommonModule],
+  imports: [RouterModule.forRoot(routes), CommonModule, MaterialModule],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

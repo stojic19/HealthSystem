@@ -13,6 +13,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FeedbacksManagerComponent } from './components/feedbacks-manager/feedbacks-manager.component';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SecondBuildingComponent } from './second-building/second-building.component';
 import { FloorFirstComponent } from './second-building/floor-first/floor-first.component';
 import { FloorSecondComponent } from './second-building/floor-second/floor-second.component';
@@ -26,7 +27,7 @@ import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent, HospitalOverviewComponent, LegendComponent, NavbarComponent, FirstBuildingComponent, FloorSelectionComponent, FirstFloorComponent, SecondFloorComponent, FeedbacksManagerComponent, SecondBuildingComponent, FloorFirstComponent, FloorSecondComponent, SelectFloorComponent, HomePageComponent, FooterComponent, RoomInfoComponent, DisplayRoomInfoComponent, EditRoomInfoComponent],
-  imports: [BrowserModule, AppRoutingModule,  NgbModule, CommonModule, HttpClientModule, FormsModule],
+  imports: [BrowserModule, AppRoutingModule,  NgbModule, CommonModule, HttpClientModule, FormsModule , BrowserAnimationsModule],
   providers: [HttpClientModule],
   bootstrap: [AppComponent],
 })

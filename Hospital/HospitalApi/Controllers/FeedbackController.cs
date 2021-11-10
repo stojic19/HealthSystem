@@ -54,7 +54,7 @@ namespace HospitalApi.Controllers
                 }
 
                 var feedbackWriteRepo = _uow.GetRepository<IFeedbackWriteRepository>();
-                Feedback addedFeedback = feedbackWriteRepo.Add(createFeedback(feedbackDTO));
+                Feedback addedFeedback = feedbackWriteRepo.Add(_mapper.Map<Feedback>(feedbackDTO));
 
                 if(addedFeedback == null)
                 {
@@ -67,13 +67,6 @@ namespace HospitalApi.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error inserting feedback in the database.");
             }
-        }
-        private Feedback createFeedback(NewFeedbackDTO feedbackDTO)
-        {
-            Feedback newFeedback = _mapper.Map<Feedback>(feedbackDTO);
-            newFeedback.CreatedDate = DateTime.Now;
-            newFeedback.FeedbackStatus = Hospital.Model.Enumerations.FeedbackStatus.Pending;
-            return newFeedback;
         }
 
         [HttpGet("{Id}")]

@@ -1,6 +1,8 @@
-﻿using Hospital.Model;
+﻿using AutoMapper;
+using Hospital.Model;
 using Hospital.Repositories;
 using Hospital.Repositories.Base;
+using HospitalApi.DTOs;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,10 +21,12 @@ namespace HospitalApi.Controllers
     public class FeedbackController : ControllerBase
     {
         private readonly IUnitOfWork _uow;
+        private readonly IMapper _mapper;
 
-        public FeedbackController(IUnitOfWork uow)
+        public FeedbackController(IUnitOfWork uow, IMapper mapper)
         {
             this._uow = uow;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -40,11 +44,29 @@ namespace HospitalApi.Controllers
         }
 
         [HttpPost]
-        public void InsertFeedback(Feedback feedback)
+        public IActionResult InsertFeedback(NewFeedbackDTO feedbackDTO)
         {
-            var feedbackWriteRepo = _uow.GetRepository<IFeedbackWriteRepository>();
+            try
+            {
+                if (feedbackDTO == null)
+                {
+                    return BadRequest("Incorrect feedback format sent! Please try again.");
+                }
 
-            feedbackWriteRepo.Add(feedback);
+                var feedbackWriteRepo = _uow.GetRepository<IFeedbackWriteRepository>();
+                Feedback addedFeedback = feedbackWriteRepo.Add(_mapper.Map<Feedback>(feedbackDTO));
+
+                if(addedFeedback == null)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Could not insert feedback in the database.");
+                }
+
+                return Ok("Your feedback has been submitted.");
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error inserting feedback in the database.");
+            }
         }
 
         [HttpGet("{Id}")]

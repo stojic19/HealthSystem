@@ -9,9 +9,11 @@ import { MaterialModule } from './material/material.module';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { FeedbackComponent } from './components/feedback/feedback.component';
 import { PatientFeedbackComponent } from './components/patient-feedback/patient-feedback.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FeedbacksPageComponent } from './components/feedbacks-page/feedbacks-page.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -19,6 +21,7 @@ import { FeedbacksPageComponent } from './components/feedbacks-page/feedbacks-pa
     HomePageComponent,
     HeaderComponent,
     FooterComponent,
+    FeedbackComponent,
     PatientFeedbackComponent,
     FeedbacksPageComponent
   ],
@@ -29,7 +32,8 @@ import { FeedbacksPageComponent } from './components/feedbacks-page/feedbacks-pa
     BrowserAnimationsModule,
     MaterialModule,
     CommonModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [HttpClientModule],
   bootstrap: [AppComponent]

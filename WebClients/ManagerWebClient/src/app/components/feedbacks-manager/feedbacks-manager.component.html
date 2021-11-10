@@ -1,12 +1,12 @@
-<div class="container" style="border-radius: 5rem; background-color: rgb(182, 209, 226);">
+<div class="container" style="border-radius: 5rem; background-color: rgb(182, 209, 226);margin-top: 4rem;margin-bottom: 3rem;">
     <div class='container' style="background-color: whitesmoke; border-radius: 5rem;">
       <section class="section-padding pb-0" id="reviews">
         <div class="container">
           <div class="row">
             <div class="col-12">
               <h2 class="text-center mb-lg-2 mb-2">Our patients feedbacks</h2>
-              <div *ngFor='let comment of allComments' class="list-group">
-                <a href="#" class="list-group-item list-group-item-action ">
+              <div *ngFor='let comment of allFeedbacks' class="list-group" style="flex-direction: column;">
+                <div class="list-group-item ">
                   <div class="d-flex w-100 justify-content-between">
                     <div class="d-flex w-100 ">
                       <div class="d-flex   align-self-baseline ">
@@ -24,12 +24,18 @@
   
                   </div>
                   <p class="mb-1">{{comment.text}}</p>
-                </a>
+                </div>
                 <!--ZAMJENITI STYLE:zalepiti za desnu ivicu-->
-                <div class="text-right;" style="margin-left: 965px;">
+                <div class="text-right;" style="justify-content: flex-end; display: flex;">
                   <span>
-                    <button *ngIf = "comment.feedbackStatus == 0"
+                    <button *ngIf = "comment.feedbackStatus == 0" (click)="approveFeedback(comment)"
                       style="width: 100px;background-color:rgb(104, 183, 231);" class="btn">Approve</button>
+                  </span>
+                </div>
+                <div class="text-right;" style="justify-content: flex-end; display: flex;">
+                  <span>
+                    <button *ngIf = "comment.feedbackStatus == 2" (click)="unapproveFeedback(comment)"
+                      style="width: 100px;background-color:rgb(255, 98, 98);" class="btn">Unapprove</button>
                   </span>
                 </div>
                 <br>

@@ -1,6 +1,7 @@
 ﻿using Integration.Model;
 using Integration.Repositories;
 using Integration.Repositories.Base;
+using Integration.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,19 +17,18 @@ namespace IntegrationAPI.Controllers
     public class PharmacyController : ControllerBase
     {
         private readonly IUnitOfWork unitOfWork;
-//        private PharmacyService pharmacyService;
+        private PharmacyService pharmacyService;
 
         public PharmacyController(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
-//            pharmacyService = new PharmacyService(unitOfWork);
+            pharmacyService = new PharmacyService(unitOfWork);
         }
 
         [HttpGet]
         public IEnumerable<Pharmacy> GetPharmacies()
         {
-            //            return pharmacyService.GetPharmacies();
-            return null;
+            return pharmacyService.GetPharmacies();
         }
     }
 }

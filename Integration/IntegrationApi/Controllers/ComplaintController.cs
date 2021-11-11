@@ -1,6 +1,7 @@
 ﻿using Integration.Model;
 using Integration.Repositories;
 using Integration.Repositories.Base;
+using Integration.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,18 +17,18 @@ namespace IntegrationAPI.Controllers
     public class ComplaintController : ControllerBase
     {
         private readonly IUnitOfWork unitOfWork;
-//        private ComplaintService complaintService;
+        private ComplaintService complaintService;
 
         public ComplaintController(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
-//            complaintService = new ComplaintService(unitOfWork);
+            complaintService = new ComplaintService(unitOfWork);
         }
 
         [HttpGet]
         public IEnumerable<Complaint> GetComplaints()
         {
-            IEnumerable<Complaint> complaints = null;//complaintService.GetComplaints();
+            IEnumerable<Complaint> complaints = complaintService.GetComplaints();
             foreach (Complaint complaint in complaints)
             {
                 complaint.Pharmacy.Complaints = null;
@@ -38,7 +39,7 @@ namespace IntegrationAPI.Controllers
         [HttpGet("{id:int}")]
         public Complaint GetComplaintById(int id)
         {
-            Complaint complaint = null;//complaintService.GetComplaintById(id);
+            Complaint complaint = complaintService.GetComplaintById(id);
             complaint.Pharmacy.Complaints = null;
             if (complaint.ComplaintResponse != null) complaint.ComplaintResponse.Complaint = null;
             return complaint;

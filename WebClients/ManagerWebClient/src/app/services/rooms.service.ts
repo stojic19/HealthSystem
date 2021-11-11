@@ -11,6 +11,7 @@ export class RoomsService {
   constructor(private http : HttpClient) { }
   public rooms! : Room[]
 
+
   getFirstFloorOfFirstBuilding(){
     return this.http.get(`${environment.baseUrl}` + 'api/Room', {
       params: {
@@ -43,6 +44,16 @@ export class RoomsService {
         buildingName: 'Building 2'
       }
     }).toPromise().then(res => this.rooms = res as Room[]);
+  }
+
+  getRoomsByNameFirstBuilding(roomName: string){
+    return this.http.get(`${environment.baseUrl}` + 'api/Room/find', {
+      params: {
+        roomName: roomName,
+        buildingName: 'Building 1'
+      }
+    });
+      
   }
 
   editRoom(room : Room){

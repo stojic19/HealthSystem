@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace IntegrationAPI.Services
+namespace Integration.Services
 {
     public class ComplaintService
     {

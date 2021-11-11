@@ -1,5 +1,4 @@
-﻿using Integration.Database;
-using Integration.DTO;
+﻿using Integration.DTO;
 using Integration.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,16 +23,21 @@ namespace Integration.Controllers
     public class PharmacyCommunicationController : ControllerBase
     {
         private readonly IUnitOfWork unitOfWork;
+ //       private PharmacyService pharmacyService;
+ //       private ComplaintService complaintService;
+ //       private ComplaintResponseService complaintResponseService;
 
         public PharmacyCommunicationController(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
+//            pharmacyService = new PharmacyService(unitOfWork);
+//            complaintService = new ComplaintService(unitOfWork);
+//            complaintResponseService = new ComplaintResponseService(unitOfWork);
         }
-
         [HttpPost]
         public IActionResult RegisterPharmacy(PharmacyDTO pharmacyDTO)
         {
-            Pharmacy existingPharmacy = FindPharmacyByName(pharmacyDTO.Name);
+            Pharmacy existingPharmacy = null;//pharmacyService.FindPharmacyByName(pharmacyDTO.Name);
             if (existingPharmacy != null)
             {
                 return BadRequest("Pharmacy already exists!");
@@ -41,8 +45,7 @@ namespace Integration.Controllers
 
             Pharmacy pharmacy = PharmacyAdapter.PharmacyDTOToPharmacy(pharmacyDTO);
             pharmacy.ApiKey = Guid.NewGuid();
-            string hospitalUrl = "http://localhost:5000/";
-            HospitalDTO dto = CreatePostData(pharmacy, hospitalUrl);
+            HospitalDTO dto = CreatePostData(pharmacy, Program.hospitalUrl);
 
             IRestResponse response = SendRegistrationPost(pharmacyDTO, dto);
             if (response.StatusCode != System.Net.HttpStatusCode.OK)
@@ -50,10 +53,9 @@ namespace Integration.Controllers
                 return Ok();
             }
 
-            SavePharmacy(pharmacy);
+//            pharmacyService.SavePharmacy(pharmacy);
             return Ok("Pharmacy registered");
         }
-
         private static HospitalDTO CreatePostData(Pharmacy pharmacy, string hospitalUrl)
         {
             Country country = new Country { Name = "Srbija" };
@@ -61,8 +63,7 @@ namespace Integration.Controllers
             HospitalDTO dto = new HospitalDTO { ApiKey = pharmacy.ApiKey, BaseUrl = hospitalUrl, Name = "Nasa bolnica", StreetName = "Vojvode Stepe", StreetNumber = "14", City = city };
             return dto;
         }
-
-        private static IRestResponse SendRegistrationPost(PharmacyDTO pharmacyDTO, HospitalDTO dto)
+        private IRestResponse SendRegistrationPost(PharmacyDTO pharmacyDTO, HospitalDTO dto)
         {
             RestClient client = new RestClient();
             string targetUrl = pharmacyDTO.BaseUrl + "/api/HospitalCommunication/AcceptHospitalRegistration";
@@ -71,67 +72,15 @@ namespace Integration.Controllers
             return client.Post(request);
         }
 
-        private void SavePharmacy(Pharmacy pharmacy)
-        {
-            Country country = FindCountryByName(pharmacy);
-            City existingCity = FindCityByName(pharmacy);
-            LinkEntities(pharmacy, country, existingCity);
-
-            var pharmacyRepo = unitOfWork.GetRepository<IPharmacyWriteRepository>();
-            pharmacyRepo.Add(pharmacy);
-        }
-
-        private static void LinkEntities(Pharmacy pharmacy, Country country, City existingCity)
-        {
-            if (existingCity != null)
-            {
-                LinkCity(pharmacy, country, existingCity);
-            }
-            else if (country != null)
-            {
-                LinkCountry(pharmacy.City, country);
-            }
-        }
-
-        private static void LinkCountry(City city, Country country)
-        {
-            city.Country = country;
-            city.CountryId = country.Id;
-        }
-
-        private static void LinkCity(Pharmacy pharmacy, Country country, City existingCity)
-        {
-            LinkCountry(existingCity, country);
-            pharmacy.CityId = existingCity.Id;
-            pharmacy.City = existingCity;
-        }
-
-        private City FindCityByName(Pharmacy pharmacy)
-        {
-            var cityRepo = unitOfWork.GetRepository<ICityReadRepository>();
-            DbSet<City> cities = cityRepo.GetAll();
-            City existingCity = cities.FirstOrDefault(city => city.Name.Equals(pharmacy.City.Name));
-            return existingCity;
-        }
-
-        private Country FindCountryByName(Pharmacy pharmacy)
-        {
-            var countryRepo = unitOfWork.GetRepository<ICountryReadRepository>();
-            DbSet<Country> countries = countryRepo.GetAll();
-            Country country = countries.FirstOrDefault(country => country.Name.Equals(pharmacy.City.Country.Name));
-            return country;
-        }
-
         [HttpGet]
         public IActionResult PingPharmacy(string pharmacyName)
         {
-            Pharmacy existingPharmacy = FindPharmacyByName(pharmacyName);
+            Pharmacy existingPharmacy = null;//pharmacyService.FindPharmacyByName(pharmacyName);
 
             if (existingPharmacy == null) return BadRequest("Pharmacy with that name does not exist in database");
             IRestResponse response = SendPingToHospital(existingPharmacy);
             return Ok(response.Content);
         }
-
         private static IRestResponse SendPingToHospital(Pharmacy existingPharmacy)
         {
             RestClient client = new RestSharp.RestClient();
@@ -139,19 +88,10 @@ namespace Integration.Controllers
             IRestResponse response = client.Get(request);
             return response;
         }
-
-        private Pharmacy FindPharmacyByName(string pharmacyName)
-        {
-            var pharmacyRepo = unitOfWork.GetRepository<IPharmacyReadRepository>();
-            DbSet<Pharmacy> existingPharmacies = pharmacyRepo.GetAll();
-            Pharmacy existingPharmacy = existingPharmacies.FirstOrDefault(pharmacy => pharmacy.Name.Equals(pharmacyName));
-            return existingPharmacy;
-        }
-
         [HttpGet]
         public IActionResult PingResponse(string apiKey)
         {
-            Pharmacy existingPharmacy = FindPharmacyByApiKey(apiKey);
+            Pharmacy existingPharmacy = null;//pharmacyService.FindPharmacyByApiKey(apiKey);
 
             if (existingPharmacy == null)
             {
@@ -160,29 +100,20 @@ namespace Integration.Controllers
 
             return Ok("Hospital responds to ping from " + existingPharmacy.Name);
         }
-
         [HttpPost]
         public IActionResult PostComplaint(CreateComplaintDTO createComplaintDTO)
         {
-            Complaint complaint = CreateComplaint(createComplaintDTO);
-
-            var complaintRepo = unitOfWork.GetRepository<IComplaintWriteRepository>();
-            complaintRepo.Add(complaint);
-
-            ComplaintDTO complaintDTO = new ComplaintDTO
-            { ApiKey = complaint.Pharmacy.ApiKey.ToString(), CreatedDate = complaint.CreatedDate, Description = complaint.Description, Title = complaint.Title, ComplaintId = complaint.Id };
-            
+            Complaint complaint = null;//ComplaintAdapter.CreateComplaintDTOToComplaint(createComplaintDTO, pharmacyService.GetPharmacyById(createComplaintDTO.PharmacyId));
+            //complaintService.SaveComplaint(complaint);
+            ComplaintDTO complaintDTO = ComplaintAdapter.ComplaintToComplaintDTO(complaint);                       
             IRestResponse response = SendComplaintToHospital(complaint, complaintDTO);
-
             if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
             {
-                complaintRepo.Delete(complaint);
+//                complaintService.DeleteComplaint(complaint);
                 return BadRequest("Pharmacy failed to receive complaint! Try again");
             }
-
             return Ok("Complaint saved and sent to pharmacy!");
         }
-
         private static IRestResponse SendComplaintToHospital(Complaint complaint, ComplaintDTO complaintDTO)
         {
             RestClient client = new RestSharp.RestClient();
@@ -191,50 +122,14 @@ namespace Integration.Controllers
             IRestResponse response = client.Post(request);
             return response;
         }
-
-        private Complaint CreateComplaint(CreateComplaintDTO createComplaintDTO)
-        {
-            var pharmacyRepo = unitOfWork.GetRepository<IPharmacyReadRepository>();
-            Complaint complaint = new Complaint();
-            complaint.Description = createComplaintDTO.Description;
-            complaint.Title = createComplaintDTO.Title;
-            complaint.Pharmacy = pharmacyRepo.GetById(createComplaintDTO.PharmacyId);
-            complaint.CreatedDate = DateTime.Now;
-            complaint.ManagerId = Program.ManagerId;
-            return complaint;
-        }
-
         [HttpPost]
         public IActionResult PostComplaintResponse(ComplaintResponseDTO complaintResponseDTO)
         {
-            Pharmacy pharmacy = FindPharmacyByApiKey(complaintResponseDTO.ApiKey);
+            Pharmacy pharmacy = null;//pharmacyService.FindPharmacyByApiKey(complaintResponseDTO.ApiKey);
             if (pharmacy == null) return BadRequest("Pharmacy not registered");
-            FindComplaint(complaintResponseDTO);
-            SaveComplaintResponse(complaintResponseDTO);
+            //complaintResponseService.SaveComplaintResponse(complaintResponseDTO);
 
             return Ok("Complaint response received!");
-        }
-
-        private Pharmacy FindPharmacyByApiKey(string apiKey)
-        {
-            var pharmacyRepo = unitOfWork.GetRepository<IPharmacyReadRepository>();
-            DbSet<Pharmacy> existingPharmacies = pharmacyRepo.GetAll();
-            Pharmacy pharmacy = existingPharmacies.FirstOrDefault(pharmacy => pharmacy.ApiKey.ToString().Equals(apiKey));
-            return pharmacy;
-        }
-
-        private void FindComplaint(ComplaintResponseDTO complaintResponseDTO)
-        {
-            var complaintRepo = unitOfWork.GetRepository<IComplaintReadRepository>();
-            Complaint complaint = complaintRepo.GetById(complaintResponseDTO.HospitalComplaintId);
-        }
-
-        private void SaveComplaintResponse(ComplaintResponseDTO complaintResponseDTO)
-        {
-            ComplaintResponse complaintResponse = new ComplaintResponse
-            { CreatedDate = complaintResponseDTO.createdDate, Text = complaintResponseDTO.Text, ComplaintId = complaintResponseDTO.HospitalComplaintId };
-            var responseRepo = unitOfWork.GetRepository<IComplaintResponseWriteRepository>();
-            responseRepo.Add(complaintResponse);
         }
     }
 }

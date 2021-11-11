@@ -16,37 +16,31 @@ namespace IntegrationAPI.Controllers
     public class ComplaintController : ControllerBase
     {
         private readonly IUnitOfWork unitOfWork;
+//        private ComplaintService complaintService;
 
         public ComplaintController(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
+//            complaintService = new ComplaintService(unitOfWork);
         }
 
         [HttpGet]
         public IEnumerable<Complaint> GetComplaints()
         {
-            var complaintsRepo = unitOfWork.GetRepository<IComplaintReadRepository>();
-            IEnumerable<Complaint> complaints = complaintsRepo.GetAll().Include(x => x.ComplaintResponse).Include(x => x.Manager).Include(x => x.Pharmacy);
-
-            foreach(Complaint complaint in complaints)
+            IEnumerable<Complaint> complaints = null;//complaintService.GetComplaints();
+            foreach (Complaint complaint in complaints)
             {
                 complaint.Pharmacy.Complaints = null;
-                if(complaint.ComplaintResponse != null) complaint.ComplaintResponse.Complaint = null;
+                if (complaint.ComplaintResponse != null) complaint.ComplaintResponse.Complaint = null;
             }
-
             return complaints;
         }
         [HttpGet("{id:int}")]
         public Complaint GetComplaintById(int id)
         {
-            var complaintsRepo = unitOfWork.GetRepository<IComplaintReadRepository>();
-            IEnumerable<Complaint> complaints = complaintsRepo.GetAll().Include(x => x.ComplaintResponse).Include(x => x.Manager).Include(x => x.Pharmacy);
-
-            Complaint complaint = complaints.FirstOrDefault(complaint => complaint.Id == id);
+            Complaint complaint = null;//complaintService.GetComplaintById(id);
             complaint.Pharmacy.Complaints = null;
-
-            if(complaint.ComplaintResponse != null)  complaint.ComplaintResponse.Complaint = null;
-
+            if (complaint.ComplaintResponse != null) complaint.ComplaintResponse.Complaint = null;
             return complaint;
         }
     }

@@ -1,4 +1,5 @@
 using Integration.Model;
+using IntegrationAPI.DTO;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +20,7 @@ namespace Integration
         }
 
         public static int ManagerId = 1;
+        public static string hospitalUrl = "http://localhost:5000/";
 
         public static IWebHost CreateHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)

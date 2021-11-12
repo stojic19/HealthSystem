@@ -1,10 +1,11 @@
 ﻿using Integration.Model;
 using Integration.Repositories.Base;
+using System.Collections.Generic;
 
 namespace Integration.Repositories
 {
     public interface ICityReadRepository : IReadBaseRepository<int, City>
     {
-        public City GetByName(string Name);
+        public IEnumerable<City> GetByName(string Name);
     }
 }

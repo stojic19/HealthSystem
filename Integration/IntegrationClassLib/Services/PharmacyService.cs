@@ -12,9 +12,11 @@ namespace Integration.Services
     public class PharmacyService
     {
         private readonly IUnitOfWork unitOfWork;
+        private CityService cityService;
         public PharmacyService(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
+            cityService = new CityService(unitOfWork);
         }
         public IEnumerable<Pharmacy> GetPharmacies()
         {
@@ -30,36 +32,36 @@ namespace Integration.Services
         }
         public void SavePharmacy(Pharmacy pharmacy)
         {
-            var cityRepo = unitOfWork.GetRepository<ICityReadRepository>();
-            var countryRepo = unitOfWork.GetRepository<ICountryReadRepository>();
-            City existingCity = cityRepo.GetByName(pharmacy.City.Name);
-            Country country = countryRepo.GetByName(pharmacy.City.Country.Name);
-            LinkEntities(pharmacy, country, existingCity);
+            City existingCity = cityService.GetCityByNameAndCountry(pharmacy.City.Name, pharmacy.City.Country.Name);
+            if(existingCity != null)
+            {
+                LinkPharmacyWithExistingCity(pharmacy, existingCity);
+            }
+            else
+            {
+                LinkPharmacyWithExistingCountry(pharmacy);
+            }
             var pharmacyRepo = unitOfWork.GetRepository<IPharmacyWriteRepository>();
             pharmacyRepo.Add(pharmacy);
         }
-        private static void LinkEntities(Pharmacy pharmacy, Country country, City existingCity)
+
+        private static void LinkPharmacyWithExistingCity(Pharmacy pharmacy, City existingCity)
         {
-            if (existingCity != null)
-            {
-                LinkCity(pharmacy, country, existingCity);
-            }
-            else if (country != null)
-            {
-                LinkCountry(pharmacy.City, country);
-            }
-        }
-        private static void LinkCountry(City city, Country country)
-        {
-            city.Country = country;
-            city.CountryId = country.Id;
-        }
-        private static void LinkCity(Pharmacy pharmacy, Country country, City existingCity)
-        {
-            LinkCountry(existingCity, country);
-            pharmacy.CityId = existingCity.Id;
             pharmacy.City = existingCity;
+            pharmacy.CityId = existingCity.Id;
         }
+
+        private void LinkPharmacyWithExistingCountry(Pharmacy pharmacy)
+        {
+            var countryRepo = unitOfWork.GetRepository<ICountryReadRepository>();
+            Country country = countryRepo.GetByName(pharmacy.City.Country.Name);
+            if (country != null)
+            {
+                pharmacy.City.CountryId = country.Id;
+                pharmacy.City.Country = country;
+            }
+        }
+
         public Pharmacy FindPharmacyByName(string pharmacyName)
         {
             var pharmacyRepo = unitOfWork.GetRepository<IPharmacyReadRepository>();
@@ -73,6 +75,19 @@ namespace Integration.Services
             DbSet<Pharmacy> existingPharmacies = pharmacyRepo.GetAll();
             Pharmacy pharmacy = existingPharmacies.FirstOrDefault(pharmacy => pharmacy.ApiKey.ToString().Equals(apiKey));
             return pharmacy;
+        }
+        public bool isUnique(Pharmacy pharmacy)
+        {
+            var pharmacyRepo = unitOfWork.GetRepository<IPharmacyReadRepository>();
+            IEnumerable<Pharmacy> existingPharmacies = pharmacyRepo.GetAll().Include(x => x.City).ThenInclude(x => x.Country);
+            foreach(Pharmacy existingPharmacy in existingPharmacies)
+            {
+                if (existingPharmacy.isEqual(pharmacy))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }

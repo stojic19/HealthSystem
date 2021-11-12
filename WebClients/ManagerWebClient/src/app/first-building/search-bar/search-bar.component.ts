@@ -24,8 +24,8 @@ export class SearchBarComponent implements OnInit {
 
   }
 
-  displayOnMap(roomName:string){
-    this.displayEvent.emit(roomName);
+  displayOnMap(room:Room){
+    this.displayEvent.emit(room);
   }
 
 }

@@ -52,7 +52,7 @@ namespace HospitalApi.Controllers
             var roomRepo = _uow.GetRepository<IRoomReadRepository>();
             if (roomName==null)
             {
-                return Ok(roomRepo.GetAll().Where(x => x.BuildingName == buildingName));
+                return BadRequest();
             }
             return Ok(roomRepo.GetAll().Where(x => x.Name.ToLower().Contains(roomName.ToLower()) && x.BuildingName == buildingName));
         }

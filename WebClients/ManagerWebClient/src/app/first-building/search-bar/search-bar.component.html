@@ -15,7 +15,7 @@
 <div class="row mt-5">
   <div class="container">
     <ul class="list-group">
-      <li *ngFor="let room of rooms" class="list-group-item  text-black py-2 w-75 p-3 h-auto d-inline-block">{{room.name}}</li>
+      <li *ngFor="let room of rooms"  class="list-group-item  text-black py-2 w-75 p-3 h-auto d-inline-block" (click)="displayOnMap(room.name)">{{room.name}}</li>
     </ul>
   </div>
 </div>

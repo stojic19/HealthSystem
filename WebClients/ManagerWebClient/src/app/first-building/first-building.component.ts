@@ -10,6 +10,7 @@ export class FirstBuildingComponent implements OnInit {
 
   public selectedFloor='first';
   public selectedRoom! : Room;
+  public roomForDisplay='';
 
   constructor() { }
 

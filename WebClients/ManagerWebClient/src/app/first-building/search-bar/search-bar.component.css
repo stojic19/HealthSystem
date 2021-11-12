@@ -2,3 +2,10 @@ li{
 
     background-color:#90caf9;
 }
+button{
+    background-color: #90caf9;
+    border: none;
+  }
+  
+  button:focus{background-color:#90caf9;}
+  button:hover{background-color:#90caf9;}

@@ -55,6 +55,15 @@ export class RoomsService {
     });
       
   }
+  getRoomsByNameSecondBuilding(roomName: string){
+    return this.http.get(`${environment.baseUrl}` + 'api/Room/find', {
+      params: {
+        roomName: roomName,
+        buildingName: 'Building 2'
+      }
+    });
+      
+  }
 
   editRoom(room : Room){
     console.log('Hello' + room.name);

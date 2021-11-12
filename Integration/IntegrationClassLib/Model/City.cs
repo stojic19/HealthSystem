@@ -1,4 +1,6 @@
-﻿namespace Integration.Model
+﻿using System;
+
+namespace Integration.Model
 {
     public class City
     {
@@ -8,5 +10,10 @@
 
         public int CountryId { get; set; }
         public Country Country { get; set; }
+
+        public bool isEqual(City city)
+        {
+            return Name.Equals(city.Name) && Country.Name.Equals(city.Name);
+        }
     }
 }

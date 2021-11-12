@@ -2,6 +2,7 @@
 using Integration.Model;
 using Integration.Repositories.Base;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Integration.Repositories.DbImplementation
@@ -11,11 +12,18 @@ namespace Integration.Repositories.DbImplementation
         public CityReadRepository(AppDbContext context) : base(context)
         {
         }
-        public City GetByName(string Name)
+        public IEnumerable<City> GetByName(string Name)
         {
-            DbSet<City> cities = GetAll();
-            City existingCity = cities.FirstOrDefault(city => city.Name.Equals(Name));
-            return existingCity;
+            IEnumerable<City> allCities = GetAll().Include(x => x.Country);
+            List<City> cities = new List<City>();
+            foreach(City city in allCities)
+            {
+                if (city.Name.Equals(Name))
+                {
+                    cities.Add(city);
+                }
+            }
+            return cities;
         }
     }
 }

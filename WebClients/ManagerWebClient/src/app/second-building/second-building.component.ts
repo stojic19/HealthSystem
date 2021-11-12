@@ -13,6 +13,7 @@ export class SecondBuildingComponent implements OnInit {
   public selectedRoom! : Room;
   public searchRoomName='';
   public rooms!: Room[] ;
+  public roomForDisplay='';
 
   constructor(public roomService: RoomsService) { }
 
@@ -29,6 +30,11 @@ export class SecondBuildingComponent implements OnInit {
 
     this.roomService.getRoomsByNameSecondBuilding(this.searchRoomName).toPromise().then(res => this.rooms = res as Room[]);
 
+  }
+
+  displayOnMap(roomName:string){
+    this.roomForDisplay=roomName;
+   
   }
 
 }

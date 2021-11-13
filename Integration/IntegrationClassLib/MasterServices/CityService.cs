@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Integration.Services
+namespace Integration.MasterServices
 {
     public class CityService
     {

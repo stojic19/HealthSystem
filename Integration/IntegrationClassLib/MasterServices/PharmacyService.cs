@@ -1,22 +1,26 @@
 ﻿using Integration.Model;
 using Integration.Repositories;
 using Integration.Repositories.Base;
+using Integration.MasterServices;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Integration.MicroServices;
 
-namespace Integration.Services
+namespace Integration.MasterServices
 {
     public class PharmacyService
     {
         private readonly IUnitOfWork unitOfWork;
         private CityService cityService;
+        private PharmacyMicroSerivce pharmacyMicroService;
         public PharmacyService(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
             cityService = new CityService(unitOfWork);
+            pharmacyMicroService = new PharmacyMicroSerivce();
         }
         public IEnumerable<Pharmacy> GetPharmacies()
         {
@@ -33,33 +37,11 @@ namespace Integration.Services
         public void SavePharmacy(Pharmacy pharmacy)
         {
             City existingCity = cityService.GetCityByNameAndCountry(pharmacy.City.Name, pharmacy.City.Country.Name);
-            if(existingCity != null)
-            {
-                LinkPharmacyWithExistingCity(pharmacy, existingCity);
-            }
-            else
-            {
-                LinkPharmacyWithExistingCountry(pharmacy);
-            }
-            var pharmacyRepo = unitOfWork.GetRepository<IPharmacyWriteRepository>();
-            pharmacyRepo.Add(pharmacy);
-        }
-
-        private static void LinkPharmacyWithExistingCity(Pharmacy pharmacy, City existingCity)
-        {
-            pharmacy.City = existingCity;
-            pharmacy.CityId = existingCity.Id;
-        }
-
-        private void LinkPharmacyWithExistingCountry(Pharmacy pharmacy)
-        {
             var countryRepo = unitOfWork.GetRepository<ICountryReadRepository>();
             Country country = countryRepo.GetByName(pharmacy.City.Country.Name);
-            if (country != null)
-            {
-                pharmacy.City.CountryId = country.Id;
-                pharmacy.City.Country = country;
-            }
+            pharmacyMicroService.LinkPharmacyWithExistingEntities(pharmacy, existingCity, country);
+            var pharmacyRepo = unitOfWork.GetRepository<IPharmacyWriteRepository>();
+            pharmacyRepo.Add(pharmacy);
         }
 
         public Pharmacy FindPharmacyByName(string pharmacyName)
@@ -80,7 +62,7 @@ namespace Integration.Services
         {
             var pharmacyRepo = unitOfWork.GetRepository<IPharmacyReadRepository>();
             IEnumerable<Pharmacy> existingPharmacies = pharmacyRepo.GetAll().Include(x => x.City).ThenInclude(x => x.Country);
-            foreach(Pharmacy existingPharmacy in existingPharmacies)
+            foreach (Pharmacy existingPharmacy in existingPharmacies)
             {
                 if (existingPharmacy.isEqual(pharmacy))
                 {

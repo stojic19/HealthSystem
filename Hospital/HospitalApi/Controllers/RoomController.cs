@@ -47,14 +47,15 @@ namespace HospitalApi.Controllers
 
 
         [HttpGet("find")]      
-        public IActionResult FindByName([FromQuery(Name = "roomName")] string roomName, [FromQuery(Name = "buildingName")] string buildingName)
+        public IActionResult FindByNameAndBuildingName([FromQuery(Name = "name")] string name, [FromQuery(Name = "buildingName")] string buildingName)
         {
             var roomRepo = _uow.GetRepository<IRoomReadRepository>();
-            if (roomName==null)
+            if (name == null || buildingName == null)
             {
+    
                 return BadRequest();
             }
-            return Ok(roomRepo.GetAll().Where(x => x.Name.ToLower().Contains(roomName.ToLower()) && x.BuildingName == buildingName));
+            return Ok(roomRepo.GetAll().Where(room => room.Name.ToLower().Contains(name.ToLower()) && room.BuildingName.Contains(buildingName)));
         }
     }
 }

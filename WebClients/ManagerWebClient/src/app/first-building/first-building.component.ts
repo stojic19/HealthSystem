@@ -23,6 +23,7 @@ export class FirstBuildingComponent implements OnInit {
   roomSelectionChanged(room : Room){
     this.selectedRoom = room;
   }
+  
   displayRoom(room : Room){
     this.roomForDisplay = room.name;
     if (room.floorNumber == 1){

@@ -18,6 +18,7 @@ export class FloorSelectionComponent implements OnInit {
   firstFloor(){
     this.floorSelection.emit('first');
   }
+  
   secondFloor(){   
     this.floorSelection.emit('second');   
   }

@@ -38,13 +38,11 @@ namespace Integration.Controllers
         [HttpPost]
         public IActionResult RegisterPharmacy(PharmacyDTO pharmacyDTO)
         {
-            Pharmacy existingPharmacy = pharmacyService.FindPharmacyByName(pharmacyDTO.Name);
-            if (existingPharmacy != null)
+            Pharmacy pharmacy = PharmacyAdapter.PharmacyDTOToPharmacy(pharmacyDTO);
+            if (!pharmacyService.isUnique(pharmacy))
             {
                 return BadRequest("Pharmacy already exists!");
             }
-
-            Pharmacy pharmacy = PharmacyAdapter.PharmacyDTOToPharmacy(pharmacyDTO);
             pharmacy.ApiKey = Guid.NewGuid();
             HospitalDTO dto = CreatePostData(pharmacy, Program.hospitalUrl);
 
@@ -53,7 +51,6 @@ namespace Integration.Controllers
             {
                 return Ok();
             }
-
             pharmacyService.SavePharmacy(pharmacy);
             return Ok("Pharmacy registered");
         }

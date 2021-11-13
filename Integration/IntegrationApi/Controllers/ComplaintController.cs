@@ -1,7 +1,7 @@
 ﻿using Integration.Model;
 using Integration.Repositories;
 using Integration.Repositories.Base;
-using Integration.Services;
+using Integration.MasterServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

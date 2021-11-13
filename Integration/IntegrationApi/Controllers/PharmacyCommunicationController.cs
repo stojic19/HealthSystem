@@ -15,7 +15,7 @@ using Integration.Repositories;
 using Microsoft.EntityFrameworkCore;
 using IntegrationAPI.DTO;
 using IntegrationAPI.Adapters;
-using Integration.Services;
+using Integration.MasterServices;
 
 namespace Integration.Controllers
 {

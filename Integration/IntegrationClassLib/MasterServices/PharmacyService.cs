@@ -62,14 +62,7 @@ namespace Integration.MasterServices
         {
             var pharmacyRepo = unitOfWork.GetRepository<IPharmacyReadRepository>();
             IEnumerable<Pharmacy> existingPharmacies = pharmacyRepo.GetAll().Include(x => x.City).ThenInclude(x => x.Country);
-            foreach (Pharmacy existingPharmacy in existingPharmacies)
-            {
-                if (existingPharmacy.isEqual(pharmacy))
-                {
-                    return false;
-                }
-            }
-            return true;
+            return pharmacyMicroService.isUnique(pharmacy, existingPharmacies);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Integration.Model
 
         public bool isEqual(City city)
         {
-            return Name.Equals(city.Name) && Country.Name.Equals(city.Name);
+            return Name.Equals(city.Name) && Country.Name.Equals(city.Country.Name);
         }
     }
 }

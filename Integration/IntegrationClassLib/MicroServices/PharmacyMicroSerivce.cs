@@ -35,5 +35,16 @@ namespace Integration.MicroServices
                 pharmacy.City.Country = country;
             }
         }
+        public bool isUnique(Pharmacy pharmacy, IEnumerable<Pharmacy> pharmacies)
+        {
+            foreach (Pharmacy existingPharmacy in pharmacies)
+            {
+                if (existingPharmacy.isEqual(pharmacy))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }

@@ -48,8 +48,7 @@ namespace HospitalApi.Controllers
                     Name = ri.InventoryItem.Name
                 }
             }
-            )
-            .Where(roomInventory => roomInventory.RoomId == roomId));
+            ).Where(roomInventory => roomInventory.RoomId == roomId));
 
         }
 

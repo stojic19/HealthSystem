@@ -10,9 +10,9 @@ import { RoomInventoriesService } from '../services/room-inventories.service';
 })
 export class RoomInventoryComponent implements OnInit {
 
-  public id : number;
-  public roomInventories : RoomInventory[];
-  constructor(public roomInventoryService : RoomInventoriesService, private route : ActivatedRoute) { 
+  public id: number;
+  public roomInventories: RoomInventory[];
+  constructor(public roomInventoryService: RoomInventoriesService, private route: ActivatedRoute) {
     this.route.params.subscribe(params => {
       this.id = +params['id'];
     });

@@ -8,19 +8,19 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 export class SelectFloorComponent implements OnInit {
 
   @Output() public selectFloor = new EventEmitter();
-  @Input() public floorForDisplay=''
+  @Input() public floorForDisplay = ''
   constructor() { }
 
   ngOnInit(): void {
-    this.floorForDisplay='first';
+    this.floorForDisplay = 'first';
   }
 
-  floorFirst(){
+  floorFirst() {
     this.selectFloor.emit('first');
   }
-  
-  floorSecond(){   
-    this.selectFloor.emit('second');   
+
+  floorSecond() {
+    this.selectFloor.emit('second');
   }
 
 }

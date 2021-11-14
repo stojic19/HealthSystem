@@ -11,15 +11,15 @@ export class RoomInfoComponent implements OnInit {
 
   editingMode = false;
   @Input()
-  room! : Room;
+  room!: Room;
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  ngOnChanges(changes: { [property: string]: SimpleChange }){
-    let change: SimpleChange = changes['room.name']; 
+  ngOnChanges(changes: { [property: string]: SimpleChange }) {
+    let change: SimpleChange = changes['room.name'];
     this.editingMode = false;
- }
+  }
 
 }

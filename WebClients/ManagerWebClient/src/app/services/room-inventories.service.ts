@@ -8,12 +8,12 @@ import { environment } from 'src/environments/environment';
 })
 export class RoomInventoriesService {
 
-  constructor(private http : HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-  getRoomInventory(roomId : number){
+  getRoomInventory(roomId: number) {
     return this.http.get(`${environment.baseUrl}` + 'api/RoomInventory', {
       params: {
-        roomId : roomId
+        roomId: roomId
       }
     });
 

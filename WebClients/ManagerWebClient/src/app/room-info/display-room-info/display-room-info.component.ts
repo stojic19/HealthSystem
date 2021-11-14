@@ -11,10 +11,10 @@ import { Router } from '@angular/router';
 export class DisplayRoomInfoComponent implements OnInit {
 
   @Input()
-  room! : Room;
+  room!: Room;
   @Output()
   messageToEmit = new EventEmitter<boolean>();
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -23,7 +23,7 @@ export class DisplayRoomInfoComponent implements OnInit {
     this.messageToEmit.emit(true);
   }
 
-  showRoomInventory(idR : number) {
+  showRoomInventory(idR: number) {
     this.router.navigate(['/roomInventory', idR]);
   }
 

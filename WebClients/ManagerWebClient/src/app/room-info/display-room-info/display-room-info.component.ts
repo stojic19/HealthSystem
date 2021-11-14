@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Room } from 'src/app/interfaces/room';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -13,13 +14,17 @@ export class DisplayRoomInfoComponent implements OnInit {
   room! : Room;
   @Output()
   messageToEmit = new EventEmitter<boolean>();
-  constructor() { }
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
   }
 
   startEditing() {
     this.messageToEmit.emit(true);
+  }
+
+  showRoomInventory(idR : number) {
+    this.router.navigate(['/roomInventory', idR]);
   }
 
 }

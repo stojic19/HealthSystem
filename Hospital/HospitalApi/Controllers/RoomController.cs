@@ -57,5 +57,6 @@ namespace HospitalApi.Controllers
             }
             return Ok(roomRepo.GetAll().Where(room => room.Name.ToLower().Contains(name.ToLower()) && room.BuildingName.Contains(buildingName)));
         }
+
     }
 }

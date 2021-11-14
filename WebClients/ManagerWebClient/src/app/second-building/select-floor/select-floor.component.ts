@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 
 @Component({
   selector: 'app-select-floor',
@@ -8,14 +8,17 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 export class SelectFloorComponent implements OnInit {
 
   @Output() public selectFloor = new EventEmitter();
+  @Input() public floorForDisplay=''
   constructor() { }
 
   ngOnInit(): void {
+    this.floorForDisplay='first';
   }
 
   floorFirst(){
     this.selectFloor.emit('first');
   }
+  
   floorSecond(){   
     this.selectFloor.emit('second');   
   }

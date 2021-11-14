@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Room } from '../interfaces/room';
+import { RoomsService } from '../services/rooms.service';
 
 @Component({
   selector: 'app-second-building',
@@ -10,8 +11,12 @@ export class SecondBuildingComponent implements OnInit {
 
   public selectedFloor = 'first';
   public selectedRoom! : Room;
+  public searchRoomName='';
+  public rooms!: Room[] ;
+  public roomForDisplay='';
+  public changeFloor='';
 
-  constructor() { }
+  constructor(public roomService: RoomsService) { }
 
   ngOnInit(): void {
     this.selectedRoom = new Room();
@@ -20,6 +25,24 @@ export class SecondBuildingComponent implements OnInit {
 
   roomSelectionChanged(room : Room){
     this.selectedRoom = room;
+  }
+
+  searchRoomsByName(){
+
+    this.roomService.getRoomsByNameSecondBuilding(this.searchRoomName).toPromise().then(res => this.rooms = res as Room[]);
+
+  }
+
+  displayOnMap(room:Room){
+    this.roomForDisplay=room.name;
+    if (room.floorNumber == 1){
+      this.selectedFloor='first';
+      this.changeFloor = 'first';
+    }else{
+      this.changeFloor = 'second';
+      this.selectedFloor='second';
+    }
+   
   }
 
 }

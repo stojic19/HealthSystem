@@ -37,7 +37,7 @@ namespace HospitalApi.Controllers
             try
             {
                 var feedbackReadRepo = _uow.GetRepository<IFeedbackReadRepository>();
-                var feedbacks = feedbackReadRepo.GetAll().Include(x => x.Patient).Where(x => x.IsPublishable == true);
+                var feedbacks = feedbackReadRepo.GetAll().Include(x => x.Patient);
                 return Ok(feedbacks);
 
             }
@@ -47,6 +47,7 @@ namespace HospitalApi.Controllers
             }
             
         }
+
         [HttpGet("approved")]
         public IEnumerable<Feedback> GetApprovedFeedbacks()
         {

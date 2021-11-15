@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { IPatientFeedback } from 'src/app/interfaces/patient-feedback-interface';
 import { FeedbackService } from 'src/app/services/FeedbackService/feedback.service';
@@ -10,6 +10,7 @@ import { FeedbackService } from 'src/app/services/FeedbackService/feedback.servi
 })
 export class FeedbacksPageComponent implements OnInit {
   allFeedbacks!: IPatientFeedback[];
+
   sub!: Subscription;
   constructor(private _service: FeedbackService) { }
 

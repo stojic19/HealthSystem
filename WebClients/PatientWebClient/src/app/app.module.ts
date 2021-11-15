@@ -12,6 +12,8 @@ import { FooterComponent } from './components/footer/footer.component';
 import { PatientFeedbackComponent } from './components/patient-feedback/patient-feedback.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FeedbacksPageComponent } from './components/feedbacks-page/feedbacks-page.component';
+import { SurveyPageComponent } from './components/survey-page/survey-page.component';
+import { SurveyComponent } from './components/survey/survey.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { FeedbacksPageComponent } from './components/feedbacks-page/feedbacks-pa
     HeaderComponent,
     FooterComponent,
     PatientFeedbackComponent,
-    FeedbacksPageComponent
+    FeedbacksPageComponent,
+    SurveyPageComponent,
+    SurveyComponent
   ],
   imports: [
     BrowserModule,

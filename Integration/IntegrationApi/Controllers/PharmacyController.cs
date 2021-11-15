@@ -16,19 +16,17 @@ namespace IntegrationAPI.Controllers
     [ApiController]
     public class PharmacyController : ControllerBase
     {
-        private readonly IUnitOfWork unitOfWork;
-        private PharmacyService pharmacyService;
+        private PharmacyService _pharmacyMasterService;
 
         public PharmacyController(IUnitOfWork unitOfWork)
         {
-            this.unitOfWork = unitOfWork;
-            pharmacyService = new PharmacyService(unitOfWork);
+            _pharmacyMasterService = new PharmacyService(unitOfWork);
         }
 
         [HttpGet]
         public IEnumerable<Pharmacy> GetPharmacies()
         {
-            return pharmacyService.GetPharmacies();
+            return _pharmacyMasterService.GetPharmacies();
         }
     }
 }

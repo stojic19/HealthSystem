@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace Integration.MasterServices
 {
-    public class ComplaintService
+    public class ComplaintMasterService
     {
         private readonly IUnitOfWork unitOfWork;
-        public ComplaintService(IUnitOfWork unitOfWork)
+        public ComplaintMasterService(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
         }

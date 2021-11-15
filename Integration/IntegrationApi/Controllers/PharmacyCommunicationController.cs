@@ -23,23 +23,21 @@ namespace Integration.Controllers
     [ApiController]
     public class PharmacyCommunicationController : ControllerBase
     {
-        private readonly IUnitOfWork unitOfWork;
-        private PharmacyService pharmacyService;
-        private ComplaintService complaintService;
-        private ComplaintResponseService complaintResponseService;
+        private PharmacyService _pharmacyMasterService;
+        private ComplaintService _complaintMasterService;
+        private ComplaintResponseService _complaintResponseMasterService;
 
         public PharmacyCommunicationController(IUnitOfWork unitOfWork)
         {
-            this.unitOfWork = unitOfWork;
-            pharmacyService = new PharmacyService(unitOfWork);
-            complaintService = new ComplaintService(unitOfWork);
-            complaintResponseService = new ComplaintResponseService(unitOfWork);
+            _pharmacyMasterService = new PharmacyService(unitOfWork);
+            _complaintMasterService = new ComplaintService(unitOfWork);
+            _complaintResponseMasterService = new ComplaintResponseService(unitOfWork);
         }
         [HttpPost]
         public IActionResult RegisterPharmacy(PharmacyDTO pharmacyDTO)
         {
             Pharmacy pharmacy = PharmacyAdapter.PharmacyDTOToPharmacy(pharmacyDTO);
-            if (!pharmacyService.isUnique(pharmacy))
+            if (!_pharmacyMasterService.isUnique(pharmacy))
             {
                 return BadRequest("Pharmacy already exists!");
             }
@@ -51,7 +49,7 @@ namespace Integration.Controllers
             {
                 return Ok();
             }
-            pharmacyService.SavePharmacy(pharmacy);
+            _pharmacyMasterService.SavePharmacy(pharmacy);
             return Ok("Pharmacy registered");
         }
         private static HospitalDTO CreatePostData(Pharmacy pharmacy, string hospitalUrl)
@@ -73,7 +71,7 @@ namespace Integration.Controllers
         [HttpGet]
         public IActionResult PingPharmacy(string pharmacyName)
         {
-            Pharmacy existingPharmacy = pharmacyService.FindPharmacyByName(pharmacyName);
+            Pharmacy existingPharmacy = _pharmacyMasterService.FindPharmacyByName(pharmacyName);
 
             if (existingPharmacy == null) return BadRequest("Pharmacy with that name does not exist in database");
             IRestResponse response = SendPingToHospital(existingPharmacy);
@@ -89,7 +87,7 @@ namespace Integration.Controllers
         [HttpGet]
         public IActionResult PingResponse(string apiKey)
         {
-            Pharmacy existingPharmacy = pharmacyService.FindPharmacyByApiKey(apiKey);
+            Pharmacy existingPharmacy = _pharmacyMasterService.FindPharmacyByApiKey(apiKey);
 
             if (existingPharmacy == null)
             {
@@ -101,13 +99,13 @@ namespace Integration.Controllers
         [HttpPost]
         public IActionResult PostComplaint(CreateComplaintDTO createComplaintDTO)
         {
-            Complaint complaint = ComplaintAdapter.CreateComplaintDTOToComplaint(createComplaintDTO, pharmacyService.GetPharmacyById(createComplaintDTO.PharmacyId));
-            complaintService.SaveComplaint(complaint);
+            Complaint complaint = ComplaintAdapter.CreateComplaintDTOToComplaint(createComplaintDTO, _pharmacyMasterService.GetPharmacyById(createComplaintDTO.PharmacyId));
+            _complaintMasterService.SaveComplaint(complaint);
             ComplaintDTO complaintDTO = ComplaintAdapter.ComplaintToComplaintDTO(complaint);                       
             IRestResponse response = SendComplaintToHospital(complaint, complaintDTO);
             if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
             {
-                complaintService.DeleteComplaint(complaint);
+                _complaintMasterService.DeleteComplaint(complaint);
                 return BadRequest("Pharmacy failed to receive complaint! Try again");
             }
             return Ok("Complaint saved and sent to pharmacy!");
@@ -123,10 +121,10 @@ namespace Integration.Controllers
         [HttpPost]
         public IActionResult PostComplaintResponse(ComplaintResponseDTO complaintResponseDTO)
         {
-            Pharmacy pharmacy = pharmacyService.FindPharmacyByApiKey(complaintResponseDTO.ApiKey);
+            Pharmacy pharmacy = _pharmacyMasterService.FindPharmacyByApiKey(complaintResponseDTO.ApiKey);
             if (pharmacy == null) return BadRequest("Pharmacy not registered");
             ComplaintResponse complaintResponse = ComplaintResponseAdapter.ComplaintResponseDTOToComplaintResponse(complaintResponseDTO);
-            complaintResponseService.SaveComplaintResponse(complaintResponse);
+            _complaintResponseMasterService.SaveComplaintResponse(complaintResponse);
 
             return Ok("Complaint response received!");
         }

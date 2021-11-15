@@ -16,19 +16,17 @@ namespace IntegrationAPI.Controllers
     [ApiController]
     public class ComplaintController : ControllerBase
     {
-        private readonly IUnitOfWork unitOfWork;
-        private ComplaintService complaintService;
+        private ComplaintService _complaintMasterService;
 
         public ComplaintController(IUnitOfWork unitOfWork)
         {
-            this.unitOfWork = unitOfWork;
-            complaintService = new ComplaintService(unitOfWork);
+            _complaintMasterService = new ComplaintService(unitOfWork);
         }
 
         [HttpGet]
         public IEnumerable<Complaint> GetComplaints()
         {
-            IEnumerable<Complaint> complaints = complaintService.GetComplaints();
+            IEnumerable<Complaint> complaints = _complaintMasterService.GetComplaints();
             foreach (Complaint complaint in complaints)
             {
                 complaint.Pharmacy.Complaints = null;
@@ -39,7 +37,7 @@ namespace IntegrationAPI.Controllers
         [HttpGet("{id:int}")]
         public Complaint GetComplaintById(int id)
         {
-            Complaint complaint = complaintService.GetComplaintById(id);
+            Complaint complaint = _complaintMasterService.GetComplaintById(id);
             complaint.Pharmacy.Complaints = null;
             if (complaint.ComplaintResponse != null) complaint.ComplaintResponse.Complaint = null;
             return complaint;

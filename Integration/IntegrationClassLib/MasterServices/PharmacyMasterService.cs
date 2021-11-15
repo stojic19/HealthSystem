@@ -11,15 +11,15 @@ using Integration.MicroServices;
 
 namespace Integration.MasterServices
 {
-    public class PharmacyService
+    public class PharmacyMasterService
     {
         private readonly IUnitOfWork unitOfWork;
-        private CityService cityService;
+        private CityMasterService _cityMasterService;
         private PharmacyMicroSerivce pharmacyMicroService;
-        public PharmacyService(IUnitOfWork unitOfWork)
+        public PharmacyMasterService(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
-            cityService = new CityService(unitOfWork);
+            _cityMasterService = new CityMasterService(unitOfWork);
             pharmacyMicroService = new PharmacyMicroSerivce();
         }
         public IEnumerable<Pharmacy> GetPharmacies()
@@ -36,7 +36,7 @@ namespace Integration.MasterServices
         }
         public void SavePharmacy(Pharmacy pharmacy)
         {
-            City existingCity = cityService.GetCityByNameAndCountry(pharmacy.City.Name, pharmacy.City.Country.Name);
+            City existingCity = _cityMasterService.GetCityByNameAndCountry(pharmacy.City.Name, pharmacy.City.Country.Name);
             var countryRepo = unitOfWork.GetRepository<ICountryReadRepository>();
             Country country = countryRepo.GetByName(pharmacy.City.Country.Name);
             pharmacyMicroService.LinkPharmacyWithExistingEntities(pharmacy, existingCity, country);

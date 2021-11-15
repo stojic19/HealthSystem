@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace Integration.MasterServices
 {
-    public class CityService
+    public class CityMasterService
     {
         private readonly IUnitOfWork unitOfWork;
-        public CityService(IUnitOfWork unitOfWork)
+        public CityMasterService(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
         }

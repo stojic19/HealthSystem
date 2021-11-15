@@ -25,10 +25,15 @@ import { DisplayRoomInfoComponent } from './room-info/display-room-info/display-
 import { EditRoomInfoComponent } from './room-info/edit-room-info/edit-room-info.component';
 import { FormsModule } from '@angular/forms';
 import { SearchBarComponent } from './first-building/search-bar/search-bar.component';
+import { QuestionObserveComponent } from './components/question-observe/question-observe.component';
+import { SurveySectionObserveComponent } from './components/survey-section-observe/survey-section-observe.component';
+import { SurveysObserveComponent } from './components/surveys-observe/surveys-observe.component';
+import { MaterialModule } from './material/material.module';
+import { RatingDecimalComponent } from './components/rating-decimal/rating-decimal.component';
 
 @NgModule({
-  declarations: [AppComponent, HospitalOverviewComponent, LegendComponent, NavbarComponent, FirstBuildingComponent, FloorSelectionComponent, FirstFloorComponent, SecondFloorComponent, FeedbacksManagerComponent, SecondBuildingComponent, FloorFirstComponent, FloorSecondComponent, SelectFloorComponent, HomePageComponent, FooterComponent, RoomInfoComponent, DisplayRoomInfoComponent, EditRoomInfoComponent, SearchBarComponent],
-  imports: [BrowserModule, AppRoutingModule,  NgbModule, CommonModule, HttpClientModule, FormsModule , BrowserAnimationsModule],
+  declarations: [AppComponent, HospitalOverviewComponent, LegendComponent, NavbarComponent, FirstBuildingComponent, FloorSelectionComponent, FirstFloorComponent, SecondFloorComponent, FeedbacksManagerComponent, SecondBuildingComponent, FloorFirstComponent, FloorSecondComponent, SelectFloorComponent, HomePageComponent, FooterComponent, RoomInfoComponent, DisplayRoomInfoComponent, EditRoomInfoComponent, SearchBarComponent, QuestionObserveComponent, SurveySectionObserveComponent, SurveysObserveComponent, RatingDecimalComponent],
+  imports: [BrowserModule, AppRoutingModule,  NgbModule, CommonModule, HttpClientModule, FormsModule , BrowserAnimationsModule, MaterialModule],
   providers: [HttpClientModule],
   bootstrap: [AppComponent],
 })

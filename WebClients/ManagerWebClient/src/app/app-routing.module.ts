@@ -7,6 +7,7 @@ import { HospitalOverviewComponent } from './hospital-overview/hospital-overview
 import { MaterialModule } from './material/material.module';
 import { SecondBuildingComponent } from './second-building/second-building.component';
 import {HomePageComponent} from './components/home-page/home-page.component';
+import { SurveysObserveComponent } from './components/surveys-observe/surveys-observe.component';
 
 const routes: Routes = [
   { path: 'overview', component: HospitalOverviewComponent },
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'firstBuilding', component: FirstBuildingComponent },
   { path: 'secondBuilding', component: SecondBuildingComponent },
   {path: 'home', component: HomePageComponent },
+  { path: 'surveys', component: SurveysObserveComponent},
   {path: '', redirectTo: 'home', pathMatch: 'full'}
 ];
 
@@ -22,4 +24,4 @@ const routes: Routes = [
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
-export const routingComponents = [HospitalOverviewComponent, FirstBuildingComponent, FeedbacksManagerComponent, SecondBuildingComponent];
+export const routingComponents = [HospitalOverviewComponent, FirstBuildingComponent, FeedbacksManagerComponent, SecondBuildingComponent, SurveysObserveComponent];

@@ -2,9 +2,9 @@ import { IPatient } from "./patient";
 
 
 export enum FeedbackStatus {
-    pending, 
-    rejected, 
-    approved
+    Pending, 
+    Rejected, 
+    Approved
   }
 
 export interface IFeedback {

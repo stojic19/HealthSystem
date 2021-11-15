@@ -18,30 +18,30 @@ namespace PharamcyApi.Controllers
     public class HospitalCommunicationController : ControllerBase
     {
         private readonly IUnitOfWork unitOfWork;
-        private HospitalService hospitalService;
-        private ComplaintService complaintService;
-        private ComplaintResponseService complaintResponseService;
+        private HospitalMasterService _hospitalMasterService;
+        private ComplaintMasterService _complaintMasterService;
+        private ComplaintResponseMasterService _complaintResponseMasterService;
         public HospitalCommunicationController(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
-            hospitalService = new HospitalService(unitOfWork);
-            complaintService = new ComplaintService(unitOfWork);
-            complaintResponseService = new ComplaintResponseService(unitOfWork);
+            _hospitalMasterService = new HospitalMasterService(unitOfWork);
+            _complaintMasterService = new ComplaintMasterService(unitOfWork);
+            _complaintResponseMasterService = new ComplaintResponseMasterService(unitOfWork);
         }
-
+        [HttpPost]
         public IActionResult AcceptHospitalRegistration(Hospital newHospital)
         {
-            if (!hospitalService.isUnique(newHospital))
+            if (!_hospitalMasterService.isUnique(newHospital))
             {
                 return BadRequest("Hospital already exists!");
             }
-            hospitalService.SaveHospital(newHospital);
+            _hospitalMasterService.SaveHospital(newHospital);
             return Ok();
         }
         [HttpGet]
         public IActionResult PingResponse(string apiKey)
         {
-            Hospital hospital = hospitalService.FindHospitalByApiKey(apiKey);
+            Hospital hospital = _hospitalMasterService.FindHospitalByApiKey(apiKey);
             if (hospital == null)
             {
                 return Ok("Pharmacy is not registered");
@@ -51,23 +51,23 @@ namespace PharamcyApi.Controllers
         [HttpPost]
         public IActionResult PostComplaint(ComplaintDTO complaintDTO)
         {
-            Hospital hospital = hospitalService.FindHospitalByApiKey(complaintDTO.ApiKey);
+            Hospital hospital = _hospitalMasterService.FindHospitalByApiKey(complaintDTO.ApiKey);
             if (hospital == null) return BadRequest("Hospital not registered!");
             Complaint complaint = ComplaintAdapter.ComplaintDTOToComplaint(complaintDTO, hospital);
-            complaintService.SaveComplaint(complaint);
+            _complaintMasterService.SaveComplaint(complaint);
             return Ok("Complaint received!");
         }
         [HttpPost]
         public IActionResult PostComplaintResponse(ComplaintResponse complaintResponse)
         {
-            complaintResponse.Complaint = complaintService.GetComplaintById(complaintResponse.ComplaintId);
+            complaintResponse.Complaint = _complaintMasterService.GetComplaintById(complaintResponse.ComplaintId);
             complaintResponse.CreatedDate = DateTime.Now;
             IRestResponse response = SendComplaintResponse(complaintResponse);
             if (response.StatusCode != System.Net.HttpStatusCode.OK)
             {
                 return BadRequest("Response failed to send");
             }
-            complaintResponseService.SaveComplaintResponse(complaintResponse);
+            _complaintResponseMasterService.SaveComplaintResponse(complaintResponse);
             return Ok();
         }
 

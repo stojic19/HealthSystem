@@ -11,20 +11,20 @@ using Pharmacy.MicroServices;
 
 namespace Pharmacy.MasterServices
 {
-    public class HospitalService
+    public class HospitalMasterService
     {
         private readonly IUnitOfWork unitOfWork;
-        private CityService cityService;
+        private CityMasterService _cityMasterService;
         private HospitalMicroService hospitalMicroService;
-        public HospitalService(IUnitOfWork unitOfWork)
+        public HospitalMasterService(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
-            cityService = new CityService(unitOfWork);
+            _cityMasterService = new CityMasterService(unitOfWork);
             hospitalMicroService = new HospitalMicroService();
         }
         public void SaveHospital(Hospital hospital)
         {
-            City existingCity = cityService.GetCityByNameAndCountry(hospital.City.Name, hospital.City.Country.Name);
+            City existingCity = _cityMasterService.GetCityByNameAndCountry(hospital.City.Name, hospital.City.Country.Name);
             var countryRepo = unitOfWork.GetRepository<ICountryReadRepository>();
             Country country = countryRepo.GetByName(hospital.City.Country.Name);
             hospitalMicroService.LinkHospitalWithExistingEntities(hospital, existingCity, country);

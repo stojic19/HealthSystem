@@ -9,10 +9,10 @@ using Pharmacy.Repositories.Base;
 
 namespace Pharmacy.MasterServices
 {
-    public class ComplaintResponseService
+    public class ComplaintResponseMasterService
     {
         private readonly IUnitOfWork unitOfWork;
-        public ComplaintResponseService(IUnitOfWork unitOfWork) => this.unitOfWork = unitOfWork;
+        public ComplaintResponseMasterService(IUnitOfWork unitOfWork) => this.unitOfWork = unitOfWork;
 
         public void SaveComplaintResponse(ComplaintResponse complaintResponse)
         {

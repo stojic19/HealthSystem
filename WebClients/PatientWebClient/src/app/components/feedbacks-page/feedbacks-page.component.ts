@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { IPatientFeedback } from 'src/app/interfaces/patient-feedback-interface';
+import { IPatientFeedback } from './../../interfaces/patient-feedback/patient-feedback-interface';
 import { FeedbackService } from 'src/app/services/FeedbackService/feedback.service';
 import { FeedbackComponent } from '../feedback/feedback.component';
 
@@ -23,7 +23,7 @@ export class FeedbacksPageComponent implements OnInit {
     });
   }
 
-  openModal(){
+  openModal() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false;
     dialogConfig.id = "modal-component";

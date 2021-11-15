@@ -1,0 +1,31 @@
+<br>
+<br>
+<div class="row">
+    <mat-card class="col-md-8 mx-auto ">
+        <h4 class="fw-bold text-center mt-3">{{section.name}}</h4>
+        <div class="container" [formGroup]="userForm" (ngSubmit)="onFormSubmit()">
+            <mat-list *ngIf='section'>
+                <div class="row" *ngFor="let q of questions">
+                    <div class=" col-sm-8 ">
+                        <mat-list-item>{{q.text}}</mat-list-item>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <mat-radio-group aria-label="Select an option">
+                            <mat-radio-button class="mr-4" value="1">1</mat-radio-button>
+                            <mat-radio-button class="mr-4" value="2">2</mat-radio-button>
+                            <mat-radio-button class="mr-4" value="3">3</mat-radio-button>
+                            <mat-radio-button class="mr-4" value="4">4</mat-radio-button>
+                            <mat-radio-button class="mr-4" value="5">5</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+            </mat-list>
+        </div>
+    </mat-card>
+</div>
+<!-- <div class="row d-flex flex-row-reverse mt-5">
+    <div class="col-sm-4 ">
+        <button type="button" class="btn btn-info w-50 btn-lg">Submit</button>
+    </div> -->

@@ -1,51 +1,51 @@
 <svg height="500" width="900" style="border:1px solid rgb(14, 13, 13); margin-left:auto; margin-right:auto; display:block;">
     
-    <!-- ROOMS AND DOORS -->
-    <polygon points="0,0 247,0 247,130 0,130" attr.fill={{roomColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
-    <text  x="123.5" y="65" text-anchor="middle">Room 1</text>
-    <polygon points="98.5,126 148.5,126 148.5,130 98.5,130"  attr.fill={{doorColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
-  
-    <polygon points="251,0 498,0 498,130 251,130" attr.fill={{roomColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
-    <text  x="374.5" y="65" text-anchor="middle">Room 2</text>
-    <polygon points="349.5,126 399.5,126 399.5,130 349.5,130"  attr.fill={{doorColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
-   
-    <polygon points="502,0 701,0 701,130 502,130" attr.fill={{roomColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
-    <text  x="601.5" y="65" text-anchor="middle">Room 3</text>
-    <polygon points="578,126 628,126 628,130 578,130"  attr.fill={{doorColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
-  
-    <polygon points="705,0 900,0 900,130 705,130" attr.fill={{roomColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
-    <text  x="802.5" y="65" text-anchor="middle">Room 4</text>
-    <polygon points="777.5,126 827.5,126 827.5,130 777.5,130"  attr.fill={{doorColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
-  
-    <polygon points="810,172 900,172 900,248 810,248" attr.fill={{roomColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
-    <text  x="855" y="210" text-anchor="middle">WC</text>
-    <polygon points="810,185 814,185 814,235 810,235"  attr.fill={{doorColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
-  
-    <polygon points="810,252 900,252 900,328 810,328" attr.fill={{roomColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
-    <text  x="855" y="290" text-anchor="middle">WC</text>
-    <polygon points="810,265 814,265 814,315 810,315" attr.fill={{doorColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
-  
-    <polygon points="0,370 247,370 247,500 0,500" attr.fill={{roomColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
-    <text  x="123.5" y="435" text-anchor="middle">Room 5</text>
-    <polygon points="98.5,370 148.5,370 148.5,374 98.5,374" attr.fill={{doorColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
-  
-    <polygon points="251,370 498,370 498,500 251,500" attr.fill={{roomColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
-    <text  x="374.5" y="435" text-anchor="middle">Room 6</text>
-    <polygon points="349.5,370 399.5,370 399.5,374 349.5,374" attr.fill={{doorColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
-   
-    <polygon points="502,370 701,370 701,500 502,500" attr.fill={{roomColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
-    <text  x="601.5" y="435" text-anchor="middle">Room 7</text>
-    <polygon points="578,370 628,370 628,374 578,374" attr.fill={{doorColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
-  
-    <polygon points="705,370 900,370 900,500 705,500" attr.fill={{roomColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
-    <text  x="802.5" y="435" text-anchor="middle">Room 8</text>
-    <polygon points="777.5,370 827.5,370 827.5,374 777.5,374" attr.fill={{doorColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
-    <!-- END OF ROOMS AND DOORS -->
+  <!-- ROOMS AND DOORS -->
+  <polygon (click)="selectRoom(service.rooms[0])" points="0,0 247,0 247,130 0,130" [ngStyle]="roomForDisplay==service.rooms[0].name?{'fill':selectedRoomColor} : {'fill': roomColor}" attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
+  <text  x="123.5" y="65" text-anchor="middle">{{service.rooms[0].name}}</text>
+  <polygon points="98.5,126 148.5,126 148.5,130 98.5,130"  attr.fill={{doorColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
 
-    <!-- WAITING ROOM -->
-    <polygon points="190,185 680,185 680,315, 190,315" attr.fill={{roomColor}}/>
-    
-    <!-- MAIN DOOR -->
-    <polygon points="0,215 6,215 6,285 0,285" attr.fill={{doorColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
+  <polygon (click)="selectRoom(service.rooms[1])" points="251,0 498,0 498,130 251,130" [ngStyle]="roomForDisplay==service.rooms[1].name?{'fill':selectedRoomColor} : {'fill': roomColor}" attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
+  <text  x="374.5" y="65" text-anchor="middle">{{service.rooms[1].name}}</text>
+  <polygon points="349.5,126 399.5,126 399.5,130 349.5,130"  attr.fill={{doorColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
+ 
+  <polygon (click)="selectRoom(service.rooms[2])" points="502,0 701,0 701,130 502,130" [ngStyle]="roomForDisplay==service.rooms[2].name?{'fill':selectedRoomColor} : {'fill': roomColor}" attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
+  <text  x="601.5" y="65" text-anchor="middle">{{service.rooms[2].name}}</text>
+  <polygon points="578,126 628,126 628,130 578,130"  attr.fill={{doorColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
+
+  <polygon (click)="selectRoom(service.rooms[3])" points="705,0 900,0 900,130 705,130" [ngStyle]="roomForDisplay==service.rooms[3].name?{'fill':selectedRoomColor} : {'fill': roomColor}" attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
+  <text  x="802.5" y="65" text-anchor="middle">{{service.rooms[3].name}}</text>
+  <polygon points="777.5,126 827.5,126 827.5,130 777.5,130"  attr.fill={{doorColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
+
+  <polygon points="810,172 900,172 900,248 810,248" attr.fill={{roomColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
+  <text  x="855" y="210" text-anchor="middle">WC</text>
+  <polygon points="810,185 814,185 814,235 810,235"  attr.fill={{doorColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
+
+  <polygon points="810,252 900,252 900,328 810,328" attr.fill={{roomColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
+  <text  x="855" y="290" text-anchor="middle">WC</text>
+  <polygon points="810,265 814,265 814,315 810,315" attr.fill={{doorColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
+
+  <polygon (click)="selectRoom(service.rooms[4])" points="0,370 247,370 247,500 0,500" [ngStyle]="roomForDisplay==service.rooms[4].name?{'fill':selectedRoomColor} : {'fill': roomColor}" attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
+  <text  x="123.5" y="435" text-anchor="middle">{{service.rooms[4].name}}</text>
+  <polygon points="98.5,370 148.5,370 148.5,374 98.5,374" attr.fill={{doorColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
+
+  <polygon (click)="selectRoom(service.rooms[5])" points="251,370 498,370 498,500 251,500" [ngStyle]="roomForDisplay==service.rooms[5].name?{'fill':selectedRoomColor} : {'fill': roomColor}" attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
+  <text  x="374.5" y="435" text-anchor="middle">{{service.rooms[5].name}}</text>
+  <polygon points="349.5,370 399.5,370 399.5,374 349.5,374" attr.fill={{doorColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
+ 
+  <polygon (click)="selectRoom(service.rooms[6])" points="502,370 701,370 701,500 502,500" [ngStyle]="roomForDisplay==service.rooms[6].name?{'fill':selectedRoomColor} : {'fill': roomColor}" attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
+  <text  x="601.5" y="435" text-anchor="middle">{{service.rooms[6].name}}</text>
+  <polygon points="578,370 628,370 628,374 578,374" attr.fill={{doorColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
+
+  <polygon (click)="selectRoom(service.rooms[7])" points="705,370 900,370 900,500 705,500" [ngStyle]="roomForDisplay==service.rooms[7].name?{'fill':selectedRoomColor} : {'fill': roomColor}" attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
+  <text  x="802.5" y="435" text-anchor="middle">{{service.rooms[7].name}}</text>
+  <polygon points="777.5,370 827.5,370 827.5,374 777.5,374" attr.fill={{doorColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
+  <!-- END OF ROOMS AND DOORS -->
+
+  <!-- WAITING ROOM -->
+  <polygon points="190,185 680,185 680,315, 190,315" attr.fill={{roomColor}}/>
   
-  </svg>
+  <!-- MAIN DOOR -->
+  <polygon points="0,215 6,215 6,285 0,285" attr.fill={{doorColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>
+
+</svg>

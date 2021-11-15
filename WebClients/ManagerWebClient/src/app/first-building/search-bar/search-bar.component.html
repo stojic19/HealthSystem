@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="row mt-2" >
+    <div class="col-md-8">
+      <div class="form-outline">
+        <input id="search-input" type="search"  class="form-control" placeholder="Search" [(ngModel)]="searchRoomName" (input)="searchRoomsByName()"/>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <button id="search-button" type="button" class="btn btn-primary" (click)="searchRoomsByName()">
+        <i class="fas fa-search"></i>
+      </button>
+    </div>     
+  </div>
+</div>
+<div class="row mt-5" *ngIf="searchRoomName!=''">
+  <div class="container">
+    <ul class="list-group">
+      <li *ngFor="let room of rooms"  class="list-group-item  text-black py-2 w-75 p-3 h-auto d-inline-block" (click)="displayOnMap(room)">{{room.name}}</li>
+    </ul>
+  </div>
+</div>

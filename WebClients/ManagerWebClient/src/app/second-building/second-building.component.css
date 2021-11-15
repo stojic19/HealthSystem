@@ -1,0 +1,16 @@
+.title {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid lightgray;
+}
+button{
+  background-color: #fccfcf;
+  border: none;
+}
+
+button:focus{background-color:#fccfcf;}
+button:hover{background-color:#fccfcf;}
+
+li{
+
+  background-color:#fccfcf;
+}

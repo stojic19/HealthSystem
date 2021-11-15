@@ -23,15 +23,15 @@ namespace Integration.Controllers
     [ApiController]
     public class PharmacyCommunicationController : ControllerBase
     {
-        private PharmacyService _pharmacyMasterService;
-        private ComplaintService _complaintMasterService;
-        private ComplaintResponseService _complaintResponseMasterService;
+        private PharmacyMasterService _pharmacyMasterService;
+        private ComplaintMasterService _complaintMasterService;
+        private ComplaintResponseMasterService _complaintResponseMasterService;
 
         public PharmacyCommunicationController(IUnitOfWork unitOfWork)
         {
-            _pharmacyMasterService = new PharmacyService(unitOfWork);
-            _complaintMasterService = new ComplaintService(unitOfWork);
-            _complaintResponseMasterService = new ComplaintResponseService(unitOfWork);
+            _pharmacyMasterService = new PharmacyMasterService(unitOfWork);
+            _complaintMasterService = new ComplaintMasterService(unitOfWork);
+            _complaintResponseMasterService = new ComplaintResponseMasterService(unitOfWork);
         }
         [HttpPost]
         public IActionResult RegisterPharmacy(PharmacyDTO pharmacyDTO)

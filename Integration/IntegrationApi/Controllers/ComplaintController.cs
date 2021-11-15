@@ -16,11 +16,11 @@ namespace IntegrationAPI.Controllers
     [ApiController]
     public class ComplaintController : ControllerBase
     {
-        private ComplaintService _complaintMasterService;
+        private ComplaintMasterService _complaintMasterService;
 
         public ComplaintController(IUnitOfWork unitOfWork)
         {
-            _complaintMasterService = new ComplaintService(unitOfWork);
+            _complaintMasterService = new ComplaintMasterService(unitOfWork);
         }
 
         [HttpGet]

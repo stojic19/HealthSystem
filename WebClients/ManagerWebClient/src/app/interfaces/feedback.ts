@@ -9,7 +9,7 @@ export enum FeedbackStatus {
 
 export interface IFeedback {
     id: number;
-    patientId: string;
+    patientId: number;
     patient: IPatient;
     feedbackStatus: FeedbackStatus;
     createdDate: Date;

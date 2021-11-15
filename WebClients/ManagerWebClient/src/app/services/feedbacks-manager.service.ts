@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
@@ -15,5 +15,15 @@ export class FeedbacksManagerService {
     return  this.http.get<IFeedback[]>(`${environment.baseUrl}` + 'api/Feedback');
   }
   
+  approveFeedback(feedback: IFeedback) : Observable<IFeedback>  {
+    var url =  '/api/Feedback/publish';
+    return this.http.put<any>(url, feedback );
+ }
+
+  unapproveFeedback(feedback: IFeedback) : Observable<IFeedback>  {
+    var url =  '/api/Feedback/unpublish';
+    return this.http.put<any>(url, feedback );
+  }
+ 
 }
 

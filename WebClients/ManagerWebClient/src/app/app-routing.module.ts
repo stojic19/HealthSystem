@@ -7,6 +7,7 @@ import { HospitalOverviewComponent } from './hospital-overview/hospital-overview
 import { MaterialModule } from './material/material.module';
 import { SecondBuildingComponent } from './second-building/second-building.component';
 import {HomePageComponent} from './components/home-page/home-page.component';
+import { EquipmentFormComponent } from './equipment-form/equipment-form.component';
 
 const routes: Routes = [
   { path: 'overview', component: HospitalOverviewComponent },

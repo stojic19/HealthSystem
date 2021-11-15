@@ -1,0 +1,15 @@
+.form-control {
+  height: 35px;
+  font-size: 14px;
+  border-radius: 15px;
+}
+
+.movingForm {
+  width: 60%;
+  height: 50%;
+}
+
+.label {
+  width: 250px;
+  font-size: 20px;
+}

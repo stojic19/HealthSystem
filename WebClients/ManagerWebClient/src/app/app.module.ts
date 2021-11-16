@@ -24,10 +24,16 @@ import { RoomInfoComponent } from './room-info/room-info.component';
 import { DisplayRoomInfoComponent } from './room-info/display-room-info/display-room-info.component';
 import { EditRoomInfoComponent } from './room-info/edit-room-info/edit-room-info.component';
 import { FormsModule } from '@angular/forms';
+import { EquipmentFormComponent } from './equipment-form/equipment-form.component';
+import { InitialRoomComponent } from './equipment-form/initial-room/initial-room.component';
+import { DestinationRoomComponent } from './equipment-form/destination-room/destination-room.component';
+import { MoveInfoComponent } from './equipment-form/move-info/move-info.component';
+import { FreeTermsComponent } from './equipment-form/free-terms/free-terms.component';
 import { SearchBarComponent } from './first-building/search-bar/search-bar.component';
+import { RoomInventoryComponent } from './room-inventory/room-inventory.component';
 
 @NgModule({
-  declarations: [AppComponent, HospitalOverviewComponent, LegendComponent, NavbarComponent, FirstBuildingComponent, FloorSelectionComponent, FirstFloorComponent, SecondFloorComponent, FeedbacksManagerComponent, SecondBuildingComponent, FloorFirstComponent, FloorSecondComponent, SelectFloorComponent, HomePageComponent, FooterComponent, RoomInfoComponent, DisplayRoomInfoComponent, EditRoomInfoComponent, SearchBarComponent],
+  declarations: [AppComponent, HospitalOverviewComponent, LegendComponent, NavbarComponent, FirstBuildingComponent, FloorSelectionComponent, FirstFloorComponent, SecondFloorComponent, FeedbacksManagerComponent, SecondBuildingComponent, FloorFirstComponent, FloorSecondComponent, SelectFloorComponent, HomePageComponent, FooterComponent, RoomInfoComponent, DisplayRoomInfoComponent, EditRoomInfoComponent, EquipmentFormComponent, InitialRoomComponent, DestinationRoomComponent, MoveInfoComponent, FreeTermsComponent, SearchBarComponent, RoomInventoryComponent],
   imports: [BrowserModule, AppRoutingModule,  NgbModule, CommonModule, HttpClientModule, FormsModule , BrowserAnimationsModule],
   providers: [HttpClientModule],
   bootstrap: [AppComponent],

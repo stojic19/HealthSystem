@@ -23,7 +23,7 @@ import { FormsModule } from '@angular/forms';
     FooterComponent,
     FeedbackComponent,
     PatientFeedbackComponent,
-    FeedbacksPageComponent
+    FeedbacksPageComponent,
   ],
   imports: [
     BrowserModule,

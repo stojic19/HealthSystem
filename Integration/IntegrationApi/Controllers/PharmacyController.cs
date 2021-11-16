@@ -16,11 +16,11 @@ namespace IntegrationAPI.Controllers
     [ApiController]
     public class PharmacyController : ControllerBase
     {
-        private PharmacyService _pharmacyMasterService;
+        private PharmacyMasterService _pharmacyMasterService;
 
         public PharmacyController(IUnitOfWork unitOfWork)
         {
-            _pharmacyMasterService = new PharmacyService(unitOfWork);
+            _pharmacyMasterService = new PharmacyMasterService(unitOfWork);
         }
 
         [HttpGet]

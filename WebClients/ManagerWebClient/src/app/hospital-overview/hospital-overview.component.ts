@@ -14,15 +14,15 @@ export class HospitalOverviewComponent implements OnInit {
   darkPinkColor = '#e98a8a';
 
   buildings = ['Building 1', 'Building 2'];
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
-  showFirstBuilding(){
+  showFirstBuilding() {
     this.router.navigateByUrl("firstBuilding");
   }
 
-  showSecondBuilding(){
+  showSecondBuilding() {
     this.router.navigateByUrl("secondBuilding");
   }
 }

@@ -1,0 +1,24 @@
+<div class="panel panel-primary">
+  <div class="panel-heading m-3">
+      <h2>Add Complaint</h2>
+  </div>
+</div>
+<div class="container">
+    <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input [(ngModel)]="title" type="text" class="form-control" id="title" placeholder="Title" required>
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea [(ngModel)]="description" class="form-control" id="description" rows="3" required></textarea>
+      </div>
+      <div class="mb-3">
+        <label for="pharmacy" class="form-label">Pharmacy</label>
+      <select id="pharmacy" [(ngModel)]="Pharmacy" class="form-select" aria-label="Default select example">
+        <option *ngFor='let dataItem of PharmacyList' [ngValue]="dataItem"> {{dataItem.name}} </option>
+      </select>
+    </div>
+      <button (click)="addComplaint()" class="btn btn-primary">
+        Add
+    </button>
+    </div>

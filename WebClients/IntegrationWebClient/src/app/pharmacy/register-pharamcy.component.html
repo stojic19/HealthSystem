@@ -1,0 +1,38 @@
+<div class="panel panel-primary">
+  <div class="panel-heading m-3">
+      <h2>Register Pharmacy</h2>
+  </div>
+</div>
+<div class="container mb-3">
+    <div class="mb-3">
+        <label for="name" class="form-label">Title</label>
+        <input [(ngModel)]="name" type="text" class="form-control" id="name" placeholder="Pharmacy Name" required>
+      </div>
+      <div class="mb-3">
+        <label for="streetNumber" class="form-label">Street Number</label>
+        <input [(ngModel)]="streetNumber" type="text" class="form-control" id="streetNumber" placeholder="Street Number" required>
+      </div>
+      <div class="mb-3">
+        <label for="streetName" class="form-label">Street Name</label>
+        <input [(ngModel)]="streetName" type="text" class="form-control" id="streetName" placeholder="Street Name" required>
+      </div>
+      <div class="mb-3">
+        <label for="cityName" class="form-label">City Name</label>
+        <input [(ngModel)]="cityName" type="text" class="form-control" id="cityName" placeholder="City Name" required>
+      </div>
+      <div class="mb-3">
+        <label for="postalCode" class="form-label">Postal Code</label>
+        <input [(ngModel)]="postalCode" type="text" class="form-control" id="postalCode" placeholder="Postal code" required>
+      </div>
+      <div class="mb-3">
+        <label for="country" class="form-label">Country</label>
+        <input [(ngModel)]="country" type="text" class="form-control" id="country" placeholder="Country" required>
+      </div>
+      <div class="mb-3">
+        <label for="baseUrl" class="form-label">Base URL</label>
+        <input [(ngModel)]="baseUrl" type="text" class="form-control" id="baseUrl" placeholder="Base url" required>
+      </div>
+      <button (click)="registerPharmacy()" class="btn btn-primary">
+        Add
+    </button>
+    </div>

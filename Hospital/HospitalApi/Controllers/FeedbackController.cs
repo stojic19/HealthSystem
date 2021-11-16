@@ -32,12 +32,22 @@ namespace HospitalApi.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Feedback> GetFeedbacks()
+        public IActionResult GetPublishableFeedbacks()
         {
-            var feedbackReadRepo = _uow.GetRepository<IFeedbackReadRepository>();
+            try
+            {
+                var feedbackReadRepo = _uow.GetRepository<IFeedbackReadRepository>();
+                var feedbacks = feedbackReadRepo.GetAll().Include(x => x.Patient);
+                return Ok(feedbacks);
 
-            return feedbackReadRepo.GetAll().Include(x => x.Patient).Where(x => x.IsPublishable == true);
+            }
+            catch(Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error!Failed loading comments!");
+            }
+            
         }
+
         [HttpGet("approved")]
         public IEnumerable<Feedback> GetApprovedFeedbacks()
         {

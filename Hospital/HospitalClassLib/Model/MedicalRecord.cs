@@ -10,8 +10,14 @@ namespace Hospital.Model
         public int PatientId { get; set; }
         public Patient Patient { get; set; }
 
+        public int DoctorId { get; set; }
+        public Doctor Doctor { get; set; }
+
+        public double Height { get; set; }
+        public double Weight { get; set; }
         public BloodType BloodType { get; set; }
         public JobStatus JobStatus { get; set; }    
+        
         
         public IEnumerable<Referral> Referrals { get; set; }
         public IEnumerable<Allergy> Allergies { get; set; }

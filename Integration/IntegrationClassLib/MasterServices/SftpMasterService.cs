@@ -35,6 +35,7 @@ namespace Integration.MasterServices
                 string filePath = Path.GetFileName(path);
                 sftpClient.UploadFile(fileStream, filePath);
                 sftpClient.Disconnect();
+                fileStream.Close();
             }
             catch (Exception e)
             {

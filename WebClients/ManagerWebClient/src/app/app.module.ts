@@ -31,9 +31,10 @@ import { MoveInfoComponent } from './equipment-form/move-info/move-info.componen
 import { FreeTermsComponent } from './equipment-form/free-terms/free-terms.component';
 import { SearchBarComponent } from './first-building/search-bar/search-bar.component';
 import { RoomInventoryComponent } from './room-inventory/room-inventory.component';
+import { HospitalEquipmentComponent } from './hospital-equipment/hospital-equipment.component';
 
 @NgModule({
-  declarations: [AppComponent, HospitalOverviewComponent, LegendComponent, NavbarComponent, FirstBuildingComponent, FloorSelectionComponent, FirstFloorComponent, SecondFloorComponent, FeedbacksManagerComponent, SecondBuildingComponent, FloorFirstComponent, FloorSecondComponent, SelectFloorComponent, HomePageComponent, FooterComponent, RoomInfoComponent, DisplayRoomInfoComponent, EditRoomInfoComponent, EquipmentFormComponent, InitialRoomComponent, DestinationRoomComponent, MoveInfoComponent, FreeTermsComponent, SearchBarComponent, RoomInventoryComponent],
+  declarations: [AppComponent, HospitalOverviewComponent, LegendComponent, NavbarComponent, FirstBuildingComponent, FloorSelectionComponent, FirstFloorComponent, SecondFloorComponent, FeedbacksManagerComponent, SecondBuildingComponent, FloorFirstComponent, FloorSecondComponent, SelectFloorComponent, HomePageComponent, FooterComponent, RoomInfoComponent, DisplayRoomInfoComponent, EditRoomInfoComponent, EquipmentFormComponent, InitialRoomComponent, DestinationRoomComponent, MoveInfoComponent, FreeTermsComponent, SearchBarComponent, RoomInventoryComponent, HospitalEquipmentComponent],
   imports: [BrowserModule, AppRoutingModule,  NgbModule, CommonModule, HttpClientModule, FormsModule , BrowserAnimationsModule],
   providers: [HttpClientModule],
   bootstrap: [AppComponent],

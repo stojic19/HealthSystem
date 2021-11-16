@@ -1,0 +1,35 @@
+<div class="row">
+    <div class="row mt-2">
+        <div class="col-md-9"></div>
+        <div class="col-md-2">
+            <div class="form-outline">
+                <input id="search-input" type="search"  class="form-control" placeholder="Search" [(ngModel)]="searchEquipmentName" (input)="searchEquipmentByName()"/>
+            </div>
+        </div>
+        <div class="col-md-1">
+            <button id="search-button" type="button" class="btn btn-primary" (click)="searchEquipmentByName()">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>     
+    </div>
+</div>
+<div class="row mt-2">
+    <table class="table table-striped mt-5 justify-content-center" style="width: 1000px">
+        <thead>
+            <tr>
+                <th class="col-md-3">Name</th>
+                <th class="col-md-3">Amount</th>
+                <th class="col-md-3">Room</th>
+                <th class="col-md-3">Building</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let inventory of hospitalInventories">
+                <td>{{inventory.inventoryItem.name}}</td>
+                <td>{{inventory.amount}}</td>
+                <td>{{inventory.room.name}}</td>
+                <td>{{inventory.room.buildingName}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

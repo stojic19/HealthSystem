@@ -8,10 +8,10 @@ import { Room } from '../interfaces/room';
 })
 export class FirstBuildingComponent implements OnInit {
 
-  public selectedFloor='first';
-  public selectedRoom! : Room;
-  public roomForDisplay='';
-  public changeFloor='';
+  public selectedFloor = 'first';
+  public selectedRoom!: Room;
+  public roomForDisplay = '';
+  public changeFloor = '';
 
   constructor() { }
 
@@ -19,19 +19,19 @@ export class FirstBuildingComponent implements OnInit {
     this.selectedRoom = new Room();
     this.selectedRoom.name = '';
   }
-  
-  roomSelectionChanged(room : Room){
+
+  roomSelectionChanged(room: Room) {
     this.selectedRoom = room;
   }
-  
-  displayRoom(room : Room){
+
+  displayRoom(room: Room) {
     this.roomForDisplay = room.name;
-    if (room.floorNumber == 1){
-      this.selectedFloor='first';
+    if (room.floorNumber == 1) {
+      this.selectedFloor = 'first';
       this.changeFloor = 'first';
-    }else{
+    } else {
       this.changeFloor = 'second';
-      this.selectedFloor='second';
+      this.selectedFloor = 'second';
     }
   }
 

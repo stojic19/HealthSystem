@@ -8,11 +8,11 @@ import { Room } from '../interfaces/room';
 })
 export class RoomsService {
 
-  constructor(private http : HttpClient) { }
-  public rooms! : Room[]
+  constructor(private http: HttpClient) { }
+  public rooms!: Room[]
 
 
-  getFirstFloorOfFirstBuilding(){
+  getFirstFloorOfFirstBuilding() {
     return this.http.get(`${environment.baseUrl}` + 'api/Room', {
       params: {
         floorNumber: 1,
@@ -22,7 +22,7 @@ export class RoomsService {
 
   }
 
-  getFirstFloorOfSecondBuilding(){
+  getFirstFloorOfSecondBuilding() {
     return this.http.get(`${environment.baseUrl}` + 'api/Room', {
       params: {
         floorNumber: 1,
@@ -31,7 +31,7 @@ export class RoomsService {
     }).toPromise().then(res => this.rooms = res as Room[]);
   }
 
-  getSecondFloorOfFirstBuilding(){
+  getSecondFloorOfFirstBuilding() {
     return this.http.get(`${environment.baseUrl}` + 'api/Room', {
       params: {
         floorNumber: 2,
@@ -40,7 +40,7 @@ export class RoomsService {
     }).toPromise().then(res => this.rooms = res as Room[]);
   }
 
-  getSecondFloorOfSecondBuilding(){
+  getSecondFloorOfSecondBuilding() {
     return this.http.get(`${environment.baseUrl}` + 'api/Room', {
       params: {
         floorNumber: 2,
@@ -49,27 +49,27 @@ export class RoomsService {
     }).toPromise().then(res => this.rooms = res as Room[]);
   }
 
-  getRoomsByNameFirstBuilding(roomName: string){
+  getRoomsByNameFirstBuilding(roomName: string) {
     return this.http.get(`${environment.baseUrl}` + 'api/Room/find', {
       params: {
         name: roomName,
         buildingName: 'Building 1'
       }
     });
-      
+
   }
 
-  getRoomsByNameSecondBuilding(roomName: string){
+  getRoomsByNameSecondBuilding(roomName: string) {
     return this.http.get(`${environment.baseUrl}` + 'api/Room/find', {
       params: {
         name: roomName,
         buildingName: 'Building 2'
       }
     });
-      
+
   }
 
-  editRoom(room : Room){
+  editRoom(room: Room) {
     console.log('Hello' + room.name);
     this.http.put<any>('/api/Room', room).subscribe();
   }

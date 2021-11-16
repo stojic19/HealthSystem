@@ -9,23 +9,23 @@ import { RoomsService } from 'src/app/services/rooms.service';
 })
 export class FloorFirstComponent implements OnInit {
 
-  public roomColor='#fccfcf';
-  public selectedRoomColor ='#90caf9';
-  public doorColor=' #808080';
-  public borderColor= '#000000';
-  public borderWidth=1;
+  public roomColor = '#fccfcf';
+  public selectedRoomColor = '#90caf9';
+  public doorColor = ' #808080';
+  public borderColor = '#000000';
+  public borderWidth = 1;
   @Output()
   selectedRoom = new EventEmitter();
-  @Input() public roomForDisplay='';
+  @Input() public roomForDisplay = '';
 
   constructor(public service: RoomsService) {
     service.getFirstFloorOfSecondBuilding();
-   }
+  }
 
   ngOnInit(): void {
   }
 
-  selectRoom(room : Room){
+  selectRoom(room: Room) {
     this.selectedRoom.emit(room);
   }
 

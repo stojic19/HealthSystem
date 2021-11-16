@@ -9,13 +9,13 @@ import { RoomsService } from 'src/app/services/rooms.service';
 })
 export class EditRoomInfoComponent implements OnInit {
 
-  public updatedRoom! : Room;
+  public updatedRoom!: Room;
   @Input()
-  room! : Room;
+  room!: Room;
   @Output()
   messageToEmit = new EventEmitter<boolean>();
 
-  constructor(public service: RoomsService) { 
+  constructor(public service: RoomsService) {
   }
 
   ngOnInit(): void {

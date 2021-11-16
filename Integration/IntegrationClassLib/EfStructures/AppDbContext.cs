@@ -11,6 +11,8 @@ namespace Integration.EfStructures
         public DbSet<Country> Countries { get; set; }
         public DbSet<Manager> Managers { get; set; }
         public DbSet<Pharmacy> Pharmacies { get; set; }
+        public DbSet<Medicine> Medicines { get; set; }
+        public DbSet<Receipt> Receipts { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {

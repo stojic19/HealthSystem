@@ -14,9 +14,7 @@ namespace Integration.MasterServices
     {
         public void SaveMedicineReportToSftpServer(MedicineConsumptionReport consumptionReport)
         {
-            string path = @".." + Path.DirectorySeparatorChar + ".." + Path.DirectorySeparatorChar + ".."
-                          + Path.DirectorySeparatorChar + ".." + Path.DirectorySeparatorChar + "MedicineReports" +
-                          Path.DirectorySeparatorChar + "Report-" + 
+            string path = Path.DirectorySeparatorChar + "Report-" + 
                           consumptionReport.createdDate.Ticks.ToString() + ".txt";
             try
             {

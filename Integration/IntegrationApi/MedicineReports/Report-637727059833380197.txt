@@ -1,0 +1,1 @@
+{"startDate":"2021-09-01T00:00:00","endDate":"2021-10-01T00:00:00","createdDate":"2021-11-17T00:33:03.3380197+01:00","MedicineConsumptions":[{"Medicine":{"Id":1,"Name":"Brufen"},"Amount":5},{"Medicine":{"Id":3,"Name":"Probiotik"},"Amount":3},{"Medicine":{"Id":2,"Name":"Aspirin"},"Amount":1}]}

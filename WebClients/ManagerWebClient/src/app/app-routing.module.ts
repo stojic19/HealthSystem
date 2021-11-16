@@ -6,7 +6,8 @@ import { FirstBuildingComponent } from './first-building/first-building.componen
 import { HospitalOverviewComponent } from './hospital-overview/hospital-overview.component';
 import { MaterialModule } from './material/material.module';
 import { SecondBuildingComponent } from './second-building/second-building.component';
-import { HomePageComponent } from './components/home-page/home-page.component';
+import {HomePageComponent} from './components/home-page/home-page.component';
+import { EquipmentFormComponent } from './equipment-form/equipment-form.component';
 import { RoomInventoryComponent } from './room-inventory/room-inventory.component';
 import { RoomInfoComponent } from './room-info/room-info.component';
 

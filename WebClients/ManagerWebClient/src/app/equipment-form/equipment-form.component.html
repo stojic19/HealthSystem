@@ -1,0 +1,40 @@
+<div class="row mx-auto justify-content-center mb-5">
+  <div class="col-9">
+    <div class="card shadow-sm">
+      <div class="d-flex justify-content-center mt-3">
+        <h5 class="card-title mainTitle">Moving Equipment</h5>
+      </div>
+      <div class="card-body">
+        <app-initial-room
+          *ngIf="step == 1"
+          [rooms]="initialRooms"
+          (selectedRoom)="initialRoom = $event"
+        ></app-initial-room>
+        <app-destination-room
+          *ngIf="step == 2"
+          [rooms]="destinationRooms"
+          (selectedRoom)="destinationRoom = $event"
+        ></app-destination-room>
+        <app-move-info *ngIf="step == 3"></app-move-info>
+        <app-free-terms *ngIf="step == 4"></app-free-terms>
+        <div class="d-flex justify-content-center my-3">
+          <button
+            class="btn btn-primary me-2"
+            (click)="prevStep()"
+            [disabled]="step == 1"
+          >
+            Prev
+          </button>
+          <button
+            class="btn btn-primary"
+            *ngIf="step != 4"
+            (click)="nextStep()"
+          >
+            Next
+          </button>
+          <button class="btn btn-primary" *ngIf="step == 4">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

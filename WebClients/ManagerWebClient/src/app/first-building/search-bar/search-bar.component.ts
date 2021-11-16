@@ -9,22 +9,22 @@ import { RoomsService } from 'src/app/services/rooms.service';
 })
 export class SearchBarComponent implements OnInit {
 
-  public searchRoomName='';
-  public rooms!: Room[] ;
+  public searchRoomName = '';
+  public rooms!: Room[];
   @Output() public displayEvent = new EventEmitter();
   constructor(public roomService: RoomsService) { }
 
   ngOnInit(): void {
-    
+
   }
 
-  searchRoomsByName(){
+  searchRoomsByName() {
 
     this.roomService.getRoomsByNameFirstBuilding(this.searchRoomName).toPromise().then(res => this.rooms = res as Room[]);
 
   }
 
-  displayOnMap(room:Room){
+  displayOnMap(room: Room) {
     this.displayEvent.emit(room);
   }
 

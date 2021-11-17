@@ -46,6 +46,8 @@ namespace PharmacyIntegrationTests
             responsePharmacyDTO.CityName.ShouldNotBeNullOrEmpty();
             responsePharmacyDTO.StreetName.ShouldNotBeNullOrEmpty();
             responsePharmacyDTO.StreetNumber.ShouldNotBeNullOrEmpty();
+            responsePharmacyDTO.CountryName.ShouldBe("Serbia");
+            responsePharmacyDTO.PharmacyName.ShouldBe("SMTP pharmacy");
 
             var hospitalInTheDb = UoW.GetRepository<IHospitalReadRepository>()
                 .GetAll()

@@ -39,6 +39,8 @@ namespace PharmacyApi.Controllers
                 StreetNumber = newHospital.StreetNumber
             };
 
+            var str = Url.Action("Add", "Medicine", Request.Scheme);
+
             try
             {
                 _uow.GetRepository<IHospitalWriteRepository>().Add(hospital);
@@ -62,7 +64,8 @@ namespace PharmacyApi.Controllers
                 PharmacyName = _pharmacyDetails.Name,
                 CityName = _pharmacyDetails.CityName,
                 StreetName = _pharmacyDetails.StreetName,
-                StreetNumber = _pharmacyDetails.StreetNumber
+                StreetNumber = _pharmacyDetails.StreetNumber,
+                CountryName = _pharmacyDetails.CountryName
             };
         }
     }

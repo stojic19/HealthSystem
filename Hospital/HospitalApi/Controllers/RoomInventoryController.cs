@@ -106,7 +106,7 @@ namespace HospitalApi.Controllers
                     Name = ri.InventoryItem.Name
                 }
             }
-            ).Where(ri => ri.InventoryItem.Name.ToLower().Equals(inventoryItemName.ToLower())));
+            ).Where(ri => ri.InventoryItem.Name.ToLower().Contains(inventoryItemName.ToLower())));
         }
 
     }

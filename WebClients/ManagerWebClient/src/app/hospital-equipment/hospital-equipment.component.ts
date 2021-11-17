@@ -13,6 +13,7 @@ export class HospitalEquipmentComponent implements OnInit {
   public hospitalInventories: RoomInventory[];
   public searchEquipmentName = '';
   constructor(public roomInventoryService: RoomInventoriesService, private router : Router) { }
+  selectedItem = new RoomInventory();
 
   ngOnInit(): void {
 
@@ -28,14 +29,18 @@ export class HospitalEquipmentComponent implements OnInit {
     }
   }
 
-  showRoom(inventory : RoomInventory) {
-    if(inventory.room.buildingName == 'Building 1')
+  showRoom() {
+    if(this.selectedItem.room.buildingName == 'Building 1')
     {
-      console.log(inventory.room.floorNumber);
-      this.router.navigate(['/firstBuilding', inventory.room.name, inventory.room.floorNumber]);
+      console.log(this.selectedItem.room.floorNumber);
+      this.router.navigate(['/firstBuilding', this.selectedItem.room.name, this.selectedItem.room.floorNumber]);
     } else {
-      this.router.navigate(['/secondBuilding', inventory.room.name, inventory.room.floorNumber]); 
+      this.router.navigate(['/secondBuilding', this.selectedItem.room.name, this.selectedItem.room.floorNumber]); 
     }
+  }
+
+  selectInventoryItem(item: RoomInventory) {
+    this.selectedItem = item;
   }
 
 }

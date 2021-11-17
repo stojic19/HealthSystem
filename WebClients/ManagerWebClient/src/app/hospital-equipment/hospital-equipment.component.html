@@ -1,6 +1,16 @@
 <div class="row">
     <div class="row mt-2">
-        <div class="col-md-9"></div>
+        <div class="col-md-9">
+            <button
+              id="search-button"
+              type="button"
+              class="btn btn-primary"
+              style="margin-left: 3.8rem"
+              (click)="showRoom()"
+            >
+              Display
+            </button>
+          </div>
         <div class="col-md-2">
             <div class="form-outline">
                 <input id="search-input" type="search"  class="form-control" placeholder="Search" [(ngModel)]="searchEquipmentName" (input)="searchEquipmentByName()"/>
@@ -24,7 +34,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let inventory of hospitalInventories" (click)="showRoom(inventory)">
+            <tr *ngFor="let inventory of hospitalInventories" (click)="selectInventoryItem(inventory)">
                 <td>{{inventory.inventoryItem.name}}</td>
                 <td>{{inventory.amount}}</td>
                 <td>{{inventory.room.name}}</td>

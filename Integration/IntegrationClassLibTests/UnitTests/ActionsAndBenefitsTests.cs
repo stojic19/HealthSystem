@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace IntegrationClassLibTests
+namespace IntegrationClassLibTests.UnitTests
 {
     public class ActionsAndBenefitsTests
     {

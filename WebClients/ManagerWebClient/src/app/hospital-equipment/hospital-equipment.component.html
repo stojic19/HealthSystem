@@ -24,7 +24,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let inventory of hospitalInventories">
+            <tr *ngFor="let inventory of hospitalInventories" (click)="showRoom(inventory)">
                 <td>{{inventory.inventoryItem.name}}</td>
                 <td>{{inventory.amount}}</td>
                 <td>{{inventory.room.name}}</td>

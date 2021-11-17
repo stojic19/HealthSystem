@@ -2,7 +2,7 @@ import { NgAnalyzedFile } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { IFeedback } from 'src/app/interfaces/ifeedback';
+import { IFeedback } from 'src/app/interfaces/patient-feedback/ifeedback';
 import { FeedbackService } from 'src/app/services/FeedbackService/feedback.service';
 
 @Component({

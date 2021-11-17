@@ -24,15 +24,24 @@ import { RoomInfoComponent } from './room-info/room-info.component';
 import { DisplayRoomInfoComponent } from './room-info/display-room-info/display-room-info.component';
 import { EditRoomInfoComponent } from './room-info/edit-room-info/edit-room-info.component';
 import { FormsModule } from '@angular/forms';
+import { EquipmentFormComponent } from './equipment-form/equipment-form.component';
+import { InitialRoomComponent } from './equipment-form/initial-room/initial-room.component';
+import { DestinationRoomComponent } from './equipment-form/destination-room/destination-room.component';
+import { MoveInfoComponent } from './equipment-form/move-info/move-info.component';
+import { FreeTermsComponent } from './equipment-form/free-terms/free-terms.component';
 import { SearchBarComponent } from './first-building/search-bar/search-bar.component';
+
 import { QuestionObserveComponent } from './components/question-observe/question-observe.component';
 import { SurveySectionObserveComponent } from './components/survey-section-observe/survey-section-observe.component';
 import { SurveysObserveComponent } from './components/surveys-observe/surveys-observe.component';
 import { MaterialModule } from './material/material.module';
 import { RatingDecimalComponent } from './components/rating-decimal/rating-decimal.component';
 
+
+import { RoomInventoryComponent } from './room-inventory/room-inventory.component';
+
 @NgModule({
-  declarations: [AppComponent, HospitalOverviewComponent, LegendComponent, NavbarComponent, FirstBuildingComponent, FloorSelectionComponent, FirstFloorComponent, SecondFloorComponent, FeedbacksManagerComponent, SecondBuildingComponent, FloorFirstComponent, FloorSecondComponent, SelectFloorComponent, HomePageComponent, FooterComponent, RoomInfoComponent, DisplayRoomInfoComponent, EditRoomInfoComponent, SearchBarComponent, QuestionObserveComponent, SurveySectionObserveComponent, SurveysObserveComponent, RatingDecimalComponent],
+  declarations: [AppComponent, HospitalOverviewComponent, LegendComponent, NavbarComponent, FirstBuildingComponent, FloorSelectionComponent, FirstFloorComponent, SecondFloorComponent, FeedbacksManagerComponent, SecondBuildingComponent, FloorFirstComponent, FloorSecondComponent, SelectFloorComponent, HomePageComponent, FooterComponent, RoomInfoComponent, DisplayRoomInfoComponent, EditRoomInfoComponent, EquipmentFormComponent, InitialRoomComponent, DestinationRoomComponent, MoveInfoComponent, FreeTermsComponent, SearchBarComponent, RoomInventoryComponent],
   imports: [BrowserModule, AppRoutingModule,  NgbModule, CommonModule, HttpClientModule, FormsModule , BrowserAnimationsModule, MaterialModule],
   providers: [HttpClientModule],
   bootstrap: [AppComponent],

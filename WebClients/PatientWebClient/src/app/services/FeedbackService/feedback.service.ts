@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IFeedback } from 'src/app/interfaces/ifeedback';
-import { IPatientFeedback } from 'src/app/interfaces/patient-feedback-interface';
+import { IFeedback } from './../../interfaces/patient-feedback/ifeedback';
+import { IPatientFeedback } from 'src/app/interfaces/patient-feedback/patient-feedback-interface';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -20,7 +20,7 @@ export class FeedbackService {
     return this._http.get<IPatientFeedback[]>(`${environment.baseUrl}` + '/api/Feedback/approved');
   }
 
-  addFeedback(newFeedback : IFeedback) : Observable<String> {
+  addFeedback(newFeedback: IFeedback): Observable<String> {
     return this._http.post<String>('/api/Feedback', newFeedback);
   }
 }

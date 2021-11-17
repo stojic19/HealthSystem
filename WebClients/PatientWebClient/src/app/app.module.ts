@@ -13,7 +13,9 @@ import { FeedbackComponent } from './components/feedback/feedback.component';
 import { PatientFeedbackComponent } from './components/patient-feedback/patient-feedback.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FeedbacksPageComponent } from './components/feedbacks-page/feedbacks-page.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SurveyComponent } from './components/survey/survey.component';
+import { SurveyPageComponent } from './components/survey-page/survey-page.component'
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { FormsModule } from '@angular/forms';
     FooterComponent,
     FeedbackComponent,
     PatientFeedbackComponent,
-    FeedbacksPageComponent
+    FeedbacksPageComponent,
+    SurveyComponent,
+    SurveyPageComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +37,8 @@ import { FormsModule } from '@angular/forms';
     MaterialModule,
     CommonModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [HttpClientModule],
   bootstrap: [AppComponent]

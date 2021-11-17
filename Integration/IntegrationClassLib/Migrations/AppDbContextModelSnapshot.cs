@@ -143,6 +143,9 @@ namespace Integration.Migrations
                     b.Property<Guid>("ApiKey")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("BaseUrl")
+                        .HasColumnType("text");
+
                     b.Property<int>("CityId")
                         .HasColumnType("integer");
 

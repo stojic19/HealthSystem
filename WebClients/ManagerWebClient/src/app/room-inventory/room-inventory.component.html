@@ -1,0 +1,18 @@
+<table class="table table-striped mt-5" style="width: 1000px">
+    <thead>
+        <tr>
+            <th class="col-md-4">Name</th>
+            <th class="col-md-4">Inventory type</th>
+            <th class="col-md-4">Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let inventory of roomInventories">
+            <td>{{inventory.inventoryItem.name}}</td>
+            <td *ngIf="inventory.inventoryItem.inventoryItemType==0">Static</td>
+            <td *ngIf="inventory.inventoryItem.inventoryItemType==1">Dynamic</td>
+            <td>{{inventory.amount}}</td>
+        </tr>
+    </tbody>
+</table>
+

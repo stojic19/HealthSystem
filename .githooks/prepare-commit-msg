@@ -9,10 +9,9 @@ FILE=$1
 FILE_CONTENT="$(cat $1)"
 OUTPUT=""
 
-GIT='git --git-dir='$PWD'/.git'
-
 if [[ $2 == "merge" ]];
 then
+    echo "Its a merge"
     if [[ $CURRBRANCH == "master" || $CURRBRANCH == "development" ]];
     then
         echo ""
@@ -83,6 +82,11 @@ then
 elif [[ $CURRBRANCH == "" ]];
 then
     echo ""
+    OUTPUT="$FILE_CONTENT"
+    if [[ $OUTPUT == "" ]]
+    then
+        OUTPUT="Finishing rebasing"
+    fi
 else
     echo ""
     echo -e "\t${RED}The branch isn't named correctly!"

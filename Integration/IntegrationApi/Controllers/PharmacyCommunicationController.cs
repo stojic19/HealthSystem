@@ -23,9 +23,9 @@ namespace Integration.Controllers
     [ApiController]
     public class PharmacyCommunicationController : ControllerBase
     {
-        private PharmacyMasterService _pharmacyMasterService;
-        private ComplaintMasterService _complaintMasterService;
-        private ComplaintResponseMasterService _complaintResponseMasterService;
+        private readonly PharmacyMasterService _pharmacyMasterService;
+        private readonly ComplaintMasterService _complaintMasterService;
+        private readonly ComplaintResponseMasterService _complaintResponseMasterService;
 
         public PharmacyCommunicationController(IUnitOfWork unitOfWork)
         {

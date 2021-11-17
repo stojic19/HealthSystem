@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Integration.MasterServices;
 using Integration.MicroServices;
 using Integration.Model;
+using Integration.Repositories;
+using Integration.Repositories.Base;
 using Integration.Repositories.DbImplementation;
+using Moq;
 using Shouldly;
 using Xunit;
 
@@ -13,6 +17,25 @@ namespace IntegrationClassLibTests
 {
     public class MedicationConsumptionTests
     {
+        [Fact]
+        public void Create_medication_report()
+        {
+            TimeRange september = TestData.getTimeRanges()[0];
+            List<Receipt> allLogs = TestData.GetReceiptLogs();
+            List<Receipt> retVal = new List<Receipt>();
+            retVal.Add(allLogs[0]);
+            retVal.Add(allLogs[2]);
+            retVal.Add(allLogs[4]);
+            var uow = new Mock<IUnitOfWork>();
+            var repo = new Mock<IReceiptReadRepository>();
+            uow.Setup(f => f.GetRepository<IReceiptReadRepository>()).Returns(repo.Object);
+            repo.Setup(f => f.GetReceiptLogsInTimeRange(september)).Returns(retVal);
+
+            MedicineConsumptionMasterService service = new MedicineConsumptionMasterService(uow.Object);
+            MedicineConsumptionReport report = service.CreateConsumptionReportInTimeRange(september);
+
+            report.MedicineConsumptions.Count().ShouldBe(3);
+        }
         [Theory]
         [MemberData(nameof(ReceiptLogData))]
         public void Find_all_receipts_in_time_range(TimeRange timeRange, IEnumerable<Receipt> receiptLogs,

@@ -55,6 +55,7 @@ namespace HospitalApi
 
 
             }); 
+            
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
             builder.Populate(services);
             var container = builder.Build();

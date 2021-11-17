@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { ComplaintsService } from './complaints.service';
+import { Component, OnInit } from '@angular/core';
+import { ComplaintsService } from 'src/app/services/complaints.service';
 
 @Component({
   selector: 'app-add-complaint',

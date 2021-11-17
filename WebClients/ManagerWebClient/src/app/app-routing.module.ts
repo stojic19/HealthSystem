@@ -10,6 +10,11 @@ import {HomePageComponent} from './components/home-page/home-page.component';
 import { EquipmentFormComponent } from './equipment-form/equipment-form.component';
 import { RoomInventoryComponent } from './room-inventory/room-inventory.component';
 import { RoomInfoComponent } from './room-info/room-info.component';
+import { ComplaintsListComponent } from './complaints/complaints-list/complaints-list.component';
+import { ComplaintDetailsComponent } from './complaints/complaint-details.component';
+import { AddComplaintComponent } from './complaints/add-complaint/add-complaint.component';
+import { PharmaciesListComponent } from './pharmacies/pharmacies-list.component';
+import { RegisterPharmacyComponent } from './pharmacies/register-pharmacy/register-pharmacy.component';
 
 const routes: Routes = [
   { path: 'overview', component: HospitalOverviewComponent },
@@ -17,6 +22,11 @@ const routes: Routes = [
   { path: 'firstBuilding', component: FirstBuildingComponent },
   { path: 'secondBuilding', component: SecondBuildingComponent },
   { path: 'roomInventory/:id', component: RoomInventoryComponent },
+  {path: 'complaints', component: ComplaintsListComponent},
+  {path: 'complaints/:id', component: ComplaintDetailsComponent},
+  {path: 'complaint-add', component: AddComplaintComponent},
+  {path: 'pharmacy-register', component: RegisterPharmacyComponent },
+  {path: 'pharmacy-list', component: PharmaciesListComponent },
   {path: 'home', component: HomePageComponent },
   {path: '', redirectTo: 'home', pathMatch: 'full'}
 ];

@@ -47,7 +47,7 @@ namespace Integration.Controllers
             IRestResponse response = SendRegistrationPost(pharmacyDTO, dto);
             if (response.StatusCode != System.Net.HttpStatusCode.OK)
             {
-                return Ok("Failed to contact pharmacy!");
+                return BadRequest("Failed to contact pharmacy!");
             }
             _pharmacyMasterService.SavePharmacy(pharmacy);
             return Ok("Pharmacy registered");

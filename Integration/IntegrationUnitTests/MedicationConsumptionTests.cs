@@ -59,6 +59,7 @@ namespace IntegrationUnitTests
             Context.Receipts.Add(receipt3);
             Context.Receipts.Add(receipt4);
             Context.Receipts.Add(receipt5);
+            Context.SaveChanges();
         }
         [Fact]
         public void Get_receipts_in_time_range_september()
@@ -70,6 +71,17 @@ namespace IntegrationUnitTests
             };
             var receipts = UoW.GetRepository<IReceiptReadRepository>().GetReceiptLogsInTimeRange(timeRange);
             receipts.Count().ShouldBe(3);
+        }
+        [Fact]
+        public void Get_receipts_in_time_range_october()
+        {
+            TimeRange timeRange = new TimeRange
+            {
+                startDate = new DateTime(2021, 10, 1),
+                endDate = new DateTime(2021, 11, 1)
+            };
+            var receipts = UoW.GetRepository<IReceiptReadRepository>().GetReceiptLogsInTimeRange(timeRange);
+            receipts.Count().ShouldBe(1);
         }
     }
 }

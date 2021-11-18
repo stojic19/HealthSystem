@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -10,6 +11,8 @@ using Integration.Model;
 using Integration.Repositories.Base;
 using IntegrationAPI.DTO;
 using RestSharp;
+using Newtonsoft.Json;
+using Renci.SshNet;
 
 namespace IntegrationAPI.Controllers
 {
@@ -35,33 +38,94 @@ namespace IntegrationAPI.Controllers
             return report;
         }
         [HttpPost]
-        public IActionResult SendConsumptionReport(ReportRequestDTO dto)
+        public IActionResult SendConsumptionReport(MedicineConsumptionReport report)
         {
-            MedicineConsumptionReport report = dto.MedicineConsumptionReport;
+            SftpCredentialsDTO sftpCredentials = getSftpCredentials();
             try
             {
-                _sftpMasterService.SaveMedicineReportToSftpServer(report);
+                SaveMedicineReportToSftpServer(report, sftpCredentials);
             }
             catch (Exception e)
             {
                 return BadRequest("Failed to contact sftp server");
             }
-            Pharmacy pharmacy = _pharmacyMasterService.GetPharmacyById(dto.PharmacyId);
-            RestClient client = new RestClient();
-            string targetUrl = pharmacy.BaseUrl + "/api/Sftp/ReceiveRequest";
-            RestRequest request = new RestRequest(targetUrl);
-            request.AddJsonBody(new SendReportDTO
-            {
-                ApiKey = pharmacy.ApiKey.ToString(),
-                FileName = "Report-" + report.createdDate.Ticks.ToString() + ".txt"
-            });
-            var result = client.Post(request);
+            SendToPharmacies(report, sftpCredentials);
+            /*var result = client.Post(request);
             if (result.StatusCode != HttpStatusCode.OK)
             {
                 return BadRequest("Pharmacy failed to receive dto");
-            }
-            return Ok();
+            }*/
+            return Ok("Request sent to pharmacies");
         }
+
+        private void SendToPharmacies(MedicineConsumptionReport report, SftpCredentialsDTO sftpCredentials)
+        {
+            var pharmacies = _pharmacyMasterService.GetPharmacies();
+            foreach (Pharmacy pharmacy in pharmacies)
+            {
+                RestClient client = new RestClient();
+                string targetUrl = pharmacy.BaseUrl + "/api/Sftp/ReceiveMedicineConsumptionReport";
+                RestRequest request = new RestRequest(targetUrl);
+                request.AddJsonBody(new ReportDTO
+                {
+                    ApiKey = pharmacy.ApiKey.ToString(),
+                    FileName = "Report-" + report.createdDate.Ticks.ToString() + ".txt",
+                    Host = sftpCredentials.Host
+                });
+                client.PostAsync<IActionResult>(request);
+            }
+        }
+
+        private SftpCredentialsDTO getSftpCredentials()
+        {
+            return new SftpCredentialsDTO
+            {
+                Host = "192.168.0.13",
+                Password = "password",
+                Username = "tester"
+            };
+        }
+
+        private void SaveMedicineReportToSftpServer(MedicineConsumptionReport report, SftpCredentialsDTO credentials)
+        {
+            string path = "MedicineReports" + Path.DirectorySeparatorChar + "Report-" +
+                          report.createdDate.Ticks.ToString() + ".txt";
+            try
+            {
+                SaveFile(report, path);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            try
+            {
+                SaveToSftp(path, credentials);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+        }
+        private void SaveFile(MedicineConsumptionReport consumptionReport, string path)
+        {
+            StreamWriter fileSaveStream = new StreamWriter(path);
+            string jsonString = JsonConvert.SerializeObject(consumptionReport);
+            fileSaveStream.Write(jsonString);
+            fileSaveStream.Close();
+        }
+        private void SaveToSftp(string path, SftpCredentialsDTO credentials)
+        {
+            SftpClient sftpClient = new SftpClient(new PasswordConnectionInfo(credentials.Host, credentials.Username, credentials.Password));
+            sftpClient.Connect();
+            Stream fileStream = System.IO.File.OpenRead(path);
+            string filePath = Path.GetFileName(path);
+            sftpClient.UploadFile(fileStream, filePath);
+            sftpClient.Disconnect();
+            fileStream.Close();
+        }
+
     }
 }
 /*[HttpPost]
@@ -81,7 +145,7 @@ namespace IntegrationAPI.Controllers
             RestClient client = new RestClient();
             string targetUrl = pharmacy.BaseUrl + "/api/Sftp/ReceiveRequest";
             RestRequest request = new RestRequest(targetUrl);
-            request.AddJsonBody(new SendReportDTO
+            request.AddJsonBody(new ReportDTO
             {
                 ApiKey = pharmacy.ApiKey.ToString(),
                 FileName = "Report-" + dto.createdDate.Ticks.ToString() + ".txt"

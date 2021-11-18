@@ -17,7 +17,10 @@ namespace IntegrationUnitTests
     {
         public UniquePharmacyTests(BaseFixture fixture) : base(fixture)
         {
-
+            Context.Pharmacies.RemoveRange(Context.Pharmacies);
+            Context.SaveChanges();
+            MakePharmacies();
+            Context.SaveChanges();
         }
         [Theory]
         [MemberData(nameof(Data))]
@@ -57,6 +60,74 @@ namespace IntegrationUnitTests
             retVal.Add(new object[] {unique, true});
             retVal.Add(new object[] {notUnique, false});
             return retVal;
+        }
+        private void MakePharmacies()
+        {
+            Pharmacy pharmacy1 = new Pharmacy
+            {
+                Id = 1,
+                Name = "Apoteka1",
+                City = new City
+                {
+                    Name = "Novi Sad",
+                    Country = new Country { Name = "Srbija" }
+                },
+                StreetName = "Nova",
+                StreetNumber = "29"
+            };
+            Pharmacy pharmacy2 = new Pharmacy
+            {
+                Id = 2,
+                Name = "Apoteka",
+                City = new City
+                {
+                    Name = "Novi Sad1",
+                    Country = new Country { Name = "Srbija" }
+                },
+                StreetName = "Nova",
+                StreetNumber = "29"
+            };
+            Pharmacy pharmacy3 = new Pharmacy
+            {
+                Id = 3,
+                Name = "Apoteka",
+                City = new City
+                {
+                    Name = "Novi Sad",
+                    Country = new Country { Name = "Srbija1" }
+                },
+                StreetName = "Nova",
+                StreetNumber = "29"
+            };
+            Pharmacy pharmacy4 = new Pharmacy
+            {
+                Id = 4,
+                Name = "Apoteka",
+                City = new City
+                {
+                    Name = "Novi Sad",
+                    Country = new Country { Name = "Srbija" }
+                },
+                StreetName = "Nova1",
+                StreetNumber = "29"
+            };
+            Pharmacy pharmacy5 = new Pharmacy
+            {
+                Id = 5,
+                Name = "Apoteka",
+                City = new City
+                {
+                    Name = "Novi Sad",
+                    Country = new Country { Name = "Srbija" }
+                },
+                StreetName = "Nova",
+                StreetNumber = "29b"
+            };
+            Context.Pharmacies.Add(pharmacy1);
+            Context.Pharmacies.Add(pharmacy2);
+            Context.Pharmacies.Add(pharmacy3);
+            Context.Pharmacies.Add(pharmacy4);
+            Context.Pharmacies.Add(pharmacy5);
         }
     }
 }

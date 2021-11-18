@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 
 namespace IntegrationAPI.DTO
 {
-    public class SendReportDTO
+    public class ReportDTO
     {
         public string ApiKey { get; set; }
         public string FileName { get; set; }
+        public string Host { get; set; }
     }
 }

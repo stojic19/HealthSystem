@@ -18,7 +18,10 @@ namespace IntegrationUnitTests
         
         public MedicationConsumptionTests(BaseFixture fixture) : base(fixture)
         {
-            
+            Context.Medicines.RemoveRange(Context.Medicines);
+            Context.SaveChanges();
+            MakeReceipts();
+            Context.SaveChanges();
         }
 
         [Theory]
@@ -47,8 +50,8 @@ namespace IntegrationUnitTests
         public void Calculate_medicine_consumptions()
         {
             var receipts = UoW.GetRepository<IReceiptReadRepository>().GetAll().Include(x => x.Medicine);
-            ReceiptMicroService receiptMicroService = new ReceiptMicroService();
-            IEnumerable<MedicineConsumption> medicineConsumptions = receiptMicroService.CalculateMedicineConsumptions(receipts);
+            MedicineConsumptionCalculationMicroService medicineConsumptionCalculationMicroService = new MedicineConsumptionCalculationMicroService();
+            IEnumerable<MedicineConsumption> medicineConsumptions = medicineConsumptionCalculationMicroService.CalculateMedicineConsumptions(receipts);
             medicineConsumptions.Count().ShouldBe(3);
         }
         [Fact]
@@ -68,6 +71,63 @@ namespace IntegrationUnitTests
             MedicineConsumptionMasterService service = new MedicineConsumptionMasterService(UoW);
             MedicineConsumptionReport report = service.CreateConsumptionReportInTimeRange(september);
             report.MedicineConsumptions.Count().ShouldBe(1);
+        }
+        private void MakeReceipts()
+        {
+            Medicine aspirin = new Medicine { Id = 1, Name = "Aspirin" };
+            Medicine probiotik = new Medicine { Id = 2, Name = "Probiotik" };
+            Medicine brufen = new Medicine { Id = 3, Name = "Brufen" };
+            Context.Medicines.Add(aspirin);
+            Context.Medicines.Add(probiotik);
+            Context.Medicines.Add(brufen);
+            Receipt receipt1 = new Receipt
+            {
+                Id = 1,
+                ReceiptDate = new DateTime(2021, 9, 30),
+                Medicine = brufen,
+                AmountSpent = 4
+            };
+            Receipt receipt2 = new Receipt
+            {
+                Id = 2,
+                ReceiptDate = new DateTime(2021, 5, 19),
+                Medicine = probiotik,
+                AmountSpent = 2
+            };
+            Receipt receipt3 = new Receipt
+            {
+                Id = 3,
+                ReceiptDate = new DateTime(2021, 9, 19),
+                Medicine = probiotik,
+                AmountSpent = 4
+            };
+            Receipt receipt4 = new Receipt
+            {
+                Id = 4,
+                ReceiptDate = new DateTime(2021, 10, 19),
+                Medicine = brufen,
+                AmountSpent = 1
+            };
+            Receipt receipt5 = new Receipt
+            {
+                Id = 5,
+                ReceiptDate = new DateTime(2021, 9, 5),
+                Medicine = aspirin,
+                AmountSpent = 2
+            };
+            Receipt receipt6 = new Receipt
+            {
+                Id = 6,
+                ReceiptDate = new DateTime(2021, 11, 5),
+                Medicine = aspirin,
+                AmountSpent = 5
+            };
+            Context.Receipts.Add(receipt1);
+            Context.Receipts.Add(receipt2);
+            Context.Receipts.Add(receipt3);
+            Context.Receipts.Add(receipt4);
+            Context.Receipts.Add(receipt5);
+            Context.Receipts.Add(receipt6);
         }
 
     }

@@ -22,11 +22,11 @@ namespace Integration.MasterServices
 
         public MedicineConsumptionReport CreateConsumptionReportInTimeRange(TimeRange timeRange)
         {
-            ReceiptMicroService receiptMicroService = new ReceiptMicroService();
+            MedicineConsumptionCalculationMicroService medicineConsumptionCalculationMicroService = new MedicineConsumptionCalculationMicroService();
             var repo = _unitOfWork.GetRepository<IReceiptReadRepository>();
             IEnumerable<Receipt> receiptsInTimeRange = repo.GetReceiptLogsInTimeRange(timeRange);
             IEnumerable<MedicineConsumption> medicineConsumptions =
-                receiptMicroService.CalculateMedicineConsumptions(receiptsInTimeRange);
+                medicineConsumptionCalculationMicroService.CalculateMedicineConsumptions(receiptsInTimeRange);
             MedicineConsumptionReport retVal = new MedicineConsumptionReport
             {
                 startDate = timeRange.startDate,

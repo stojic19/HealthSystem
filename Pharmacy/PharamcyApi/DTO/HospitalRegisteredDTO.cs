@@ -13,5 +13,6 @@ namespace PharmacyApi.DTO
         public string CityName { get; set; }
         public string StreetName { get; set; }
         public string StreetNumber { get; set; }
+        public string CountryName { get; set; }
     }
 }

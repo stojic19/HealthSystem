@@ -7,17 +7,8 @@ using Integration.Model;
 
 namespace Integration.MicroServices
 {
-    public class ReceiptMicroService
+    public class MedicineCalculationMicroService
     {
-        public IEnumerable<Receipt> GetReceiptLogsInTimeRange(TimeRange timeRange, IEnumerable<Receipt> receiptLogs)
-        {
-            List<Receipt> receiptLogsInTimeRange = new List<Receipt>();
-            foreach (var receiptLog in receiptLogs)
-                if (timeRange.startDate < receiptLog.ReceiptDate && receiptLog.ReceiptDate < timeRange.endDate)
-                    receiptLogsInTimeRange.Add(receiptLog);
-            return receiptLogsInTimeRange;
-        }
-
         public IEnumerable<MedicineConsumption> CalculateMedicineConsumptions(IEnumerable<Receipt> allLogs)
         {
             List<MedicineConsumption> medicineConsumptions = new List<MedicineConsumption>();

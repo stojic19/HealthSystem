@@ -1,15 +1,7 @@
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore;
-using HospitalApi;
+using Microsoft.AspNetCore.Hosting;
 
-namespace Test
+namespace PharmacyApi
 {
     public class Program
     {

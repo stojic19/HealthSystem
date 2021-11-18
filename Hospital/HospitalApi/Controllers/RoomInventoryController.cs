@@ -52,5 +52,60 @@ namespace HospitalApi.Controllers
 
         }
 
+        [HttpGet("hospitalInventory")]
+        public IActionResult GetHospitalInventory()
+        {
+
+            var roomInventoryRepo = _uow.GetRepository<IRoomInventoryReadRepository>();
+            return Ok(
+            roomInventoryRepo.GetAll().Select(ri => new RoomInventory()
+            {
+                Id = ri.Id,
+                Amount = ri.Amount,
+                InventoryItemId = ri.InventoryItemId,
+                Room = new Room()
+                {
+                    Name = ri.Room.Name,
+                    BuildingName = ri.Room.BuildingName
+                },
+                InventoryItem = new InventoryItem()
+                {
+                    Id = ri.InventoryItem.Id,
+                    InventoryItemType = ri.InventoryItem.InventoryItemType,
+                    Name = ri.InventoryItem.Name
+                }
+            }
+            ));
+
+        }
+
+        [HttpGet("find")]
+        public IActionResult FindByInventoryItemName([FromQuery(Name = "inventoryItemName")] string inventoryItemName)
+        {
+            var roomInventoryRepo = _uow.GetRepository<IRoomInventoryReadRepository>();
+            if (inventoryItemName == null)
+            {
+                return BadRequest();
+            }
+            return Ok(roomInventoryRepo.GetAll().Select(ri => new RoomInventory()
+            {
+                Id = ri.Id,
+                Amount = ri.Amount,
+                InventoryItemId = ri.InventoryItemId,
+                Room = new Room()
+                {
+                    Name = ri.Room.Name,
+                    BuildingName=ri.Room.BuildingName       
+                },
+                InventoryItem = new InventoryItem()
+                {
+                    Id = ri.InventoryItem.Id,
+                    InventoryItemType = ri.InventoryItem.InventoryItemType,
+                    Name = ri.InventoryItem.Name
+                }
+            }
+            ).Where(ri => ri.InventoryItem.Name.ToLower().Equals(inventoryItemName.ToLower())));
+        }
+
     }
 }

@@ -7,7 +7,7 @@ using Integration.Model;
 
 namespace Integration.MicroServices
 {
-    public class MedicineCalculationMicroService
+    public class MedicineConsumptionCalculationMicroService
     {
         public IEnumerable<MedicineConsumption> CalculateMedicineConsumptions(IEnumerable<Receipt> allLogs)
         {

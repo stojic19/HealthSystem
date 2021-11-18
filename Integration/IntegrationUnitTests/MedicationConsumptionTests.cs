@@ -50,8 +50,8 @@ namespace IntegrationUnitTests
         public void Calculate_medicine_consumptions()
         {
             var receipts = UoW.GetRepository<IReceiptReadRepository>().GetAll().Include(x => x.Medicine);
-            MedicineConsumptionCalculationMicroService medicineConsumptionCalculationMicroService = new MedicineConsumptionCalculationMicroService();
-            IEnumerable<MedicineConsumption> medicineConsumptions = medicineConsumptionCalculationMicroService.CalculateMedicineConsumptions(receipts);
+            MedicineConsumptionCalculationMicroService medicineConsumptionConsumptionCalculationMicroService = new MedicineConsumptionCalculationMicroService();
+            IEnumerable<MedicineConsumption> medicineConsumptions = medicineConsumptionConsumptionCalculationMicroService.CalculateMedicineConsumptions(receipts);
             medicineConsumptions.Count().ShouldBe(3);
         }
         [Fact]

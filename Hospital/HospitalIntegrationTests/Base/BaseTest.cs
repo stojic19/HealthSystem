@@ -19,6 +19,5 @@ namespace HospitalIntegrationTests.Base
         }
 
         protected IUnitOfWork UoW => _fixture.UoW;
-        protected AppDbContext Context => _fixture.Context;
     }
 }

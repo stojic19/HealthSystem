@@ -15,8 +15,6 @@ namespace Hospital.Model
         public int DoctorId { get; set; }
         public Doctor Doctor { get; set; }
 
-        public double Height { get; set; }
-        public double Weight { get; set; }
         public BloodType BloodType { get; set; }
         public JobStatus JobStatus { get; set; }    
         

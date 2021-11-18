@@ -1,15 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { INewPatient } from 'src/app/interfaces/new-patient';
+import { Gender } from 'src/app/interfaces/patient-interface';
 
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
-  styleUrls: ['./registration.component.css']
+  styleUrls: ['./registration.component.css'],
 })
 export class RegistrationComponent implements OnInit {
+  newPatient!: INewPatient;
+  dateOfBirth = new FormControl(new Date()); // dateOfBirth.value
 
-  constructor() { }
-
-  ngOnInit(): void {
+  constructor() {
+    this.newPatient = {} as INewPatient;
   }
 
+  ngOnInit(): void {}
+
+  register(): void {
+    console.log();
+  }
 }

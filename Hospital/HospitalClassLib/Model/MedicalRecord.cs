@@ -1,4 +1,5 @@
-﻿using Hospital.Model.Enumerations;
+﻿using System;
+using Hospital.Model.Enumerations;
 using System.Collections.Generic;
 
 namespace Hospital.Model
@@ -6,9 +7,10 @@ namespace Hospital.Model
     public class MedicalRecord
     {
         public int Id { get; set; }
-
-        public int PatientId { get; set; }
-        public Patient Patient { get; set; }
+        public virtual Patient Patient { get; set; }
+        
+        public double Height { get; set; }
+        public double Weight { get; set; }
 
         public int DoctorId { get; set; }
         public Doctor Doctor { get; set; }

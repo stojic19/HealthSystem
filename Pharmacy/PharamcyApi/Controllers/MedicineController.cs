@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Pharmacy.Model;
 using Pharmacy.Repositories;
 using Pharmacy.Repositories.Base;
@@ -27,19 +28,23 @@ namespace PharmacyApi.Controllers
         [HttpGet]
         public IEnumerable<Medicine> GetAll()
         {
-            return _uow.GetRepository<IMedicineReadRepository>().GetAll();
+            return _uow.GetRepository<IMedicineReadRepository>().GetAll().Include(medicine => medicine.Manufacturer);
         }
 
         [HttpGet("{id}")]
         public Medicine GetById(int id)
         {
-            return _uow.GetRepository<IMedicineReadRepository>().GetById(id);
+            return _uow.GetRepository<IMedicineReadRepository>().GetAll()
+                .Include(medicine => medicine.Manufacturer)
+                .FirstOrDefault(medicine => medicine.Id == id);
         }
 
         [HttpGet("{name}")]
         public Medicine GetByName(string name)
         {
-            return _uow.GetRepository<IMedicineReadRepository>().GetAll().FirstOrDefault(medicine => medicine.Name.Equals(name));
+            return _uow.GetRepository<IMedicineReadRepository>().GetAll()
+                .Include(medicine => medicine.Manufacturer)
+                .FirstOrDefault(medicine => medicine.Name.Equals(name));
         }
     }
 }

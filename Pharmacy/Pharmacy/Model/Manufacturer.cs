@@ -1,4 +1,6 @@
-﻿namespace Pharmacy.Model
+﻿using System.Collections.Generic;
+
+namespace Pharmacy.Model
 {
     public class Manufacturer
     {

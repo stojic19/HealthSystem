@@ -12,7 +12,7 @@ namespace Pharmacy.Model
         public List<string> Reactions { get; set; }
         public string Usage { get; set; }
         public List<string> MedicinesThatCanBeCombined { get; set; }
-        public double Weight { get; set; }
+        public double WeightInMilligrams { get; set; }
         public List<string> MainPrecautions { get; set; }
         public List<string> PotentialDangers { get; set; }
         public List<string> Substances { get; set; }

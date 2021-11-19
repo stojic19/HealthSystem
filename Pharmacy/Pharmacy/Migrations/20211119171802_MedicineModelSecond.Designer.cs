@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Pharmacy.EfStructures;
@@ -10,9 +11,10 @@ using Pharmacy.EfStructures;
 namespace Pharmacy.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211119171802_MedicineModelSecond")]
+    partial class MedicineModelSecond
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -245,7 +247,7 @@ namespace Pharmacy.Migrations
             modelBuilder.Entity("Pharmacy.Model.Medicine", b =>
                 {
                     b.HasOne("Pharmacy.Model.Manufacturer", "Manufacturer")
-                        .WithMany()
+                        .WithMany("Medicines")
                         .HasForeignKey("ManufacturerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -261,6 +263,11 @@ namespace Pharmacy.Migrations
             modelBuilder.Entity("Pharmacy.Model.Hospital", b =>
                 {
                     b.Navigation("Complaints");
+                });
+
+            modelBuilder.Entity("Pharmacy.Model.Manufacturer", b =>
+                {
+                    b.Navigation("Medicines");
                 });
 #pragma warning restore 612, 618
         }

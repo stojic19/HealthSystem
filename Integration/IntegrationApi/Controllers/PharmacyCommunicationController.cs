@@ -33,7 +33,7 @@ namespace Integration.Controllers
             _complaintMasterService = new ComplaintMasterService(unitOfWork);
             _complaintResponseMasterService = new ComplaintResponseMasterService(unitOfWork);
         }
-        [HttpPost]
+        [HttpPost, Produces("application/json")]
         public IActionResult RegisterPharmacy(PharmacyDTO pharmacyDTO)
         {
             Pharmacy pharmacy = PharmacyAdapter.PharmacyDTOToPharmacy(pharmacyDTO);
@@ -47,7 +47,7 @@ namespace Integration.Controllers
             IRestResponse response = SendRegistrationPost(pharmacyDTO, dto);
             if (response.StatusCode != System.Net.HttpStatusCode.OK)
             {
-                return Ok();
+                return BadRequest("Failed to contact pharmacy!");
             }
             _pharmacyMasterService.SavePharmacy(pharmacy);
             return Ok("Pharmacy registered");
@@ -96,7 +96,7 @@ namespace Integration.Controllers
 
             return Ok("Hospital responds to ping from " + existingPharmacy.Name);
         }
-        [HttpPost]
+        [HttpPost, Produces("application/json")]
         public IActionResult PostComplaint(CreateComplaintDTO createComplaintDTO)
         {
             Complaint complaint = ComplaintAdapter.CreateComplaintDTOToComplaint(createComplaintDTO, _pharmacyMasterService.GetPharmacyById(createComplaintDTO.PharmacyId));

@@ -10,6 +10,11 @@ import { HomePageComponent } from './components/home-page/home-page.component';
 import { EquipmentFormComponent } from './equipment-form/equipment-form.component';
 import { RoomInventoryComponent } from './room-inventory/room-inventory.component';
 import { RoomInfoComponent } from './room-info/room-info.component';
+import { ComplaintsListComponent } from './complaints/complaints-list/complaints-list.component';
+import { ComplaintDetailsComponent } from './complaints/complaint-details.component';
+import { AddComplaintComponent } from './complaints/add-complaint/add-complaint.component';
+import { PharmaciesListComponent } from './pharmacies/pharmacies-list.component';
+import { RegisterPharmacyComponent } from './pharmacies/register-pharmacy/register-pharmacy.component';
 import { HospitalEquipmentComponent } from './hospital-equipment/hospital-equipment.component';
 
 const routes: Routes = [
@@ -21,8 +26,13 @@ const routes: Routes = [
   { path: 'hospitalEquipment', component: HospitalEquipmentComponent },
   { path: 'firstBuilding/:roomName/:floor', component: FirstBuildingComponent },
   { path: 'secondBuilding/:roomName/:floor', component: SecondBuildingComponent },
+  { path: 'complaints', component: ComplaintsListComponent },
+  { path: 'complaints/:id', component: ComplaintDetailsComponent },
+  { path: 'complaint-add', component: AddComplaintComponent },
+  { path: 'pharmacy-register', component: RegisterPharmacyComponent },
+  { path: 'pharmacy-list', component: PharmaciesListComponent },
   { path: 'home', component: HomePageComponent },
-  { path: '', redirectTo: 'home', pathMatch: 'full' }
+  { path: '', redirectTo: 'home', pathMatch: 'full'}
 ];
 
 @NgModule({

@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { PharmacyService } from './pharmacy.service';
+import { PharmacyService } from 'src/app/services/pharmacy.service';
 
 @Component({
-  selector: 'app-register-pharamcy',
-  templateUrl: './register-pharamcy.component.html',
-  styleUrls: ['./register-pharamcy.component.css']
+  selector: 'app-register-pharmacy',
+  templateUrl: './register-pharmacy.component.html',
+  styleUrls: ['./register-pharmacy.component.css']
 })
-export class RegisterPharamcyComponent implements OnInit {
+export class RegisterPharmacyComponent implements OnInit {
 
   constructor(private _PharmacyService: PharmacyService) { }
 

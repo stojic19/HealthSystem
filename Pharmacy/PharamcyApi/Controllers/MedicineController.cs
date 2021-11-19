@@ -31,7 +31,7 @@ namespace PharmacyApi.Controllers
             return _uow.GetRepository<IMedicineReadRepository>().GetAll().Include(medicine => medicine.Manufacturer);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet]
         public Medicine GetById(int id)
         {
             return _uow.GetRepository<IMedicineReadRepository>().GetAll()
@@ -39,7 +39,7 @@ namespace PharmacyApi.Controllers
                 .FirstOrDefault(medicine => medicine.Id == id);
         }
 
-        [HttpGet("{name}")]
+        [HttpGet]
         public Medicine GetByName(string name)
         {
             return _uow.GetRepository<IMedicineReadRepository>().GetAll()

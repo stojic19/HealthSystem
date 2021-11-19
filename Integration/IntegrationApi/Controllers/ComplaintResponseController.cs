@@ -29,7 +29,7 @@ namespace IntegrationAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult PostComplaintResponse(ComplaintResponseDTO complaintResponseDTO)
+        public IActionResult ReceiveComplaintResponse(ComplaintResponseDTO complaintResponseDTO)
         {
             Pharmacy pharmacy = _pharmacyMasterService.FindPharmacyByApiKey(complaintResponseDTO.ApiKey.ToString());
             if (pharmacy == null) return BadRequest("Pharmacy not registered");

@@ -49,7 +49,7 @@ namespace IntegrationAPI.Controllers
             return complaint;
         }
         [HttpPost]
-        public IActionResult PostComplaint(CreateComplaintDTO createComplaintDTO)
+        public IActionResult SendComplaint(CreateComplaintDTO createComplaintDTO)
         {
             Pharmacy pharmacy = _pharmacyMasterService.GetPharmacyById(createComplaintDTO.PharmacyId);
             Complaint complaint = new Complaint
@@ -68,7 +68,7 @@ namespace IntegrationAPI.Controllers
                 Description = complaint.Description,
                 Title = complaint.Title,
             };
-            IRestResponse response = SendComplaintToPharmacy(complaint, complaintDTO);
+            IRestResponse response = SendComplaintToPharmacy(pharmacy.BaseUrl, complaintDTO);
             if (response.StatusCode != System.Net.HttpStatusCode.OK)
             {
                 _complaintMasterService.DeleteComplaint(complaint);
@@ -76,10 +76,10 @@ namespace IntegrationAPI.Controllers
             }
             return Ok("Complaint saved and sent to pharmacy!");
         }
-        private IRestResponse SendComplaintToPharmacy(Complaint complaint, ComplaintDTO complaintDTO)
+        private IRestResponse SendComplaintToPharmacy(string baseUrl, ComplaintDTO complaintDTO)
         {
             RestClient client = new RestSharp.RestClient();
-            RestRequest request = new RestRequest(complaint.Pharmacy.BaseUrl + "/api/Complaint/CreateComplaint");
+            RestRequest request = new RestRequest(baseUrl + "/api/Complaint/CreateComplaint");
             request.AddJsonBody(complaintDTO);
             IRestResponse response = client.Post(request);
             return response;

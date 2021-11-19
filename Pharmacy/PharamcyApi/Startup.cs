@@ -43,6 +43,10 @@ namespace PharmacyApi
             if (communicationMode == "DEFAULT")
             {
                 Configuration.GetSection("DefaultPharmacy").Bind(details);
+            } 
+            else if (communicationMode == "SMTP")
+            {
+                Configuration.GetSection("SMTPPharmacy").Bind(details);
             }
 
             services.AddSingleton<PharmacyDetails>(details);

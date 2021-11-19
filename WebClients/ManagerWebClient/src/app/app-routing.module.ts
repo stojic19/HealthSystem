@@ -24,13 +24,15 @@ const routes: Routes = [
   { path: 'secondBuilding', component: SecondBuildingComponent },
   { path: 'roomInventory/:id', component: RoomInventoryComponent },
   { path: 'hospitalEquipment', component: HospitalEquipmentComponent },
-  {path: 'complaints', component: ComplaintsListComponent},
-  {path: 'complaints/:id', component: ComplaintDetailsComponent},
-  {path: 'complaint-add', component: AddComplaintComponent},
-  {path: 'pharmacy-register', component: RegisterPharmacyComponent },
-  {path: 'pharmacy-list', component: PharmaciesListComponent },
-  {path: 'home', component: HomePageComponent },
-  {path: '', redirectTo: 'home', pathMatch: 'full'}
+  { path: 'firstBuilding/:roomName/:floor', component: FirstBuildingComponent },
+  { path: 'secondBuilding/:roomName/:floor', component: SecondBuildingComponent },
+  { path: 'complaints', component: ComplaintsListComponent },
+  { path: 'complaints/:id', component: ComplaintDetailsComponent },
+  { path: 'complaint-add', component: AddComplaintComponent },
+  { path: 'pharmacy-register', component: RegisterPharmacyComponent },
+  { path: 'pharmacy-list', component: PharmaciesListComponent },
+  { path: 'home', component: HomePageComponent },
+  { path: '', redirectTo: 'home', pathMatch: 'full'}
 ];
 
 @NgModule({

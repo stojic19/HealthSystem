@@ -66,7 +66,8 @@ namespace HospitalApi.Controllers
                 Room = new Room()
                 {
                     Name = ri.Room.Name,
-                    BuildingName = ri.Room.BuildingName
+                    BuildingName = ri.Room.BuildingName,
+                    FloorNumber = ri.Room.FloorNumber
                 },
                 InventoryItem = new InventoryItem()
                 {
@@ -95,7 +96,8 @@ namespace HospitalApi.Controllers
                 Room = new Room()
                 {
                     Name = ri.Room.Name,
-                    BuildingName=ri.Room.BuildingName       
+                    BuildingName = ri.Room.BuildingName,
+                    FloorNumber = ri.Room.FloorNumber
                 },
                 InventoryItem = new InventoryItem()
                 {
@@ -104,7 +106,7 @@ namespace HospitalApi.Controllers
                     Name = ri.InventoryItem.Name
                 }
             }
-            ).Where(ri => ri.InventoryItem.Name.ToLower().Equals(inventoryItemName.ToLower())));
+            ).Where(ri => ri.InventoryItem.Name.ToLower().Contains(inventoryItemName.ToLower())));
         }
 
     }

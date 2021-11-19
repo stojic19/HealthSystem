@@ -31,6 +31,16 @@ namespace IntegrationClassLibTests.UnitTests
                 .GetAll();
 
             benefits.ShouldNotBeNull();
+            benefits.Count().ShouldBe(3);
+        }
+
+        [Fact]
+        public void Get_visible_benefits()
+        {
+            var benefits = UoW.GetRepository<IBenefitReadRepository>()
+                .GetVisibleBenefits();
+
+            benefits.ShouldNotBeNull();
             benefits.Count().ShouldBe(2);
         }
 
@@ -52,7 +62,7 @@ namespace IntegrationClassLibTests.UnitTests
         public void Find_no_benefit_by_id()
         {
             var benefit = UoW.GetRepository<IBenefitReadRepository>()
-                .GetById(3);
+                .GetById(111);
 
             benefit.ShouldBeNull();
         }
@@ -75,6 +85,26 @@ namespace IntegrationClassLibTests.UnitTests
             benefitInBase.Description.ShouldBe("Description 1");
             benefitInBase.Title.ShouldBe("Title 1");
             benefitInBase.Published.ShouldBe(true);
+        }
+
+        [Fact]
+        public void Hide_benefit()
+        {
+            var benefit = UoW.GetRepository<IBenefitReadRepository>()
+                .GetById(1);
+
+            benefit.ShouldNotBeNull();
+            benefit.Hidden = true;
+
+            UoW.GetRepository<IBenefitWriteRepository>().Update(benefit);
+
+            var benefitInBase = UoW.GetRepository<IBenefitReadRepository>()
+                .GetById(1);
+
+            benefitInBase.ShouldNotBeNull();
+            benefitInBase.Description.ShouldBe("Description 1");
+            benefitInBase.Title.ShouldBe("Title 1");
+            benefitInBase.Hidden.ShouldBe(true);
         }
 
         private void MakeBenefits()
@@ -120,7 +150,18 @@ namespace IntegrationClassLibTests.UnitTests
                 StartTime = new DateTime(2021, 11, 27),
                 EndTime = new DateTime(2021, 12, 6)
             });
-            
+            Context.Benefits.Add(new Benefit()
+            {
+                Description = "Description 3",
+                Id = 3,
+                PharmacyId = 1,
+                Published = true,
+                Hidden = false,
+                Title = "Title 3",
+                StartTime = new DateTime(2021, 11, 27),
+                EndTime = new DateTime(2021, 12, 6)
+            });
+
             Context.SaveChanges();
         }
     }

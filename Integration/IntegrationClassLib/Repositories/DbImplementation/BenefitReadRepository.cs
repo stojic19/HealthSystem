@@ -1,6 +1,7 @@
 ﻿using Integration.EfStructures;
 using Integration.Model;
 using Integration.Repositories.Base;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,20 @@ namespace Integration.Repositories.DbImplementation
     {
         public BenefitReadRepository(AppDbContext context) : base(context)
         {
+        }
+
+        public IEnumerable<Benefit> GetVisibleBenefits()
+        {
+            DbSet<Benefit> allBenefits = GetAll();
+            List<Benefit> benefits = new List<Benefit>();
+            foreach (Benefit benefit in allBenefits)
+            {
+                if (!benefit.Hidden)
+                {
+                    benefits.Add(benefit);
+                }
+            }
+            return benefits;
         }
     }
 }

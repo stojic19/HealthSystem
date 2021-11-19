@@ -19,6 +19,8 @@ const routes: Routes = [
   { path: 'secondBuilding', component: SecondBuildingComponent },
   { path: 'roomInventory/:id', component: RoomInventoryComponent },
   { path: 'hospitalEquipment', component: HospitalEquipmentComponent },
+  { path: 'firstBuilding/:roomName/:floor', component: FirstBuildingComponent },
+  { path: 'secondBuilding/:roomName/:floor', component: SecondBuildingComponent },
   { path: 'home', component: HomePageComponent },
   { path: '', redirectTo: 'home', pathMatch: 'full' }
 ];

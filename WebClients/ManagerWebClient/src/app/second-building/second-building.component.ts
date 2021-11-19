@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Room } from '../interfaces/room';
 import { RoomsService } from '../services/rooms.service';
 
@@ -15,8 +16,26 @@ export class SecondBuildingComponent implements OnInit {
   public rooms!: Room[];
   public roomForDisplay = '';
   public changeFloor = '';
+  public floor = '';
 
-  constructor(public roomService: RoomsService) { }
+  constructor(public roomService: RoomsService, private route: ActivatedRoute) {
+    this.route.params.subscribe(params => {
+      if (params['floor'] == 1) {
+        this.selectedFloor = 'first';
+        this.floor = 'first';
+      }
+
+      if (params['floor'] == 2) {
+        this.selectedFloor = 'second';
+        this.floor = 'second';
+
+      }
+
+      if (params['roomName'] != '') {
+        this.roomForDisplay = params['roomName'];
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.selectedRoom = new Room();

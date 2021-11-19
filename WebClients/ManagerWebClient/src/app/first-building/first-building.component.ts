@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Room } from '../interfaces/room';
 
 @Component({
@@ -12,8 +13,26 @@ export class FirstBuildingComponent implements OnInit {
   public selectedRoom!: Room;
   public roomForDisplay = '';
   public changeFloor = '';
+  public floor = '';
 
-  constructor() { }
+  constructor(private route: ActivatedRoute) {
+    this.route.params.subscribe(params => {
+      if (params['floor'] == 1) {
+        this.selectedFloor = 'first';
+        this.floor = 'first';
+      }
+
+      if (params['floor'] == 2) {
+        this.selectedFloor = 'second';
+        this.floor = 'second';
+
+      }
+
+      if (params['roomName'] != '') {
+        this.roomForDisplay = params['roomName'];
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.selectedRoom = new Room();

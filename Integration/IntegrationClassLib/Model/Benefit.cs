@@ -14,6 +14,9 @@ namespace Integration.Model
         public int PharmacyId { get; set; }
         public Pharmacy Pharmacy { get; set; }
         public bool Published { get; set; }
+        public bool Hidden { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
 
     }
 }

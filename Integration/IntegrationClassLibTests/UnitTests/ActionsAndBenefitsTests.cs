@@ -43,6 +43,9 @@ namespace IntegrationClassLibTests.UnitTests
             benefit.ShouldNotBeNull();
             benefit.Description.ShouldBe("Description 1");
             benefit.Title.ShouldBe("Title 1");
+            benefit.Pharmacy.Name.ShouldBe("Test pharmacy");
+            benefit.Pharmacy.City.Name.ShouldBe("Test city");
+            benefit.Pharmacy.City.Country.Name.ShouldBe("Test country");
         }
 
         [Fact]
@@ -52,6 +55,26 @@ namespace IntegrationClassLibTests.UnitTests
                 .GetById(3);
 
             benefit.ShouldBeNull();
+        }
+
+        [Fact]
+        public void Publish_benefit()
+        {
+            var benefit = UoW.GetRepository<IBenefitReadRepository>()
+                .GetById(1);
+
+            benefit.ShouldNotBeNull();
+            benefit.Published = true;
+
+            UoW.GetRepository<IBenefitWriteRepository>().Update(benefit);
+
+            var benefitInBase = UoW.GetRepository<IBenefitReadRepository>()
+                .GetById(1);
+
+            benefitInBase.ShouldNotBeNull();
+            benefitInBase.Description.ShouldBe("Description 1");
+            benefitInBase.Title.ShouldBe("Title 1");
+            benefitInBase.Published.ShouldBe(true);
         }
 
         private void MakeBenefits()
@@ -71,7 +94,7 @@ namespace IntegrationClassLibTests.UnitTests
                 Id = 1,
                 ApiKey = new Guid(),
                 BaseUrl = "baseUrl",
-                Name = "Test Pharmacy",
+                Name = "Test pharmacy",
                 StreetName = "Test Street Name",
                 StreetNumber = "1"
             });
@@ -81,7 +104,10 @@ namespace IntegrationClassLibTests.UnitTests
                 Id = 1,
                 PharmacyId = 1,
                 Published = false,
-                Title = "Title 1"
+                Hidden = false,
+                Title = "Title 1",
+                StartTime = new DateTime(2021, 11, 17),
+                EndTime = new DateTime(2021, 11, 29)
             });
             Context.Benefits.Add(new Benefit()
             {
@@ -89,7 +115,10 @@ namespace IntegrationClassLibTests.UnitTests
                 Id = 2,
                 PharmacyId = 1,
                 Published = true,
-                Title = "Title 2"
+                Hidden = false,
+                Title = "Title 2",
+                StartTime = new DateTime(2021, 11, 27),
+                EndTime = new DateTime(2021, 12, 6)
             });
             
             Context.SaveChanges();

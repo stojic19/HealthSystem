@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Pharmacy.Model;
 using Pharmacy.Repositories;
@@ -6,8 +7,8 @@ using Pharmacy.Repositories.Base;
 
 namespace PharmacyApi.Controllers
 {
+    [Route("api/[controller]/[action]")]
     [ApiController]
-    [Route("[controller]")]
     public class MedicineController : Controller
     {
         private readonly IUnitOfWork _uow;
@@ -33,6 +34,12 @@ namespace PharmacyApi.Controllers
         public Medicine GetById(int id)
         {
             return _uow.GetRepository<IMedicineReadRepository>().GetById(id);
+        }
+
+        [HttpGet("{name}")]
+        public Medicine GetByName(string name)
+        {
+            return _uow.GetRepository<IMedicineReadRepository>().GetAll().FirstOrDefault(medicine => medicine.Name.Equals(name));
         }
     }
 }

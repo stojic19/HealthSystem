@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace PharmacyApi.DTO
 {
-    public class CreateMedicineDTO
+    public class UpdateMedicineDTO
     {
         [Required(ErrorMessage = "It is necessary to specify the name of medicine!")]
         public string Name { get; set; }
-        [Required(ErrorMessage = "It is necessary to specify the name of manufacturer!")]
-        public string ManufacturerName { get; set; }
         public List<string> SideEffects { get; set; }
         public List<string> Reactions { get; set; }
         public string Usage { get; set; }
@@ -19,9 +17,6 @@ namespace PharmacyApi.DTO
         public double WeightInMilligrams { get; set; }
         public List<string> MainPrecautions { get; set; }
         public List<string> PotentialDangers { get; set; }
-        public List<string> Substances { get; set; }
-        [Required(ErrorMessage = "It is necessary to specify the type of medicine!")]
-        public string Type { get; set; }
         [Range(0, int.MaxValue, ErrorMessage = "Only positive number allowed.")]
         public int Quantity { get; set; }
     }

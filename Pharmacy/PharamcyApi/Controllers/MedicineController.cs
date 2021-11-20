@@ -31,10 +31,10 @@ namespace PharmacyApi.Controllers
             }
             catch
             {
-                return BadRequest("Manufacturer doesn't exist!");
+                return ValidationProblem("Manufacturer doesn't exist!");
             }
 
-            if (!IsMedicineUnique(medicineDTO.Name)) return BadRequest("Medicine already exists!");
+            if (!IsMedicineUnique(medicineDTO.Name)) return ValidationProblem("Medicine already exists!");
             
             //create
             Medicine medicineCreated = CreateMedicine(medicineDTO, manufacturerId);
@@ -44,6 +44,23 @@ namespace PharmacyApi.Controllers
             return Ok("Medicine succesfully created!");
         }
 
+        [HttpPost]
+        public IActionResult Update(UpdateMedicineDTO updateMedicineDTO)
+        {
+            if (IsMedicineUnique(updateMedicineDTO.Name)) return ValidationProblem("Medicine with given name doesn't exist!");
+            //TO DO:update
+            return Ok("Medicine updated succesfully!");
+        }
+        
+        [HttpDelete]
+        public IActionResult RemoveByName(string medicineName)
+        {
+            if (IsMedicineUnique(medicineName)) return ValidationProblem("Medicine with given name doesn't exist!");
+            var removedMedicine = GetByName(medicineName);
+            _uow.GetRepository<IMedicineWriteRepository>().Delete(removedMedicine);
+
+            return Ok("Medicine removed succesfully!");
+        }
    
 
         [HttpGet]

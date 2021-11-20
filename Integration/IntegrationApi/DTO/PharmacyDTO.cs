@@ -11,7 +11,7 @@ namespace IntegrationAPI.DTO
         public string BaseUrl { get; set; }
         public string PharmacyName { get; set; }
         public string CityName { get; set; }
-        //TODO POSTAL CODE
+        public int PostalCode { get; set; }
         public string StreetName { get; set; }
         public string StreetNumber { get; set; }
         public string CountryName { get; set; }

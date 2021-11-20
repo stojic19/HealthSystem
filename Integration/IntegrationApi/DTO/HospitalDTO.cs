@@ -12,6 +12,6 @@ namespace IntegrationAPI.DTO
         public string StreetNumber { get; set; }
         public string StreetName { get; set; }
         public string CityName { get; set; }
-        //public string BaseUrl { get; set; }
+        public string BaseUrl { get; set; }
     }
 }

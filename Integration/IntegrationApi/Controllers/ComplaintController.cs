@@ -57,14 +57,14 @@ namespace IntegrationAPI.Controllers
                 Title = createComplaintDTO.Title,
                 Description = createComplaintDTO.Description,
                 PharmacyId = pharmacy.Id,
-                CreatedDate = DateTime.Now,
-                ManagerId = Program.ManagerId
+                CreatedDate = DateTime.Now.ToUniversalTime(),
+                ManagerId = 1
             };
             _complaintMasterService.SaveComplaint(complaint);
             ComplaintDTO complaintDTO = new ComplaintDTO
             {
                 ApiKey = complaint.Pharmacy.ApiKey,
-                CreatedDate = complaint.CreatedDate,
+                CreatedDateTime = complaint.CreatedDate.ToUniversalTime(),
                 Description = complaint.Description,
                 Title = complaint.Title,
             };

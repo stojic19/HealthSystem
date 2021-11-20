@@ -24,14 +24,10 @@ namespace Integration.Controllers
     public class RegistrationController : ControllerBase
     {
         private PharmacyMasterService _pharmacyMasterService;
-        private ComplaintMasterService _complaintMasterService;
-        private ComplaintResponseMasterService _complaintResponseMasterService;
 
         public RegistrationController(IUnitOfWork unitOfWork)
         {
             _pharmacyMasterService = new PharmacyMasterService(unitOfWork);
-            _complaintMasterService = new ComplaintMasterService(unitOfWork);
-            _complaintResponseMasterService = new ComplaintResponseMasterService(unitOfWork);
         }
 
         [HttpPost]
@@ -42,7 +38,7 @@ namespace Integration.Controllers
             City city = new City {Name = "Novi Sad", PostalCode = 21000, Country = country};
             HospitalDTO dto = new HospitalDTO
             {
-                //TODO BaseUrl = $"{Request.Scheme}://{Request.Host}",
+                BaseUrl = $"{Request.Scheme}://{Request.Host}",
                 Name = "Nasa bolnica",
                 StreetName = "Vojvode Stepe",
                 StreetNumber = "14",
@@ -60,7 +56,7 @@ namespace Integration.Controllers
                 BaseUrl = pharmacyDto.BaseUrl,
                 StreetName = pharmacyDto.StreetName,
                 StreetNumber = pharmacyDto.StreetNumber,
-                City = new City {Name = pharmacyDto.CityName, Country = new Country {Name = pharmacyDto.CountryName}},//TODO:POSTAL CODE
+                City = new City { PostalCode = pharmacyDto.PostalCode, Name = pharmacyDto.CityName, Country = new Country {Name = pharmacyDto.CountryName}},//TODO:POSTAL CODE
                 ApiKey = pharmacyDto.ApiKey
             };
             _pharmacyMasterService.SavePharmacy(newPaPharmacy);

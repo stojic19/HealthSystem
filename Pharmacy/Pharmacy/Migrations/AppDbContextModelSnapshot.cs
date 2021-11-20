@@ -241,6 +241,21 @@ namespace Pharmacy.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
+                    b.Property<List<string>>("PotentialDangers")
+                        .HasColumnType("text[]");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
+                    b.Property<List<string>>("Reactions")
+                        .HasColumnType("text[]");
+
+                    b.Property<List<string>>("SideEffects")
+                        .HasColumnType("text[]");
+
+                    b.Property<List<string>>("Substances")
+                        .HasColumnType("text[]");
+
                     b.Property<string>("Type")
                         .HasColumnType("text");
 

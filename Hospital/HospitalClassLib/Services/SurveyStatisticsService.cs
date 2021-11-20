@@ -19,20 +19,17 @@ namespace Hospital.Services
         public double GetAvgQuestionRating(int questionId)
         {
             var answeredQuestionRepo = _uow.GetRepository<IAnsweredQuestionReadRepository>();
-            double avgRating = answeredQuestionRepo.GetAll().Where(x => x.QuestionId == questionId).Average(b => b.Rating);
-            return avgRating;
+            return answeredQuestionRepo.GetAvgQuestionRating(questionId);
         }
         public double GetAvgSectionRating(SurveyCategory surveyCategory)
         {
             var answeredQuestionRepo = _uow.GetRepository<IAnsweredQuestionReadRepository>();
-            double avgRating = answeredQuestionRepo.GetAll().Where(x => x.Category == surveyCategory).Average(b => b.Rating);
-            return avgRating;
+            return answeredQuestionRepo.GetAvgSectionRating(surveyCategory);
         }
         public double GetNumOfRatingForQuestion(int questionId, int rating)
         {
-            var answeredQuestionRepo = _uow.GetRepository<IAnsweredQuestionReadRepository>();
-            double numOfRating = answeredQuestionRepo.GetAll().Where(x => x.Rating == rating && x.QuestionId == questionId).Count();
-            return numOfRating;
+            var answeredQuestionRepo = _uow.GetRepository<IAnsweredQuestionReadRepository>();   
+            return answeredQuestionRepo.GetNumOfRatingForQuestion(questionId,rating);
         }
     }
 }

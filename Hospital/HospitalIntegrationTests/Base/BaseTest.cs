@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Net;
+using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
-using Hospital.EfStructures;
 using Hospital.Repositories.Base;
+using Newtonsoft.Json;
 using Xunit;
 
 namespace HospitalIntegrationTests.Base

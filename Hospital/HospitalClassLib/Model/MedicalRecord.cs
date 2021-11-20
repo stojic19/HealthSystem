@@ -12,7 +12,7 @@ namespace Hospital.Model
         public double Height { get; set; }
         public double Weight { get; set; }
 
-        public int DoctorId { get; set; }
+        public Guid DoctorId { get; set; }
         public Doctor Doctor { get; set; }
 
         public BloodType BloodType { get; set; }

@@ -129,32 +129,3 @@ namespace IntegrationAPI.Controllers
 
     }
 }
-/*[HttpPost]
-       public IActionResult SendConsumptionReport(ReportRequestDTO dto)
-        {
-            Pharmacy pharmacy = _pharmacyMasterService.GetPharmacyById(dto.PharmacyId);
-            MedicineConsumptionReport dto =
-                _medicineConsumptionMasterService.CreateConsumptionReportInTimeRange(dto.TimeRange);
-            try
-            {
-                _sftpMasterService.SaveMedicineReportToSftpServer(dto);
-            }
-            catch (Exception e)
-            {
-                return BadRequest("Failed to contact sftp server");
-            }
-            RestClient client = new RestClient();
-            string targetUrl = pharmacy.BaseUrl + "/api/Sftp/ReceiveRequest";
-            RestRequest request = new RestRequest(targetUrl);
-            request.AddJsonBody(new ReportDTO
-            {
-                ApiKey = pharmacy.ApiKey.ToString(),
-                FileName = "Report-" + dto.createdDate.Ticks.ToString() + ".txt"
-            });
-            var result = client.Post(request);
-            if (result.StatusCode != HttpStatusCode.OK)
-            {
-                return BadRequest("Pharmacy failed to receive dto");
-            }
-            return Ok();
-        }*/

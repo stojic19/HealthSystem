@@ -1,1 +1,0 @@
-{"startDate":"2021-08-01T00:00:00Z","endDate":"2021-12-01T01:00:00Z","createdDate":"2021-11-20T17:58:47.8913395+01:00","MedicineConsumptions":[{"Medicine":{"Id":4,"Name":"Penicilin"},"Amount":15},{"Medicine":{"Id":1,"Name":"Aspirin"},"Amount":7},{"Medicine":{"Id":3,"Name":"Brufen"},"Amount":5},{"Medicine":{"Id":2,"Name":"Probiotik"},"Amount":4}]}

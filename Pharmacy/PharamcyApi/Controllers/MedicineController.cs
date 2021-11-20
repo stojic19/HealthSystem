@@ -37,18 +37,21 @@ namespace PharmacyApi.Controllers
             if (!IsMedicineUnique(medicineDTO.Name)) return ValidationProblem("Medicine already exists!");
             
             //create
-            Medicine medicineCreated = CreateMedicine(medicineDTO, manufacturerId);
+            Medicine medicineCreated = CreateNewMedicine(medicineDTO, manufacturerId);
             _uow.GetRepository<IMedicineWriteRepository>().Add(medicineCreated);
 
 
             return Ok("Medicine succesfully created!");
         }
 
-        [HttpPost]
+        [HttpPut]
         public IActionResult Update(UpdateMedicineDTO updateMedicineDTO)
         {
             if (IsMedicineUnique(updateMedicineDTO.Name)) return ValidationProblem("Medicine with given name doesn't exist!");
-            //TO DO:update
+
+            var updatedMedicine = CreateUpdatedMedicine(updateMedicineDTO);
+            _uow.GetRepository<IMedicineWriteRepository>().Update(updatedMedicine);
+
             return Ok("Medicine updated succesfully!");
         }
         
@@ -56,6 +59,7 @@ namespace PharmacyApi.Controllers
         public IActionResult RemoveByName(string medicineName)
         {
             if (IsMedicineUnique(medicineName)) return ValidationProblem("Medicine with given name doesn't exist!");
+
             var removedMedicine = GetByName(medicineName);
             _uow.GetRepository<IMedicineWriteRepository>().Delete(removedMedicine);
 
@@ -112,7 +116,7 @@ namespace PharmacyApi.Controllers
         }
 
 
-        private static Medicine CreateMedicine(CreateMedicineDTO medicineDTO, int manufacturerId)
+        private  Medicine CreateNewMedicine(CreateMedicineDTO medicineDTO, int manufacturerId)
         {
             return new Medicine()
             {
@@ -129,6 +133,21 @@ namespace PharmacyApi.Controllers
                 Type = medicineDTO.Type,
                 Quantity = medicineDTO.Quantity
             };
+        }
+
+        private Medicine CreateUpdatedMedicine(UpdateMedicineDTO updateMedicineDTO)
+        {
+            var updatedMedicine = GetByName(updateMedicineDTO.Name);
+            updatedMedicine.SideEffects = updateMedicineDTO.SideEffects;
+            updatedMedicine.Reactions = updateMedicineDTO.Reactions;
+            updatedMedicine.Usage = updateMedicineDTO.Usage;
+            updatedMedicine.MedicinesThatCanBeCombined = updateMedicineDTO.MedicinesThatCanBeCombined;
+            updatedMedicine.WeightInMilligrams = updateMedicineDTO.WeightInMilligrams;
+            updatedMedicine.MainPrecautions = updateMedicineDTO.MainPrecautions;
+            updatedMedicine.PotentialDangers = updateMedicineDTO.PotentialDangers;
+            updatedMedicine.Quantity = updateMedicineDTO.Quantity;
+
+            return updatedMedicine;
         }
 
 

@@ -1,13 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace Pharmacy.Model
+namespace PharmacyApi.DTO
 {
-    public class Medicine
+    public class CreateMedicineDTO
     {
-        public int Id { get; set; }
+        [Required(ErrorMessage = "It is necessary to specify the name of medicine!")]
         public string Name { get; set; }
-        public int ManufacturerId { get; set; }
-        public Manufacturer Manufacturer { get; set; }
+        [Required(ErrorMessage = "It is necessary to specify the name of manufacturer!")]
+        public string ManufacturerName { get; set; }
         public List<string> SideEffects { get; set; }
         public List<string> Reactions { get; set; }
         public string Usage { get; set; }
@@ -16,8 +20,8 @@ namespace Pharmacy.Model
         public List<string> MainPrecautions { get; set; }
         public List<string> PotentialDangers { get; set; }
         public List<string> Substances { get; set; }
+        [Required(ErrorMessage = "It is necessary to specify the type of medicine!")]
         public string Type { get; set; }
         public int Quantity { get; set; }
-
     }
 }

@@ -5,5 +5,6 @@ namespace Pharmacy.Repositories
 {
     public interface IManufacturerReadRepository : IReadBaseRepository<int, Manufacturer>
     {
+        public Manufacturer GetManufacturerByName(string name);
     }
 }

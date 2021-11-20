@@ -42,6 +42,7 @@ namespace IntegrationClassLibTests.UnitTests
 
             benefits.ShouldNotBeNull();
             benefits.Count().ShouldBe(2);
+            benefits.ElementAt(0).Pharmacy.Name.ShouldBe("Test pharmacy");
         }
 
         [Fact]

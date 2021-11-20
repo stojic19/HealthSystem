@@ -18,7 +18,7 @@ namespace Integration.Repositories.DbImplementation
 
         public IEnumerable<Benefit> GetVisibleBenefits()
         {
-            DbSet<Benefit> allBenefits = GetAll();
+            IEnumerable<Benefit> allBenefits = GetAll().Include(x => x.Pharmacy);
             List<Benefit> benefits = new List<Benefit>();
             foreach (Benefit benefit in allBenefits)
             {

@@ -10,6 +10,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IntegrationAPI.Controllers
 {
+    [Route("api/[controller]/[action]")]
+    [ApiController]
     public class BenefitController : ControllerBase
     {
         private IUnitOfWork _uow;

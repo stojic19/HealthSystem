@@ -10,7 +10,7 @@ namespace Hospital.Model
         public ScheduledEventType ScheduledEventType { get; set; }
 
         public bool IsCanceled { get; set; }
-
+        public bool IsFinished { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 

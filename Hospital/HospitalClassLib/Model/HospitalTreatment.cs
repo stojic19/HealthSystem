@@ -11,7 +11,10 @@ namespace Hospital.Model
 
         public string Reason { get; set; }
         public Room Room { get; set; }
-        
+
+        public bool IsDone { get; set; }
+
+        public int MedicalRecordId{get; set;}
         public MedicalRecord MedicalRecord { get; set; }
     }
 }

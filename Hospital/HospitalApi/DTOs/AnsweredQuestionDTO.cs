@@ -1,9 +1,9 @@
-﻿using Hospital.Model.Enumerations;
+﻿using Hospital.Model;
+using Hospital.Model.Enumerations;
 
-
-namespace Hospital.Model
+namespace HospitalApi.DTOs
 {
-    public class AnsweredQuestion
+    public class AnsweredQuestionDTO
     {
         public int Id { get; set; }
         public int QuestionId { get; set; }
@@ -11,6 +11,6 @@ namespace Hospital.Model
         public int Rating { get; set; }
         public SurveyCategory Category { get; set; }
         public int AnsweredSurveyId { get; set; }
-        public AnsweredSurvey AnsweredSurvey { get; set; }
+        public AnsweredSurveyDTO AnsweredSurvey { get; set; }
     }
 }

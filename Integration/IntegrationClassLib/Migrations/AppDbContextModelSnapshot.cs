@@ -324,8 +324,6 @@ namespace Integration.Migrations
                 modelBuilder.Entity("Integration.Model.Pharmacy", b => { b.Navigation("Complaints"); });
 #pragma warning restore 612, 618
             });
-            }
-                );
         }
     }
 }

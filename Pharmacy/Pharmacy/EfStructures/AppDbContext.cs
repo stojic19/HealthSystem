@@ -18,7 +18,8 @@ namespace Pharmacy.EfStructures
         public DbSet<SideEffect> SideEffects { get; set; }
         public DbSet<Substance> Substances { get; set; }
         public DbSet<MedicineCombination> MedicineCombinations { get; set; }
-
+        public DbSet<MedicineReportFile> MedicineReportFiles { get; set; }
+        
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }

@@ -38,6 +38,7 @@ namespace IntegrationAPI.Controllers
             return report;
         }
         [HttpPost]
+        [Produces("application/json")]
         public IActionResult SendConsumptionReport(MedicineConsumptionReport report)
         {
             SftpCredentialsDTO sftpCredentials = getSftpCredentials();
@@ -64,11 +65,11 @@ namespace IntegrationAPI.Controllers
             foreach (Pharmacy pharmacy in pharmacies)
             {
                 RestClient client = new RestClient();
-                string targetUrl = pharmacy.BaseUrl + "/api/Sftp/ReceiveMedicineConsumptionReport";
+                string targetUrl = pharmacy.BaseUrl + "/api/Report/ReceiveMedicineConsumptionReport";
                 RestRequest request = new RestRequest(targetUrl);
                 request.AddJsonBody(new ReportDTO
                 {
-                    ApiKey = pharmacy.ApiKey.ToString(),
+                    ApiKey = pharmacy.ApiKey,
                     FileName = "Report-" + report.createdDate.Ticks.ToString() + ".txt",
                     Host = sftpCredentials.Host
                 });

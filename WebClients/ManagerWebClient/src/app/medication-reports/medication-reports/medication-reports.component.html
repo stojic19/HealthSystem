@@ -16,20 +16,22 @@
         <button class="btn btn-primary m-3" (click)="GetReport(start, end)"><strong>Get report</strong></button>
     </div>
     <div *ngIf="report">
-
-    </div>
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped table-hover" *ngIf="report">
-            <thead>
-                <th>Medicine name</th>
-                <th>Amount spent</th>
-            </thead>
-            <tbody>
-                <tr *ngFor='let consumption of report.medicineConsumptions'>
-                    <td>{{consumption.medicine.name}}</td>
-                    <td>{{consumption.amount}}</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover" *ngIf="report">
+                <thead>
+                    <th>Medicine name</th>
+                    <th>Amount spent</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor='let consumption of report.medicineConsumptions'>
+                        <td>{{consumption.medicine.name}}</td>
+                        <td>{{consumption.amount}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <button class="btn btn-primary m-3" (click)="SendReport()"><strong>Send report</strong></button>
+        </div>
     </div>
 </div>

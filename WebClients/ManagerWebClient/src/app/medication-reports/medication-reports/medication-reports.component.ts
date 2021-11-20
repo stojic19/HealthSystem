@@ -11,11 +11,10 @@ export class MedicationReportsComponent implements OnInit {
 
   constructor(private _MedicationReportService : MedicationReportService) { }
   report:any;
-  min:any;
-  max:any;
   ngOnInit(): void {
   }
-  GetReport(start: HTMLInputElement, end: HTMLInputElement){
+  GetReport(start: HTMLInputElement, end: HTMLInputElement)
+  {
     if(start.value == "" || end.value == "")
     {
       alert("Please enter date range");
@@ -33,5 +32,20 @@ export class MedicationReportsComponent implements OnInit {
       this.report = data
       console.log(this.report);
     });
+  }
+  SendReport()
+  {    
+    let report = 
+    {
+      startDate: this.report.startDate,
+      endDate: this.report.endDate,
+      createdDate: this.report.createdDate,
+      medicineConsumptions: this.report.medicineConsumptions
+    }
+    this._MedicationReportService.sendReport(report).subscribe(data => {
+      this.report = null;
+      console.log(data);
+      alert(data);
+    })
   }
 }

@@ -26,17 +26,20 @@ namespace PharmacyIntegrationTests
         {
             InsertCity("Novi Sad");
 
+            CheckAndDeleteHospitals("Test hospital");
+
             var newHospitalDTO = new RegisterHospitalDTO()
             {
                 Name = "Test hospital",
                 CityName = "Novi Sad",
                 StreetName = "test street",
-                StreetNumber = "12"
+                StreetNumber = "12",
+                BaseUrl = "some url"
             };
 
             var content = GetContent(newHospitalDTO);
 
-            var response = await Client.PostAsync("https://localhost:44303/api/Registration/RegisterHospital",content);
+            var response = await Client.PostAsync(BaseUrl + "api/Registration/RegisterHospital",content);
             var responseContent = await response.Content.ReadAsStringAsync();
             var responsePharmacyDTO = JsonConvert.DeserializeObject<HospitalRegisteredDTO>(responseContent);
 
@@ -47,7 +50,6 @@ namespace PharmacyIntegrationTests
             responsePharmacyDTO.StreetName.ShouldNotBeNullOrEmpty();
             responsePharmacyDTO.StreetNumber.ShouldNotBeNullOrEmpty();
             responsePharmacyDTO.CountryName.ShouldBe("Serbia");
-            responsePharmacyDTO.PharmacyName.ShouldBe("SMTP pharmacy");
 
             var hospitalInTheDb = UoW.GetRepository<IHospitalReadRepository>()
                 .GetAll()
@@ -76,6 +78,19 @@ namespace PharmacyIntegrationTests
                     Name = name,
                     PostalCode = 21000
                 };
+            }
+        }
+
+        private void CheckAndDeleteHospitals(string name)
+        {
+            var hospitals = UoW.GetRepository<IHospitalReadRepository>()
+                .GetAll()
+                .Where(x => x.Name == name);
+
+            if (hospitals.Any())
+            {
+                UoW.GetRepository<IHospitalWriteRepository>()
+                    .DeleteRange(hospitals);
             }
         }
     }

@@ -23,6 +23,7 @@ namespace PharmacyIntegrationTests.Base
         public IUnitOfWork UoW => _fixture.UoW;
         public HttpClient Client => _fixture.Client;
         public CookieContainer CookieContainer => _fixture.CookieContainer;
+        public string BaseUrl => "https://localhost:44303/";
 
         public void AddCookie(string name, string value, string domain)
         {

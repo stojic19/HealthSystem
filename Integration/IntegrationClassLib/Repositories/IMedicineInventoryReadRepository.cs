@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace Integration.Repositories
 {
-    public interface IMedicineReadRepository : IReadBaseRepository<int, Medicine>
+    public interface IMedicineInventoryReadRepository : IReadBaseRepository<int, MedicineInventory>
     {
-        public Medicine GetMedicineByName(string name);
+        public MedicineInventory GetMedicineByMedicineId(int id);
     }
 }

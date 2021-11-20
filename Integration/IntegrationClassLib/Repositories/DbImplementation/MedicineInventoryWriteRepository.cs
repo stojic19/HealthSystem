@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Integration.Repositories.DbImplementation
 {
-    class MedicineInventoryWriteRepository : WriteBaseRepository<MedicineInventory>, IMedicineInventoryWriteRepository
+    class MedicineWriteRepository : WriteBaseRepository<Medicine>, IMedicineWriteRepository
     {
-        public MedicineInventoryWriteRepository(AppDbContext context) : base(context)
+        public MedicineWriteRepository(AppDbContext context) : base(context)
         {
 
         }

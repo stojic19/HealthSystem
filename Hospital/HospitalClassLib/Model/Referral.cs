@@ -9,7 +9,7 @@ namespace Hospital.Model
         public bool IsUrgent { get; set; }
         public string Description { get; set; }
 
-        public int DoctorId { get; set; }
+        public Guid DoctorId { get; set; }
         public Doctor Doctor { get; set; }
     }
 }

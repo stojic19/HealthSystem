@@ -1,4 +1,7 @@
-﻿using Hospital.EfStructures;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using Hospital.EfStructures;
 using Hospital.Repositories.Base;
 using Xunit;
 

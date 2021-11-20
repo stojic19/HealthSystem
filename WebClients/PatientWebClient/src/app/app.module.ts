@@ -15,7 +15,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { FeedbacksPageComponent } from './components/feedbacks-page/feedbacks-page.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SurveyComponent } from './components/survey/survey.component';
-import { SurveyPageComponent } from './components/survey-page/survey-page.component'
+import { SurveyPageComponent } from './components/survey-page/survey-page.component';
+import { MainComponent } from './components/main/main.component';
+import { RegistrationComponent } from './components/registration/registration.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { SurveyPageComponent } from './components/survey-page/survey-page.compon
     PatientFeedbackComponent,
     FeedbacksPageComponent,
     SurveyComponent,
-    SurveyPageComponent
+    SurveyPageComponent,
+    MainComponent,
+    RegistrationComponent,
   ],
   imports: [
     BrowserModule,
@@ -38,9 +42,9 @@ import { SurveyPageComponent } from './components/survey-page/survey-page.compon
     CommonModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [HttpClientModule],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

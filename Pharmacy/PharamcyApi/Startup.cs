@@ -1,24 +1,23 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Autofac;
 using System.Reflection;
+using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting.Server.Features;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using Pharmacy.Infrastructure;
-using Pharmacy.Repositories.DbImplementation;
 using Pharmacy.Repositories.Base;
+using Pharmacy.Repositories.DbImplementation;
+using PharmacyApi.ConfigurationMappers;
 
-namespace HospitalApi
+namespace PharmacyApi
 {
     public class Startup
     {
@@ -32,12 +31,22 @@ namespace HospitalApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "PhramacyApi", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "PharmacyApi", Version = "v1" });
             });
+            
+            PharmacyDetails details = new PharmacyDetails();
+
+            var communicationMode = Configuration.GetValue<string>("PharmacyMode");
+            if (communicationMode == "DEFAULT")
+            {
+                Configuration.GetSection("DefaultPharmacy").Bind(details);
+            }
+
+            services.AddSingleton<PharmacyDetails>(details);
+
             var builder = new ContainerBuilder();
             builder.RegisterModule(new DbModule());
             builder.RegisterModule(new RepositoryModule()

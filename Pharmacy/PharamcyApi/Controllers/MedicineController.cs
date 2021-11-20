@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Pharmacy.Model;
 using Pharmacy.Repositories;
 using Pharmacy.Repositories.Base;
+using PharmacyApi.DTO;
 
 namespace PharmacyApi.Controllers
 {
@@ -26,25 +28,73 @@ namespace PharmacyApi.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Medicine> GetAll()
+        public IActionResult GetAll()
         {
-            return _uow.GetRepository<IMedicineReadRepository>().GetAll().Include(medicine => medicine.Manufacturer);
+            IEnumerable<Medicine> medicines = _uow.GetRepository<IMedicineReadRepository>().GetAll().Include(medicine => medicine.Manufacturer);
+
+            if (medicines.ToList().Count == 0)
+                return NotFound();
+
+            return Ok(medicines);
         }
 
         [HttpGet]
-        public Medicine GetById(int id)
+        public IActionResult GetById(int id)
         {
-            return _uow.GetRepository<IMedicineReadRepository>().GetAll()
+            Medicine medicine = _uow.GetRepository<IMedicineReadRepository>().GetAll()
                 .Include(medicine => medicine.Manufacturer)
                 .FirstOrDefault(medicine => medicine.Id == id);
+
+            if (medicine == null)
+                return NotFound();
+
+            return Ok(medicine);
         }
 
         [HttpGet]
-        public Medicine GetByName(string name)
+        public IActionResult GetByName(string name)
         {
-            return _uow.GetRepository<IMedicineReadRepository>().GetAll()
+            Medicine medicine = _uow.GetRepository<IMedicineReadRepository>().GetAll()
                 .Include(medicine => medicine.Manufacturer)
                 .FirstOrDefault(medicine => medicine.Name.Equals(name));
+            
+            if (medicine == null)
+                return NotFound();
+            
+            return Ok(medicine);
+        }
+
+        [HttpGet]
+        public IActionResult GetFilteredMedicine(string medicineName, string substanceName, string medicineType, string manufacturerName)
+        {
+            IEnumerable<Medicine> medicines = _uow.GetRepository<IMedicineReadRepository>().GetAll()
+                .Include(medicine => medicine.Manufacturer)
+                .Where(medicine => String.IsNullOrEmpty(medicineName) || medicine.Name.Equals(medicineName))
+                .Where(medicine => String.IsNullOrEmpty(substanceName) || medicine.Substances.Contains(substanceName))
+                .Where(medicine => String.IsNullOrEmpty(medicineType) || medicine.Type.Equals(medicineType))
+                .Where(medicine => String.IsNullOrEmpty(manufacturerName) || medicine.Manufacturer.Name.Equals(manufacturerName));
+
+            if (medicines.ToList().Count == 0)
+                return NotFound();
+
+            return Ok(medicines);
+        }
+
+        [HttpGet]
+        public IActionResult GetFilteredMedicineWithPaging(string medicineName, string substanceName, string medicineType, string manufacturerName, int pageNumber, int pageSize)
+        {
+            IEnumerable<Medicine> medicines = _uow.GetRepository<IMedicineReadRepository>().GetAll()
+                .Include(medicine => medicine.Manufacturer)
+                .Where(medicine => String.IsNullOrEmpty(medicineName) || medicine.Name.Equals(medicineName))
+                .Where(medicine => String.IsNullOrEmpty(substanceName) || medicine.Substances.Contains(substanceName))
+                .Where(medicine => String.IsNullOrEmpty(medicineType) || medicine.Type.Equals(medicineType))
+                .Where(medicine => String.IsNullOrEmpty(manufacturerName) || medicine.Manufacturer.Name.Equals(manufacturerName))
+                .Skip((pageNumber - 1) * pageSize);
+
+            if (medicines.ToList().Count == 0)
+                return NotFound();
+
+            return Ok(medicines);
         }
     }
 }

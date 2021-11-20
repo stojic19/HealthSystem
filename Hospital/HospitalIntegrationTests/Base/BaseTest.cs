@@ -1,10 +1,10 @@
-﻿using Hospital.EfStructures;
-using Hospital.Repositories.Base;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Hospital.EfStructures;
+using Hospital.Repositories.Base;
 using Xunit;
 
 namespace HospitalIntegrationTests.Base
@@ -17,8 +17,18 @@ namespace HospitalIntegrationTests.Base
         {
             _fixture = fixture;
         }
+        public IUnitOfWork UoW => _fixture.UoW;
+        public HttpClient Client => _fixture.Client;
+        public CookieContainer CookieContainer => _fixture.CookieContainer;
 
-        protected IUnitOfWork UoW => _fixture.UoW;
-        protected AppDbContext Context => _fixture.Context;
+        public void AddCookie(string name, string value, string domain)
+        {
+            CookieContainer.Add(new Cookie(name, value){Domain = domain});
+        }
+
+        public StringContent GetContent(object content)
+        {
+            return new StringContent(JsonConvert.SerializeObject(content), Encoding.UTF8, "application/json");
+        }
     }
 }

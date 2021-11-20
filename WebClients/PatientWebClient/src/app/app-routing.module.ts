@@ -5,17 +5,39 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { FeedbackComponent } from './components/feedback/feedback.component';
 import { MaterialModule } from './material/material.module';
+import { MainComponent } from './components/main/main.component';
+import { RegistrationComponent } from './components/registration/registration.component';
+import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 const routes: Routes = [
-  { path: 'home', component: HomePageComponent },
-  { path: 'survey', component: SurveyPageComponent },
-  { path: 'feedbacks', component: FeedbacksPageComponent },
-  { path: '', redirectTo: 'home', pathMatch: 'full' }];
-
+  {
+    path: '',
+    component: MainComponent,
+    children: [
+      {
+        path: '',
+        component: HomePageComponent,
+      },
+      {
+        path: 'feedbacks',
+        component: FeedbacksPageComponent,
+      },
+    ],
+  },
+  { path: 'registration', component: RegistrationComponent },
+];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes), MaterialModule],
-  exports: [RouterModule],
-  entryComponents: [FeedbackComponent]
+  imports: [
+    RouterModule.forRoot(routes),
+    MaterialModule,
+    FormsModule,
+    ReactiveFormsModule,
+    CommonModule,
+  ],
+  exports: [RouterModule, MaterialModule, FormsModule],
+  entryComponents: [FeedbackComponent],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

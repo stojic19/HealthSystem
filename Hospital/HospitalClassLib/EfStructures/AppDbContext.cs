@@ -1,9 +1,10 @@
 ﻿using Hospital.Model;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hospital.EfStructures
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<User>
     {
         public DbSet<Allergy> Allergies { get; set; }
         public DbSet<City> Cities { get; set; }

@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Text;
 using Autofac;
-using Microsoft.EntityFrameworkCore;
 using Hospital.EfStructures;
 using Hospital.Infrastructure;
-using Hospital.Model;
 using Hospital.Repositories.Base;
 using Hospital.Repositories.DbImplementation;
+using Microsoft.EntityFrameworkCore;
 
 namespace HospitalUnitTests.Base
 {
     public class BaseFixture : IDisposable
     {
-
         public AppDbContext Context { get; set; }
         public IUnitOfWork UoW { get; set; }
         private IContainer container { get; set; }

@@ -6,7 +6,7 @@ namespace Hospital.Model
     {
         public int Id { get; set; }
 
-        public int PatientId { get; set; }
+        public Guid PatientId { get; set; }
         public Patient Patient { get; set; }
 
         public DateTime StartDate { get; set; }

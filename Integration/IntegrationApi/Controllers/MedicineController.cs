@@ -28,16 +28,21 @@ namespace IntegrationAPI.Controllers
         [HttpPost]
         public IActionResult RequestMedicineInformation(CreateMedicineRequestForPharmacyDTO createMedicineRequestDTO)
         {
+            if (createMedicineRequestDTO.Quantity <= 0)
+            {
+                return BadRequest("Invalid quantity.");
+            }
             Pharmacy pharmacy = _pharmacyMasterService.GetPharmacyById(createMedicineRequestDTO.PharmacyId);
-            if(pharmacy==null)
+            if (pharmacy==null)
             {
                 return BadRequest("Pharmacy id doesn't exist.");
             }
             MedicineRequestForPharmacyDTO medicineRequestDTO = MedicineInventoryAdapter.CreateMedicineRequestToMedicineRequest(createMedicineRequestDTO, pharmacy);
             IRestResponse response = SendMedicineRequestToPharmacy(medicineRequestDTO, pharmacy);
-            if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            System.Diagnostics.Trace.WriteLine(response.StatusCode);
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
             {
-                return BadRequest("Pharmacy failed to receive complaint! Try again");
+                return BadRequest("Pharmacy failed to receive request! Try again");
             }
             MedicineInvetnoryResponseFromPharmacyDTO responseDTO = JsonConvert.DeserializeObject < MedicineInvetnoryResponseFromPharmacyDTO >(response.Content);
             return Ok(responseDTO);
@@ -55,6 +60,10 @@ namespace IntegrationAPI.Controllers
         [HttpPost]
         public IActionResult UrgentProcurementOfMedicine(CreateMedicineRequestForPharmacyDTO createMedicineRequestDTO)
         {
+            if (createMedicineRequestDTO.Quantity <= 0)
+            {
+                return BadRequest("Invalid quantity.");
+            }
             Pharmacy pharmacy = _pharmacyMasterService.GetPharmacyById(createMedicineRequestDTO.PharmacyId);
             if (pharmacy == null)
             {
@@ -62,9 +71,9 @@ namespace IntegrationAPI.Controllers
             }
             MedicineRequestForPharmacyDTO medicineRequestDTO = MedicineInventoryAdapter.CreateMedicineRequestToMedicineRequest(createMedicineRequestDTO, pharmacy);
             IRestResponse response = SendUrgentProcurementRequestToPharmacy(medicineRequestDTO, pharmacy);
-            if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
             {
-                return BadRequest("Pharmacy failed to receive complaint! Try again");
+                return BadRequest("Pharmacy failed to receive request! Try again");
             }
             MedicineInvetnoryResponseFromPharmacyDTO responseDTO = JsonConvert.DeserializeObject<MedicineInvetnoryResponseFromPharmacyDTO>(response.Content);
             if(responseDTO.answer == true)

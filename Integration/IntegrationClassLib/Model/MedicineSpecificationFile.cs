@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Integration.Model
 {
-    public class MedicineConsumptionFile
+    public class MedicineSpecificationFile
     {
         public string FileName { get; set; }
         public string Host { get; set; }

@@ -10,6 +10,13 @@ namespace Pharmacy.Model
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<Medicine> Medicines { get; set; }
+        public SideEffect()
+        {
+                
+        }
+        public SideEffect(string name)
+        {
+            Name = name;
+        }
     }
 }

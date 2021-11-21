@@ -10,5 +10,6 @@ namespace Pharmacy.Repositories
 {
     public interface IMedicinePotentialDangerReadRepository : IReadBaseRepository<int, MedicinePotentialDanger>
     {
+        MedicinePotentialDanger GetMedicinePotentialDangerByName(string name);
     }
 }

@@ -5,5 +5,6 @@ namespace Pharmacy.Repositories
 {
     public interface IMedicineReadRepository : IReadBaseRepository<int, Medicine>
     {
+        public Medicine GetMedicineByName(string name);
     }
 }

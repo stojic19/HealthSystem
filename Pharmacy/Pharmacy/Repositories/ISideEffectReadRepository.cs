@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace Pharmacy.Repositories
 {
-    public interface IPrecautionReadRepository: IReadBaseRepository<int, Precaution>
+    public interface ISideEffectReadRepository : IReadBaseRepository<int, SideEffect>
     {
-        Precaution GetPrecautionByName(string name);
+        SideEffect GetSideEffectByName(string name);
     }
 }

@@ -9,16 +9,17 @@ using System.Threading.Tasks;
 
 namespace Pharmacy.Repositories.DbImplementation
 {
-    public class PrecautionReadRepository : ReadBaseRepository<int, Precaution>, IPrecautionReadRepository
+    public class ManufacturerReadRepository : ReadBaseRepository<int, Manufacturer>, IManufacturerReadRepository    
     {
-        public PrecautionReadRepository(AppDbContext context) : base(context)
+        public ManufacturerReadRepository(AppDbContext context) : base(context)
         {
+            
         }
 
-        public Precaution GetPrecautionByName(string name)
+        public Manufacturer GetManufacturerByName(string name)
         {
             return GetAll()
-                .FirstOrDefault(x => x.Name.Equals(name));
+                .FirstOrDefault(x => x.Name == name);
         }
     }
 }

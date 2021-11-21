@@ -16,6 +16,7 @@ namespace Pharmacy.Model
         public List<MedicinePotentialDanger> MedicinePotentialDangers { get; set; }
         public List<Substance> Substances { get; set; }
         public string Type { get; set; }
+        public int Quantity { get; set; }
 
     }
 }

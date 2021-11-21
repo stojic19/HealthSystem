@@ -43,6 +43,8 @@ namespace IntegrationClassLibTests.UnitTests
             benefits.ShouldNotBeNull();
             benefits.Count().ShouldBe(2);
             benefits.ElementAt(0).Pharmacy.Name.ShouldBe("Test pharmacy");
+            benefits.ElementAt(0).Pharmacy.City.Name.ShouldBe("Test city");
+            benefits.ElementAt(0).Pharmacy.City.Country.Name.ShouldBe("Test country");
         }
 
         [Fact]

@@ -17,6 +17,7 @@ import { PharmaciesListComponent } from './pharmacies/pharmacies-list.component'
 import { RegisterPharmacyComponent } from './pharmacies/register-pharmacy/register-pharmacy.component';
 import { HospitalEquipmentComponent } from './hospital-equipment/hospital-equipment.component';
 import { BenefitListComponent } from './benefits/benefit-list/benefit-list.component';
+import { BenefitDetailsComponent } from './benefits/benefit-details/benefit-details.component';
 
 const routes: Routes = [
   { path: 'overview', component: HospitalOverviewComponent },
@@ -33,6 +34,7 @@ const routes: Routes = [
   { path: 'pharmacy-register', component: RegisterPharmacyComponent },
   { path: 'pharmacy-list', component: PharmaciesListComponent },
   { path: 'benefit-list', component: BenefitListComponent },
+  { path: 'benefit/:id', component: BenefitDetailsComponent },
   { path: 'home', component: HomePageComponent },
   { path: '', redirectTo: 'home', pathMatch: 'full'}
 ];

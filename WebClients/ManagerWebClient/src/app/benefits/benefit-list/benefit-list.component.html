@@ -9,23 +9,29 @@
         <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Title</th>
                     <th>Pharmacy</th>
+                    <th>Start time</th>
+                    <th>End time</th>
                     <th>Publish</th>
                     <th>Hide</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor='let benefit of benefits'>
-                    <td>{{benefit.id}}</td>
-                    <td>{{benefit.title}}</td>
-                    <td>{{benefit.pharmacy.name}}</td>
-                    <td>
-                        <div *ngIf="benefit.published; else elseBlock"><button>Publish</button></div>
+                    <td [routerLink]="['/benefit', benefit.id]">{{benefit.title}}</td>
+                    <td [routerLink]="['/benefit', benefit.id]">{{benefit.pharmacy.name}}</td>
+                    <td [routerLink]="['/benefit', benefit.id]">{{benefit.startTime | date: 'dd-MM-yyyy'}}</td>
+                    <td [routerLink]="['/benefit', benefit.id]">{{benefit.endTime | date: 'dd-MM-yyyy'}}</td>
+                    <td style="width: 15%">
+                        <div *ngIf="!benefit.published; else elseBlock">
+                            <button class="btn btn-primary m-3" (click)="publishBenefit(benefit.id)"><strong>Publish</strong></button>
+                        </div>
                         <ng-template #elseBlock>Already published</ng-template>
                     </td>
-                    <td><button>Hide</button></td>
+                    <td style="width: 10%">
+                        <button class="btn btn-primary m-3" (click)="hideBenefit(benefit.id)"><strong>Hide</strong></button>
+                    </td>
                 </tr>
             </tbody>
         </table>

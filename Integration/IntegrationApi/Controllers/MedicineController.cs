@@ -37,17 +37,17 @@ namespace IntegrationAPI.Controllers
             {
                 return BadRequest("Pharmacy id doesn't exist.");
             }
-            MedicineInformationRequestForPharmacyDTO medicineRequestDTO = MedicineInventoryAdapter.CreateMedicineRequestToMedicineInformationRequest(createMedicineRequestDTO, pharmacy);
+            CheckMedicineAvailabilityRequestDTO medicineRequestDTO = MedicineInventoryAdapter.CreateMedicineRequestToMedicineInformationRequest(createMedicineRequestDTO, pharmacy);
             IRestResponse response = SendMedicineRequestToPharmacy(medicineRequestDTO, pharmacy);
             if (response.StatusCode != System.Net.HttpStatusCode.OK)
             {
                 return BadRequest("Pharmacy failed to receive request! Try again");
             }
-            MedicineInformationResponseFromPharmacyDTO responseDTO = JsonConvert.DeserializeObject <MedicineInformationResponseFromPharmacyDTO>(response.Content);
+            CheckMedicineAvailabilityResponseDTO responseDTO = JsonConvert.DeserializeObject <CheckMedicineAvailabilityResponseDTO>(response.Content);
             return Ok(responseDTO);
         }
 
-        private IRestResponse SendMedicineRequestToPharmacy(MedicineInformationRequestForPharmacyDTO medicineRequestDTO, Pharmacy pharmacy)
+        private IRestResponse SendMedicineRequestToPharmacy(CheckMedicineAvailabilityRequestDTO medicineRequestDTO, Pharmacy pharmacy)
         {
             RestClient client = new RestClient();
             string targetUrl = pharmacy.BaseUrl + "/api/HospitalCommunication/AcceptHospitalRegistration";
@@ -68,13 +68,13 @@ namespace IntegrationAPI.Controllers
             {
                 return BadRequest("Pharmacy id doesn't exist.");
             }
-            EmergencyProcurementRequestForPharmacyDTO medicineRequestDTO = MedicineInventoryAdapter.CreateMedicineRequestToEmergencyProcurementRequest(createMedicineRequestDTO, pharmacy);
+            MedicineProcurementRequestDTO medicineRequestDTO = MedicineInventoryAdapter.CreateMedicineRequestToEmergencyProcurementRequest(createMedicineRequestDTO, pharmacy);
             IRestResponse response = SendUrgentProcurementRequestToPharmacy(medicineRequestDTO, pharmacy);
             if (response.StatusCode != System.Net.HttpStatusCode.OK)
             {
                 return BadRequest("Pharmacy failed to receive request! Try again");
             }
-            EmergencyProcurementResponseFromPharmacyDTO responseDTO = JsonConvert.DeserializeObject<EmergencyProcurementResponseFromPharmacyDTO>(response.Content);
+            MedicineProcurementResponseDTO responseDTO = JsonConvert.DeserializeObject<MedicineProcurementResponseDTO>(response.Content);
             if(responseDTO.answer == true)
             {
 
@@ -86,7 +86,7 @@ namespace IntegrationAPI.Controllers
             }
         }
 
-        private IRestResponse SendUrgentProcurementRequestToPharmacy(EmergencyProcurementRequestForPharmacyDTO medicineRequestDTO, Pharmacy pharmacy)
+        private IRestResponse SendUrgentProcurementRequestToPharmacy(MedicineProcurementRequestDTO medicineRequestDTO, Pharmacy pharmacy)
         {
             RestClient client = new RestClient();
             string targetUrl = pharmacy.BaseUrl + "/api/HospitalCommunication/AcceptHospitalRegistration";

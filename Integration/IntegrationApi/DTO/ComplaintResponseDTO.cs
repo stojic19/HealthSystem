@@ -7,9 +7,9 @@ namespace IntegrationAPI.DTO
 {
     public class ComplaintResponseDTO
     {
-        public int HospitalComplaintId { get; set; }
+        public DateTime ComplaintCreatedDate { get; set; }
         public string Text { get; set; }
-        public DateTime createdDate { get; set; }
-        public string ApiKey { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public Guid ApiKey { get; set; }
     }
 }

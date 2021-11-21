@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Pharmacy.Model;
 using Pharmacy.Repositories;
 using Pharmacy.Repositories.Base;
 
 namespace PharmacyApi.Controllers
 {
+    [Route("api/[controller]/[action]")]
     [ApiController]
-    [Route("[controller]")]
     public class MedicineController : Controller
     {
         private readonly IUnitOfWork _uow;
@@ -24,15 +26,39 @@ namespace PharmacyApi.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Medicine> GetAll()
+        public IActionResult GetAll()
         {
-            return _uow.GetRepository<IMedicineReadRepository>().GetAll();
+            IEnumerable<Medicine> medicines = _uow.GetRepository<IMedicineReadRepository>().GetAll()
+                .Include(medicine => medicine.Manufacturer)
+                .Include(medicine => medicine.SideEffects)
+                .Include(medicine => medicine.Reactions)
+                .Include(medicine => medicine.Substances)
+                .Include(medicine => medicine.Precautions)
+                .Include(medicine => medicine.MedicinePotentialDangers);
+
+            if (medicines.Count() == 0)
+                return NotFound();
+
+            return Ok(medicines);
         }
 
-        [HttpGet("{id}")]
-        public Medicine GetById(int id)
+        [HttpGet]
+        public IActionResult GetById(int id)
         {
-            return _uow.GetRepository<IMedicineReadRepository>().GetById(id);
+            Medicine medicine = _uow.GetRepository<IMedicineReadRepository>().GetAll()
+                .Include(medicine => medicine.Manufacturer)
+                .Include(medicine => medicine.SideEffects)
+                .Include(medicine => medicine.Reactions)
+                .Include(medicine => medicine.Substances)
+                .Include(medicine => medicine.Precautions)
+                .Include(medicine => medicine.MedicinePotentialDangers)
+                .FirstOrDefault(medicine => medicine.Id == id);
+
+            if (medicine == null)
+                return NotFound();
+
+            return Ok(medicine);
         }
+
     }
 }

@@ -16,7 +16,6 @@ import { AddComplaintComponent } from './complaints/add-complaint/add-complaint.
 import { PharmaciesListComponent } from './pharmacies/pharmacies-list.component';
 import { RegisterPharmacyComponent } from './pharmacies/register-pharmacy/register-pharmacy.component';
 import { HospitalEquipmentComponent } from './hospital-equipment/hospital-equipment.component';
-import { BenefitListComponent } from './benefits/benefit-list/benefit-list.component';
 
 const routes: Routes = [
   { path: 'overview', component: HospitalOverviewComponent },
@@ -32,7 +31,6 @@ const routes: Routes = [
   { path: 'complaint-add', component: AddComplaintComponent },
   { path: 'pharmacy-register', component: RegisterPharmacyComponent },
   { path: 'pharmacy-list', component: PharmaciesListComponent },
-  { path: 'benefit-list', component: BenefitListComponent },
   { path: 'home', component: HomePageComponent },
   { path: '', redirectTo: 'home', pathMatch: 'full'}
 ];

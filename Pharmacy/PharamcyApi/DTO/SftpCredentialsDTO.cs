@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace IntegrationAPI.DTO
+namespace PharmacyApi.DTO
 {
-    public class MedicineSpecificationFileDTO
+    public class SftpCredentialsDTO
     {
-        public string FileName { get; set; }
         public string Host { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
     }
 }

@@ -1,0 +1,1 @@
+{"Name":"Aspirin","Manufacturer":"TestManufacturer","SideEffects":["Loss of hair"],"Reactions":["Test reaction"],"Precautions":["Keep on low temperatures"],"MedicinePotentialDangers":["Flamable"],"Substances":["Penicilin","acetylsalicylic acid"],"Type":"Analgetik","Usage":"Headache pain relief","WeightInMilligrams":10000.0}

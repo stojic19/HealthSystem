@@ -1,8 +1,8 @@
 import { IMedicalRecord } from './medical-record';
 
 export enum Gender {
-  Female,
-  Male,
+  Female = 'Female',
+  Male = 'Male',
 }
 
 export interface INewPatient {

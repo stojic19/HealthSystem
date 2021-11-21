@@ -42,7 +42,11 @@ namespace HospitalApi
             var builder = new ContainerBuilder();
             builder.RegisterModule(new DbModule());
 
-            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<AppDbContext, Guid>()
+                .AddDefaultTokenProviders();
+
+            
+            // TODO: add options here
 
             builder.RegisterModule(new RepositoryModule()
             {
@@ -54,7 +58,8 @@ namespace HospitalApi
                 Namespace = "Hospital.Repositories"
 
 
-            }); 
+            });
+
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
             builder.Populate(services);
             var container = builder.Build();

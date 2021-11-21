@@ -1,10 +1,12 @@
-﻿using Hospital.Model;
+﻿using System;
+using Hospital.Model;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hospital.EfStructures
 {
-    public class AppDbContext : IdentityDbContext<User>
+    public class AppDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     {
         public DbSet<Allergy> Allergies { get; set; }
         public DbSet<City> Cities { get; set; }

@@ -26,15 +26,15 @@ namespace HospitalApi.Controllers
             {
                 Email = newUser.Email,
                 FirstName = newUser.FirstName,
-                Username = newUser.Username
+                UserName = newUser.UserName
             };
 
-            var result = await _userManager.CreateAsync(userToCreate, newUser.Password);
+            var result = await _userManager.CreateAsync(userToCreate, newUser.PasswordHash);
 
             if (result.Succeeded)
             {
 
-                var userFromDB = await _userManager.FindByNameAsync(userToCreate.Username);
+                var userFromDB = await _userManager.FindByNameAsync(userToCreate.UserName);
 
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(userFromDB);
 

@@ -41,7 +41,7 @@ namespace IntegrationAPI.Controllers
             if (response.StatusCode != HttpStatusCode.OK) return Ok("Pharmacy does not have medicine with given name!");
             MedicineSpecificationFileDTO medicineSpecificationFile =
                 JsonConvert.DeserializeObject<MedicineSpecificationFileDTO>(response.Content);
-
+           // _unitOfWork.GetRepository<IMedicineSpecifica>()
             return Ok("Pharmacy has sent the specification file to sftp server");
         }
     }

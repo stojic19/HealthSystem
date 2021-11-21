@@ -26,25 +26,39 @@ namespace PharmacyApi.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Medicine> GetAll()
+        public IActionResult GetAll()
         {
-            return _uow.GetRepository<IMedicineReadRepository>().GetAll().Include(medicine => medicine.Manufacturer);
+            IEnumerable<Medicine> medicines = _uow.GetRepository<IMedicineReadRepository>().GetAll()
+                .Include(medicine => medicine.Manufacturer)
+                .Include(medicine => medicine.SideEffects)
+                .Include(medicine => medicine.Reactions)
+                .Include(medicine => medicine.Substances)
+                .Include(medicine => medicine.Precautions)
+                .Include(medicine => medicine.MedicinePotentialDangers);
+
+            if (medicines.Count() == 0)
+                return NotFound();
+
+            return Ok(medicines);
         }
 
         [HttpGet]
-        public Medicine GetById(int id)
+        public IActionResult GetById(int id)
         {
-            return _uow.GetRepository<IMedicineReadRepository>().GetAll()
+            Medicine medicine = _uow.GetRepository<IMedicineReadRepository>().GetAll()
                 .Include(medicine => medicine.Manufacturer)
+                .Include(medicine => medicine.SideEffects)
+                .Include(medicine => medicine.Reactions)
+                .Include(medicine => medicine.Substances)
+                .Include(medicine => medicine.Precautions)
+                .Include(medicine => medicine.MedicinePotentialDangers)
                 .FirstOrDefault(medicine => medicine.Id == id);
+
+            if (medicine == null)
+                return NotFound();
+
+            return Ok(medicine);
         }
 
-        [HttpGet]
-        public Medicine GetByName(string name)
-        {
-            return _uow.GetRepository<IMedicineReadRepository>().GetAll()
-                .Include(medicine => medicine.Manufacturer)
-                .FirstOrDefault(medicine => medicine.Name.Equals(name));
-        }
     }
 }

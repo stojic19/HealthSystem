@@ -7,7 +7,7 @@ using Xunit;
 
 namespace HospitalUnitTests.Base
 {
-    public class BaseTest : IClassFixture<BaseFixture>
+    public abstract class BaseTest : IClassFixture<BaseFixture>
     {
         private readonly BaseFixture _fixture;
 

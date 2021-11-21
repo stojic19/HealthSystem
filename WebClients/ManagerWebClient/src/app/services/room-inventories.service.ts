@@ -19,6 +19,24 @@ export class RoomInventoriesService {
 
   }
 
+  getHospitalInventory() {
+
+    return this.http.get(`${environment.baseUrl}` + 'api/RoomInventory/hospitalInventory');
+
+  }
+
+  getEquipmentByName(equipmentName: string) {
+    return this.http.get(`${environment.baseUrl}` + 'api/RoomInventory/find', {
+      params: {
+        inventoryItemName: equipmentName
+
+      }
+    });
+
+  }
+
+
+
 
 
 

@@ -14,5 +14,7 @@ namespace Hospital.Model
        public DateTime AnsweredDate { get; set; }
        public int SurveyId { get; set; }
        public Survey Survey { get; set; }
+       public Guid PatientId { get; set; }
+       public Patient Patient { get; set; }
     }
 }

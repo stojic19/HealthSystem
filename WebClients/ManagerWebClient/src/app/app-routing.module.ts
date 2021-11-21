@@ -7,23 +7,30 @@ import { HospitalOverviewComponent } from './hospital-overview/hospital-overview
 import { MaterialModule } from './material/material.module';
 import { SecondBuildingComponent } from './second-building/second-building.component';
 import {HomePageComponent} from './components/home-page/home-page.component';
+import { SurveysObserveComponent } from './components/surveys-observe/surveys-observe.component';
 import { EquipmentFormComponent } from './equipment-form/equipment-form.component';
 import { RoomInventoryComponent } from './room-inventory/room-inventory.component';
 import { RoomInfoComponent } from './room-info/room-info.component';
+import { HospitalEquipmentComponent } from './hospital-equipment/hospital-equipment.component';
+
 
 const routes: Routes = [
   { path: 'overview', component: HospitalOverviewComponent },
-  { path: 'feedbacks', component: FeedbacksManagerComponent},
+  { path: 'feedbacks', component: FeedbacksManagerComponent },
   { path: 'firstBuilding', component: FirstBuildingComponent },
   { path: 'secondBuilding', component: SecondBuildingComponent },
   { path: 'roomInventory/:id', component: RoomInventoryComponent },
-  {path: 'home', component: HomePageComponent },
-  {path: '', redirectTo: 'home', pathMatch: 'full'}
+  { path: 'surveys', component: SurveysObserveComponent},
+  { path: 'hospitalEquipment', component: HospitalEquipmentComponent },
+  { path: 'home', component: HomePageComponent },
+  { path: '', redirectTo: 'home', pathMatch: 'full' }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes), CommonModule, MaterialModule],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
-export const routingComponents = [HospitalOverviewComponent, FirstBuildingComponent, FeedbacksManagerComponent, SecondBuildingComponent, RoomInventoryComponent];
+
+export class AppRoutingModule { }
+export const routingComponents = [HospitalOverviewComponent, FirstBuildingComponent, FeedbacksManagerComponent, SecondBuildingComponent, RoomInventoryComponent, HospitalEquipmentComponent, SurveysObserveComponent];
+

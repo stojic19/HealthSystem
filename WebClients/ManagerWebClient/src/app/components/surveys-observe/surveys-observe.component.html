@@ -1,0 +1,18 @@
+<div class="container " >
+    <h2 class="text-center mb-lg-2 mb-2 " >{{survey.name}}</h2>
+    <div class="container"
+        style="border-radius: 5rem; background-color: rgb(182, 209, 226);margin-top: 4rem;margin-bottom: 3rem;">
+        <mat-tab-group (selectedTabChange)="tabSelected($event)">
+            <mat-tab label="Hospital">
+                <app-survey-section-observe [category]='categoryTab'></app-survey-section-observe>
+            </mat-tab>
+            <mat-tab label="Doctor">
+                <app-survey-section-observe [category]='categoryTab'></app-survey-section-observe>
+            </mat-tab>
+            <mat-tab label="MedicalStaff">
+                <app-survey-section-observe [category]='categoryTab'></app-survey-section-observe>
+            </mat-tab>
+        </mat-tab-group>
+
+    </div>
+</div>

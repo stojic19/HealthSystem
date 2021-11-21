@@ -58,8 +58,8 @@ namespace HospitalApi
                 Namespace = "Hospital.Repositories"
 
 
-            });
-
+            }); 
+            
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
             builder.Populate(services);
             var container = builder.Build();

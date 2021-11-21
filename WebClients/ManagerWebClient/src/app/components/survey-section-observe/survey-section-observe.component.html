@@ -1,0 +1,96 @@
+<div class="container ">
+
+    <div class="container"
+        style="border-radius: 5rem; background-color: rgb(182, 209, 226);margin-top: 4rem;margin-bottom: 3rem;">
+        <div *ngIf="survey.categoryHospital.name == category">
+            <span >
+                <h4 class="text-center mb-lg-2 mb-2 ">Average rating of this category: {{survey.categoryHospital.avgRating}}
+                </h4>
+                <app-rating-decimal [currentRate]='survey.categoryDoctor.avgRating'></app-rating-decimal>
+            </span>
+            <div class="list-group" *ngFor="let question of survey.categoryHospital.questions">
+                <div>
+                    <span class="d-flex w-100 justify-content-between">
+                        <div>
+                            <h5 class="mb-1">{{question.text}}</h5>
+                            <br>
+                            <p class="mb-1">Rating 5: <b>{{question.numOfEachRating[4]}}</b>
+                                Rating 4: <b>{{question.numOfEachRating[3]}}</b>
+                                Rating 3: <b>{{question.numOfEachRating[2]}}</b>
+                                Rating 2: <b>{{question.numOfEachRating[1]}}</b>
+                                Rating 1: <b>{{question.numOfEachRating[0]}}</b>
+                            </p>
+
+                        </div>
+                        <div>
+                            <app-rating-decimal [currentRate]='question.avgRating'></app-rating-decimal>
+                            <p>Average rating:<b>{{question.avgRating}}</b></p>
+                        </div>
+                    </span>
+                </div>
+                <hr>
+            </div>
+        </div>
+        <div *ngIf="survey.categoryDoctor.name == category">
+            <span >
+                <h4 class="text-center mb-lg-2 mb-2 ">Average rating of this category: {{survey.categoryDoctor.avgRating}}
+                </h4>
+                <app-rating-decimal [currentRate]='survey.categoryDoctor.avgRating'></app-rating-decimal>
+            </span>
+            <div class="list-group" *ngFor="let question of survey.categoryDoctor.questions">
+                <div>
+                    <span class="d-flex w-100 justify-content-between">
+                        <div>
+                            <h5 class="mb-1">{{question.text}}</h5>
+                            <br>
+                            <p class="mb-1">Rating 5: <b>{{question.numOfEachRating[4]}}</b>
+                                Rating 4: <b>{{question.numOfEachRating[3]}}</b>
+                                Rating 3: <b>{{question.numOfEachRating[2]}}</b>
+                                Rating 2: <b>{{question.numOfEachRating[1]}}</b>
+                                Rating 1: <b>{{question.numOfEachRating[0]}}</b>
+                            </p>
+
+                        </div>
+                        <div>
+                            <app-rating-decimal [currentRate]='question.avgRating'></app-rating-decimal>
+                            <p>Average rating:<b>{{question.avgRating}}</b></p>
+                        </div>
+                    </span>
+                </div>
+                <hr>
+            </div>
+
+        </div>
+        <div *ngIf="survey.categoryStaff.name == category">
+            <span >
+            <h4 class="text-center mb-lg-2 mb-2 ">Average rating of this category: {{survey.categoryStaff.avgRating}}
+                <app-rating-decimal [currentRate]='survey.categoryStaff.avgRating'></app-rating-decimal>
+                
+            </h4>
+        </span>
+            <div class="list-group" *ngFor="let question of survey.categoryStaff.questions">
+                <div>
+                    <span class="d-flex w-100 justify-content-between">
+                        <div>
+                            <h5 class="mb-1">{{question.text}}</h5>
+                            <br>
+                            <p class="mb-1">Rating 5: <b>{{question.numOfEachRating[4]}}</b>
+                                Rating 4: <b>{{question.numOfEachRating[3]}}</b>
+                                Rating 3: <b>{{question.numOfEachRating[2]}}</b>
+                                Rating 2: <b>{{question.numOfEachRating[1]}}</b>
+                                Rating 1: <b>{{question.numOfEachRating[0]}}</b>
+                            </p>
+
+                        </div>
+                        <div>
+                            <app-rating-decimal [currentRate]='question.avgRating'></app-rating-decimal>
+                            <p>Average rating:<b>{{question.avgRating}}</b></p>
+                        </div>
+                    </span>
+                </div>
+                <hr>
+            </div>
+        </div>
+    </div>
+
+</div>

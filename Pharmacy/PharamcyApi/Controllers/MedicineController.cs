@@ -1,13 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using Pharmacy.Model;
 using Pharmacy.Repositories;
 using Pharmacy.Repositories.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace PharamcyApi.Controllers
+namespace PharmacyApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]

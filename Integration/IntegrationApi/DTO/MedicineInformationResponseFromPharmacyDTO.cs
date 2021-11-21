@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 
 namespace IntegrationAPI.DTO
 {
-    public class MedicineInvetnoryResponseFromPharmacyDTO
+    public class MedicineInformationResponseFromPharmacyDTO
     {
-        public MedicineRequestForPharmacyDTO request { get; set; }
         public bool answer{ get; set; }
     }
 }

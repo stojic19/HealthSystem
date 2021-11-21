@@ -19,9 +19,6 @@ namespace Integration
             CreateHostBuilder(args).Run();
         }
 
-        public static int ManagerId = 1;
-        public static string hospitalUrl = "http://localhost:5000/";
-
         public static IWebHost CreateHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()

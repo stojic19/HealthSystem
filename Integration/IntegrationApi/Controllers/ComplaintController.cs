@@ -52,6 +52,7 @@ namespace IntegrationAPI.Controllers
         public IActionResult SendComplaint(CreateComplaintDTO createComplaintDTO)
         {
             Pharmacy pharmacy = _pharmacyMasterService.GetPharmacyById(createComplaintDTO.PharmacyId);
+            if (pharmacy == null) return BadRequest("Pharmacy does not exist");
             Complaint complaint = new Complaint
             {
                 Title = createComplaintDTO.Title,

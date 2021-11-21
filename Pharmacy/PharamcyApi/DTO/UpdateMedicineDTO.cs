@@ -13,10 +13,9 @@ namespace PharmacyApi.DTO
         public List<string> SideEffects { get; set; }
         public List<string> Reactions { get; set; }
         public string Usage { get; set; }
-        public List<string> MedicinesThatCanBeCombined { get; set; }
         public double WeightInMilligrams { get; set; }
-        public List<string> MainPrecautions { get; set; }
-        public List<string> PotentialDangers { get; set; }
+        public List<string> Precautions { get; set; }
+        public List<string> MedicinePotentialDangers { get; set; }
         [Range(0, int.MaxValue, ErrorMessage = "Only positive number allowed.")]
         public int Quantity { get; set; }
     }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -35,7 +36,7 @@ namespace PharmacyApi.Controllers
             }
 
             if (!IsMedicineUnique(medicineDTO.Name)) return ValidationProblem("Medicine already exists!");
-            
+
             //create
             Medicine medicineCreated = CreateNewMedicine(medicineDTO, manufacturerId);
             _uow.GetRepository<IMedicineWriteRepository>().Add(medicineCreated);
@@ -44,28 +45,7 @@ namespace PharmacyApi.Controllers
             return Ok("Medicine succesfully created!");
         }
 
-        [HttpPut]
-        public IActionResult Update(UpdateMedicineDTO updateMedicineDTO)
-        {
-            if (IsMedicineUnique(updateMedicineDTO.Name)) return ValidationProblem("Medicine with given name doesn't exist!");
-
-            var updatedMedicine = CreateUpdatedMedicine(updateMedicineDTO);
-            _uow.GetRepository<IMedicineWriteRepository>().Update(updatedMedicine);
-
-            return Ok("Medicine updated succesfully!");
-        }
-        
-        [HttpDelete]
-        public IActionResult RemoveByName(string medicineName)
-        {
-            if (IsMedicineUnique(medicineName)) return ValidationProblem("Medicine with given name doesn't exist!");
-
-            var removedMedicine = GetByName(medicineName);
-            _uow.GetRepository<IMedicineWriteRepository>().Delete(removedMedicine);
-
-            return Ok("Medicine removed succesfully!");
-        }
-   
+       
 
         [HttpGet]
         public IEnumerable<Medicine> GetAll()
@@ -91,15 +71,7 @@ namespace PharmacyApi.Controllers
             return Ok(medicine);
         }
 
-        [HttpGet]
-        public Medicine GetByName(string name)
-        {
-            return _uow.GetRepository<IMedicineReadRepository>().GetAll()
-                .Include(medicine => medicine.Manufacturer)
-                .FirstOrDefault(medicine => medicine.Name.Equals(name));
-        }
 
- 
         private int FindManufacturer(string ManufacturerName)
         {
             var manufacturer = _uow.GetRepository<IManufacturerReadRepository>().GetManufacturerByName(ManufacturerName);
@@ -116,38 +88,42 @@ namespace PharmacyApi.Controllers
         }
 
 
-        private  Medicine CreateNewMedicine(CreateMedicineDTO medicineDTO, int manufacturerId)
+        private Medicine CreateNewMedicine(CreateMedicineDTO medicineDTO, int manufacturerId)
         {
             return new Medicine()
             {
                 Name = medicineDTO.Name,
                 ManufacturerId = manufacturerId,
-                SideEffects = medicineDTO.SideEffects,
-                Reactions = medicineDTO.Reactions,
+                SideEffects = GenerateObjects(medicineDTO.SideEffects,_uow.GetRepository<ISideEffectReadRepository>().GetSideEffectByName),
+                Reactions = GenerateObjects(medicineDTO.Reactions, _uow.GetRepository<IReactionReadRepository>().GetReactionByName),
                 Usage = medicineDTO.Usage,
-                MedicinesThatCanBeCombined = medicineDTO.MedicinesThatCanBeCombined,
                 WeightInMilligrams = medicineDTO.WeightInMilligrams,
-                MainPrecautions = medicineDTO.MainPrecautions,
-                PotentialDangers = medicineDTO.PotentialDangers,
-                Substances = medicineDTO.Substances,
+                Precautions = GenerateObjects(medicineDTO.Precautions, _uow.GetRepository<IPrecautionReadRepository>().GetPrecautionByName),
+                MedicinePotentialDangers = GenerateObjects(medicineDTO.MedicinePotentialDangers, _uow.GetRepository<IMedicinePotentialDangerReadRepository>().GetMedicinePotentialDangerByName),
+                Substances = GenerateObjects(medicineDTO.Substances, _uow.GetRepository<ISubstanceReadRepository>().GetSubstanceByName),
                 Type = medicineDTO.Type,
                 Quantity = medicineDTO.Quantity
             };
         }
 
-        private Medicine CreateUpdatedMedicine(UpdateMedicineDTO updateMedicineDTO)
-        {
-            var updatedMedicine = GetByName(updateMedicineDTO.Name);
-            updatedMedicine.SideEffects = updateMedicineDTO.SideEffects;
-            updatedMedicine.Reactions = updateMedicineDTO.Reactions;
-            updatedMedicine.Usage = updateMedicineDTO.Usage;
-            updatedMedicine.MedicinesThatCanBeCombined = updateMedicineDTO.MedicinesThatCanBeCombined;
-            updatedMedicine.WeightInMilligrams = updateMedicineDTO.WeightInMilligrams;
-            updatedMedicine.MainPrecautions = updateMedicineDTO.MainPrecautions;
-            updatedMedicine.PotentialDangers = updateMedicineDTO.PotentialDangers;
-            updatedMedicine.Quantity = updateMedicineDTO.Quantity;
+        
 
-            return updatedMedicine;
+
+   
+
+        private List<T> GenerateObjects<T>(List<string> strings, Func<string, T> action) where T: class,new()
+        {
+            var sideEffects = new List<T>();
+            foreach (string s in strings)
+            {
+                var sideEffect = action.Invoke(s);
+                if (sideEffect != null)
+                    sideEffects.Add(sideEffect);
+                else
+                    sideEffects.Add((T)Activator.CreateInstance(typeof(T),new object[] { s }));
+            }
+
+            return sideEffects;
         }
 
 

@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace Pharmacy.Repositories.DbImplementation
 {
-    public class PrecautionReadRepository : ReadBaseRepository<int, Precaution>, IPrecautionReadRepository
+    public class SideEffectsReadRepository : ReadBaseRepository<int, SideEffect>, ISideEffectReadRepository
     {
-        public PrecautionReadRepository(AppDbContext context) : base(context)
+        public SideEffectsReadRepository(AppDbContext context) : base(context)
         {
         }
 
-        public Precaution GetPrecautionByName(string name)
+        public SideEffect GetSideEffectByName(string name)
         {
             return GetAll()
                 .FirstOrDefault(x => x.Name.Equals(name));

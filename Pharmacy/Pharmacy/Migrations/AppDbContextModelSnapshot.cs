@@ -19,81 +19,6 @@ namespace Pharmacy.Migrations
                 .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-            modelBuilder.Entity("MedicineMedicinePotentialDanger", b =>
-                {
-                    b.Property<int>("MedicinePotentialDangersId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("MedicinesId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("MedicinePotentialDangersId", "MedicinesId");
-
-                    b.HasIndex("MedicinesId");
-
-                    b.ToTable("MedicineMedicinePotentialDanger");
-                });
-
-            modelBuilder.Entity("MedicinePrecaution", b =>
-                {
-                    b.Property<int>("MedicinesId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("PrecautionsId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("MedicinesId", "PrecautionsId");
-
-                    b.HasIndex("PrecautionsId");
-
-                    b.ToTable("MedicinePrecaution");
-                });
-
-            modelBuilder.Entity("MedicineReaction", b =>
-                {
-                    b.Property<int>("MedicinesId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ReactionsId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("MedicinesId", "ReactionsId");
-
-                    b.HasIndex("ReactionsId");
-
-                    b.ToTable("MedicineReaction");
-                });
-
-            modelBuilder.Entity("MedicineSideEffect", b =>
-                {
-                    b.Property<int>("MedicinesId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("SideEffectsId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("MedicinesId", "SideEffectsId");
-
-                    b.HasIndex("SideEffectsId");
-
-                    b.ToTable("MedicineSideEffect");
-                });
-
-            modelBuilder.Entity("MedicineSubstance", b =>
-                {
-                    b.Property<int>("MedicinesId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("SubstancesId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("MedicinesId", "SubstancesId");
-
-                    b.HasIndex("SubstancesId");
-
-                    b.ToTable("MedicineSubstance");
-                });
-
             modelBuilder.Entity("Pharmacy.Model.City", b =>
                 {
                     b.Property<int>("Id")
@@ -241,9 +166,6 @@ namespace Pharmacy.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<List<string>>("PotentialDangers")
-                        .HasColumnType("text[]");
-
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
 
@@ -301,10 +223,15 @@ namespace Pharmacy.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<int?>("MedicineId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MedicineId");
 
                     b.ToTable("MedicinePotentialDangers");
                 });
@@ -316,10 +243,15 @@ namespace Pharmacy.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<int?>("MedicineId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MedicineId");
 
                     b.ToTable("Precautions");
                 });
@@ -331,10 +263,15 @@ namespace Pharmacy.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<int?>("MedicineId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MedicineId");
 
                     b.ToTable("Reactions");
                 });
@@ -346,10 +283,15 @@ namespace Pharmacy.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<int?>("MedicineId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MedicineId");
 
                     b.ToTable("SideEffects");
                 });
@@ -361,87 +303,17 @@ namespace Pharmacy.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<int?>("MedicineId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("MedicineId");
+
                     b.ToTable("Substances");
-                });
-
-            modelBuilder.Entity("MedicineMedicinePotentialDanger", b =>
-                {
-                    b.HasOne("Pharmacy.Model.MedicinePotentialDanger", null)
-                        .WithMany()
-                        .HasForeignKey("MedicinePotentialDangersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Pharmacy.Model.Medicine", null)
-                        .WithMany()
-                        .HasForeignKey("MedicinesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("MedicinePrecaution", b =>
-                {
-                    b.HasOne("Pharmacy.Model.Medicine", null)
-                        .WithMany()
-                        .HasForeignKey("MedicinesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Pharmacy.Model.Precaution", null)
-                        .WithMany()
-                        .HasForeignKey("PrecautionsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("MedicineReaction", b =>
-                {
-                    b.HasOne("Pharmacy.Model.Medicine", null)
-                        .WithMany()
-                        .HasForeignKey("MedicinesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Pharmacy.Model.Reaction", null)
-                        .WithMany()
-                        .HasForeignKey("ReactionsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("MedicineSideEffect", b =>
-                {
-                    b.HasOne("Pharmacy.Model.Medicine", null)
-                        .WithMany()
-                        .HasForeignKey("MedicinesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Pharmacy.Model.SideEffect", null)
-                        .WithMany()
-                        .HasForeignKey("SideEffectsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("MedicineSubstance", b =>
-                {
-                    b.HasOne("Pharmacy.Model.Medicine", null)
-                        .WithMany()
-                        .HasForeignKey("MedicinesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Pharmacy.Model.Substance", null)
-                        .WithMany()
-                        .HasForeignKey("SubstancesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Pharmacy.Model.City", b =>
@@ -518,6 +390,41 @@ namespace Pharmacy.Migrations
                     b.Navigation("SecondMedicine");
                 });
 
+            modelBuilder.Entity("Pharmacy.Model.MedicinePotentialDanger", b =>
+                {
+                    b.HasOne("Pharmacy.Model.Medicine", null)
+                        .WithMany("MedicinePotentialDangers")
+                        .HasForeignKey("MedicineId");
+                });
+
+            modelBuilder.Entity("Pharmacy.Model.Precaution", b =>
+                {
+                    b.HasOne("Pharmacy.Model.Medicine", null)
+                        .WithMany("Precautions")
+                        .HasForeignKey("MedicineId");
+                });
+
+            modelBuilder.Entity("Pharmacy.Model.Reaction", b =>
+                {
+                    b.HasOne("Pharmacy.Model.Medicine", null)
+                        .WithMany("Reactions")
+                        .HasForeignKey("MedicineId");
+                });
+
+            modelBuilder.Entity("Pharmacy.Model.SideEffect", b =>
+                {
+                    b.HasOne("Pharmacy.Model.Medicine", null)
+                        .WithMany("SideEffects")
+                        .HasForeignKey("MedicineId");
+                });
+
+            modelBuilder.Entity("Pharmacy.Model.Substance", b =>
+                {
+                    b.HasOne("Pharmacy.Model.Medicine", null)
+                        .WithMany("Substances")
+                        .HasForeignKey("MedicineId");
+                });
+
             modelBuilder.Entity("Pharmacy.Model.Country", b =>
                 {
                     b.Navigation("Cities");
@@ -526,6 +433,19 @@ namespace Pharmacy.Migrations
             modelBuilder.Entity("Pharmacy.Model.Hospital", b =>
                 {
                     b.Navigation("Complaints");
+                });
+
+            modelBuilder.Entity("Pharmacy.Model.Medicine", b =>
+                {
+                    b.Navigation("MedicinePotentialDangers");
+
+                    b.Navigation("Precautions");
+
+                    b.Navigation("Reactions");
+
+                    b.Navigation("SideEffects");
+
+                    b.Navigation("Substances");
                 });
 #pragma warning restore 612, 618
         }

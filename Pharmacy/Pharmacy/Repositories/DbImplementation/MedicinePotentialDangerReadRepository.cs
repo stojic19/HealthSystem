@@ -14,5 +14,11 @@ namespace Pharmacy.Repositories.DbImplementation
         public MedicinePotentialDangerReadRepository(AppDbContext context) : base(context)
         {
         }
+
+        public MedicinePotentialDanger GetMedicinePotentialDangerByName(string name)
+        {
+            return GetAll()
+                .FirstOrDefault(x => x.Name.Equals(name));
+        }
     }
 }

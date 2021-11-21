@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace Pharmacy.Repositories.DbImplementation
 {
-    public class PrecautionReadRepository : ReadBaseRepository<int, Precaution>, IPrecautionReadRepository
+    public class ReactionReadRepository : ReadBaseRepository<int, Reaction>, IReactionReadRepository
     {
-        public PrecautionReadRepository(AppDbContext context) : base(context)
+        public ReactionReadRepository(AppDbContext context) : base(context)
         {
         }
 
-        public Precaution GetPrecautionByName(string name)
+        public Reaction GetReactionByName(string name)
         {
             return GetAll()
                 .FirstOrDefault(x => x.Name.Equals(name));

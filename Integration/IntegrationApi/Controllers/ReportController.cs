@@ -22,11 +22,9 @@ namespace IntegrationAPI.Controllers
     {
         private readonly PharmacyMasterService _pharmacyMasterService;
         private readonly MedicineConsumptionMasterService _medicineConsumptionMasterService;
-        private readonly SftpMasterService _sftpMasterService;
         public ReportController(IUnitOfWork unitOfWork)
         {
             _pharmacyMasterService = new PharmacyMasterService(unitOfWork);
-            _sftpMasterService = new SftpMasterService();
             _medicineConsumptionMasterService = new MedicineConsumptionMasterService(unitOfWork);
         }
 
@@ -46,16 +44,11 @@ namespace IntegrationAPI.Controllers
             {
                 SaveMedicineReportToSftpServer(report, sftpCredentials);
             }
-            catch (Exception e)
+            catch
             {
                 return BadRequest("Failed to contact sftp server");
             }
             SendToPharmacies(report, sftpCredentials);
-            /*var result = client.Post(request);
-            if (result.StatusCode != HttpStatusCode.OK)
-            {
-                return BadRequest("Pharmacy failed to receive dto");
-            }*/
             return Ok("Request sent to pharmacies");
         }
 
@@ -91,23 +84,8 @@ namespace IntegrationAPI.Controllers
         {
             string path = "MedicineReports" + Path.DirectorySeparatorChar + "Report-" +
                           report.createdDate.Ticks.ToString() + ".txt";
-            try
-            {
-                SaveFile(report, path);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-            try
-            {
-                SaveToSftp(path, credentials);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-
+            SaveFile(report, path);
+            SaveToSftp(path, credentials);
         }
         private void SaveFile(MedicineConsumptionReport consumptionReport, string path)
         {

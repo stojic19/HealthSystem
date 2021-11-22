@@ -64,7 +64,7 @@ namespace IntegrationAPI.Controllers
                 return BadRequest("Failed to contact sftp server");
             }
             SendToPharmacies(report, sftpCredentials);
-            return Ok("Request sent to pharmacies");
+            return Ok("Report sent to pharmacies");
         }
 
         private void SendToPharmacies(MedicineConsumptionReportDTO report, SftpCredentialsDTO sftpCredentials)

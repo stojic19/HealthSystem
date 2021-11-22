@@ -7,12 +7,11 @@ namespace Hospital.Model
     public class MedicalRecord
     {
         public int Id { get; set; }
-        public virtual Patient Patient { get; set; }
+        public Patient Patient { get; set; }
         
         public double Height { get; set; }
         public double Weight { get; set; }
-
-        public Guid DoctorId { get; set; }
+        
         public Doctor Doctor { get; set; }
 
         public BloodType BloodType { get; set; }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hospital.EfStructures
 {
-    public class AppDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
+    public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
         public DbSet<Allergy> Allergies { get; set; }
         public DbSet<City> Cities { get; set; }
@@ -29,7 +29,6 @@ namespace Hospital.EfStructures
         public DbSet<Specialization> Specializations { get; set; }
         public DbSet<Staff> Staffs { get; set; }
         public DbSet<Survey> Surveys { get; set; }
-        public DbSet<User> Users { get; set; }
         public DbSet<AnsweredQuestion> AnsweredQuestions { get; set; }
         public DbSet<AnsweredSurvey> AnsweredSurveys { get; set; }
 

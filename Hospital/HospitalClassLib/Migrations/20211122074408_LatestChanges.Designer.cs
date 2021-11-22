@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Hospital.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20211120130912_SprintTwoMigration")]
-    partial class SprintTwoMigration
+    [Migration("20211122074408_LatestChanges")]
+    partial class LatestChanges
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -37,11 +37,8 @@ namespace Hospital.Migrations
                     b.Property<int?>("MedicationIngredientId")
                         .HasColumnType("integer");
 
-                    b.Property<Guid>("PatientId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("PatientId1")
-                        .HasColumnType("text");
+                    b.Property<int?>("PatientId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -49,7 +46,7 @@ namespace Hospital.Migrations
 
                     b.HasIndex("MedicationIngredientId");
 
-                    b.HasIndex("PatientId1");
+                    b.HasIndex("PatientId");
 
                     b.ToTable("Allergies");
                 });
@@ -92,18 +89,15 @@ namespace Hospital.Migrations
                     b.Property<DateTime>("AnsweredDate")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<Guid>("PatientId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("PatientId1")
-                        .HasColumnType("text");
+                    b.Property<int?>("PatientId")
+                        .HasColumnType("integer");
 
                     b.Property<int>("SurveyId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PatientId1");
+                    b.HasIndex("PatientId");
 
                     b.HasIndex("SurveyId");
 
@@ -193,18 +187,15 @@ namespace Hospital.Migrations
                     b.Property<bool>("IsPublishable")
                         .HasColumnType("boolean");
 
-                    b.Property<Guid>("PatientId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("PatientId1")
-                        .HasColumnType("text");
+                    b.Property<int?>("PatientId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Text")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PatientId1");
+                    b.HasIndex("PatientId");
 
                     b.ToTable("Feedbacks");
                 });
@@ -268,11 +259,8 @@ namespace Hospital.Migrations
                     b.Property<int>("BloodType")
                         .HasColumnType("integer");
 
-                    b.Property<Guid>("DoctorId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("DoctorId1")
-                        .HasColumnType("text");
+                    b.Property<int?>("DoctorId")
+                        .HasColumnType("integer");
 
                     b.Property<double>("Height")
                         .HasColumnType("double precision");
@@ -285,7 +273,7 @@ namespace Hospital.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DoctorId1");
+                    b.HasIndex("DoctorId");
 
                     b.ToTable("MedicalRecords");
                 });
@@ -345,11 +333,8 @@ namespace Hospital.Migrations
                     b.Property<int>("MedicationId")
                         .HasColumnType("integer");
 
-                    b.Property<Guid>("PatientId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("PatientId1")
-                        .HasColumnType("text");
+                    b.Property<int?>("PatientId")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("timestamp without time zone");
@@ -360,7 +345,7 @@ namespace Hospital.Migrations
 
                     b.HasIndex("MedicationId");
 
-                    b.HasIndex("PatientId1");
+                    b.HasIndex("PatientId");
 
                     b.ToTable("Prescriptions");
                 });
@@ -398,11 +383,8 @@ namespace Hospital.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("DoctorId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("DoctorId1")
-                        .HasColumnType("text");
+                    b.Property<int?>("DoctorId")
+                        .HasColumnType("integer");
 
                     b.Property<bool>("IsUrgent")
                         .HasColumnType("boolean");
@@ -415,7 +397,7 @@ namespace Hospital.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DoctorId1");
+                    b.HasIndex("DoctorId");
 
                     b.HasIndex("MedicalRecordId");
 
@@ -487,11 +469,8 @@ namespace Hospital.Migrations
                     b.Property<int>("AnsweredSurveyId")
                         .HasColumnType("integer");
 
-                    b.Property<Guid>("DoctorId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("DoctorId1")
-                        .HasColumnType("text");
+                    b.Property<int?>("DoctorId")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("timestamp without time zone");
@@ -505,11 +484,8 @@ namespace Hospital.Migrations
                     b.Property<int?>("MedicalRecordId")
                         .HasColumnType("integer");
 
-                    b.Property<Guid>("PatientId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("PatientId1")
-                        .HasColumnType("text");
+                    b.Property<int?>("PatientId")
+                        .HasColumnType("integer");
 
                     b.Property<int?>("RoomId")
                         .HasColumnType("integer");
@@ -524,11 +500,11 @@ namespace Hospital.Migrations
 
                     b.HasIndex("AnsweredSurveyId");
 
-                    b.HasIndex("DoctorId1");
+                    b.HasIndex("DoctorId");
 
                     b.HasIndex("MedicalRecordId");
 
-                    b.HasIndex("PatientId1");
+                    b.HasIndex("PatientId");
 
                     b.HasIndex("RoomId");
 
@@ -570,8 +546,10 @@ namespace Hospital.Migrations
 
             modelBuilder.Entity("Hospital.Model.User", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
@@ -679,10 +657,12 @@ namespace Hospital.Migrations
                     b.ToTable("MedicationMedicationIngredient");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -705,7 +685,7 @@ namespace Hospital.Migrations
                     b.ToTable("AspNetRoles");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -718,9 +698,8 @@ namespace Hospital.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("text");
 
-                    b.Property<string>("RoleId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("RoleId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -729,7 +708,7 @@ namespace Hospital.Migrations
                     b.ToTable("AspNetRoleClaims");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -742,9 +721,8 @@ namespace Hospital.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("text");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -753,7 +731,7 @@ namespace Hospital.Migrations
                     b.ToTable("AspNetUserClaims");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasColumnType("text");
@@ -764,9 +742,8 @@ namespace Hospital.Migrations
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("text");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -775,13 +752,13 @@ namespace Hospital.Migrations
                     b.ToTable("AspNetUserLogins");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
 
-                    b.Property<string>("RoleId")
-                        .HasColumnType("text");
+                    b.Property<int>("RoleId")
+                        .HasColumnType("integer");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -790,10 +767,10 @@ namespace Hospital.Migrations
                     b.ToTable("AspNetUserRoles");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("LoginProvider")
                         .HasColumnType("text");
@@ -861,7 +838,7 @@ namespace Hospital.Migrations
 
                     b.HasOne("Hospital.Model.Patient", "Patient")
                         .WithMany()
-                        .HasForeignKey("PatientId1");
+                        .HasForeignKey("PatientId");
 
                     b.Navigation("MedicationIngredient");
 
@@ -891,7 +868,7 @@ namespace Hospital.Migrations
                 {
                     b.HasOne("Hospital.Model.Patient", "Patient")
                         .WithMany()
-                        .HasForeignKey("PatientId1");
+                        .HasForeignKey("PatientId");
 
                     b.HasOne("Hospital.Model.Survey", "Survey")
                         .WithMany("AnsweredSurveys")
@@ -926,7 +903,7 @@ namespace Hospital.Migrations
                 {
                     b.HasOne("Hospital.Model.Patient", "Patient")
                         .WithMany()
-                        .HasForeignKey("PatientId1");
+                        .HasForeignKey("PatientId");
 
                     b.Navigation("Patient");
                 });
@@ -950,7 +927,7 @@ namespace Hospital.Migrations
                 {
                     b.HasOne("Hospital.Model.Doctor", "Doctor")
                         .WithMany()
-                        .HasForeignKey("DoctorId1");
+                        .HasForeignKey("DoctorId");
 
                     b.Navigation("Doctor");
                 });
@@ -969,7 +946,7 @@ namespace Hospital.Migrations
 
                     b.HasOne("Hospital.Model.Patient", "Patient")
                         .WithMany()
-                        .HasForeignKey("PatientId1");
+                        .HasForeignKey("PatientId");
 
                     b.Navigation("Medication");
 
@@ -991,7 +968,7 @@ namespace Hospital.Migrations
                 {
                     b.HasOne("Hospital.Model.Doctor", "Doctor")
                         .WithMany()
-                        .HasForeignKey("DoctorId1");
+                        .HasForeignKey("DoctorId");
 
                     b.HasOne("Hospital.Model.MedicalRecord", null)
                         .WithMany("Referrals")
@@ -1029,7 +1006,7 @@ namespace Hospital.Migrations
 
                     b.HasOne("Hospital.Model.Doctor", "Doctor")
                         .WithMany("ScheduledEvents")
-                        .HasForeignKey("DoctorId1");
+                        .HasForeignKey("DoctorId");
 
                     b.HasOne("Hospital.Model.MedicalRecord", null)
                         .WithMany("ScheduledEvents")
@@ -1037,7 +1014,7 @@ namespace Hospital.Migrations
 
                     b.HasOne("Hospital.Model.Patient", "Patient")
                         .WithMany()
-                        .HasForeignKey("PatientId1");
+                        .HasForeignKey("PatientId");
 
                     b.HasOne("Hospital.Model.Room", "Room")
                         .WithMany("ScheduledEvents")
@@ -1078,16 +1055,16 @@ namespace Hospital.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<int>", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
                     b.HasOne("Hospital.Model.User", null)
                         .WithMany()
@@ -1096,7 +1073,7 @@ namespace Hospital.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
                     b.HasOne("Hospital.Model.User", null)
                         .WithMany()
@@ -1105,9 +1082,9 @@ namespace Hospital.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<int>", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1120,7 +1097,7 @@ namespace Hospital.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
                     b.HasOne("Hospital.Model.User", null)
                         .WithMany()

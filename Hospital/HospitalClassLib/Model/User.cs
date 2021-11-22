@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Hospital.Model
 {
-    public class User : IdentityUser<Guid>
+    public class User : IdentityUser<int>
 
     {
     public string FirstName { get; set; }

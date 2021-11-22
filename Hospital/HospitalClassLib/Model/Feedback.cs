@@ -6,7 +6,6 @@ namespace Hospital.Model
     public class Feedback
     {
         public int Id { get; set; }
-        public Guid PatientId { get; set; }
         public Patient Patient { get; set; }
 
         public FeedbackStatus FeedbackStatus { get; set; }  

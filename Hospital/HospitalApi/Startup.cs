@@ -42,11 +42,10 @@ namespace HospitalApi
             var builder = new ContainerBuilder();
             builder.RegisterModule(new DbModule());
 
-            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<AppDbContext, Guid>()
-                .AddDefaultTokenProviders();
-
-            
+            services.AddIdentity<User, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<AppDbContext>();
             // TODO: add options here
+
 
             builder.RegisterModule(new RepositoryModule()
             {

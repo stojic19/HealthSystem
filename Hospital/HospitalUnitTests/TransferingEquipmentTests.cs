@@ -21,13 +21,7 @@ namespace HospitalUnitTests
         [Fact]
         public void Count_should_be_twenty_four()
         {
-            Context.Rooms.Add(new Room()
-            {
-                Id = 1,
-                Name = "Test name"
-            });
-            Context.SaveChanges();
-
+            var room = InsertRoom(1);
             var timePeriod = new TimePeriod()
             {
                 StartTime = DateTime.Now,
@@ -49,26 +43,8 @@ namespace HospitalUnitTests
                 EndTime = DateTime.Now.AddDays(1)
             };
 
-            Context.ScheduledEvents.Add(new ScheduledEvent()
-            {
-                Id = 1,
-                StartDate = DateTime.Now.AddHours(6),
-                EndDate = DateTime.Now.AddHours(8),
-                RoomId = 1
-            });
-            Context.ScheduledEvents.Add(new ScheduledEvent()
-            {
-                Id = 2,
-                StartDate = DateTime.Now.AddHours(3),
-                EndDate = DateTime.Now.AddHours(3.5),
-                Room = new Room()
-                {
-                    Id = 2,
-                    Name = "Test room 2"
-                }
-            });
-
-            Context.SaveChanges();
+            InsertEvent(1, 1, DateTime.Now.AddHours(6), DateTime.Now.AddHours(8));
+            InsertEvent(2, 2, DateTime.Now.AddHours(3), DateTime.Now.AddHours(3.5));
 
             var availableTerms = new TransferingEquipmentService(UoW)
                 .GetAvailableTerms(timePeriod, 2, 1);
@@ -79,19 +55,7 @@ namespace HospitalUnitTests
         [Fact]
         public void Count_should_be_one()
         {
-            Context.ScheduledEvents.Add(new ScheduledEvent()
-            {
-                Id = 3,
-                StartDate = DateTime.Now,
-                EndDate = DateTime.Now.AddHours(2),
-                Room = new Room()
-                {
-                    Id = 3,
-                    Name = "Test room 3"
-                }
-            });
-            Context.SaveChanges();
-
+            InsertEvent(3, 3, DateTime.Now.AddHours(2), DateTime.Now.AddHours(3));
             var timePeriod = new TimePeriod()
             {
                 StartTime = DateTime.Now.AddHours(1),
@@ -112,6 +76,7 @@ namespace HospitalUnitTests
                 StartTime = DateTime.Now.AddHours(6.5),
                 EndTime = DateTime.Now.AddHours(8)
             };
+            InsertEvent(4, 1, DateTime.Now.AddHours(6), DateTime.Now.AddHours(8));
 
             var availableTerms = new TransferingEquipmentService(UoW)
                 .GetAvailableTerms(timePeriod, 1, 1);
@@ -120,12 +85,13 @@ namespace HospitalUnitTests
         }
 
         [Fact]
-        public void Count_should_be_two()
+        public void Two_terms_should_be_available()
         {
+            InsertEvent(5, 2, DateTime.Now.AddHours(3), DateTime.Now.AddHours(3.5));
             var timePeriod = new TimePeriod()
             {
                 StartTime = DateTime.Now.AddHours(2),
-                EndTime = DateTime.Now.AddHours(4.5)
+                EndTime = DateTime.Now.AddHours(5.5)
             };
 
             var availableTerms = new TransferingEquipmentService(UoW)
@@ -137,6 +103,7 @@ namespace HospitalUnitTests
         [Fact]
         public void One_term_should_be_available()
         {
+            InsertEvent(6, 2, DateTime.Now.AddHours(3), DateTime.Now.AddHours(3.5));
             var timePeriod = new TimePeriod()
             {
                 StartTime = DateTime.Now.AddHours(2),
@@ -147,6 +114,46 @@ namespace HospitalUnitTests
                .GetAvailableTerms(timePeriod, 2, 1);
             availableTerms.ShouldNotBeNull();
             availableTerms.Count().ShouldBe(1);
+        }
+
+        private Room InsertRoom(int id)
+        {
+            var room = Context.Rooms.Find(id);
+
+            if (room == null)
+            {
+                room = new Room()
+                {
+                    Id = id,
+                    Name = "Test room"
+                };
+                Context.Rooms.Add(room);
+                Context.SaveChanges();
+            }
+
+            return room;
+        }
+
+        private ScheduledEvent InsertEvent(int id, int roomId, DateTime start, DateTime end)
+        {
+            var appointment = Context.ScheduledEvents
+                              .FirstOrDefault(x => x.RoomId == roomId &&
+                                                   x.StartDate == start && x.EndDate == end);
+
+            if (appointment == null)
+            {
+                appointment = new ScheduledEvent()
+                {
+                    Id = id,
+                    StartDate = start,
+                    EndDate = end,
+                    Room = InsertRoom(roomId)
+                };
+                Context.ScheduledEvents.Add(appointment);
+                Context.SaveChanges();
+            }
+
+            return appointment;
         }
     }
 }

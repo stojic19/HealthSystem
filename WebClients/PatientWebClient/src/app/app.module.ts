@@ -1,3 +1,4 @@
+import { SurveyListComponent } from './components/survey-list/survey-list.component';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -18,6 +19,7 @@ import { SurveyComponent } from './components/survey/survey.component';
 import { SurveyPageComponent } from './components/survey-page/survey-page.component';
 import { MainComponent } from './components/main/main.component';
 import { RegistrationComponent } from './components/registration/registration.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -32,6 +34,8 @@ import { RegistrationComponent } from './components/registration/registration.co
     SurveyPageComponent,
     MainComponent,
     RegistrationComponent,
+    SurveyListComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -43,8 +47,9 @@ import { RegistrationComponent } from './components/registration/registration.co
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    MatSnackBarModule
   ],
   providers: [HttpClientModule],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

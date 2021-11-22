@@ -10,5 +10,6 @@ namespace Hospital.Repositories
 {
     public interface IAnsweredSurveyWriteRepository : IWriteBaseRepository<AnsweredSurvey>
     {
+        void create(IEnumerable<AnsweredQuestion> answers, Guid userId, int scheduledEventId);
     }
 }

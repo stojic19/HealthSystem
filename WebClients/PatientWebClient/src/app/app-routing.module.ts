@@ -1,3 +1,5 @@
+import { SurveyListComponent } from './components/survey-list/survey-list.component';
+import { SurveyComponent } from './components/survey/survey.component';
 import { SurveyPageComponent } from './components/survey-page/survey-page.component';
 import { FeedbacksPageComponent } from './components/feedbacks-page/feedbacks-page.component';
 import { NgModule } from '@angular/core';
@@ -24,6 +26,14 @@ const routes: Routes = [
         path: 'feedbacks',
         component: FeedbacksPageComponent,
       },
+      {
+        path: 'surveys',
+        component: SurveyListComponent,
+      },
+      {
+        path: 'surveys/:id',
+        component: SurveyPageComponent,
+      },
     ],
   },
   { path: 'registration', component: RegistrationComponent },
@@ -38,6 +48,6 @@ const routes: Routes = [
     CommonModule,
   ],
   exports: [RouterModule, MaterialModule, FormsModule],
-  entryComponents: [FeedbackComponent],
+  entryComponents: [FeedbackComponent, SurveyComponent],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

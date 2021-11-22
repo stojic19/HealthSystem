@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Hospital.Services.ServiceImpl
 {
-    public class AnswerSurveyService : IAnswerSurveyService
+    public class AnswerSurveyService : IPatientSurveyService
     {
         private IUnitOfWork UoW;
 
@@ -17,6 +17,15 @@ namespace Hospital.Services.ServiceImpl
         {
             this.UoW = UoW;
         }
+
+        //TODO:Prepravi na neki kul response
+        public void createAnsweredSurvey(IEnumerable<AnsweredQuestion> answers,Guid userId,int scheduledEventId)
+        {
+            var repo = UoW.GetRepository<IAnsweredSurveyWriteRepository>();
+            repo.create(answers, userId, scheduledEventId);
+
+        }
+
 
         public int getSurvey(int Id)
         {

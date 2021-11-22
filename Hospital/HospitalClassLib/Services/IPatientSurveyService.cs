@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Hospital.Services
 {
-    interface IAnswerSurveyService
+    interface IPatientSurveyService
     {
+
     }
 }

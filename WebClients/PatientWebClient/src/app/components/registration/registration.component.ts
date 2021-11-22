@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { INewPatient } from 'src/app/interfaces/new-patient';
-import { Gender } from 'src/app/interfaces/patient-interface';
+
 
 @Component({
   selector: 'app-registration',
@@ -16,7 +16,7 @@ export class RegistrationComponent implements OnInit {
     this.newPatient = {} as INewPatient;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   register(): void {
     console.log();

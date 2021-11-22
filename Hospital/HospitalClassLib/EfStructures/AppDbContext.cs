@@ -31,8 +31,6 @@ namespace Hospital.EfStructures
         public DbSet<AnsweredQuestion> AnsweredQuestions { get; set; }
         public DbSet<AnsweredSurvey> AnsweredSurveys { get; set; }
 
-        public DbSet<AnsweredQuestion> AnsweredQuestions { get; set; }
-        public DbSet<AnsweredSurvey> AnsweredSurveys { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {

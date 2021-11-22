@@ -10,9 +10,9 @@ using Hospital.Services.ServiceImpl;
 
 namespace HospitalUnitTests
 {
-    public class AnsweredSurveyTest : BaseTest
+    public class PatientSurveyTest : BaseTest
     {
-        public AnsweredSurveyTest(BaseFixture fixture) : base(fixture)
+        public PatientSurveyTest(BaseFixture fixture) : base(fixture)
         {
         }
 
@@ -60,10 +60,10 @@ namespace HospitalUnitTests
             {
                 Id = 1,
                 SurveyId = 1,
-                PatientId = 1,
+               //TODO:  
                 AnsweredDate = new DateTime()
 
-            });
+            }) ;
             Context.AnsweredQuestions.Add(new AnsweredQuestion()
             {
                 Id = 1,
@@ -179,43 +179,46 @@ namespace HospitalUnitTests
             answeredSurvey.Count().ShouldBe(1);
 
         }
-       
-        [Fact]
-        public void get_number_of_unfinished_surveys()
-        {
-            #region
-            Context.Patients.Add(new Patient()
-            {
-                Id = 1,
-                IsBlocked = false
 
-            });
-            Context.MedicalRecords.Add(new MedicalRecord
-            {
-                Id = 1,
-                PatientId = 1
+          [Fact]
+          public void get_number_of_unfinished_surveys()
+          {
+              #region
+              Context.Patients.Add(new Patient()
+              {
+                 
+                  Id = "1",
+                  IsBlocked = false
 
-            });
-            Context.HospitalTreatments.Add(new HospitalTreatment
-            {
-                Id = 2,
-                IsDone = true,
-                MedicalRecordId = 1 
-            });
-            Context.HospitalTreatments.Add(new HospitalTreatment
-            {
-                Id = 3,
-                IsDone = true,
-                MedicalRecordId = 1
-            });
-            #endregion
-            Context.SaveChanges();
-            AnswerSurveyService answerSurveyService = new AnswerSurveyService(UoW);
-            var count = answerSurveyService.getSurvey(1);
+              });
+              Context.MedicalRecords.Add(new MedicalRecord
+              {
+                  Id = 1,
 
-            count.ShouldBe(2);
 
-        }
+              });
+              Context.HospitalTreatments.Add(new HospitalTreatment
+              {
+                  Id = 2,
+                  IsDone = true,
+                  MedicalRecordId = 1 
+              });
+              Context.HospitalTreatments.Add(new HospitalTreatment
+              {
+                  Id = 3,
+                  IsDone = true,
+                  MedicalRecordId = 1
+              });
+              #endregion
+              Context.SaveChanges();
+              AnswerSurveyService answerSurveyService = new AnswerSurveyService(UoW);
+              var count = answerSurveyService.getSurvey(1);
+
+              count.ShouldBe(2);
+
+          }
+
+
 
     }
 }

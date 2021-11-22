@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Pharmacy.Exceptions;
 using Pharmacy.Repositories.Base;
 using Pharmacy.Services;
 using PharmacyApi.DTO;
@@ -23,24 +24,46 @@ namespace PharmacyApi.Controllers
         }
 
         [HttpPost("check")]
-        public IActionResult CheckMedicineAvailability(CheckMedicineAvailabilityRequestDTO checkMedicineAvailabilityRequestDTO)
+        public IActionResult CheckMedicineAvailability(CheckMedicineAvailabilityRequestDTO requestDTO)
         {
             try
             {
-                _hospitalAuthService.ValidateApiKey(checkMedicineAvailabilityRequestDTO.ApiKey);
-                bool isMedicineAvailable = _medicineProcurementService
-                    .IsMedicineAvailable(checkMedicineAvailabilityRequestDTO.MedicineName,
-                    checkMedicineAvailabilityRequestDTO.ManufacturerName, checkMedicineAvailabilityRequestDTO.Quantity);
+                _hospitalAuthService.ValidateApiKey(requestDTO.ApiKey);
+                bool answer = _medicineProcurementService.IsMedicineAvailable(requestDTO.MedicineName, requestDTO.ManufacturerName, requestDTO.Quantity);
 
-                return Ok(new CheckMedicineAvailabilityResponseDTO() { Answer = isMedicineAvailable });
+                return Ok(new CheckMedicineAvailabilityResponseDTO() { Answer = answer });
             }
-            catch (UnauthorizedAccessException uae)
+            catch (UnauthorizedAccessException exception)
             {
-                return Unauthorized(uae.Message);
+                return Unauthorized(exception.Message);
             } 
-            catch (KeyNotFoundException knfe)
+            catch (MedicineFromManufacturerNotFoundException exception)
             {
-                return NotFound(knfe.Message);
+                return NotFound(exception.Message);
+            }
+        }
+
+        [HttpPost("execute")]
+        public IActionResult ExecuteMedicineProcurement(MedicineProcurementRequestDTO requestDTO)
+        {
+            try
+            {
+                _hospitalAuthService.ValidateApiKey(requestDTO.ApiKey);
+                _medicineProcurementService.ExecuteProcurement(requestDTO.MedicineName, requestDTO.ManufacturerName, requestDTO.Quantity);
+
+                return Ok("Procurement executed successfully.");
+            }
+            catch (UnauthorizedAccessException exception)
+            {
+                return Unauthorized(exception.Message);
+            }
+            catch (MedicineFromManufacturerNotFoundException exception)
+            {
+                return NotFound(exception.Message);
+            }
+            catch (MedicineUnavailableException exception)
+            {
+                return NotFound(exception.Message);
             }
         }
     }

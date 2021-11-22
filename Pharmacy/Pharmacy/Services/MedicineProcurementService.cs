@@ -1,4 +1,5 @@
-﻿using Pharmacy.Model;
+﻿using Pharmacy.Exceptions;
+using Pharmacy.Model;
 using Pharmacy.Repositories;
 using Pharmacy.Repositories.Base;
 using System;
@@ -20,15 +21,28 @@ namespace Pharmacy.Services
 
         public bool IsMedicineAvailable(string medicineName, string manufacturerName, int quantity)
         {
-            Medicine medicine = _uow.GetRepository<IMedicineReadRepository>().GetAll()
-                .FirstOrDefault(medicine => medicine.Name.Equals(medicineName) && medicine.Manufacturer.Name.Equals(manufacturerName));
+            Medicine medicine = _uow.GetRepository<IMedicineReadRepository>().GetMedicineByNameAndManufacturerName(medicineName, manufacturerName);
 
             if (medicine == null)
             {
-                throw new KeyNotFoundException("Medicine with given name from given manufacturer not found.");
+                throw new MedicineFromManufacturerNotFoundException();
             }
 
             return medicine.Quantity >= quantity;
+        }
+
+        public void ExecuteProcurement(string medicineName, string manufacturerName, int quantity)
+        {
+            if (!IsMedicineAvailable(medicineName, manufacturerName, quantity))
+            {
+                throw new MedicineUnavailableException();
+            }
+
+            Medicine medicine = _uow.GetRepository<IMedicineReadRepository>().GetMedicineByNameAndManufacturerName(medicineName, manufacturerName);
+
+            medicine.Quantity -= quantity;
+
+            _uow.GetRepository<IMedicineWriteRepository>().Update(medicine);
         }
     }
 }

@@ -20,10 +20,11 @@ namespace PharmacyUnitTests
         [Fact]
         public void Should_get_Two_Hospitals()
         {
+            ClearDbContext();
+
             Context.Hospitals.Add(new Hospital()
             {
                 ApiKey = Guid.NewGuid(),
-                Id = 1,
                 Name = "Test name",
                 StreetName = "some street",
                 StreetNumber = "123b"
@@ -31,18 +32,15 @@ namespace PharmacyUnitTests
             Context.Hospitals.Add(new Hospital()
             {
                 ApiKey = Guid.NewGuid(),
-                Id = 2,
                 Name = "Test other name",
                 StreetName = "some street",
                 StreetNumber = "123b"
             });
             Context.Cities.Add(new City()
             {
-                Id = 1,
                 Country = new Country()
                 {
-                    Name = "Test country",
-                    Id = 1
+                    Name = "Test country"
                 },
                 Name = "Test city"
             });

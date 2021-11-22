@@ -73,7 +73,7 @@ namespace PharmacyIntegrationTests
             var newComplaintResponse = new CreateComplaintResponseDTO()
             {
                 Description = "test complaint response",
-                ComplaintId = complaint.Id
+                ComplaintId = complaint.Id,
             };
 
             var content = GetContent(newComplaintResponse);

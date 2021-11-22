@@ -17,9 +17,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit", "Unit", "{C5B8A13D-A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration", "Integration", "{D2BAEA1C-DD86-4073-9A3A-DA8434C9DC08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PharmacyUnitTests", "PharmacyTests\PharmacyUnitTests.csproj", "{922F1C57-E118-47AE-A6CC-C1788BEC2718}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PharmacyUnitTests", "PharmacyTests\PharmacyUnitTests.csproj", "{922F1C57-E118-47AE-A6CC-C1788BEC2718}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PharmacyIntegrationTests", "PharmacyIntegrationTests\PharmacyIntegrationTests.csproj", "{B29078C5-981A-4942-92E1-7BB38DE794C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PharmacyIntegrationTests", "PharmacyIntegrationTests\PharmacyIntegrationTests.csproj", "{B29078C5-981A-4942-92E1-7BB38DE794C5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

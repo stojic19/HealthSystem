@@ -23,7 +23,7 @@ namespace Integration.Repositories.DbImplementation
         public MedicineInventory GetMedicineByMedicineId(int id)
         {
             DbSet<MedicineInventory> inventory = GetAll();
-            MedicineInventory medicine = inventory.FirstOrDefault(medicine => medicine.MedicineId.Equals(id));
+            MedicineInventory medicine = inventory.FirstOrDefault(tempMedicine => tempMedicine.MedicineId.Equals(id));
             return medicine;
         }
     }

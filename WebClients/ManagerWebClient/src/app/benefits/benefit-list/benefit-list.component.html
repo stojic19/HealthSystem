@@ -1,0 +1,33 @@
+<div class="panel panel-primary">
+    <div class="panel-heading m-3">
+        <h2>Benefit List</h2>
+    </div>
+    <div class="form-control form-control-lg">
+         
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Pharmacy</th>
+                    <th>Publish</th>
+                    <th>Hide</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor='let benefit of benefits'>
+                    <td>{{benefit.id}}</td>
+                    <td>{{benefit.title}}</td>
+                    <td>{{benefit.pharmacy.name}}</td>
+                    <td>
+                        <div *ngIf="benefit.published; else elseBlock"><button>Publish</button></div>
+                        <ng-template #elseBlock>Already published</ng-template>
+                    </td>
+                    <td><button>Hide</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

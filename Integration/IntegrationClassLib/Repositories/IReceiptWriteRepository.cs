@@ -8,7 +8,7 @@ using Integration.Repositories.Base;
 
 namespace Integration.Repositories
 {
-    public interface IMedicineWriteRepository : IWriteBaseRepository<Medicine>
+    public interface IReceiptWriteRepository : IWriteBaseRepository<Receipt>
     {
     }
 }

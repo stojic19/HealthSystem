@@ -8,7 +8,8 @@ using Integration.Repositories.Base;
 
 namespace Integration.Repositories
 {
-    public interface IMedicineWriteRepository : IWriteBaseRepository<Medicine>
+    public interface IReceiptReadRepository : IReadBaseRepository<int, Receipt>
     {
+        public IEnumerable<Receipt> GetReceiptLogsInTimeRange(TimeRange timeRange);
     }
 }

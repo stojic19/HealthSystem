@@ -14,6 +14,7 @@ namespace IntegrationAPI.Adapters
             CheckMedicineAvailabilityRequestDTO medicineRequestDTO = new CheckMedicineAvailabilityRequestDTO();
             medicineRequestDTO.ApiKey = pharmacy.ApiKey;
             medicineRequestDTO.MedicineName = createMedicineRequestDTO.MedicineName;
+            medicineRequestDTO.ManufacturerName = createMedicineRequestDTO.ManufacturerName;
             medicineRequestDTO.Quantity = createMedicineRequestDTO.Quantity;
             return medicineRequestDTO;
         }
@@ -22,6 +23,7 @@ namespace IntegrationAPI.Adapters
             MedicineProcurementRequestDTO medicineRequestDTO = new MedicineProcurementRequestDTO();
             medicineRequestDTO.ApiKey = pharmacy.ApiKey;
             medicineRequestDTO.MedicineName = createMedicineRequestDTO.MedicineName;
+            medicineRequestDTO.ManufacturerName = createMedicineRequestDTO.ManufacturerName;
             medicineRequestDTO.Quantity = createMedicineRequestDTO.Quantity;
             return medicineRequestDTO;
         }

@@ -17,14 +17,14 @@ namespace HospitalUnitTests
         }
 
         [Fact]
-       public void one_answered_surveys_created()
+        public void one_answered_surveys_created()
         {
             #region
             Context.Surveys.Add(new Survey()
             {
                 Id = 1,
                 CreatedDate = DateTime.Now,
-         
+
             });
             Context.Questions.Add(new Question()
             {
@@ -60,10 +60,10 @@ namespace HospitalUnitTests
             {
                 Id = 1,
                 SurveyId = 1,
-               //TODO:  
+                //TODO:  
                 AnsweredDate = new DateTime()
 
-            }) ;
+            });
             Context.AnsweredQuestions.Add(new AnsweredQuestion()
             {
                 Id = 1,
@@ -130,7 +130,7 @@ namespace HospitalUnitTests
             });
             Context.AnsweredQuestions.Add(new AnsweredQuestion()
             {
-                Id =  10,
+                Id = 10,
                 Category = SurveyCategory.StaffSurvey,
                 QuestionId = 10,
                 Rating = 3
@@ -180,43 +180,43 @@ namespace HospitalUnitTests
 
         }
 
-          [Fact]
-          public void get_number_of_unfinished_surveys()
-          {
-              #region
-              Context.Patients.Add(new Patient()
-              {
-                 
-                  Id = "1",
-                  IsBlocked = false
+        [Fact]
+        public void get_number_of_unfinished_surveys()
+        {
+            #region
+            Context.Patients.Add(new Patient()
+            {
 
-              });
-              Context.MedicalRecords.Add(new MedicalRecord
-              {
-                  Id = 1,
+                Id = "1",
+                IsBlocked = false
+
+            });
+            Context.MedicalRecords.Add(new MedicalRecord
+            {
+                Id = 1,
 
 
-              });
-              Context.HospitalTreatments.Add(new HospitalTreatment
-              {
-                  Id = 2,
-                  IsDone = true,
-                  MedicalRecordId = 1 
-              });
-              Context.HospitalTreatments.Add(new HospitalTreatment
-              {
-                  Id = 3,
-                  IsDone = true,
-                  MedicalRecordId = 1
-              });
-              #endregion
-              Context.SaveChanges();
-              AnswerSurveyService answerSurveyService = new AnswerSurveyService(UoW);
-              var count = answerSurveyService.getSurvey(1);
+            });
+            Context.HospitalTreatments.Add(new HospitalTreatment
+            {
+                Id = 2,
+                IsDone = true,
+                MedicalRecordId = 1
+            });
+            Context.HospitalTreatments.Add(new HospitalTreatment
+            {
+                Id = 3,
+                IsDone = true,
+                MedicalRecordId = 1
+            });
+            #endregion
+            Context.SaveChanges();
+            AnswerSurveyService answerSurveyService = new AnswerSurveyService(UoW);
+            var count = answerSurveyService.getSurvey(1);
 
-              count.ShouldBe(2);
+            count.ShouldBe(2);
 
-          }
+        }
 
 
 

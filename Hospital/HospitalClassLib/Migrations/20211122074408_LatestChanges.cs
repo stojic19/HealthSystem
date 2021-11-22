@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Hospital.Migrations
 {
-    public partial class SprintTwoMigration : Migration
+    public partial class LatestChanges : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,7 +12,8 @@ namespace Hospital.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "text", nullable: true)
@@ -128,7 +129,7 @@ namespace Hospital.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    RoleId = table.Column<string>(type: "text", nullable: false),
+                    RoleId = table.Column<int>(type: "integer", nullable: false),
                     ClaimType = table.Column<string>(type: "text", nullable: true),
                     ClaimValue = table.Column<string>(type: "text", nullable: true)
                 },
@@ -269,10 +270,8 @@ namespace Hospital.Migrations
                     IsDone = table.Column<bool>(type: "boolean", nullable: false),
                     StartDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     EndDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    PatientId = table.Column<Guid>(type: "uuid", nullable: false),
-                    PatientId1 = table.Column<string>(type: "text", nullable: true),
-                    DoctorId = table.Column<Guid>(type: "uuid", nullable: false),
-                    DoctorId1 = table.Column<string>(type: "text", nullable: true),
+                    PatientId = table.Column<int>(type: "integer", nullable: true),
+                    DoctorId = table.Column<int>(type: "integer", nullable: true),
                     RoomId = table.Column<int>(type: "integer", nullable: true),
                     AnsweredSurveyId = table.Column<int>(type: "integer", nullable: false),
                     MedicalRecordId = table.Column<int>(type: "integer", nullable: true)
@@ -292,8 +291,8 @@ namespace Hospital.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "text", nullable: false),
-                    RoleId = table.Column<string>(type: "text", nullable: false)
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    RoleId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -312,8 +311,7 @@ namespace Hospital.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    PatientId = table.Column<Guid>(type: "uuid", nullable: false),
-                    PatientId1 = table.Column<string>(type: "text", nullable: true),
+                    PatientId = table.Column<int>(type: "integer", nullable: true),
                     MedicationIngredientId = table.Column<int>(type: "integer", nullable: true),
                     MedicalIngredientId = table.Column<int>(type: "integer", nullable: false),
                     MedicalRecordId = table.Column<int>(type: "integer", nullable: true)
@@ -337,8 +335,7 @@ namespace Hospital.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     AnsweredDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     SurveyId = table.Column<int>(type: "integer", nullable: false),
-                    PatientId = table.Column<Guid>(type: "uuid", nullable: false),
-                    PatientId1 = table.Column<string>(type: "text", nullable: true)
+                    PatientId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -357,7 +354,7 @@ namespace Hospital.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserId = table.Column<string>(type: "text", nullable: false),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
                     ClaimType = table.Column<string>(type: "text", nullable: true),
                     ClaimValue = table.Column<string>(type: "text", nullable: true)
                 },
@@ -373,7 +370,7 @@ namespace Hospital.Migrations
                     LoginProvider = table.Column<string>(type: "text", nullable: false),
                     ProviderKey = table.Column<string>(type: "text", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "text", nullable: true),
-                    UserId = table.Column<string>(type: "text", nullable: false)
+                    UserId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -384,7 +381,7 @@ namespace Hospital.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "text", nullable: false),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
                     LoginProvider = table.Column<string>(type: "text", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Value = table.Column<string>(type: "text", nullable: true)
@@ -400,8 +397,7 @@ namespace Hospital.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    PatientId = table.Column<Guid>(type: "uuid", nullable: false),
-                    PatientId1 = table.Column<string>(type: "text", nullable: true),
+                    PatientId = table.Column<int>(type: "integer", nullable: true),
                     FeedbackStatus = table.Column<int>(type: "integer", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     Text = table.Column<string>(type: "text", nullable: true),
@@ -420,8 +416,7 @@ namespace Hospital.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Height = table.Column<double>(type: "double precision", nullable: false),
                     Weight = table.Column<double>(type: "double precision", nullable: false),
-                    DoctorId = table.Column<Guid>(type: "uuid", nullable: false),
-                    DoctorId1 = table.Column<string>(type: "text", nullable: true),
+                    DoctorId = table.Column<int>(type: "integer", nullable: true),
                     BloodType = table.Column<int>(type: "integer", nullable: false),
                     JobStatus = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -434,7 +429,8 @@ namespace Hospital.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     FirstName = table.Column<string>(type: "text", nullable: true),
                     MiddleName = table.Column<string>(type: "text", nullable: true),
                     LastName = table.Column<string>(type: "text", nullable: true),
@@ -550,8 +546,7 @@ namespace Hospital.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    PatientId = table.Column<Guid>(type: "uuid", nullable: false),
-                    PatientId1 = table.Column<string>(type: "text", nullable: true),
+                    PatientId = table.Column<int>(type: "integer", nullable: true),
                     StartDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     EndDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     IssuedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
@@ -562,8 +557,8 @@ namespace Hospital.Migrations
                 {
                     table.PrimaryKey("PK_Prescriptions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Prescriptions_AspNetUsers_PatientId1",
-                        column: x => x.PatientId1,
+                        name: "FK_Prescriptions_AspNetUsers_PatientId",
+                        column: x => x.PatientId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -590,16 +585,15 @@ namespace Hospital.Migrations
                     IssuedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     IsUrgent = table.Column<bool>(type: "boolean", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: true),
-                    DoctorId = table.Column<Guid>(type: "uuid", nullable: false),
-                    DoctorId1 = table.Column<string>(type: "text", nullable: true),
+                    DoctorId = table.Column<int>(type: "integer", nullable: true),
                     MedicalRecordId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Referrals", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Referrals_AspNetUsers_DoctorId1",
-                        column: x => x.DoctorId1,
+                        name: "FK_Referrals_AspNetUsers_DoctorId",
+                        column: x => x.DoctorId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -622,9 +616,9 @@ namespace Hospital.Migrations
                 column: "MedicationIngredientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Allergies_PatientId1",
+                name: "IX_Allergies_PatientId",
                 table: "Allergies",
-                column: "PatientId1");
+                column: "PatientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AnsweredQuestions_AnsweredSurveyId",
@@ -637,9 +631,9 @@ namespace Hospital.Migrations
                 column: "QuestionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AnsweredSurveys_PatientId1",
+                name: "IX_AnsweredSurveys_PatientId",
                 table: "AnsweredSurveys",
-                column: "PatientId1");
+                column: "PatientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AnsweredSurveys_SurveyId",
@@ -715,9 +709,9 @@ namespace Hospital.Migrations
                 column: "MedicalRecordId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Feedbacks_PatientId1",
+                name: "IX_Feedbacks_PatientId",
                 table: "Feedbacks",
-                column: "PatientId1");
+                column: "PatientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_HospitalTreatments_MedicalRecordId",
@@ -730,9 +724,9 @@ namespace Hospital.Migrations
                 column: "RoomId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MedicalRecords_DoctorId1",
+                name: "IX_MedicalRecords_DoctorId",
                 table: "MedicalRecords",
-                column: "DoctorId1");
+                column: "DoctorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MedicationMedicationIngredient_MedicationsId",
@@ -750,9 +744,9 @@ namespace Hospital.Migrations
                 column: "MedicationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Prescriptions_PatientId1",
+                name: "IX_Prescriptions_PatientId",
                 table: "Prescriptions",
-                column: "PatientId1");
+                column: "PatientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Questions_SurveyId",
@@ -760,9 +754,9 @@ namespace Hospital.Migrations
                 column: "SurveyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Referrals_DoctorId1",
+                name: "IX_Referrals_DoctorId",
                 table: "Referrals",
-                column: "DoctorId1");
+                column: "DoctorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Referrals_MedicalRecordId",
@@ -785,9 +779,9 @@ namespace Hospital.Migrations
                 column: "AnsweredSurveyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ScheduledEvents_DoctorId1",
+                name: "IX_ScheduledEvents_DoctorId",
                 table: "ScheduledEvents",
-                column: "DoctorId1");
+                column: "DoctorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ScheduledEvents_MedicalRecordId",
@@ -795,9 +789,9 @@ namespace Hospital.Migrations
                 column: "MedicalRecordId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ScheduledEvents_PatientId1",
+                name: "IX_ScheduledEvents_PatientId",
                 table: "ScheduledEvents",
-                column: "PatientId1");
+                column: "PatientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ScheduledEvents_RoomId",
@@ -821,17 +815,17 @@ namespace Hospital.Migrations
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_ScheduledEvents_AspNetUsers_DoctorId1",
+                name: "FK_ScheduledEvents_AspNetUsers_DoctorId",
                 table: "ScheduledEvents",
-                column: "DoctorId1",
+                column: "DoctorId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_ScheduledEvents_AspNetUsers_PatientId1",
+                name: "FK_ScheduledEvents_AspNetUsers_PatientId",
                 table: "ScheduledEvents",
-                column: "PatientId1",
+                column: "PatientId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
@@ -853,9 +847,9 @@ namespace Hospital.Migrations
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Allergies_AspNetUsers_PatientId1",
+                name: "FK_Allergies_AspNetUsers_PatientId",
                 table: "Allergies",
-                column: "PatientId1",
+                column: "PatientId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
@@ -869,9 +863,9 @@ namespace Hospital.Migrations
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_AnsweredSurveys_AspNetUsers_PatientId1",
+                name: "FK_AnsweredSurveys_AspNetUsers_PatientId",
                 table: "AnsweredSurveys",
-                column: "PatientId1",
+                column: "PatientId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
@@ -901,17 +895,17 @@ namespace Hospital.Migrations
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Feedbacks_AspNetUsers_PatientId1",
+                name: "FK_Feedbacks_AspNetUsers_PatientId",
                 table: "Feedbacks",
-                column: "PatientId1",
+                column: "PatientId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_MedicalRecords_AspNetUsers_DoctorId1",
+                name: "FK_MedicalRecords_AspNetUsers_DoctorId",
                 table: "MedicalRecords",
-                column: "DoctorId1",
+                column: "DoctorId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
@@ -920,7 +914,7 @@ namespace Hospital.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_MedicalRecords_AspNetUsers_DoctorId1",
+                name: "FK_MedicalRecords_AspNetUsers_DoctorId",
                 table: "MedicalRecords");
 
             migrationBuilder.DropTable(

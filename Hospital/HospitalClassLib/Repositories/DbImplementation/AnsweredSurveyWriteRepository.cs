@@ -3,7 +3,7 @@ using Hospital.Model;
 using Hospital.Repositories.Base;
 using System;
 using System.Collections.Generic;
- 
+
 
 namespace Hospital.Repositories.DbImplementation
 {
@@ -20,7 +20,7 @@ namespace Hospital.Repositories.DbImplementation
             answeredSurvey.AnsweredQuestions = answers;
             answeredSurvey.PatientId = userId;
             answeredSurvey.ScheduledEventId = scheduledEventId;
-            
+
         }
     }
 }

@@ -15,11 +15,8 @@ namespace Hospital.Model
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
-        public Guid PatientId { get; set; }
-
         public Patient Patient { get; set; }
 
-        public Guid DoctorId { get; set; }
         public Doctor Doctor { get; set; }
 
         public int? RoomId { get; set; }

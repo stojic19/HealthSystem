@@ -1,13 +1,15 @@
+import { IChosenDoctor } from './chosen-doctor';
+
 export enum BloodType {
-  Undefined,
-  ONegative,
-  OPositive,
-  ANegative,
-  APositive,
-  BNegative,
-  BPositive,
-  ABNegative,
-  ABPositive,
+  Undefined = 'Undefined',
+  ONegative = '0 Negative',
+  OPositive = '0 Positive',
+  ANegative = 'A Negative',
+  APositive = 'A Positive',
+  BNegative = 'B Negative',
+  BPositive = 'B Positive',
+  ABNegative = 'AB Negative',
+  ABPositive = 'AB Positive',
 }
 
 export enum JobStatus {
@@ -22,7 +24,8 @@ export enum JobStatus {
 export interface IMedicalRecord {
   height: number;
   weight: number;
-  doctor: any;
+  doctor: IChosenDoctor;
   bloodType: BloodType;
   allergies: any;
+  jobStatus: JobStatus;
 }

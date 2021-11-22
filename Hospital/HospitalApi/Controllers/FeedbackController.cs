@@ -1,7 +1,7 @@
 
-﻿using Hospital.Model;
+using Hospital.Model;
 using Hospital.Model.Enumerations;
-﻿using AutoMapper;
+using AutoMapper;
 using Hospital.Repositories;
 using Hospital.Repositories.Base;
 using HospitalApi.DTOs;
@@ -12,7 +12,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 
 namespace HospitalApi.Controllers
 {
@@ -40,11 +39,11 @@ namespace HospitalApi.Controllers
                 return Ok(feedbacks);
 
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error!Failed loading comments!");
             }
-            
+
         }
 
         [HttpGet("approved")]
@@ -67,7 +66,7 @@ namespace HospitalApi.Controllers
                 var feedbackWriteRepo = _uow.GetRepository<IFeedbackWriteRepository>();
                 Feedback addedFeedback = feedbackWriteRepo.Add(_mapper.Map<Feedback>(feedbackDTO));
 
-                if(addedFeedback == null)
+                if (addedFeedback == null)
                 {
                     return StatusCode(StatusCodes.Status500InternalServerError, "Could not insert feedback in the database.");
                 }
@@ -85,7 +84,7 @@ namespace HospitalApi.Controllers
         {
             try
             {
-                if(feedback == null)
+                if (feedback == null)
                 {
                     return BadRequest("Feedback format is wrong!");
                 }
@@ -94,20 +93,20 @@ namespace HospitalApi.Controllers
                 feedback.FeedbackStatus = FeedbackStatus.Approved;
                 Feedback approvedFeedback = feedbackWriteRepo.Update(feedback);
 
-                if(approvedFeedback == null)
+                if (approvedFeedback == null)
                 {
                     return StatusCode(StatusCodes.Status500InternalServerError, "Couldn't update feedback!");
                 }
 
                 return Ok(approvedFeedback);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error updating data in database!");
             }
         }
         [HttpGet("{Id}")]
-        public Feedback GetFeedback(int Id )
+        public Feedback GetFeedback(int Id)
         {
             var feedbackReadRepo = _uow.GetRepository<IFeedbackReadRepository>();
             return feedbackReadRepo.GetById(Id);

@@ -5,8 +5,7 @@ namespace Hospital.Model
     public class Prescription
     {
         public int Id { get; set; }
-
-        public Guid PatientId { get; set; }
+        
         public Patient Patient { get; set; }
 
         public DateTime StartDate { get; set; }

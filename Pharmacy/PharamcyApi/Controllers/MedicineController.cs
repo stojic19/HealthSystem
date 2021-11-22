@@ -24,7 +24,6 @@ namespace PharmacyApi.Controllers
         [HttpPost]
         public IActionResult Create(CreateMedicineDTO medicineDTO)
         {
-            //validate
             int manufacturerId;
             try
             {
@@ -37,7 +36,7 @@ namespace PharmacyApi.Controllers
 
             if (!IsMedicineUnique(medicineDTO.Name)) return ValidationProblem("Medicine already exists!");
 
-            //create
+            
             Medicine medicineCreated = CreateNewMedicine(medicineDTO, manufacturerId);
             _uow.GetRepository<IMedicineWriteRepository>().Add(medicineCreated);
 
@@ -45,7 +44,28 @@ namespace PharmacyApi.Controllers
             return Ok("Medicine succesfully created!");
         }
 
-       
+        [HttpDelete]
+        public IActionResult RemoveByName(string medicineName)
+        {
+            if (IsMedicineUnique(medicineName)) return ValidationProblem("Medicine with given name doesn't exist!");
+
+            var removedMedicine = _uow.GetRepository<IMedicineReadRepository>().GetMedicineByName(medicineName);
+            _uow.GetRepository<IMedicineWriteRepository>().Delete(removedMedicine);
+
+            return Ok("Medicine removed succesfully!");
+        }
+
+        [HttpPut]
+        public IActionResult Update(UpdateMedicineDTO updateMedicineDTO)
+        {
+            if (IsMedicineUnique(updateMedicineDTO.Name)) return ValidationProblem("Medicine with given name doesn't exist!");
+
+            var updatedMedicine = CreateUpdatedMedicine(updateMedicineDTO);
+            _uow.GetRepository<IMedicineWriteRepository>().Update(updatedMedicine);
+
+            return Ok("Medicine updated succesfully!");
+        }
+
 
         [HttpGet]
         public IActionResult GetAll()
@@ -117,24 +137,36 @@ namespace PharmacyApi.Controllers
             };
         }
 
-        
 
 
-   
-
-        private List<T> GenerateObjects<T>(List<string> strings, Func<string, T> action) where T: class,new()
+        private Medicine CreateUpdatedMedicine(UpdateMedicineDTO updateMedicineDTO)
         {
-            var sideEffects = new List<T>();
+            var updatedMedicine = _uow.GetRepository<IMedicineReadRepository>().GetMedicineByName(updateMedicineDTO.Name);
+            updatedMedicine.SideEffects = GenerateObjects(updateMedicineDTO.SideEffects, _uow.GetRepository<ISideEffectReadRepository>().GetSideEffectByName);
+            updatedMedicine.Reactions = GenerateObjects(updateMedicineDTO.Reactions, _uow.GetRepository<IReactionReadRepository>().GetReactionByName);
+            updatedMedicine.Usage = updateMedicineDTO.Usage;
+            updatedMedicine.WeightInMilligrams = updateMedicineDTO.WeightInMilligrams;
+            updatedMedicine.Precautions = GenerateObjects(updateMedicineDTO.Precautions, _uow.GetRepository<IPrecautionReadRepository>().GetPrecautionByName);
+            updatedMedicine.MedicinePotentialDangers = GenerateObjects(updateMedicineDTO.MedicinePotentialDangers, _uow.GetRepository<IMedicinePotentialDangerReadRepository>().GetMedicinePotentialDangerByName);
+            updatedMedicine.Quantity = updateMedicineDTO.Quantity;
+
+            return updatedMedicine;
+        }
+
+
+        private static List<T> GenerateObjects<T>(List<string> strings, Func<string, T> action) where T: class,new()
+        {
+            var retList = new List<T>();
             foreach (string s in strings)
             {
-                var sideEffect = action.Invoke(s);
-                if (sideEffect != null)
-                    sideEffects.Add(sideEffect);
+                var obj = action.Invoke(s);
+                if (obj != null)
+                    retList.Add(obj);
                 else
-                    sideEffects.Add((T)Activator.CreateInstance(typeof(T),new object[] { s }));
+                    retList.Add((T)Activator.CreateInstance(typeof(T),new object[] { s }));
             }
 
-            return sideEffects;
+            return retList;
         }
 
 

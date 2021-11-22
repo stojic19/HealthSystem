@@ -23,7 +23,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { RoomInfoComponent } from './room-info/room-info.component';
 import { DisplayRoomInfoComponent } from './room-info/display-room-info/display-room-info.component';
 import { EditRoomInfoComponent } from './room-info/edit-room-info/edit-room-info.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EquipmentFormComponent } from './equipment-form/equipment-form.component';
 import { InitialRoomComponent } from './equipment-form/initial-room/initial-room.component';
 import { DestinationRoomComponent } from './equipment-form/destination-room/destination-room.component';
@@ -39,10 +39,13 @@ import { PharmaciesListComponent } from './pharmacies/pharmacies-list.component'
 import { HospitalEquipmentComponent } from './hospital-equipment/hospital-equipment.component';
 import { BenefitListComponent } from './benefits/benefit-list/benefit-list.component';
 import { BenefitDetailsComponent } from './benefits/benefit-details/benefit-details.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [AppComponent, HospitalOverviewComponent, LegendComponent, NavbarComponent, FirstBuildingComponent, FloorSelectionComponent, FirstFloorComponent, SecondFloorComponent, FeedbacksManagerComponent, SecondBuildingComponent, FloorFirstComponent, FloorSecondComponent, SelectFloorComponent, HomePageComponent, FooterComponent, RoomInfoComponent, DisplayRoomInfoComponent, EditRoomInfoComponent, EquipmentFormComponent, InitialRoomComponent, DestinationRoomComponent, MoveInfoComponent, FreeTermsComponent, SearchBarComponent, RoomInventoryComponent, HospitalEquipmentComponent, ComplaintDetailsComponent, AddComplaintComponent, ComplaintsListComponent, RegisterPharmacyComponent, PharmaciesListComponent, BenefitListComponent, BenefitDetailsComponent],
-  imports: [BrowserModule, AppRoutingModule,  NgbModule, CommonModule, HttpClientModule, FormsModule , BrowserAnimationsModule],
+  imports: [BrowserModule, AppRoutingModule,  NgbModule, CommonModule, HttpClientModule, FormsModule , BrowserAnimationsModule, MatCheckboxModule, MatOptionModule, MatSelectModule, ReactiveFormsModule],
   providers: [HttpClientModule],
   bootstrap: [AppComponent],
 })

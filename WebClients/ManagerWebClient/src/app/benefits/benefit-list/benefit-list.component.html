@@ -3,7 +3,18 @@
         <h2>Benefit List</h2>
     </div>
     <div class="form-control form-control-lg">
-         
+        <input [(ngModel)]="SearchString"  (keyup)="FilterFn()" placeholder="Filter" > 
+        <mat-checkbox class="checkbox-margin" [(ngModel)]="onlyActive" (change)="FilterFn()" ngDefaultControl >Show only active benefits</mat-checkbox>
+        <mat-form-field appearance="fill">
+            <mat-label>Filter by pharmacy</mat-label>
+            
+            <mat-select class="checkbox-margin" [compareWith]="compareObjects" [(ngModel)]="SearchPharmacy.pharmacy" (selectionChange)="FilterFn()" ngDefaultControl required>
+                <mat-option [value]="allPharmacies">--</mat-option>
+                <mat-option *ngFor="let pharmacy of filterPharmacies" [value]="pharmacy">
+                    {{pharmacy.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
     </div>
     <div class="table-responsive">
         <table class="table table-bordered table-striped table-hover">

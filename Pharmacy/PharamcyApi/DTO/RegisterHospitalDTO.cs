@@ -16,6 +16,9 @@ namespace PharmacyApi.DTO
         public string StreetNumber { get; set; }
         [Required(ErrorMessage = "City is required!")]
         public string CityName { get; set; }
+        [Required(ErrorMessage = "Base url is required for http communication!")]
+        public string BaseUrl { get; set; }
+
 
     }
 }

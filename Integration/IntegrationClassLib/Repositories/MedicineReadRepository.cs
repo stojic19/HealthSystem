@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Integration.EfStructures;
 using Integration.Model;
 using Integration.Repositories.Base;
+using Microsoft.EntityFrameworkCore;
 
 namespace Integration.Repositories
 {
@@ -13,6 +14,17 @@ namespace Integration.Repositories
     {
         public MedicineReadRepository(AppDbContext context) : base(context)
         {
+        }
+        public DbSet<Medicine> GetAllMedicines()
+        {
+            return GetAll();
+        }
+
+        public Medicine GetMedicineByName(string name)
+        {
+            DbSet<Medicine> allMedicine = GetAll();
+            Medicine medicine = allMedicine.FirstOrDefault(medicine => medicine.Name.Equals(name));
+            return medicine;
         }
     }
 }

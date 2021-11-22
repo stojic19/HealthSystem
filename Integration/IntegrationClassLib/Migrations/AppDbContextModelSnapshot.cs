@@ -190,6 +190,29 @@ namespace Integration.Migrations
                 b.ToTable("Medicines");
             });
 
+            modelBuilder.Entity("Integration.Model.MedicineSpecificationFile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("FileName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Host")
+                        .HasColumnType("text");
+
+                    b.Property<int>("PharmacyId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PharmacyId");
+
+                    b.ToTable("MedicineSpecificationFiles");
+                });
+
             modelBuilder.Entity("Integration.Model.Pharmacy", b =>
             {
                 b.Property<int>("Id")
@@ -295,6 +318,17 @@ namespace Integration.Migrations
                         .IsRequired();
 
                     b.Navigation("Complaint");
+                });
+
+                modelBuilder.Entity("Integration.Model.MedicineSpecificationFile", b =>
+                {
+                    b.HasOne("Integration.Model.Pharmacy", "Pharmacy")
+                        .WithMany()
+                        .HasForeignKey("PharmacyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Pharmacy");
                 });
 
                 modelBuilder.Entity("Integration.Model.Pharmacy", b =>

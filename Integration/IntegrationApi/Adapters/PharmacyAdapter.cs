@@ -9,14 +9,10 @@ namespace IntegrationAPI.Adapters
 {
     public class PharmacyAdapter
     {
-        public static Pharmacy PharmacyDTOToPharmacy(PharmacyDTO dto)
+        public static Pharmacy PharmacyDTOToPharmacy(PharmacyUrlDTO urlDto)
         {
             Pharmacy pharmacy = new Pharmacy();
-            pharmacy.City = dto.City;
-            pharmacy.BaseUrl = dto.BaseUrl;
-            pharmacy.StreetName = dto.StreetName;
-            pharmacy.StreetNumber = dto.StreetNumber;
-            pharmacy.Name = dto.Name;
+            pharmacy.BaseUrl = urlDto.BaseUrl;
             return pharmacy;
         }
     }

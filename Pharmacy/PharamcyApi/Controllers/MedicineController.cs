@@ -125,12 +125,12 @@ namespace PharmacyApi.Controllers
             {
                 Name = medicineDTO.Name,
                 ManufacturerId = manufacturerId,
-                SideEffects = GenerateObjects(medicineDTO.SideEffects,_uow.GetRepository<ISideEffectReadRepository>().GetSideEffectByName),
-                Reactions = GenerateObjects(medicineDTO.Reactions, _uow.GetRepository<IReactionReadRepository>().GetReactionByName),
+                SideEffects = medicineDTO.SideEffects,
+                Reactions = medicineDTO.Reactions,
                 Usage = medicineDTO.Usage,
                 WeightInMilligrams = medicineDTO.WeightInMilligrams,
-                Precautions = GenerateObjects(medicineDTO.Precautions, _uow.GetRepository<IPrecautionReadRepository>().GetPrecautionByName),
-                MedicinePotentialDangers = GenerateObjects(medicineDTO.MedicinePotentialDangers, _uow.GetRepository<IMedicinePotentialDangerReadRepository>().GetMedicinePotentialDangerByName),
+                Precautions = medicineDTO.Precautions,
+                MedicinePotentialDangers = medicineDTO.MedicinePotentialDangers,
                 Substances = GenerateObjects(medicineDTO.Substances, _uow.GetRepository<ISubstanceReadRepository>().GetSubstanceByName),
                 Type = medicineDTO.Type,
                 Quantity = medicineDTO.Quantity
@@ -142,18 +142,18 @@ namespace PharmacyApi.Controllers
         private Medicine CreateUpdatedMedicine(UpdateMedicineDTO updateMedicineDTO)
         {
             var updatedMedicine = _uow.GetRepository<IMedicineReadRepository>().GetMedicineByName(updateMedicineDTO.Name);
-            updatedMedicine.SideEffects = GenerateObjects(updateMedicineDTO.SideEffects, _uow.GetRepository<ISideEffectReadRepository>().GetSideEffectByName);
-            updatedMedicine.Reactions = GenerateObjects(updateMedicineDTO.Reactions, _uow.GetRepository<IReactionReadRepository>().GetReactionByName);
+            updatedMedicine.SideEffects = updateMedicineDTO.SideEffects;
+            updatedMedicine.Reactions = updateMedicineDTO.Reactions;
             updatedMedicine.Usage = updateMedicineDTO.Usage;
             updatedMedicine.WeightInMilligrams = updateMedicineDTO.WeightInMilligrams;
-            updatedMedicine.Precautions = GenerateObjects(updateMedicineDTO.Precautions, _uow.GetRepository<IPrecautionReadRepository>().GetPrecautionByName);
-            updatedMedicine.MedicinePotentialDangers = GenerateObjects(updateMedicineDTO.MedicinePotentialDangers, _uow.GetRepository<IMedicinePotentialDangerReadRepository>().GetMedicinePotentialDangerByName);
+            updatedMedicine.Precautions = updateMedicineDTO.Precautions;
+            updatedMedicine.MedicinePotentialDangers = updateMedicineDTO.MedicinePotentialDangers;
             updatedMedicine.Quantity = updateMedicineDTO.Quantity;
 
             return updatedMedicine;
         }
 
-
+        //currently used only for generating Substances objects
         private static List<T> GenerateObjects<T>(List<string> strings, Func<string, T> action) where T: class,new()
         {
             var retList = new List<T>();

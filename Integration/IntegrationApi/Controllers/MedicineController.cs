@@ -50,7 +50,7 @@ namespace IntegrationAPI.Controllers
         private IRestResponse SendMedicineRequestToPharmacy(CheckMedicineAvailabilityRequestDTO medicineRequestDTO, Pharmacy pharmacy)
         {
             RestClient client = new RestClient();
-            string targetUrl = pharmacy.BaseUrl + "/api/HospitalCommunication/AcceptHospitalRegistration";
+            string targetUrl = pharmacy.BaseUrl + "/api/MedicineProcurement/check";
             RestRequest request = new RestRequest(targetUrl);
             request.AddJsonBody(medicineRequestDTO);
             return client.Post(request);
@@ -89,7 +89,7 @@ namespace IntegrationAPI.Controllers
         private IRestResponse SendUrgentProcurementRequestToPharmacy(MedicineProcurementRequestDTO medicineRequestDTO, Pharmacy pharmacy)
         {
             RestClient client = new RestClient();
-            string targetUrl = pharmacy.BaseUrl + "/api/HospitalCommunication/AcceptHospitalRegistration";
+            string targetUrl = pharmacy.BaseUrl + "/api/MedicineProcurement";
             RestRequest request = new RestRequest(targetUrl);
             request.AddJsonBody(medicineRequestDTO);
             return client.Post(request);

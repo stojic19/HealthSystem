@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Pharmacy.Model;
 using Pharmacy.Repositories;
 using Pharmacy.Repositories.Base;
+using PharmacyApi.DTO;
 
 namespace PharmacyApi.Controllers
 {
@@ -20,31 +22,122 @@ namespace PharmacyApi.Controllers
         }
 
         [HttpPost]
-        public Medicine Add(Medicine medicine)
+        public IActionResult Create(CreateMedicineDTO medicineDTO)
         {
-            return _uow.GetRepository<IMedicineWriteRepository>().Add(medicine);
+            //validate
+            int manufacturerId;
+            try
+            {
+                manufacturerId = FindManufacturer(medicineDTO.ManufacturerName);
+            }
+            catch
+            {
+                return ValidationProblem("Manufacturer doesn't exist!");
+            }
+
+            if (!IsMedicineUnique(medicineDTO.Name)) return ValidationProblem("Medicine already exists!");
+
+            //create
+            Medicine medicineCreated = CreateNewMedicine(medicineDTO, manufacturerId);
+            _uow.GetRepository<IMedicineWriteRepository>().Add(medicineCreated);
+
+
+            return Ok("Medicine succesfully created!");
         }
 
-        [HttpGet]
-        public IEnumerable<Medicine> GetAll()
-        {
-            return _uow.GetRepository<IMedicineReadRepository>().GetAll().Include(medicine => medicine.Manufacturer);
-        }
+       
 
         [HttpGet]
-        public Medicine GetById(int id)
+        public IActionResult GetAll()
         {
-            return _uow.GetRepository<IMedicineReadRepository>().GetAll()
+            IEnumerable<Medicine> medicines = _uow.GetRepository<IMedicineReadRepository>().GetAll()
                 .Include(medicine => medicine.Manufacturer)
+                .Include(medicine => medicine.SideEffects)
+                .Include(medicine => medicine.Reactions)
+                .Include(medicine => medicine.Substances)
+                .Include(medicine => medicine.Precautions)
+                .Include(medicine => medicine.MedicinePotentialDangers);
+
+            if (medicines.Count() == 0)
+                return NotFound();
+
+            return Ok(medicines);
+        }
+
+        [HttpGet]
+        public IActionResult GetById(int id)
+        {
+            Medicine medicine = _uow.GetRepository<IMedicineReadRepository>().GetAll()
+                .Include(medicine => medicine.Manufacturer)
+                .Include(medicine => medicine.SideEffects)
+                .Include(medicine => medicine.Reactions)
+                .Include(medicine => medicine.Substances)
+                .Include(medicine => medicine.Precautions)
+                .Include(medicine => medicine.MedicinePotentialDangers)
                 .FirstOrDefault(medicine => medicine.Id == id);
+
+            if (medicine == null)
+                return NotFound();
+
+            return Ok(medicine);
         }
 
-        [HttpGet]
-        public Medicine GetByName(string name)
+
+        private int FindManufacturer(string ManufacturerName)
         {
-            return _uow.GetRepository<IMedicineReadRepository>().GetAll()
-                .Include(medicine => medicine.Manufacturer)
-                .FirstOrDefault(medicine => medicine.Name.Equals(name));
+            var manufacturer = _uow.GetRepository<IManufacturerReadRepository>().GetManufacturerByName(ManufacturerName);
+            if (manufacturer != null) return manufacturer.Id;
+
+            throw new System.Exception();
         }
+
+        private bool IsMedicineUnique(string MedicineName)
+        {
+            var medicine = _uow.GetRepository<IMedicineReadRepository>().GetMedicineByName(MedicineName);
+            if (medicine != null) return false;
+            return true;
+        }
+
+
+        private Medicine CreateNewMedicine(CreateMedicineDTO medicineDTO, int manufacturerId)
+        {
+            return new Medicine()
+            {
+                Name = medicineDTO.Name,
+                ManufacturerId = manufacturerId,
+                SideEffects = GenerateObjects(medicineDTO.SideEffects,_uow.GetRepository<ISideEffectReadRepository>().GetSideEffectByName),
+                Reactions = GenerateObjects(medicineDTO.Reactions, _uow.GetRepository<IReactionReadRepository>().GetReactionByName),
+                Usage = medicineDTO.Usage,
+                WeightInMilligrams = medicineDTO.WeightInMilligrams,
+                Precautions = GenerateObjects(medicineDTO.Precautions, _uow.GetRepository<IPrecautionReadRepository>().GetPrecautionByName),
+                MedicinePotentialDangers = GenerateObjects(medicineDTO.MedicinePotentialDangers, _uow.GetRepository<IMedicinePotentialDangerReadRepository>().GetMedicinePotentialDangerByName),
+                Substances = GenerateObjects(medicineDTO.Substances, _uow.GetRepository<ISubstanceReadRepository>().GetSubstanceByName),
+                Type = medicineDTO.Type,
+                Quantity = medicineDTO.Quantity
+            };
+        }
+
+        
+
+
+   
+
+        private List<T> GenerateObjects<T>(List<string> strings, Func<string, T> action) where T: class,new()
+        {
+            var sideEffects = new List<T>();
+            foreach (string s in strings)
+            {
+                var sideEffect = action.Invoke(s);
+                if (sideEffect != null)
+                    sideEffects.Add(sideEffect);
+                else
+                    sideEffects.Add((T)Activator.CreateInstance(typeof(T),new object[] { s }));
+            }
+
+            return sideEffects;
+        }
+
+
+
     }
 }

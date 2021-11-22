@@ -15,7 +15,7 @@ namespace Integration.EfStructures
         public DbSet<Receipt> Receipts { get; set; }
         public DbSet<Benefit> Benefits { get; set; }
         public DbSet<MedicineSpecificationFile> MedicineSpecificationFiles { get; set; }
-
+        public DbSet<MedicineInventory> MedicineInventory { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {

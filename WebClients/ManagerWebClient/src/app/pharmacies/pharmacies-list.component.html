@@ -6,6 +6,10 @@
     <div class="form-control form-control-lg">
         <input [(ngModel)]="SearchString"  (keyup)="FilterFn()" placeholder="Filter" > 
     </div>
+    <div class="form-control form-control-lg">
+        <input [(ngModel)]="MedicineString" (keyup)="Clear()" placeholder="Medicine" >
+        <input [(ngModel)]="QuantityString" (keyup)="Clear()" placeholder="Quantity" >  
+    </div>
     <div class="table-responsive">
         <table class="table table-bordered table-striped table-hover">
             <thead>
@@ -14,6 +18,7 @@
                     <th>Name</th>
                     <th>Address</th>
                     <th>Base URL</th>
+                    <th>Medicine</th>
                 </tr>
             </thead>
             <tbody>
@@ -22,6 +27,10 @@
                     <td>{{pharmacy.name}}</td>
                     <td>{{pharmacy.streetName}} {{pharmacy.streetNumber}}, {{pharmacy.city.name}}</td>
                     <td>{{pharmacy.baseUrl}}</td>
+                    <td>
+                        <div *ngIf='!PharmacyConfirmed(pharmacy.id)'><button class="btn btn-primary" (click)="Check(pharmacy.id)">Check</button></div>
+                        <div *ngIf='PharmacyConfirmed(pharmacy.id) && !PharmacyOrdered(pharmacy.id)'><button class="btn btn-success" (click)="Order(pharmacy.id)">Order</button></div>
+                    </td>
                 </tr>
             </tbody>
         </table>

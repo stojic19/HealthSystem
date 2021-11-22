@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PharmacyApi.DTO.Base;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PharmacyApi.DTO
 {
-    public class UpdateMedicineDTO
+    public class UpdateMedicineDTO : BaseCommunicationDTO
     {
         [Required(ErrorMessage = "It is necessary to specify the name of medicine!")]
         public string Name { get; set; }

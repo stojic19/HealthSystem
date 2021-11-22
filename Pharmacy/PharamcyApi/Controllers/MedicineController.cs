@@ -58,7 +58,7 @@ namespace PharmacyApi.Controllers
                 .Include(medicine => medicine.Precautions)
                 .Include(medicine => medicine.MedicinePotentialDangers);
 
-            if (medicines.Count() == 0)
+            if (medicines == null || medicines.Count() == 0)
                 return NotFound();
 
             return Ok(medicines);
@@ -80,6 +80,73 @@ namespace PharmacyApi.Controllers
                 return NotFound();
 
             return Ok(medicine);
+        }
+
+        [HttpGet]
+        public IActionResult GetFilteredMedicine(string medicineName, string substanceName, string medicineType, string manufacturerName)
+        {
+            IEnumerable<Medicine> medicines = _uow.GetRepository<IMedicineReadRepository>().GetAll()
+                .Include(medicine => medicine.Manufacturer)
+                .Include(medicine => medicine.SideEffects)
+                .Include(medicine => medicine.Reactions)
+                .Include(medicine => medicine.Substances)
+                .Include(medicine => medicine.Precautions)
+                .Include(medicine => medicine.MedicinePotentialDangers)
+                .Where(medicine => String.IsNullOrEmpty(medicineName) || medicine.Name.Equals(medicineName))
+                .Where(medicine => String.IsNullOrEmpty(substanceName) || (medicine.Substances.Where(substance => substance.Name == substanceName).Any()))
+                .Where(medicine => String.IsNullOrEmpty(medicineType) || medicine.Type.Equals(medicineType))
+                .Where(medicine => String.IsNullOrEmpty(manufacturerName) || medicine.Manufacturer.Name.Equals(manufacturerName));
+
+            if (medicines == null || medicines.Count() == 0)
+                return NotFound();
+
+            return Ok(medicines);
+        }
+
+        [HttpGet]
+        public IActionResult GetFilteredMedicineWithPaging(string medicineName, string substanceName, string medicineType, string manufacturerName, int pageNumber, int pageSize)
+        {
+            IEnumerable<Medicine> medicines = _uow.GetRepository<IMedicineReadRepository>().GetAll()
+                .Include(medicine => medicine.Manufacturer)
+                .Include(medicine => medicine.SideEffects)
+                .Include(medicine => medicine.Reactions)
+                .Include(medicine => medicine.Substances)
+                .Include(medicine => medicine.Precautions)
+                .Include(medicine => medicine.MedicinePotentialDangers)
+                .Where(medicine => String.IsNullOrEmpty(medicineName) || medicine.Name.Equals(medicineName))
+                .Where(medicine => String.IsNullOrEmpty(substanceName) || (medicine.Substances.Where(substance => substance.Name == substanceName).Any()))
+                .Where(medicine => String.IsNullOrEmpty(medicineType) || medicine.Type.Equals(medicineType))
+                .Where(medicine => String.IsNullOrEmpty(manufacturerName) || medicine.Manufacturer.Name.Equals(manufacturerName))
+                .Skip((pageNumber - 1) * pageSize);
+
+            if (medicines == null || medicines.Count() == 0)
+                return NotFound();
+
+            return Ok(medicines);
+        }
+
+        [HttpGet]
+        public IActionResult GetMedicinesThatCanBeCombined(string firstMedicine)
+        {
+            IEnumerable<MedicineCombination> medicineCombinations = _uow.GetRepository<IMedicineCombinationReadRepository>().GetAll()
+                .Include(medicine => medicine.FirstMedicine)
+                .Include(medicine => medicine.SecondMedicine)
+                .Where(medicine => medicine.FirstMedicine.Name.Equals(firstMedicine) || medicine.SecondMedicine.Name.Equals(firstMedicine));
+
+            List<Medicine> medicines = new List<Medicine>();
+
+            foreach(var combination in medicineCombinations)
+            {
+                if (combination.FirstMedicine.Name.Equals(firstMedicine))
+                    medicines.Add(combination.SecondMedicine);
+                else if (combination.SecondMedicine.Name.Equals(firstMedicine))
+                    medicines.Add(combination.FirstMedicine);
+            }
+
+            if (medicines.Count() == 0)
+                return NotFound();
+
+            return Ok(medicines);
         }
 
 

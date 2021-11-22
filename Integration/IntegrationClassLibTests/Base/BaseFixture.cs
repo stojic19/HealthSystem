@@ -8,6 +8,8 @@ using Integration.Infrastructure;
 using Integration.Model;
 using Integration.Repositories.Base;
 using Integration.Repositories.DbImplementation;
+using System.Net;
+using System.Net.Http;
 
 namespace IntegrationClassLibTests.Base
 {
@@ -16,13 +18,24 @@ namespace IntegrationClassLibTests.Base
         public AppDbContext Context { get; set; }
         public IUnitOfWork UoW { get; set; }
         private IContainer container { get; set; }
-
+        public HttpClient Client { get; set; }
+        public CookieContainer CookieContainer { get; set; }
         public BaseFixture()
         {
             SetupAutoFacDip();
             ResolveContextAndUnitOfWork();
+            ConfigureHttpClient();
         }
 
+        private void ConfigureHttpClient()
+        {
+            CookieContainer = new CookieContainer();
+            var handler = new HttpClientHandler()
+            {
+                CookieContainer = CookieContainer
+            };
+            Client = new HttpClient(handler);
+        }
         private void SetupAutoFacDip()
         {
             var builder = new ContainerBuilder();
@@ -63,7 +76,7 @@ namespace IntegrationClassLibTests.Base
         {
             Context.Dispose();
             container.Dispose();
-
+            Client.Dispose();
         }
     }
 }

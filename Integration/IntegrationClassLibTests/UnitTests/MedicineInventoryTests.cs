@@ -61,6 +61,15 @@ namespace IntegrationClassLibTests.UnitTests
             medicineInventory.Count().ShouldBe(2);
         }
         [Fact]
+        public void Add_existing_medication_check_count_in_medicine_inventory()
+        {
+            MedicineInventoryMasterService medicineInventoryMasterService = new MedicineInventoryMasterService(UoW);
+            medicineInventoryMasterService.AddMedicineToInventory("Brufen", 10);
+
+            var medicineInventory = UoW.GetRepository<IMedicineInventoryReadRepository>().GetAll();
+            medicineInventory.Count().ShouldBe(2);
+        }
+        [Fact]
         public void Add_new_medication_check_name_in_medicines()
         {
             MedicineInventoryMasterService medicineInventoryMasterService = new MedicineInventoryMasterService(UoW);

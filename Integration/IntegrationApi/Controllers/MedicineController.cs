@@ -90,7 +90,7 @@ namespace IntegrationAPI.Controllers
         private IRestResponse SendUrgentProcurementRequestToPharmacy(MedicineProcurementRequestDTO medicineRequestDTO, Pharmacy pharmacy)
         {
             RestClient client = new RestClient();
-            string targetUrl = pharmacy.BaseUrl + "/api/MedicineProcurement";
+            string targetUrl = pharmacy.BaseUrl + "/api/MedicineProcurement/execute";
             RestRequest request = new RestRequest(targetUrl);
             request.AddJsonBody(medicineRequestDTO);
             return client.Post(request);

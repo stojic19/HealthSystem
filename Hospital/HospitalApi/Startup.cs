@@ -15,6 +15,7 @@ using Autofac.Extensions.DependencyInjection;
 using Hospital.EfStructures;
 using Hospital.Model;
 using Microsoft.AspNetCore.Identity;
+
 namespace HospitalApi
 {
     public class Startup
@@ -42,8 +43,9 @@ namespace HospitalApi
             var builder = new ContainerBuilder();
             builder.RegisterModule(new DbModule());
 
-            services.AddIdentity<User, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddIdentity<User, IdentityRole<int>>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<AppDbContext>();
+
             // TODO: add options here
 
 

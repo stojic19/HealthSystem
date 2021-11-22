@@ -29,15 +29,30 @@ namespace IntegrationAPI.Controllers
         }
 
         [HttpPost]
-        public MedicineConsumptionReport CreateConsumptionReport(TimeRange timeRange)
+        public MedicineConsumptionReportDTO CreateConsumptionReport(TimeRange timeRange)
         {
             var report = _medicineConsumptionMasterService.CreateConsumptionReportInTimeRange(timeRange);
             report.MedicineConsumptions = report.MedicineConsumptions.OrderByDescending(medicine => medicine.Amount);
-            return report;
+            var reportDto = new MedicineConsumptionReportDTO
+            {
+                createdDate = report.createdDate,
+                startDate = report.startDate,
+                endDate = report.endDate,
+                MedicineConsumptions = new List<MedicineConsumptionDTO>()
+            };
+            foreach (MedicineConsumption medicineConsumption in report.MedicineConsumptions)
+            {
+                reportDto.MedicineConsumptions.Add(new MedicineConsumptionDTO
+                {
+                    MedicineName = medicineConsumption.Medicine.Name,
+                    Amount = medicineConsumption.Amount
+                });
+            }
+            return reportDto;
         }
         [HttpPost]
         [Produces("application/json")]
-        public IActionResult SendConsumptionReport(MedicineConsumptionReport report)
+        public IActionResult SendConsumptionReport(MedicineConsumptionReportDTO report)
         {
             SftpCredentialsDTO sftpCredentials = getSftpCredentials();
             try
@@ -52,7 +67,7 @@ namespace IntegrationAPI.Controllers
             return Ok("Request sent to pharmacies");
         }
 
-        private void SendToPharmacies(MedicineConsumptionReport report, SftpCredentialsDTO sftpCredentials)
+        private void SendToPharmacies(MedicineConsumptionReportDTO report, SftpCredentialsDTO sftpCredentials)
         {
             var pharmacies = _pharmacyMasterService.GetPharmacies();
             foreach (Pharmacy pharmacy in pharmacies)
@@ -80,14 +95,14 @@ namespace IntegrationAPI.Controllers
             };
         }
 
-        private void SaveMedicineReportToSftpServer(MedicineConsumptionReport report, SftpCredentialsDTO credentials)
+        private void SaveMedicineReportToSftpServer(MedicineConsumptionReportDTO report, SftpCredentialsDTO credentials)
         {
             string path = "MedicineReports" + Path.DirectorySeparatorChar + "Report-" +
                           report.createdDate.Ticks.ToString() + ".txt";
             SaveFile(report, path);
             SaveToSftp(path, credentials);
         }
-        private void SaveFile(MedicineConsumptionReport consumptionReport, string path)
+        private void SaveFile(MedicineConsumptionReportDTO consumptionReport, string path)
         {
             StreamWriter fileSaveStream = new StreamWriter(path);
             string jsonString = JsonConvert.SerializeObject(consumptionReport);

@@ -9,10 +9,15 @@ export class FloorSelectionComponent implements OnInit {
 
   @Output() public floorSelection = new EventEmitter();
   @Input() public floorForDisplay = ''
+  @Input() public displayFloor = 'first'
   constructor() { }
 
   ngOnInit(): void {
-    this.floorForDisplay = 'first';
+    if (this.displayFloor != '') {
+      this.floorForDisplay = this.displayFloor;
+    } else {
+      this.floorForDisplay = 'first';
+    }
   }
 
   firstFloor() {

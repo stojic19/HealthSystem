@@ -37,14 +37,54 @@ import { SurveysObserveComponent } from './components/surveys-observe/surveys-ob
 import { MaterialModule } from './material/material.module';
 import { RatingDecimalComponent } from './components/rating-decimal/rating-decimal.component';
 
-
 import { RoomInventoryComponent } from './room-inventory/room-inventory.component';
 import { HospitalEquipmentComponent } from './hospital-equipment/hospital-equipment.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
-
-  declarations: [AppComponent, HospitalOverviewComponent, LegendComponent, NavbarComponent, FirstBuildingComponent, FloorSelectionComponent, FirstFloorComponent, SecondFloorComponent, FeedbacksManagerComponent, SecondBuildingComponent, FloorFirstComponent, FloorSecondComponent, SelectFloorComponent, HomePageComponent, FooterComponent, RoomInfoComponent, DisplayRoomInfoComponent, EditRoomInfoComponent, EquipmentFormComponent, InitialRoomComponent, DestinationRoomComponent, MoveInfoComponent, FreeTermsComponent, SearchBarComponent, RoomInventoryComponent, HospitalEquipmentComponent, SurveysObserveComponent, SurveySectionObserveComponent],
-  imports: [BrowserModule, AppRoutingModule,  NgbModule, CommonModule, HttpClientModule, FormsModule , BrowserAnimationsModule, MaterialModule],
+  declarations: [
+    AppComponent,
+    HospitalOverviewComponent,
+    LegendComponent,
+    NavbarComponent,
+    FirstBuildingComponent,
+    FloorSelectionComponent,
+    FirstFloorComponent,
+    SecondFloorComponent,
+    FeedbacksManagerComponent,
+    SecondBuildingComponent,
+    FloorFirstComponent,
+    FloorSecondComponent,
+    SelectFloorComponent,
+    HomePageComponent,
+    FooterComponent,
+    RoomInfoComponent,
+    DisplayRoomInfoComponent,
+    EditRoomInfoComponent,
+    EquipmentFormComponent,
+    InitialRoomComponent,
+    DestinationRoomComponent,
+    MoveInfoComponent,
+    FreeTermsComponent,
+    SearchBarComponent,
+    RoomInventoryComponent,
+    HospitalEquipmentComponent,
+    SurveysObserveComponent,
+    SurveySectionObserveComponent,
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    NgbModule,
+    CommonModule,
+    HttpClientModule,
+    FormsModule,
+    BrowserAnimationsModule,
+    MaterialModule,
+    MatCardModule,
+    MatProgressSpinnerModule,
+  ],
   providers: [HttpClientModule],
   bootstrap: [AppComponent],
 })

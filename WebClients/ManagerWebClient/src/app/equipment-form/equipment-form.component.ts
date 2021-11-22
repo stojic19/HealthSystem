@@ -1,28 +1,119 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Room } from '../interfaces/room';
+import { AvailableTermsRequest } from '../model/available-terms-request';
+import { EquipmentTransferEvent } from '../model/equipment-transfer-event';
+import { InventoryItem } from '../model/inventory-item.model';
+import { RoomInventory } from '../model/room-inventory.model';
+import { TimePeriod } from '../model/time-period';
+import { RoomInventoriesService } from '../services/room-inventories.service';
 
 @Component({
   selector: 'app-equipment-form',
   templateUrl: './equipment-form.component.html',
-  styleUrls: ['./equipment-form.component.css']
+  styleUrls: ['./equipment-form.component.css'],
 })
 export class EquipmentFormComponent implements OnInit {
   step = 1;
-  initialRooms! : Room[];
-  destinationRooms! : Room[];
-  initialRoom! : Room;
-  destinationRoom! : Room;
+  destinationRooms!: Room[];
+  initialRoom!: Room;
+  destinationRoom!: Room;
+  public selectedItemId: number;
+  public item: RoomInventory[];
+  selectedItem: RoomInventory;
 
-  constructor() { }
+  enteredAmount: number;
+  duration: number;
+  startDate: Date;
+  endDate: Date;
+
+  availableTerms: TimePeriod[];
+  selectedTerm: TimePeriod;
+
+  constructor(
+    public roomInventoryService: RoomInventoriesService,
+    private route: ActivatedRoute
+  ) {
+    this.route.params.subscribe((params) => {
+      this.selectedItemId = +params['id'];
+    });
+  }
 
   ngOnInit(): void {
+    this.roomInventoryService.getItemById(this.selectedItemId).then((res) => {
+      this.item = res as RoomInventory[];
+      this.copy(this.item);
+    });
+  }
+
+  copy(selected: RoomInventory[]) {
+    this.selectedItem = selected[0];
+    console.log(this.selectedItem);
   }
 
   prevStep() {
+    if (this.step == 2 || this.step == 3) this.destinationRoom = new Room();
     this.step--;
   }
-  
+
   nextStep() {
+    if (this.step == 3) {
+      this.getAvailableTerms();
+    }
+
     this.step++;
+  }
+
+  isButtonDisabled() {
+    if (
+      (JSON.stringify(this.destinationRoom) === '{}' ||
+        this.destinationRoom == null ||
+        this.destinationRoom == undefined) &&
+      this.step == 2
+    )
+      return true;
+
+    if (this.step === 3) {
+      if (
+        this.enteredAmount === undefined ||
+        this.startDate === undefined ||
+        this.endDate === undefined ||
+        this.duration === undefined
+      )
+        return true;
+    }
+
+    if (this.step != 2) return false;
+
+    return false;
+  }
+
+  getAvailableTerms() {
+    let request: AvailableTermsRequest = {
+      startDate: this.startDate,
+      endDate: this.endDate,
+      duration: this.duration,
+      roomId: this.destinationRoom.id,
+    };
+
+    let period: TimePeriod = {
+      startDate: this.startDate,
+      endDate: this.endDate,
+    };
+    this.availableTerms = [period];
+    //this.roomInventoryService.getAvailableTerms(request).then(res => this.availableTerms = res as TimePeriod[]);
+  }
+
+  createTransferRequest() {
+    let request: EquipmentTransferEvent = {
+      startDate: this.selectedTerm.startDate,
+      endDate: this.selectedTerm.endDate,
+      initalRoomId: this.initialRoom.id,
+      destinationRoomId: this.destinationRoom.id,
+      inventoryItemId: this.selectedItem.inventoryItemId,
+      quantity: this.enteredAmount,
+    };
+
+    //add request to database
   }
 }

@@ -58,5 +58,12 @@ namespace HospitalApi.Controllers
             return Ok(roomRepo.GetAll().Where(room => room.Name.ToLower().Contains(name.ToLower()) && room.BuildingName.Contains(buildingName)));
         }
 
+        [HttpGet("all")]
+        public IEnumerable<Room> GetAllRooms()
+        {
+            var roomRepo = _uow.GetRepository<IRoomReadRepository>();
+            return roomRepo.GetAll();
+        }
+
     }
 }

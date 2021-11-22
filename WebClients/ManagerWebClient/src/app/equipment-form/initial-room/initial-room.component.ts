@@ -1,24 +1,15 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Room } from 'src/app/interfaces/room';
-
+import { Component, Input, OnInit } from '@angular/core';
+import { RoomInventory } from 'src/app/model/room-inventory.model';
 @Component({
   selector: 'app-initial-room',
   templateUrl: './initial-room.component.html',
-  styleUrls: ['./initial-room.component.css']
+  styleUrls: ['./initial-room.component.css'],
 })
 export class InitialRoomComponent implements OnInit {
   @Input()
-  rooms! : Room[]; 
-  @Output()
-  selectedRoom = new EventEmitter<Room>();
+  selectedItem: RoomInventory;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
-
-  selectInitialRoom(room : Room) {
-    this.selectedRoom.emit(room);
-  }
-
+  ngOnInit(): void {}
 }

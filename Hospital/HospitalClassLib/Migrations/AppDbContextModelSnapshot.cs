@@ -169,6 +169,42 @@ namespace Hospital.Migrations
                     b.ToTable("Diagnoses");
                 });
 
+            modelBuilder.Entity("Hospital.Model.EquipmentTransferEvent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int?>("DestinationRoomId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int?>("InitalRoomId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("InventoryItemId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DestinationRoomId");
+
+                    b.HasIndex("InitalRoomId");
+
+                    b.HasIndex("InventoryItemId");
+
+                    b.ToTable("EquipmentTransferEvents");
+                });
+
             modelBuilder.Entity("Hospital.Model.Feedback", b =>
                 {
                     b.Property<int>("Id")
@@ -426,6 +462,9 @@ namespace Hospital.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
+
+                    b.Property<int>("RoomType")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -895,6 +934,27 @@ namespace Hospital.Migrations
                     b.HasOne("Hospital.Model.MedicalRecord", null)
                         .WithMany("Diagnoses")
                         .HasForeignKey("MedicalRecordId");
+                });
+
+            modelBuilder.Entity("Hospital.Model.EquipmentTransferEvent", b =>
+                {
+                    b.HasOne("Hospital.Model.Room", "DestinationRoom")
+                        .WithMany()
+                        .HasForeignKey("DestinationRoomId");
+
+                    b.HasOne("Hospital.Model.Room", "InitalRoom")
+                        .WithMany()
+                        .HasForeignKey("InitalRoomId");
+
+                    b.HasOne("Hospital.Model.InventoryItem", "InventoryItem")
+                        .WithMany()
+                        .HasForeignKey("InventoryItemId");
+
+                    b.Navigation("DestinationRoom");
+
+                    b.Navigation("InitalRoom");
+
+                    b.Navigation("InventoryItem");
                 });
 
             modelBuilder.Entity("Hospital.Model.Feedback", b =>

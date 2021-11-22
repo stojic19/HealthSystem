@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Hospital.Model.Enumerations;
+using System.Collections.Generic;
 
 namespace Hospital.Model
 {
@@ -11,7 +12,7 @@ namespace Hospital.Model
         public double DimensionY { get; set; }
         public int FloorNumber { get; set; }
         public string BuildingName { get; set; }
-
+        public RoomType RoomType { get; set; }
         public IEnumerable<Doctor> Doctors { get; set; }
 
         public IEnumerable<RoomInventory> RoomInventories { get; set; }

@@ -19,10 +19,11 @@ namespace IntegrationAPI.Controllers
     public class MedicineController : ControllerBase
     {
         private PharmacyMasterService _pharmacyMasterService;
-
+        private MedicineInventoryMasterService _medicineInventoryMasterService;
         public MedicineController(IUnitOfWork unitOfWork)
         {
             _pharmacyMasterService = new PharmacyMasterService(unitOfWork);
+            _medicineInventoryMasterService = new MedicineInventoryMasterService(unitOfWork);
         }
 
         [HttpPost]
@@ -77,7 +78,7 @@ namespace IntegrationAPI.Controllers
             MedicineProcurementResponseDTO responseDTO = JsonConvert.DeserializeObject<MedicineProcurementResponseDTO>(response.Content);
             if(responseDTO.answer == true)
             {
-
+                _medicineInventoryMasterService.AddMedicineToInventory(medicineRequestDTO.MedicineName, medicineRequestDTO.Quantity);
                 return Ok(responseDTO);
             }
             else

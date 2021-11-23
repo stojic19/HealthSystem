@@ -67,17 +67,10 @@
             </div>
           </td>
         </tr>
-        <tr *ngIf="!isEnteredAmountCorrect()">
+        <tr *ngIf="!isEnteredDataCorrect()">
           <td colspan="2" style="text-align: center">
             <p style="color: red" class="mt-2">
-              The quantity you entered is larger than available!
-            </p>
-          </td>
-        </tr>
-        <tr *ngIf="!isEnteredValueCorrect()">
-          <td colspan="2" style="text-align: center">
-            <p style="color: red" class="mt-0">
-              You must enter a value larger than zero!
+              {{ errorMessage }}
             </p>
           </td>
         </tr>

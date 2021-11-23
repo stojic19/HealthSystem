@@ -54,6 +54,12 @@ export class EquipmentFormComponent implements OnInit {
 
   prevStep() {
     if (this.step == 2 || this.step == 3) this.destinationRoom = new Room();
+
+    if (this.step == 3) {
+      this.enteredAmount = 0;
+      this.duration = 0;
+    }
+
     this.step--;
   }
 
@@ -93,6 +99,10 @@ export class EquipmentFormComponent implements OnInit {
     }
     if (this.step == 4) {
       if (this.selectedTerm === undefined) return true;
+    }
+
+    if (this.step == 3) {
+      if (this.endDate <= this.startDate) return true;
     }
 
     return false;

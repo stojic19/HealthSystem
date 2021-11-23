@@ -59,11 +59,10 @@ namespace HospitalApi.Controllers
 
         private bool IsEnteredAmountIsCorrect(EquipmentTransferEvent equipmentTransferEvent)
         {
-            var roomInventories = _uow.GetRepository<IRoomInventoryReadRepository>().GetAll()
-                                  .Where(roomInventory => roomInventory.RoomId == equipmentTransferEvent.InitalRoomId
-                                         && roomInventory.InventoryItemId == equipmentTransferEvent.InventoryItemId);
+            var roomInventory = _uow.GetRepository<IRoomInventoryReadRepository>()
+                .GetByRoomAndInventoryItem(equipmentTransferEvent.InitalRoomId, equipmentTransferEvent.InventoryItemId);
 
-            if (roomInventories.FirstOrDefault().Amount < equipmentTransferEvent.Quantity)
+            if (roomInventory.Amount < equipmentTransferEvent.Quantity)
                 return false;
 
             return true;

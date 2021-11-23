@@ -30,8 +30,12 @@ export class MoveInfoComponent implements OnInit {
   enteredEndDate: Date;
   enteredDuration: number;
   currentDate: Date = new Date();
+  errorMessage = '';
 
-  constructor(private roomInventoryService: RoomInventoriesService) {}
+  constructor(
+    private roomInventoryService: RoomInventoriesService,
+    private datePipe: DatePipe
+  ) {}
 
   ngOnInit(): void {
     this.roomInventoryService
@@ -56,20 +60,41 @@ export class MoveInfoComponent implements OnInit {
     this.duration.emit(this.enteredDuration);
   }
 
-  isEnteredAmountCorrect() {
-    if (
-      this.enteredNumber <= this.selectedItem.amount ||
-      this.enteredNumber === undefined
-    )
-      return true;
+  isEnteredDataCorrect() {
+    if (this.enteredNumber > this.selectedItem.amount) {
+      this.errorMessage = 'Entered amount is larger than existing!';
+      return false;
+    }
 
-    return false;
+    if (this.enteredNumber < 0 || this.enteredDuration < 0) {
+      this.errorMessage = 'The value you entered must be larger than zero!';
+      return false;
+    }
+
+    if (this.enteredStartDate > this.enteredEndDate) {
+      this.errorMessage = "End date can't be before start!";
+      return false;
+    }
+
+    this.errorMessage = '';
+    return true;
   }
 
   isEnteredValueCorrect() {
     if (
       (this.enteredNumber > 0 || this.enteredNumber === undefined) &&
       (this.enteredDuration > 0 || this.enteredDuration === undefined)
+    )
+      return true;
+
+    return false;
+  }
+
+  isTimeIntervalCorrect() {
+    if (
+      this.enteredStartDate < this.enteredEndDate ||
+      this.enteredStartDate === undefined ||
+      this.enteredEndDate == undefined
     )
       return true;
 

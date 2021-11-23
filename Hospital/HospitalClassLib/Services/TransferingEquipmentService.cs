@@ -102,6 +102,9 @@ namespace Hospital.Services
 
             TransferFromInitialRoom(initialRoom, transferEvent);
             TransferToDestinationRoom(destinationRoom, transferEvent);
+
+            uow.GetRepository<IEquipmentTransferEventWriteRepository>()
+                .Delete(transferEvent);
         }
 
         private void TransferToDestinationRoom(RoomInventory destinationRoom, EquipmentTransferEvent transferEvent)

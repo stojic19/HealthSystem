@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace IntegrationAPI.Controllers
+namespace PharmacyApi.DTO
 {
-    public class BenefitCommunicationController
+    public class BenefitIdDTO
     {
+        public int BenefitId { get; set; }
     }
 }

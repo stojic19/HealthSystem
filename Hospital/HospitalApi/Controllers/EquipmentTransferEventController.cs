@@ -21,12 +21,10 @@ namespace HospitalApi.Controllers
     public class EquipmentTransferEventController : ControllerBase
     {
         private readonly IUnitOfWork _uow;
-        private readonly IMapper _mapper;
 
-        public EquipmentTransferEventController(IUnitOfWork uow, IMapper mapper)
+        public EquipmentTransferEventController(IUnitOfWork uow)
         {
             _uow = uow;
-            _mapper = mapper;
         }
 
         [HttpPost("addEvent")]
@@ -37,6 +35,10 @@ namespace HospitalApi.Controllers
                 if (equipmentTransferEvent == null)
                 {
                     return BadRequest("Incorrect format sent! Please try again.");
+                }
+
+                if (!IsEnteredAmountIsCorrect(equipmentTransferEvent)) {
+                    return BadRequest("Incorrect amount entered. Please Try Again!");
                 }
 
                 var repo = _uow.GetRepository<IEquipmentTransferEventWriteRepository>();
@@ -53,6 +55,18 @@ namespace HospitalApi.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error inserting transfer event in the database.");
             }
+        }
+
+        private bool IsEnteredAmountIsCorrect(EquipmentTransferEvent equipmentTransferEvent)
+        {
+            var roomInventories = _uow.GetRepository<IRoomInventoryReadRepository>().GetAll()
+                                  .Where(roomInventory => roomInventory.RoomId == equipmentTransferEvent.InitalRoomId
+                                         && roomInventory.InventoryItemId == equipmentTransferEvent.InventoryItemId);
+
+            if (roomInventories.FirstOrDefault().Amount < equipmentTransferEvent.Quantity)
+                return false;
+
+            return true;
         }
 
         [HttpPost]

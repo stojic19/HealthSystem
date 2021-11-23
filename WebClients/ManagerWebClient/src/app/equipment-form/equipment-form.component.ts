@@ -16,7 +16,7 @@ import { RoomInventoriesService } from '../services/room-inventories.service';
 export class EquipmentFormComponent implements OnInit {
   step = 1;
   destinationRooms!: Room[];
-  destinationRoom!: Room;
+  destinationRoom: Room;
   public selectedItemId: number;
   public item: RoomInventory[];
   selectedItem: RoomInventory;
@@ -82,6 +82,14 @@ export class EquipmentFormComponent implements OnInit {
         this.duration === undefined
       )
         return true;
+
+      if (this.enteredAmount > this.selectedItem.amount) return true;
+      if (this.duration < 0 || this.enteredAmount < 0) return true;
+      if (
+        this.enteredAmount.toString() === '' ||
+        this.duration.toString() === ''
+      )
+        return true;
     }
     if (this.step == 4) {
       if (this.selectedTerm === undefined) return true;
@@ -99,6 +107,7 @@ export class EquipmentFormComponent implements OnInit {
     };
 
     this.roomInventoryService.getAvailableTerms(request);
+    this.availableTerms = this.roomInventoryService.availableTerms;
   }
 
   createTransferRequest() {
@@ -110,7 +119,7 @@ export class EquipmentFormComponent implements OnInit {
       inventoryItemId: this.selectedItem.inventoryItemId,
       quantity: this.enteredAmount,
     };
-    this.roomInventoryService.addEquipmentTransferEvent(request);
+    //this.roomInventoryService.addEquipmentTransferEvent(request);
     //this.router.navigate(['/hospitalEquipment']);
   }
   goBack() {

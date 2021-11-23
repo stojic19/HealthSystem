@@ -19,14 +19,14 @@ namespace Hospital.Services
 
         public IEnumerable<TimePeriod> GetAvailableTerms(TimePeriod timePeriod, int roomId, int duration)
         {
-            var freeTerms = new List<TimePeriod>();
+            var availableTerms = new List<TimePeriod>();
             var possibleTerms = GetPossibleTerms(timePeriod, roomId, duration);
             foreach (TimePeriod term in possibleTerms)
             {
-                if (IsFree(term, roomId))
-                    freeTerms.Add(term);
+                if (IsAvailable(term, roomId))
+                    availableTerms.Add(term);
             }
-            return freeTerms;
+            return availableTerms;
         }
 
         private List<TimePeriod> GetPossibleTerms(TimePeriod timePeriod, int roomId, int duration)
@@ -51,7 +51,7 @@ namespace Hospital.Services
             return possibleTerms;
         }
 
-        private bool IsFree(TimePeriod timePeriod, int roomId)
+        private bool IsAvailable(TimePeriod timePeriod, int roomId)
         {
             var eventsRepo = uow.GetRepository<IScheduledEventReadRepository>();
             var scheduledEvents = eventsRepo.GetAll();
@@ -83,6 +83,59 @@ namespace Hospital.Services
                 return true;
 
             return false;
+        }
+        public void StartEquipmentTransferEvent() {
+            var repo = uow.GetRepository<IEquipmentTransferEventReadRepository>();
+            foreach (EquipmentTransferEvent transferEvent in repo.GetAll()) {
+                if (DateTime.Compare(transferEvent.EndDate, DateTime.Now) <= 0) {
+                    ExecuteTransfer(transferEvent);
+                }
+            }
+        }
+
+        private void ExecuteTransfer(EquipmentTransferEvent transferEvent) {
+            var initialRoom = uow.GetRepository<IRoomInventoryReadRepository>()
+                .GetByRoomAndInventoryItem(transferEvent.InitalRoomId, transferEvent.InventoryItemId);
+
+            var destinationRoom = uow.GetRepository<IRoomInventoryReadRepository>()
+                .GetByRoomAndInventoryItem(transferEvent.DestinationRoomId, transferEvent.InventoryItemId);
+
+            TransferFromInitialRoom(initialRoom, transferEvent);
+            TransferToDestinationRoom(destinationRoom, transferEvent);
+        }
+
+        private void TransferToDestinationRoom(RoomInventory destinationRoom, EquipmentTransferEvent transferEvent)
+        {
+            var repo = uow.GetRepository<IRoomInventoryWriteRepository>();
+            if (destinationRoom == null)
+            {
+                destinationRoom = new RoomInventory()
+                {
+                    RoomId = (int)transferEvent.DestinationRoomId,
+                    InventoryItemId = (int)transferEvent.InventoryItemId,
+                    Amount = transferEvent.Quantity
+                };
+                repo.Add(destinationRoom);
+            }
+            else {
+                destinationRoom.Amount += transferEvent.Quantity;
+                repo.Update(destinationRoom);
+            }
+
+        }
+
+        private void TransferFromInitialRoom(RoomInventory initialRoom, EquipmentTransferEvent transferEvent)
+        {
+            var repo = uow.GetRepository<IRoomInventoryWriteRepository>();
+            if (initialRoom.Amount == transferEvent.Quantity)
+            {
+                repo.Delete(initialRoom);
+            }
+            else
+            {
+                initialRoom.Amount -= transferEvent.Quantity;
+                repo.Update(initialRoom);
+            }
         }
     }
 }

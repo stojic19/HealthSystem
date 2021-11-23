@@ -27,7 +27,7 @@
           ></app-move-info>
           <app-free-terms
             *ngIf="step == 4"
-            [freeTerms]="getAvailableTerms()"
+            [freeTerms]="availableTerms"
             (selectedTerm)="selectedTerm = $event"
           >
           </app-free-terms>
@@ -78,17 +78,17 @@
       </div>
       <div class="modal-body">
         <p>
-          Your equipment transfer event for
-          {{ selectedItem.InventoryItem.name }} has been successfuly recorded.
+          Equipment transfer event for moving
+          <b style="text-transform: uppercase">
+            {{ enteredAmount }} {{ selectedItem.inventoryItem.name }}s</b
+          ><br />
+          from room <b>{{ selectedItem.room.name }}</b
+          ><br />
+          has been successfuly recorded.
         </p>
       </div>
       <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-primary"
-          data-bs-dismiss="modal"
-          (click)="goBack()"
-        >
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
           OK
         </button>
       </div>

@@ -20,6 +20,7 @@ namespace HospitalUnitTests
         [Fact]
         public void Should_not_be_null()
         {
+            ClearDbContext();
             Context.Rooms.Add(new Room()
             {
                 Id = 1,
@@ -39,6 +40,17 @@ namespace HospitalUnitTests
         [Fact]
         public void Should_get_two_Rooms()
         {
+            ClearDbContext();
+            Context.Rooms.Add(new Room()
+            {
+                Id = 1,
+                Name = "Test name",
+                Description = "Test description",
+                DimensionX = 3.5,
+                DimensionY = 4,
+                FloorNumber = 1,
+                BuildingName = "Test building"
+            });
             Context.Rooms.Add(new Room()
             {
                 Id = 2,
@@ -52,16 +64,6 @@ namespace HospitalUnitTests
             Context.Rooms.Add(new Room()
             {
                 Id = 3,
-                Name = "Test name",
-                Description = "Test description",
-                DimensionX = 3.5,
-                DimensionY = 4,
-                FloorNumber = 1,
-                BuildingName = "Test building"
-            });
-            Context.Rooms.Add(new Room()
-            {
-                Id = 4,
                 Name = "Room name",
                 Description = "Test description",
                 DimensionX = 3.5,
@@ -80,10 +82,20 @@ namespace HospitalUnitTests
         [Fact]
         public void Should_get_one_item()
         {
+            ClearDbContext();
             Context.RoomInventories.Add(new RoomInventory()
             {
                 Id = 1,
-                RoomId = 2,
+                Room = new Room()
+                {
+                    Id = 1,
+                    Name = "Test name",
+                    Description = "Test description",
+                    DimensionX = 3.5,
+                    DimensionY = 4,
+                    FloorNumber = 1,
+                    BuildingName = "Test building"
+                },
                 InventoryItem = new InventoryItem()
                 {
                     Id = 1,

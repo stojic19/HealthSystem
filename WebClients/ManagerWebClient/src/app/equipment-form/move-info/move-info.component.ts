@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { Room } from 'src/app/interfaces/room';
 import { RoomInventory } from 'src/app/model/room-inventory.model';
@@ -28,6 +29,7 @@ export class MoveInfoComponent implements OnInit {
   enteredStartDate: Date;
   enteredEndDate: Date;
   enteredDuration: number;
+  currentDate: Date = new Date();
 
   constructor(private roomInventoryService: RoomInventoriesService) {}
 
@@ -52,5 +54,25 @@ export class MoveInfoComponent implements OnInit {
 
   emitDuration() {
     this.duration.emit(this.enteredDuration);
+  }
+
+  isEnteredAmountCorrect() {
+    if (
+      this.enteredNumber <= this.selectedItem.amount ||
+      this.enteredNumber === undefined
+    )
+      return true;
+
+    return false;
+  }
+
+  isEnteredValueCorrect() {
+    if (
+      (this.enteredNumber > 0 || this.enteredNumber === undefined) &&
+      (this.enteredDuration > 0 || this.enteredDuration === undefined)
+    )
+      return true;
+
+    return false;
   }
 }

@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 
 namespace Integration.MicroServices
 {
-    class BenefitRabbitMQService : BackgroundService
+    public class BenefitRabbitMQService : BackgroundService
     {
         IConnection connection;
         IModel channel;

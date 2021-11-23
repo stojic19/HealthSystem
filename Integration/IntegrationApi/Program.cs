@@ -22,6 +22,10 @@ namespace Integration
         public static IWebHost CreateHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
+                .ConfigureServices((hostContext, services) =>
+                {
+                    //services.AddHostedService<BenefitRabbitMQService>();
+                })
                 .Build();
     }
 }

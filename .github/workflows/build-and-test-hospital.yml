@@ -1,0 +1,35 @@
+name: Build and Test Hospital
+
+on:
+  pull_request:
+    branches: [master, development]
+    paths:
+      - 'Hospital/**'
+
+env:
+  DOTNET_VERSION: '5.0.x'
+  HOSPITAL_SOLUTION_PATH: './Hospital'
+  HOSPITAL_UNIT_TESTS_PATH: './Hospital/HospitalUnitTests'
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup .NET Core SDK ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v1.7.2
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Install dependencies
+        run: dotnet restore ${{ env.HOSPITAL_SOLUTION_PATH }}
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore ${{ env.HOSPITAL_SOLUTION_PATH }}
+
+      - name: Run Unit Tests
+        run: dotnet test --no-restore --verbosity normal ${{ env.HOSPITAL_UNIT_TESTS_PATH }}

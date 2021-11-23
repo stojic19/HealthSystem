@@ -1,0 +1,1 @@
+{"startDate":"2021-09-01T00:00:00","endDate":"2021-10-01T00:00:00","createdDate":"2021-11-23T10:27:06.446447+01:00","MedicineConsumptions":[]}

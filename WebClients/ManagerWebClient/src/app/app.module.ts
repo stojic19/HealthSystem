@@ -1,4 +1,6 @@
 import { NgModule } from '@angular/core';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -23,7 +25,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { RoomInfoComponent } from './room-info/room-info.component';
 import { DisplayRoomInfoComponent } from './room-info/display-room-info/display-room-info.component';
 import { EditRoomInfoComponent } from './room-info/edit-room-info/edit-room-info.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EquipmentFormComponent } from './equipment-form/equipment-form.component';
 import { InitialRoomComponent } from './equipment-form/initial-room/initial-room.component';
 import { DestinationRoomComponent } from './equipment-form/destination-room/destination-room.component';
@@ -37,10 +39,13 @@ import { ComplaintsListComponent } from './complaints/complaints-list/complaints
 import { RegisterPharmacyComponent } from './pharmacies/register-pharmacy/register-pharmacy.component';
 import { PharmaciesListComponent } from './pharmacies/pharmacies-list.component';
 import { HospitalEquipmentComponent } from './hospital-equipment/hospital-equipment.component';
+import { MedicationReportsComponent } from './medication-reports/medication-reports/medication-reports.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
-  declarations: [AppComponent, HospitalOverviewComponent, LegendComponent, NavbarComponent, FirstBuildingComponent, FloorSelectionComponent, FirstFloorComponent, SecondFloorComponent, FeedbacksManagerComponent, SecondBuildingComponent, FloorFirstComponent, FloorSecondComponent, SelectFloorComponent, HomePageComponent, FooterComponent, RoomInfoComponent, DisplayRoomInfoComponent, EditRoomInfoComponent, EquipmentFormComponent, InitialRoomComponent, DestinationRoomComponent, MoveInfoComponent, FreeTermsComponent, SearchBarComponent, RoomInventoryComponent, HospitalEquipmentComponent, ComplaintDetailsComponent, AddComplaintComponent, ComplaintsListComponent, RegisterPharmacyComponent, PharmaciesListComponent],
-  imports: [BrowserModule, AppRoutingModule,  NgbModule, CommonModule, HttpClientModule, FormsModule , BrowserAnimationsModule],
+  declarations: [AppComponent, HospitalOverviewComponent, LegendComponent, NavbarComponent, FirstBuildingComponent, FloorSelectionComponent, FirstFloorComponent, SecondFloorComponent, FeedbacksManagerComponent, SecondBuildingComponent, FloorFirstComponent, FloorSecondComponent, SelectFloorComponent, HomePageComponent, FooterComponent, RoomInfoComponent, DisplayRoomInfoComponent, EditRoomInfoComponent, EquipmentFormComponent, InitialRoomComponent, DestinationRoomComponent, MoveInfoComponent, FreeTermsComponent, SearchBarComponent, RoomInventoryComponent, HospitalEquipmentComponent, ComplaintDetailsComponent, AddComplaintComponent, ComplaintsListComponent, RegisterPharmacyComponent, PharmaciesListComponent, MedicationReportsComponent],
+  imports: [BrowserModule, AppRoutingModule,  NgbModule, CommonModule, HttpClientModule, FormsModule , BrowserAnimationsModule, MatDatepickerModule, MatNativeDateModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule ],
   providers: [HttpClientModule],
   bootstrap: [AppComponent],
 })

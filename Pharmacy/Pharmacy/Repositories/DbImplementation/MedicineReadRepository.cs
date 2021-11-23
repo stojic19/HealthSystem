@@ -16,5 +16,11 @@ namespace Pharmacy.Repositories.DbImplementation
             return GetAll()
                 .FirstOrDefault(x => x.Name == name);
         }
+
+        public Medicine GetMedicineByNameAndManufacturerName(string name, string manufacturerName)
+        {
+            return GetAll()
+                .FirstOrDefault(medicine => medicine.Name == name && medicine.Manufacturer.Name.Equals(manufacturerName));
+        }
     }
 }

@@ -31,44 +31,55 @@ namespace IntegrationAPI.Controllers
         }
 
         [HttpPost]
-        public MedicineConsumptionReport CreateConsumptionReport(TimeRange timeRange)
+        public MedicineConsumptionReportDTO CreateConsumptionReport(TimeRange timeRange)
         {
             var report = _medicineConsumptionMasterService.CreateConsumptionReportInTimeRange(timeRange);
             report.MedicineConsumptions = report.MedicineConsumptions.OrderByDescending(medicine => medicine.Amount);
-            return report;
+            var reportDto = new MedicineConsumptionReportDTO
+            {
+                createdDate = report.createdDate,
+                startDate = report.startDate,
+                endDate = report.endDate,
+                MedicineConsumptions = new List<MedicineConsumptionDTO>()
+            };
+            foreach (MedicineConsumption medicineConsumption in report.MedicineConsumptions)
+            {
+                reportDto.MedicineConsumptions.Add(new MedicineConsumptionDTO
+                {
+                    MedicineName = medicineConsumption.Medicine.Name,
+                    Amount = medicineConsumption.Amount
+                });
+            }
+            return reportDto;
         }
         [HttpPost]
-        public IActionResult SendConsumptionReport(MedicineConsumptionReport report)
+        [Produces("application/json")]
+        public IActionResult SendConsumptionReport(MedicineConsumptionReportDTO report)
         {
             SftpCredentialsDTO sftpCredentials = getSftpCredentials();
             try
             {
                 SaveMedicineReportToSftpServer(report, sftpCredentials);
             }
-            catch (Exception e)
+            catch
             {
                 return BadRequest("Failed to contact sftp server");
             }
             SendToPharmacies(report, sftpCredentials);
-            /*var result = client.Post(request);
-            if (result.StatusCode != HttpStatusCode.OK)
-            {
-                return BadRequest("Pharmacy failed to receive dto");
-            }*/
-            return Ok("Request sent to pharmacies");
+            return Ok("Report sent to pharmacies");
         }
 
-        private void SendToPharmacies(MedicineConsumptionReport report, SftpCredentialsDTO sftpCredentials)
+        private void SendToPharmacies(MedicineConsumptionReportDTO report, SftpCredentialsDTO sftpCredentials)
         {
             var pharmacies = _pharmacyMasterService.GetPharmacies();
             foreach (Pharmacy pharmacy in pharmacies)
             {
                 RestClient client = new RestClient();
-                string targetUrl = pharmacy.BaseUrl + "/api/Sftp/ReceiveMedicineConsumptionReport";
+                string targetUrl = pharmacy.BaseUrl + "/api/Report/ReceiveMedicineConsumptionReport";
                 RestRequest request = new RestRequest(targetUrl);
                 request.AddJsonBody(new ReportDTO
                 {
-                    ApiKey = pharmacy.ApiKey.ToString(),
+                    ApiKey = pharmacy.ApiKey,
                     FileName = "Report-" + report.createdDate.Ticks.ToString() + ".txt",
                     Host = sftpCredentials.Host
                 });
@@ -86,13 +97,13 @@ namespace IntegrationAPI.Controllers
             };
         }
 
-        private void SaveMedicineReportToSftpServer(MedicineConsumptionReport report, SftpCredentialsDTO credentials)
+        private void SaveMedicineReportToSftpServer(MedicineConsumptionReportDTO report, SftpCredentialsDTO credentials)
         {
             string path = "MedicineReports" + Path.DirectorySeparatorChar + "Report-" +
                           report.createdDate.Ticks.ToString() + ".txt";
             try
             {
-                SaveFile(report, path);
+            SaveFile(report, path);
             }
             catch (Exception e)
             {
@@ -100,15 +111,9 @@ namespace IntegrationAPI.Controllers
             }
             try
             {
-                SaveToSftp(path, credentials);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-
+            SaveToSftp(path, credentials);
         }
-        private void SaveFile(MedicineConsumptionReport consumptionReport, string path)
+        private void SaveFile(MedicineConsumptionReportDTO consumptionReport, string path)
         {
             StreamWriter fileSaveStream = new StreamWriter(path);
             string jsonString = JsonConvert.SerializeObject(consumptionReport);
@@ -154,6 +159,6 @@ namespace IntegrationAPI.Controllers
             if (result.StatusCode != HttpStatusCode.OK)
             {
                 return BadRequest("Pharmacy failed to receive dto");
-            }
+}
             return Ok();
         }*/

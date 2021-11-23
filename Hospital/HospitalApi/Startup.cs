@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using Autofac;
 using Hospital.Infrastructure;
 using System.Reflection;
+using System.Text.Json.Serialization;
 using Hospital.Repositories.DbImplementation;
 using Hospital.Repositories.Base;
 using Autofac.Extensions.DependencyInjection;
@@ -30,9 +31,17 @@ namespace HospitalApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options => options.AddPolicy("MyCorsImplementationPolicy", builder => builder.WithOrigins("*")));
+            services.AddCors(options => options.AddPolicy("MyCorsImplementationPolicy", builder => builder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()));
+            
+            services.AddControllers().AddJsonOptions(opt =>
+            {
+                opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
 
-            services.AddControllers();
+            //services.AddControllers()
+            //    .AddNewtonsoftJson();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -43,11 +52,15 @@ namespace HospitalApi
             var builder = new ContainerBuilder();
             builder.RegisterModule(new DbModule());
 
-            services.AddIdentity<User, IdentityRole<int>>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<AppDbContext>();
-
-            // TODO: add options here
-
+            services.AddIdentity<User, IdentityRole<int>>(options =>
+                {
+                    options.SignIn.RequireConfirmedAccount = true;
+                    options.Password.RequireDigit = true;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequiredLength = 6;
+                })
+                .AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+            
 
             builder.RegisterModule(new RepositoryModule()
             {
@@ -83,7 +96,7 @@ namespace HospitalApi
 
             app.UseCors("MyCorsImplementationPolicy");
 
-            app.UseAuthentication();
+            //app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

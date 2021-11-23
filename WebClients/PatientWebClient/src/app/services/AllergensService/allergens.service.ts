@@ -10,8 +10,6 @@ export class AllergensService {
   constructor(private _http: HttpClient) {}
 
   getAll(): Observable<IMedicationIngredient[]> {
-    return this._http.get<IMedicationIngredient[]>(
-      '/api/MedicationIngredient/'
-    );
+    return this._http.get<IMedicationIngredient[]>('/api/MedicationIngredient');
   }
 }

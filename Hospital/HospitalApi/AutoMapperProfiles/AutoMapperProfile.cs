@@ -16,6 +16,11 @@ namespace HospitalApi.AutoMapperProfiles
             CreateMap<NewFeedbackDTO, Feedback>()
                   .ForMember(dto => dto.CreatedDate, opt => opt.MapFrom(src => DateTime.Now))
                   .ForMember(dto => dto.FeedbackStatus, opt => opt.MapFrom(src => FeedbackStatus.Pending));
+
+            CreateMap<MedicationIngredientDTO, MedicationIngredient>();
+            CreateMap<NewAllergyDTO, Allergy>();
+            CreateMap<NewMedicalRecordDTO, MedicalRecord>();
+            CreateMap<UserRegistration, Patient>();
         }
     }
 }

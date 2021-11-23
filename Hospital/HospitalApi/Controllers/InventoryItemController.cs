@@ -21,12 +21,12 @@ namespace HospitalApi.Controllers
             _uow = uow;
         }
 
-        /*[HttpPost]
+        [HttpPost]
         public IActionResult AddInventoryItems(IEnumerable<InventoryItem> inventoryItems)
         {
             var inventoryItemRepo = _uow.GetRepository<IInventoryItemWriteRepository>();
             return Ok(inventoryItemRepo.AddRange(inventoryItems));
-        }*/
+        }
 
     }
 }

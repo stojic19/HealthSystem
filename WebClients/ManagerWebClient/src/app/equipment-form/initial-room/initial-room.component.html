@@ -1,49 +1,38 @@
-<div class="d-flex justify-content-center">
+<!-- <div class="d-flex justify-content-center">
   <h6 class="text-muted subtitle">Step 1: Choose room to move from</h6>
-</div>
-<div class="row ms-5 mt-5">
-  <div class="col-12">
-    <input
-      class="searchInput form-control"
-      type="text"
-      placeholder="search..."
-    />
-  </div>
-</div>
-<div class="row mb-5 mt-2 d-flex justify-content-center" style="height: 300px">
+</div> -->
+<div class="row mt-1 d-flex justify-content-center" style="height: 100%">
   <div class="col-11">
-    <div style="height: 280px; overflow: auto">
-      <table class="table table-hover equipmentTable">
+    <div style="height: 280px; overflow: auto" id="table">
+      <div class="d-flex justify-content-center" style="margin-top: 4rem">
+        <h6 class="text-muted subtitle">
+          Click next if you want to continue with moving
+          <b style="text-transform: uppercase; color: rgb(57, 149, 255)"
+            ><i>{{ selectedItem.inventoryItem.name }}</i></b
+          >
+          from room
+          <b style="text-transform: uppercase; color: rgb(57, 149, 255)"
+            ><i>{{ selectedItem.room.name }}</i></b
+          >
+        </h6>
+      </div>
+      <table class="table table-hover equipmentTable mt-5">
         <thead>
           <tr>
             <th scope="col"></th>
+            <th scope="col">Name</th>
+            <th scope="col">Amount</th>
             <th scope="col">Room</th>
             <th scope="col">Building</th>
-            <th scope="col">Type</th>
-            <th scope="col">Quantity</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <th scope="row"></th>
-            <td data-label="Room">AR-1</td>
-            <td data-label="Building">Building 1</td>
-            <td data-label="Type">Appointment Room</td>
-            <td data-label="Quantity">5</td>
-          </tr>
-          <tr>
-            <th scope="row"></th>
-            <td data-label="Room">AR-2</td>
-            <td data-label="Building">Building 1</td>
-            <td data-label="Type">Appointment Room</td>
-            <td data-label="Quantity">6</td>
-          </tr>
-          <tr>
-            <th scope="row"></th>
-            <td data-label="Room">AR-3</td>
-            <td data-label="Building">Building 1</td>
-            <td data-label="Type">Appointment Room</td>
-            <td data-label="Quantity">10</td>
+            <td data-label="Name">{{ selectedItem.inventoryItem.name }}</td>
+            <td data-label="Amount">{{ selectedItem.amount }}</td>
+            <td data-label="Room">{{ selectedItem.room.name }}</td>
+            <td data-label="Building">{{ selectedItem.room.buildingName }}</td>
           </tr>
         </tbody>
       </table>

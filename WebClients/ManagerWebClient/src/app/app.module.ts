@@ -72,6 +72,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     HospitalEquipmentComponent,
     SurveysObserveComponent,
     SurveySectionObserveComponent,
+    RatingDecimalComponent,
   ],
   imports: [
     BrowserModule,

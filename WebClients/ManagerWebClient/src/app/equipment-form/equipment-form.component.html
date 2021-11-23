@@ -27,7 +27,7 @@
           ></app-move-info>
           <app-free-terms
             *ngIf="step == 4"
-            [freeTerms]="availableTerms"
+            [freeTerms]="getAvailableTerms()"
             (selectedTerm)="selectedTerm = $event"
           >
           </app-free-terms>
@@ -48,8 +48,49 @@
           >
             Next
           </button>
-          <button class="btn btn-primary" *ngIf="step == 4">Save</button>
+          <button
+            class="btn btn-primary"
+            *ngIf="step == 4"
+            (click)="createTransferRequest()"
+            [disabled]="isButtonDisabled()"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal"
+          >
+            Save
+          </button>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="exampleModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Transfer request sent!</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <p>
+          Your equipment transfer event for
+          {{ selectedItem.InventoryItem.name }} has been successfuly recorded.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-bs-dismiss="modal"
+          (click)="goBack()"
+        >
+          OK
+        </button>
       </div>
     </div>
   </div>

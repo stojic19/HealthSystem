@@ -22,12 +22,12 @@ namespace HospitalApi.Controllers
             _uow = uow;
         }
 
-        /*[HttpPost]
+        [HttpPost]
         public IActionResult AddInventoryItems(IEnumerable<RoomInventory> roomInventory)
         {
             var roomInventoryRepo = _uow.GetRepository<IRoomInventoryWriteRepository>();
             return Ok(roomInventoryRepo.AddRange(roomInventory));
-        }*/
+        }
 
         [HttpGet]
         public IActionResult GetRoomInventory([FromQuery(Name = "roomId")] int roomId)

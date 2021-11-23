@@ -54,14 +54,17 @@ namespace Hospital.Services
         private bool IsFree(TimePeriod timePeriod, int roomId)
         {
             var eventsRepo = uow.GetRepository<IScheduledEventReadRepository>();
-            var scheduledEvents = eventsRepo.GetAll()
-               .Where(se => se.RoomId == roomId && CompareDates(se.StartDate, se.EndDate, timePeriod));
+            var scheduledEvents = eventsRepo.GetAll();
+           
+            foreach (ScheduledEvent scheduledEvent in scheduledEvents) {
+                if(scheduledEvent.RoomId == roomId)
+                {
+                    if (CompareDates(scheduledEvent.StartDate, scheduledEvent.EndDate, timePeriod))
+                        return false;
+                }
+            }
 
-            var broj = scheduledEvents.Count();
-            if (broj == 0)
-                return true;
-
-            return false;
+            return true;
         }
 
         private bool CompareDates(DateTime startDate, DateTime endDate, TimePeriod timePeriod)

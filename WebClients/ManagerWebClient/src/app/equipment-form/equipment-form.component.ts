@@ -1,9 +1,9 @@
+import { DatePipe } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Room } from '../interfaces/room';
 import { AvailableTermsRequest } from '../model/available-terms-request';
 import { EquipmentTransferEvent } from '../model/equipment-transfer-event';
-import { InventoryItem } from '../model/inventory-item.model';
 import { RoomInventory } from '../model/room-inventory.model';
 import { TimePeriod } from '../model/time-period';
 import { RoomInventoriesService } from '../services/room-inventories.service';
@@ -16,7 +16,6 @@ import { RoomInventoriesService } from '../services/room-inventories.service';
 export class EquipmentFormComponent implements OnInit {
   step = 1;
   destinationRooms!: Room[];
-  initialRoom!: Room;
   destinationRoom!: Room;
   public selectedItemId: number;
   public item: RoomInventory[];
@@ -28,11 +27,13 @@ export class EquipmentFormComponent implements OnInit {
   endDate: Date;
 
   availableTerms: TimePeriod[];
+  terms: TimePeriod[];
   selectedTerm: TimePeriod;
 
   constructor(
     public roomInventoryService: RoomInventoriesService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     this.route.params.subscribe((params) => {
       this.selectedItemId = +params['id'];
@@ -82,8 +83,9 @@ export class EquipmentFormComponent implements OnInit {
       )
         return true;
     }
-
-    if (this.step != 2) return false;
+    if (this.step == 4) {
+      if (this.selectedTerm === undefined) return true;
+    }
 
     return false;
   }
@@ -96,24 +98,22 @@ export class EquipmentFormComponent implements OnInit {
       roomId: this.destinationRoom.id,
     };
 
-    let period: TimePeriod = {
-      startDate: this.startDate,
-      endDate: this.endDate,
-    };
-    this.availableTerms = [period];
-    //this.roomInventoryService.getAvailableTerms(request).then(res => this.availableTerms = res as TimePeriod[]);
+    this.roomInventoryService.getAvailableTerms(request);
   }
 
   createTransferRequest() {
     let request: EquipmentTransferEvent = {
       startDate: this.selectedTerm.startDate,
       endDate: this.selectedTerm.endDate,
-      initalRoomId: this.initialRoom.id,
+      initalRoomId: this.selectedItem.roomId,
       destinationRoomId: this.destinationRoom.id,
       inventoryItemId: this.selectedItem.inventoryItemId,
       quantity: this.enteredAmount,
     };
-
-    //add request to database
+    this.roomInventoryService.addEquipmentTransferEvent(request);
+    //this.router.navigate(['/hospitalEquipment']);
+  }
+  goBack() {
+    this.router.navigate(['/hospitalEquipment']);
   }
 }

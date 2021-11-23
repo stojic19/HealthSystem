@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
-import { RoomInventoryComponent } from '../room-inventory/room-inventory.component';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { AvailableTermsRequest } from '../model/available-terms-request';
+import { TimePeriod } from '../model/time-period';
+import { EquipmentTransferEvent } from '../model/equipment-transfer-event';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RoomInventoriesService {
   constructor(private http: HttpClient) {}
+  public availableTerms: TimePeriod[];
 
   getRoomInventory(roomId: number) {
     return this.http.get(`${environment.baseUrl}` + 'api/RoomInventory', {
@@ -60,5 +63,17 @@ export class RoomInventoriesService {
     );
   }
 
-  getAvailableTerms(request: AvailableTermsRequest) {}
+  getAvailableTerms(request: AvailableTermsRequest) {
+    return this.http
+      .post('/api/EquipmentTransferEvent', request)
+      .toPromise()
+      .then((result) => (this.availableTerms = result as TimePeriod[]));
+  }
+
+  addEquipmentTransferEvent(newTransfer: EquipmentTransferEvent) {
+    console.log(newTransfer);
+    return this.http
+      .post('/api/EquipmentTransferEvent/addEvent', newTransfer)
+      .subscribe();
+  }
 }

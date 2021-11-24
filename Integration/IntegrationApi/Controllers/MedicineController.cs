@@ -71,15 +71,18 @@ namespace IntegrationAPI.Controllers
             }
             MedicineProcurementRequestDTO medicineRequestDTO = MedicineInventoryAdapter.CreateMedicineRequestToEmergencyProcurementRequest(createMedicineRequestDTO, pharmacy);
             IRestResponse response = SendUrgentProcurementRequestToPharmacy(medicineRequestDTO, pharmacy);
+            MedicineProcurementResponseDTO responseDTO = new MedicineProcurementResponseDTO();
             if (response.StatusCode != System.Net.HttpStatusCode.OK && response.StatusCode != System.Net.HttpStatusCode.NotFound && response.StatusCode != System.Net.HttpStatusCode.Unauthorized)
             {
                 return BadRequest("Pharmacy failed to receive request! Try again");
             }
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
+                responseDTO.answer = true;
+                responseDTO.notificationText = response.Content;
                 _medicineInventoryMasterService.AddMedicineToInventory(medicineRequestDTO.MedicineName, medicineRequestDTO.Quantity);
             }  
-            return Ok(response.Content);
+            return Ok(responseDTO);
         }
 
         private IRestResponse SendUrgentProcurementRequestToPharmacy(MedicineProcurementRequestDTO medicineRequestDTO, Pharmacy pharmacy)

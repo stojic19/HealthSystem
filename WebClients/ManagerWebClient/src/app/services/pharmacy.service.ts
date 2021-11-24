@@ -7,7 +7,7 @@ import { IMedicineResponse } from "../interfaces/medicineResponse";
 @Injectable()
 export class PharmacyService{
 
-    private _APIUrl = 'http://localhost:5000/api';  //uneti url za http get zahtev!
+    private _APIUrl = 'https://localhost:44302/api';  //uneti url za http get zahtev!
     
     constructor(private _httpClient: HttpClient) {}
 

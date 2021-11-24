@@ -11,6 +11,7 @@ export class PharmaciesListComponent implements OnInit {
   pharmacies: any[] = [];
   SearchString: string = "";
   MedicineString: string = "";
+  ManufacturerString: string = "";
   QuantityString: string = "";
   nonFilteredPharmacies: any = [];
   confirmed: any = [];
@@ -56,7 +57,7 @@ export class PharmaciesListComponent implements OnInit {
   }
 
   Check(id: any){
-    if(this.MedicineString != "" && this.QuantityString !=""){
+    if(this.MedicineString != "" && this.QuantityString !="" && this.ManufacturerString != ""){
       this._pharmacyService.checkMedicine(this.MakeRequest(id))
       .subscribe(res => {
         if(res.answer == true ){
@@ -68,7 +69,7 @@ export class PharmaciesListComponent implements OnInit {
   }
 
   Order(id: any){
-    if(this.MedicineString != "" && this.QuantityString !=""){
+    if(this.MedicineString != "" && this.QuantityString !="" && this.ManufacturerString != ""){
       this._pharmacyService.orderMedicine(this.MakeRequest(id))
       .subscribe(res => {
         if(res.answer == true){
@@ -83,6 +84,7 @@ export class PharmaciesListComponent implements OnInit {
     var medicineReq = {
       PharmacyId : id,
       MedicineName : this.MedicineString,
+      ManufacturerName : this.ManufacturerString, 
       Quantity : parseInt(this.QuantityString)
     }
     return medicineReq;

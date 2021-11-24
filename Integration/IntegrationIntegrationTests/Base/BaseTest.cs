@@ -6,11 +6,7 @@ using System.Net.Http;
 using System.Text;
 using Xunit;
 
-<<<<<<< HEAD
 namespace IntegrationIntegrationTests.Base
-=======
-namespace IntegrationClassLibTests.Base
->>>>>>> feature/integration-sftp-medicine-specification
 {
     public abstract class BaseTest : IClassFixture<BaseFixture>
     {

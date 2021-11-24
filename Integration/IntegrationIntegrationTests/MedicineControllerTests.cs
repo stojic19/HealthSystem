@@ -1,11 +1,7 @@
 ﻿using Castle.Core.Internal;
 using Integration.Model;
 using IntegrationAPI.DTO;
-<<<<<<< HEAD
 using IntegrationIntegrationTests.Base;
-=======
-using IntegrationClassLibTests.Base;
->>>>>>> feature/integration-sftp-medicine-specification
 using Shouldly;
 using System;
 using System.Collections.Generic;
@@ -21,16 +17,11 @@ namespace IntegrationClassLibTests
     {
         public MedicineControllerTests(BaseFixture fixture) : base(fixture)
         {
-<<<<<<< HEAD
             Context.Pharmacies.RemoveRange(Context.Pharmacies);
             Context.Countries.RemoveRange(Context.Countries);
             Context.Cities.RemoveRange(Context.Cities);
             Context.SaveChanges();
             MakePharmacies();
-=======
-            if (Context.Pharmacies.IsNullOrEmpty())
-                MakePharmacies();
->>>>>>> feature/integration-sftp-medicine-specification
         }
 
         [Fact]

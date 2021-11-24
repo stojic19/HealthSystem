@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-<<<<<<< HEAD
     <Compile Remove="IntegrationTests\**" />
     <EmbeddedResource Remove="IntegrationTests\**" />
     <None Remove="IntegrationTests\**" />
@@ -15,9 +14,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.12" />
-=======
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="5.0.12" />
->>>>>>> feature/integration-sftp-medicine-specification
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
     <PackageReference Include="Moq" Version="4.16.1" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.2.7" />
@@ -40,11 +37,4 @@
     <ProjectReference Include="..\IntegrationClassLib\Integration.csproj" />
   </ItemGroup>
 
-<<<<<<< HEAD
-=======
-  <ItemGroup>
-    <Folder Include="IntegrationTests\" />
-  </ItemGroup>
-
->>>>>>> feature/integration-sftp-medicine-specification
 </Project>

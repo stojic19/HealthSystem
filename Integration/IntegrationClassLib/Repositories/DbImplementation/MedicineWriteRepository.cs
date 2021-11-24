@@ -6,15 +6,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Integration.EfStructures;
-using Integration.Model;
-using Integration.Repositories.Base;
 
 namespace Integration.Repositories.DbImplementation
 {
-    class MedicineInventoryWriteRepository : WriteBaseRepository<MedicineInventory>, IMedicineInventoryWriteRepository
+    class MedicineWriteRepository : WriteBaseRepository<Medicine>, IMedicineWriteRepository
     {
-        public MedicineInventoryWriteRepository(AppDbContext context) : base(context)
+        public MedicineWriteRepository(AppDbContext context) : base(context)
         {
 
         }

@@ -68,7 +68,7 @@ namespace PharmacyApi.Controllers
 
 
         [HttpGet]
-        public IActionResult GetAll()
+        public IEnumerable<Medicine> GetAll()
         {
             IEnumerable<Medicine> medicines = _uow.GetRepository<IMedicineReadRepository>().GetAll()
                 .Include(medicine => medicine.Manufacturer)

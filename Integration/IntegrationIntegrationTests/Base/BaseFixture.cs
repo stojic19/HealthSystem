@@ -11,7 +11,11 @@ using Integration.Repositories.DbImplementation;
 using System.Net;
 using System.Net.Http;
 
+<<<<<<< HEAD
 namespace IntegrationIntegrationTests.Base
+=======
+namespace IntegrationClassLibTests.Base
+>>>>>>> feature/integration-sftp-medicine-specification
 {
     public class BaseFixture : IDisposable
     {
@@ -40,15 +44,29 @@ namespace IntegrationIntegrationTests.Base
         {
             var builder = new ContainerBuilder();
 
+<<<<<<< HEAD
             builder.RegisterModule(new DbModule());
+=======
+            builder.RegisterType<AppDbContext>()
+                .WithParameter("options", GetAppDbContextOptions())
+                .InstancePerLifetimeScope();
+
+>>>>>>> feature/integration-sftp-medicine-specification
             builder.RegisterModule(new RepositoryModule()
             {
                 Namespace = "Integration.Repositories",
                 RepositoryAssemblies = new List<Assembly>()
                 {
+<<<<<<< HEAD
                     typeof(CityReadRepository).Assembly
                 }
             });
+=======
+                    (typeof(CityReadRepository)).Assembly
+                }
+            });
+
+>>>>>>> feature/integration-sftp-medicine-specification
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
 
             container = builder.Build();

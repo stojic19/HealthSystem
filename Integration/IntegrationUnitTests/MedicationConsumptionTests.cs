@@ -54,9 +54,15 @@ namespace IntegrationUnitTests
             IEnumerable<MedicineConsumption> medicineConsumptions = medicineConsumptionConsumptionCalculationMicroService.CalculateMedicineConsumptions(receipts);
             medicineConsumptions.Count().ShouldBe(3);
         }
+<<<<<<< HEAD
         [Theory]
         [MemberData(nameof(GetTimeRanges))]
         public void Create_medication_report(TimeRange timeRange, int shouldBe)
+=======
+<<<<<<< HEAD
+        [Fact]
+        public void Create_medication_report_september()
+>>>>>>> feature/integration-sftp-medicine-specification
         {
             TimeRange september = new TimeRange
                 {startDate = new DateTime(2021, 9, 1), endDate = new DateTime(2021, 10, 1)};
@@ -70,6 +76,27 @@ namespace IntegrationUnitTests
                 { startDate = new DateTime(2021, 9, 1), endDate = new DateTime(2021, 10, 1) };
             TimeRange november = new TimeRange
                 { startDate = new DateTime(2021, 11, 1), endDate = new DateTime(2021, 12, 1) };
+<<<<<<< HEAD
+=======
+            MedicineConsumptionMasterService service = new MedicineConsumptionMasterService(UoW);
+            MedicineConsumptionReport report = service.CreateConsumptionReportInTimeRange(september);
+            report.MedicineConsumptions.Count().ShouldBe(1);
+=======
+        [Theory]
+        [MemberData(nameof(GetTimeRanges))]
+        public void Create_medication_report(TimeRange timeRange, int shouldBe)
+        {
+            MedicineConsumptionMasterService service = new MedicineConsumptionMasterService(UoW);
+            MedicineConsumptionReport report = service.CreateConsumptionReportInTimeRange(timeRange);
+            report.MedicineConsumptions.Count().ShouldBe(shouldBe);
+        }
+        public static IEnumerable<object[]> GetTimeRanges()
+        {
+            TimeRange september = new TimeRange
+                { startDate = new DateTime(2021, 9, 1), endDate = new DateTime(2021, 10, 1) };
+            TimeRange november = new TimeRange
+                { startDate = new DateTime(2021, 11, 1), endDate = new DateTime(2021, 12, 1) };
+>>>>>>> feature/integration-sftp-medicine-specification
             TimeRange december = new TimeRange() 
                 { startDate = new DateTime(2021, 12, 1), endDate = new DateTime(2022, 1, 1) };
             List<object[]> retVal = new List<object[]>();
@@ -77,6 +104,10 @@ namespace IntegrationUnitTests
             retVal.Add(new object[] {november, 1});
             retVal.Add(new object[] { december, 2});
             return retVal;
+<<<<<<< HEAD
+=======
+>>>>>>> 0be4e4f (Feature/integration sftp medication consumption (#50))
+>>>>>>> feature/integration-sftp-medicine-specification
         }
         private void MakeReceipts()
         {
@@ -128,6 +159,11 @@ namespace IntegrationUnitTests
                 Medicine = aspirin,
                 AmountSpent = 5
             };
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> feature/integration-sftp-medicine-specification
             Receipt receipt7 = new Receipt
             {
                 Id = 7,
@@ -142,14 +178,26 @@ namespace IntegrationUnitTests
                 Medicine = aspirin,
                 AmountSpent = 12
             };
+<<<<<<< HEAD
+=======
+>>>>>>> 0be4e4f (Feature/integration sftp medication consumption (#50))
+>>>>>>> feature/integration-sftp-medicine-specification
             Context.Receipts.Add(receipt1);
             Context.Receipts.Add(receipt2);
             Context.Receipts.Add(receipt3);
             Context.Receipts.Add(receipt4);
             Context.Receipts.Add(receipt5);
             Context.Receipts.Add(receipt6);
+<<<<<<< HEAD
             Context.Receipts.Add(receipt7);
             Context.Receipts.Add(receipt8);
+=======
+<<<<<<< HEAD
+=======
+            Context.Receipts.Add(receipt7);
+            Context.Receipts.Add(receipt8);
+>>>>>>> 0be4e4f (Feature/integration sftp medication consumption (#50))
+>>>>>>> feature/integration-sftp-medicine-specification
         }
 
     }

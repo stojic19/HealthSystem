@@ -42,9 +42,10 @@ import { HospitalEquipmentComponent } from './hospital-equipment/hospital-equipm
 import { MedicationReportsComponent } from './medication-reports/medication-reports/medication-reports.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MedicineSpecificationRequestsComponent } from './medicine-specification-requests/medicine-specification-requests.component';
 
 @NgModule({
-  declarations: [AppComponent, HospitalOverviewComponent, LegendComponent, NavbarComponent, FirstBuildingComponent, FloorSelectionComponent, FirstFloorComponent, SecondFloorComponent, FeedbacksManagerComponent, SecondBuildingComponent, FloorFirstComponent, FloorSecondComponent, SelectFloorComponent, HomePageComponent, FooterComponent, RoomInfoComponent, DisplayRoomInfoComponent, EditRoomInfoComponent, EquipmentFormComponent, InitialRoomComponent, DestinationRoomComponent, MoveInfoComponent, FreeTermsComponent, SearchBarComponent, RoomInventoryComponent, HospitalEquipmentComponent, ComplaintDetailsComponent, AddComplaintComponent, ComplaintsListComponent, RegisterPharmacyComponent, PharmaciesListComponent, MedicationReportsComponent],
+  declarations: [AppComponent, HospitalOverviewComponent, LegendComponent, NavbarComponent, FirstBuildingComponent, FloorSelectionComponent, FirstFloorComponent, SecondFloorComponent, FeedbacksManagerComponent, SecondBuildingComponent, FloorFirstComponent, FloorSecondComponent, SelectFloorComponent, HomePageComponent, FooterComponent, RoomInfoComponent, DisplayRoomInfoComponent, EditRoomInfoComponent, EquipmentFormComponent, InitialRoomComponent, DestinationRoomComponent, MoveInfoComponent, FreeTermsComponent, SearchBarComponent, RoomInventoryComponent, HospitalEquipmentComponent, ComplaintDetailsComponent, AddComplaintComponent, ComplaintsListComponent, RegisterPharmacyComponent, PharmaciesListComponent, MedicationReportsComponent, MedicineSpecificationRequestsComponent],
   imports: [BrowserModule, AppRoutingModule,  NgbModule, CommonModule, HttpClientModule, FormsModule , BrowserAnimationsModule, MatDatepickerModule, MatNativeDateModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule ],
   providers: [HttpClientModule],
   bootstrap: [AppComponent],

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Integration.EfStructures;
+using Integration.Model;
+using Integration.Repositories.Base;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,9 +12,9 @@ using Integration.Repositories.Base;
 
 namespace Integration.Repositories.DbImplementation
 {
-    public class MedicineWriteRepository : WriteBaseRepository<Medicine>, IMedicineWriteRepository
+    class MedicineInventoryWriteRepository : WriteBaseRepository<MedicineInventory>, IMedicineInventoryWriteRepository
     {
-        public MedicineWriteRepository(AppDbContext context) : base(context)
+        public MedicineInventoryWriteRepository(AppDbContext context) : base(context)
         {
 
         }

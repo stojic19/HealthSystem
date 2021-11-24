@@ -37,23 +37,20 @@ namespace PharmacyApi.Controllers
                 using (var connection = factory.CreateConnection())
                 using (var channel = connection.CreateModel())
                 {
-                    channel.QueueDeclare(queue: "BenefitCommunication",
-                        durable: false,
-                        exclusive: false,
-                        autoDelete: false,
-                        arguments: null);
+                    channel.ExchangeDeclare(exchange: "benefits", type: ExchangeType.Fanout);
 
                     BenefitSendDTO message = new BenefitSendDTO()
                     {
                         Description = benefit.Description,
                         EndTime = benefit.EndTime,
                         StartTime = benefit.StartTime,
-                        Title = benefit.Title
+                        Title = benefit.Title,
+                        PharmacyName = PharmacyDetails.Name
                     };
                     var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message));
 
-                    channel.BasicPublish(exchange: "",
-                        routingKey: "BenefitCommunication",
+                    channel.BasicPublish(exchange: "benefits",
+                        routingKey: "",
                         basicProperties: null,
                         body: body);
                 }

@@ -1,3 +1,4 @@
+using Integration.MicroServices;
 using Integration.Model;
 using IntegrationAPI.DTO;
 using Microsoft.AspNetCore;
@@ -8,12 +9,16 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using IntegrationAPI.Controllers;
+using Integration.Repositories.Base;
 
 namespace Integration
 {
     public class Program
     {
+
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Run();
@@ -22,10 +27,6 @@ namespace Integration
         public static IWebHost CreateHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .ConfigureServices((hostContext, services) =>
-                {
-                    //services.AddHostedService<BenefitRabbitMQService>();
-                })
                 .Build();
     }
 }

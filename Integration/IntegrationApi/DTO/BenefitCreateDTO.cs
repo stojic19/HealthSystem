@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using PharmacyApi.DTO.Base;
 
-namespace PharmacyApi.DTO
+namespace IntegrationAPI.DTO
 {
-    public class BenefitSendDTO
+    public class BenefitCreateDTO
     {
         public string Title { get; set; }
         public string Description { get; set; }

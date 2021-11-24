@@ -8,8 +8,7 @@ using Integration.Repositories.Base;
 
 namespace Integration.Repositories
 {
-    public interface IMedicineReadRepository : IReadBaseRepository<int, Medicine>
+    public interface IMedicineSpecificationFileReadRepository : IReadBaseRepository<int, MedicineSpecificationFile>
     {
-        public Medicine GetMedicineByName(string name);
     }
 }

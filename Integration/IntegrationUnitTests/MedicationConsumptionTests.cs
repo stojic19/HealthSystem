@@ -58,6 +58,8 @@ namespace IntegrationUnitTests
         [MemberData(nameof(GetTimeRanges))]
         public void Create_medication_report(TimeRange timeRange, int shouldBe)
         {
+            TimeRange september = new TimeRange
+                {startDate = new DateTime(2021, 9, 1), endDate = new DateTime(2021, 10, 1)};
             MedicineConsumptionMasterService service = new MedicineConsumptionMasterService(UoW);
             MedicineConsumptionReport report = service.CreateConsumptionReportInTimeRange(timeRange);
             report.MedicineConsumptions.Count().ShouldBe(shouldBe);

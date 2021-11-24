@@ -1,12 +1,17 @@
-<div class="panel panel-primary">
+<div class="panel panel-primary m-1">
     <div class="panel-heading m-3">
         <h2>Pharmacy List</h2>
     </div>
     <button class="btn btn-primary m-3" [routerLink]="['/pharmacy-register']"><strong>Register pharmacy</strong></button>
-    <div class="form-control form-control-lg">
-        <input [(ngModel)]="SearchString"  (keyup)="FilterFn()" placeholder="Filter" > 
+    <div class="form-control form-control-lg  m-1">
+        <input class="m-1" [(ngModel)]="SearchString"  (keyup)="FilterFn()" placeholder="Filter" > 
     </div>
-    <div class="table-responsive">
+    <div class="form-control form-control-lg  m-1">
+        <input class="m-1" required [(ngModel)]="MedicineString" (keyup)="Clear()" placeholder="Medicine" >
+        <input class="m-1" required [(ngModel)]="ManufacturerString" (keyup)="Clear()" placeholder="Manufacturer" >
+        <input class="m-1" required [(ngModel)]="QuantityString" (keyup)="Clear()" placeholder="Quantity" >  
+    </div>
+    <div class="table-responsive m-1">
         <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>
@@ -14,6 +19,7 @@
                     <th>Name</th>
                     <th>Address</th>
                     <th>Base URL</th>
+                    <th>Medicine</th>
                 </tr>
             </thead>
             <tbody>
@@ -22,6 +28,10 @@
                     <td>{{pharmacy.name}}</td>
                     <td>{{pharmacy.streetName}} {{pharmacy.streetNumber}}, {{pharmacy.city.name}}</td>
                     <td>{{pharmacy.baseUrl}}</td>
+                    <td>
+                        <div *ngIf='!PharmacyConfirmed(pharmacy.id)'><button class="btn btn-primary" (click)="Check(pharmacy.id)">Check</button></div>
+                        <div *ngIf='PharmacyConfirmed(pharmacy.id) && !PharmacyOrdered(pharmacy.id)'><button class="btn btn-success" (click)="Order(pharmacy.id)">Order</button></div>
+                    </td>
                 </tr>
             </tbody>
         </table>

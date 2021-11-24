@@ -9,11 +9,10 @@ using Integration.Repositories.Base;
 
 namespace Integration.Repositories.DbImplementation
 {
-    public class MedicineWriteRepository : WriteBaseRepository<Medicine>, IMedicineWriteRepository
+    public class MedicineSpecificationWriteRepository : WriteBaseRepository<MedicineSpecificationFile>, IMedicineSpecificationFileWriteRepository
     {
-        public MedicineWriteRepository(AppDbContext context) : base(context)
+        public MedicineSpecificationWriteRepository(AppDbContext context) : base(context)
         {
-
         }
     }
 }

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Integration.EfStructures;
+using Integration.Repositories.Base;
+using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Integration.Repositories.Base;
 using Xunit;
 
 namespace IntegrationIntegrationTests.Base
@@ -20,15 +17,16 @@ namespace IntegrationIntegrationTests.Base
             _fixture = fixture;
         }
 
-        public IUnitOfWork UoW => _fixture.UoW;
+        protected IUnitOfWork UoW => _fixture.UoW;
+        protected AppDbContext Context => _fixture.Context;
         public HttpClient Client => _fixture.Client;
         public CookieContainer CookieContainer => _fixture.CookieContainer;
+        public string BaseUrl => "https://localhost:44302/";
 
         public void AddCookie(string name, string value, string domain)
         {
-            CookieContainer.Add(new Cookie(name, value){Domain = domain});
+            CookieContainer.Add(new Cookie(name, value) { Domain = domain });
         }
-
         public StringContent GetContent(object content)
         {
             return new StringContent(JsonConvert.SerializeObject(content), Encoding.UTF8, "application/json");

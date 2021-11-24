@@ -1,29 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Autofac;
+using Microsoft.EntityFrameworkCore;
+using Integration.EfStructures;
 using Integration.Infrastructure;
+using Integration.Model;
 using Integration.Repositories.Base;
 using Integration.Repositories.DbImplementation;
+using System.Net;
+using System.Net.Http;
 
 namespace IntegrationIntegrationTests.Base
 {
     public class BaseFixture : IDisposable
     {
-        private IContainer container { get; set; }
+        public AppDbContext Context { get; set; }
         public IUnitOfWork UoW { get; set; }
+        private IContainer container { get; set; }
         public HttpClient Client { get; set; }
         public CookieContainer CookieContainer { get; set; }
-
         public BaseFixture()
         {
             SetupAutoFacDip();
-            ResolveUnitOfWork();
+            ResolveContextAndUnitOfWork();
             ConfigureHttpClient();
         }
 
@@ -36,12 +36,6 @@ namespace IntegrationIntegrationTests.Base
             };
             Client = new HttpClient(handler);
         }
-
-        private void ResolveUnitOfWork()
-        {
-            UoW = container.Resolve<IUnitOfWork>();
-        }
-
         private void SetupAutoFacDip()
         {
             var builder = new ContainerBuilder();
@@ -60,8 +54,23 @@ namespace IntegrationIntegrationTests.Base
             container = builder.Build();
         }
 
+        private void ResolveContextAndUnitOfWork()
+        {
+            Context = container.Resolve<AppDbContext>();
+            UoW = container.Resolve<IUnitOfWork>();
+        }
+
+        private DbContextOptions<AppDbContext> GetAppDbContextOptions()
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
+            optionsBuilder.UseInMemoryDatabase("IntegrationInMemoryDB");
+
+            return optionsBuilder.Options;
+        }
+
         public void Dispose()
         {
+            Context.Dispose();
             container.Dispose();
             Client.Dispose();
         }

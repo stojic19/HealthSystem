@@ -1,0 +1,1 @@
+{"Name":"Aspirin","Manufacturer":"Test","SideEffects":[],"Reactions":[],"Precautions":[],"MedicinePotentialDangers":[],"Substances":[],"Type":"Analgetik","Usage":"Za glavobolju","WeightInMilligrams":12.0}

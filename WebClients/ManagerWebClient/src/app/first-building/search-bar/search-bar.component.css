@@ -1,11 +1,20 @@
-li{
-
-    background-color:#90caf9;
+li {
+  background-color: #90caf9;
 }
-button{
-    background-color: #90caf9;
-    border: none;
-  }
-  
-  button:focus{background-color:#90caf9;}
-  button:hover{background-color:#90caf9;}
+button {
+  background-color: #90caf9;
+  border: none;
+}
+
+button:focus {
+  background-color: #90caf9;
+}
+button:hover {
+  background-color: #90caf9;
+}
+
+.form-control {
+  height: 35px;
+  font-size: 14px;
+  border-radius: 15px;
+}

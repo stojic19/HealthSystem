@@ -1,45 +1,93 @@
-<div class="row">
-    <div class="row mt-2">
-        <div class="col-md-9">
-            <button
-              id="search-button"
-              type="button"
-              class="btn btn-primary"
-              style="margin-left: 3.8rem"
-              (click)="showRoom()"
-            >
-              Display
-            </button>
-          </div>
-        <div class="col-md-2">
-            <div class="form-outline">
-                <input id="search-input" type="search"  class="form-control" placeholder="Search" [(ngModel)]="searchEquipmentName" (input)="searchEquipmentByName()"/>
-            </div>
+<div class="mb-3">
+  <div style="width: 90%; margin: auto">
+    <h4 class="mb-5 title" style="text-align: center">
+      H O S P I T A L <span class="ms-4">E Q U I P M E N T</span>
+    </h4>
+  </div>
+  <div class="row">
+    <div class="row d-flex justify-content-center">
+      <div class="col-md-1"></div>
+      <div class="col-md-7">
+        <button
+          *ngIf="itemSelected"
+          type="button"
+          class="btn btn-primary"
+          style="margin-left: 8.5%"
+          (click)="moveSelectedItem(selectedItem)"
+        >
+          Move Equipment
+        </button>
+        <button
+          *ngIf="itemSelected"
+          type="button"
+          class="btn btn-primary ms-2"
+          (click)="showRoom()"
+        >
+          Display item location on map
+        </button>
+      </div>
+      <div class="col-md-2">
+        <div class="form-outline">
+          <input
+            id="search-input"
+            type="search"
+            class="form-control"
+            placeholder="search..."
+            [(ngModel)]="searchEquipmentName"
+            (input)="searchEquipmentByName()"
+          />
         </div>
-        <div class="col-md-1">
-            <button id="search-button" type="button" class="btn btn-primary" (click)="searchEquipmentByName()">
-                <i class="fas fa-search"></i>
-            </button>
-        </div>     
+      </div>
+      <div class="col-md-1">
+        <button
+          id="search-button"
+          type="button"
+          class="btn btn-primary"
+          (click)="searchEquipmentByName()"
+        >
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+      <div class="col-md-1"></div>
     </div>
-</div>
-<div class="row mt-2">
-    <table class="table table-striped mt-5 justify-content-center" style="width: 1000px">
-        <thead>
+  </div>
+  <div class="row mt-3 d-flex justify-content-center">
+    <div class="col-lg-9 col-md-9 col-sm-9">
+      <div
+        style="height: 27.4rem; overflow: auto"
+        id="table"
+        class="table-responsive custom-table-responsive"
+      >
+        <table class="table table-hover justify-content-center equipmentTable">
+          <thead>
             <tr>
-                <th class="col-md-3">Name</th>
-                <th class="col-md-3">Amount</th>
-                <th class="col-md-3">Room</th>
-                <th class="col-md-3">Building</th>
+              <th class="col-md-3">Name</th>
+              <th class="col-md-3">Amount</th>
+              <th class="col-md-3">Room</th>
+              <th class="col-md-3">Building</th>
             </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let inventory of hospitalInventories" (click)="selectInventoryItem(inventory)">
-                <td>{{inventory.inventoryItem.name}}</td>
-                <td>{{inventory.amount}}</td>
-                <td>{{inventory.room.name}}</td>
-                <td>{{inventory.room.buildingName}}</td>
+          </thead>
+          <tbody *ngIf="!isLoading">
+            <tr
+              *ngFor="let inventory of hospitalInventories"
+              (click)="selectInventoryItem(inventory)"
+              [ngClass]="selectedItem == inventory ? 'selected' : 'notSelected'"
+            >
+              <td>{{ inventory.inventoryItem.name }}</td>
+              <td>{{ inventory.amount }}</td>
+              <td>{{ inventory.room.name }}</td>
+              <td>{{ inventory.room.buildingName }}</td>
             </tr>
-        </tbody>
-    </table>
+          </tbody>
+        </table>
+        <mat-card
+          *ngIf="isLoading"
+          style="display: flex; justify-content: center; align-items: center"
+        >
+          <mat-progress-spinner color="primary" mode="indeterminate">
+          </mat-progress-spinner>
+        </mat-card>
+      </div>
+    </div>
+  </div>
 </div>

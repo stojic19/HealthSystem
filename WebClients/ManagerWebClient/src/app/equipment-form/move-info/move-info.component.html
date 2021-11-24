@@ -1,35 +1,45 @@
 <div class="d-flex justify-content-center">
-  <h6 class="text-muted subtitle">Step 3: Choose moving details</h6>
+  <h6 class="text-muted subtitle">Step 3: Enter moving information</h6>
 </div>
 <div class="row ms-5 mt-5"></div>
-<div class="row mb-5 mt-3 d-flex justify-content-center" style="height: 300px">
+<div class="row d-flex justify-content-center" style="height: 100%">
+  <div class="d-flex justify-content-center">
+    <h6 class="text-muted subtitle" style="text-transform: uppercase">
+      Destination room {{ destinationRoom.name }} has {{ currentAmount }}
+      {{ selectedItem.inventoryItem.name }}s
+    </h6>
+  </div>
   <div class="col-11">
     <div
       style="height: 280px; overflow: auto"
-      class="d-flex justify-content-center movingFormDiv"
+      class="d-flex justify-content-center movingFormDiv mt-5"
     >
-      <table class="table-responsive movingForm mt-5">
+      <table class="table-responsive movingForm">
         <tr>
           <td class="label">
             Quantity of equipment: <span style="color: red">*</span>
           </td>
           <td>
             <input
+              [(ngModel)]="enteredNumber"
               class="form-control text-start"
               type="number"
               name="quantity"
+              (input)="emitAmount()"
             />
           </td>
         </tr>
         <tr>
           <td class="label">
-            Move duration: <span style="color: red">*</span>
+            Move duration (IN HOURS): <span style="color: red">*</span>
           </td>
           <td>
             <input
+              [(ngModel)]="enteredDuration"
               class="form-control text-start"
               type="number"
               name="duration"
+              (input)="emitDuration()"
             />
           </td>
         </tr>
@@ -40,17 +50,28 @@
           <td>
             <div class="d-inline-flex">
               <input
-                style="width: 150px"
-                type="number"
+                [(ngModel)]="enteredStartDate"
+                style="width: 175px"
+                type="date"
                 class="form-control me-2"
+                (input)="emitStartDate()"
               />
               <span>-</span>
               <input
-                style="width: 150px"
-                type="number"
+                [(ngModel)]="enteredEndDate"
+                style="width: 175px"
+                type="date"
                 class="form-control ms-2"
+                (input)="emitEndDate()"
               />
             </div>
+          </td>
+        </tr>
+        <tr *ngIf="!isEnteredDataCorrect()">
+          <td colspan="2" style="text-align: center">
+            <p style="color: red">
+              {{ errorMessage }}
+            </p>
           </td>
         </tr>
       </table>

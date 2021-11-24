@@ -2,15 +2,24 @@
   padding-bottom: 1rem;
   border-bottom: 1px solid lightgray;
 }
-button{
+button {
   background-color: #fccfcf;
   border: none;
 }
 
-button:focus{background-color:#fccfcf;}
-button:hover{background-color:#fccfcf;}
+button:focus {
+  background-color: #fccfcf;
+}
+button:hover {
+  background-color: #fccfcf;
+}
 
-li{
+li {
+  background-color: #fccfcf;
+}
 
-  background-color:#fccfcf;
+.form-control {
+  height: 35px;
+  font-size: 14px;
+  border-radius: 15px;
 }

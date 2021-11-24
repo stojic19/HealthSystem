@@ -39,5 +39,18 @@ namespace IntegrationIntegrationTests
             responseContent = await response.Content.ReadAsStringAsync();
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
         }
+        [Fact]
+        public async Task Send_consumption_report_test_should_fail()
+        {
+            var content = GetContent(new TimeRange { startDate = new DateTime(2021, 9, 1), endDate = new DateTime(2021, 10, 1) });
+            var response = await Client.PostAsync("https://localhost:44302/api/Report/CreateConsumptionReport", content);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var medicineConsumptionReportDTO = JsonConvert.DeserializeObject<MedicineConsumptionReportDTO>(responseContent);
+
+            content = GetContent(medicineConsumptionReportDTO);
+            response = await Client.PostAsync("https://localhost:44302/api/Report/SendConsumptionReport", content);
+            responseContent = await response.Content.ReadAsStringAsync();
+            response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        }
     }
 }

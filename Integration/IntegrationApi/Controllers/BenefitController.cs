@@ -33,7 +33,6 @@ namespace IntegrationAPI.Controllers
         public Benefit GetBenefitById(int id)
         {
             Benefit benefit = _uow.GetRepository<IBenefitReadRepository>().GetById(id);
-            // kod tokom testiranja
             if (benefit.Pharmacy == null)
             {
                 benefit.Pharmacy = _uow.GetRepository<IPharmacyReadRepository>().GetById(benefit.PharmacyId);
@@ -44,7 +43,6 @@ namespace IntegrationAPI.Controllers
         public IEnumerable<Benefit> GetVisibleBenefits()
         {
             IEnumerable<Benefit> benefits = _uow.GetRepository<IBenefitReadRepository>().GetVisibleBenefits();
-            // kod tokom testiranja
             foreach(var benefit in benefits)
             {
                 if(benefit.Pharmacy == null)

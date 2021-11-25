@@ -11,5 +11,7 @@ namespace Integration.Repositories
     public interface IBenefitReadRepository : IReadBaseRepository<int, Benefit>
     {
         public IEnumerable<Benefit> GetVisibleBenefits();
+
+        public IEnumerable<Benefit> GetPublishedBenefits();
     }
 }

@@ -14,7 +14,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using IntegrationAPI.ExternalServices;
 
 namespace Integration
 {
@@ -40,7 +39,7 @@ namespace Integration
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "IntegrationApi", Version = "v1" });
             });
-            services.AddHostedService<BenefitRabbitMqService>();
+            //services.AddHostedService<BenefitRabbitMqService>();
 
             var builder = new ContainerBuilder();
             builder.RegisterModule(new DbModule());

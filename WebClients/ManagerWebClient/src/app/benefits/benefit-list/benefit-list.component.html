@@ -9,7 +9,7 @@
             <mat-label>Filter by pharmacy</mat-label>
             
             <mat-select class="checkbox-margin" [compareWith]="compareObjects" [(ngModel)]="SearchPharmacy.pharmacy" (selectionChange)="FilterFn()" ngDefaultControl required>
-                <mat-option [value]="allPharmacies">--</mat-option>
+                <mat-option [value]="allPharmacies">All</mat-option>
                 <mat-option *ngFor="let pharmacy of filterPharmacies" [value]="pharmacy">
                     {{pharmacy.name}}
                 </mat-option>

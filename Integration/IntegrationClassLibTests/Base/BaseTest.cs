@@ -21,7 +21,7 @@ namespace IntegrationClassLibTests.Base
         protected IUnitOfWork UoW => _fixture.UoW;
         protected AppDbContext Context => _fixture.Context;
         public CookieContainer CookieContainer => _fixture.CookieContainer;
-        public string BaseUrl => "https://localhost:44303/";
+        public string BaseUrl => "https://localhost:44302/";
 
         public void AddCookie(string name, string value, string domain)
         {

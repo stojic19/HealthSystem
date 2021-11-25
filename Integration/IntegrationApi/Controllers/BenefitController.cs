@@ -67,6 +67,20 @@ namespace IntegrationAPI.Controllers
             return benefits;
         }
 
+        [HttpGet]
+        public IEnumerable<Benefit> GetRelevantBenefits()
+        {
+            IEnumerable<Benefit> benefits = _uow.GetRepository<IBenefitReadRepository>().GetRelevantBenefits();
+            foreach (var benefit in benefits)
+            {
+                if (benefit.Pharmacy == null)
+                {
+                    benefit.Pharmacy = _uow.GetRepository<IPharmacyReadRepository>().GetById(benefit.PharmacyId);
+                }
+            }
+            return benefits;
+        }
+
         [HttpPost, Produces("application/json")]
         public IActionResult PublishBenefit(BenefitIdDTO dto)
         {

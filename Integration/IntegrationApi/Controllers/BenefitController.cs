@@ -56,7 +56,7 @@ namespace IntegrationAPI.Controllers
         [HttpGet]
         public IEnumerable<Benefit> GetPublishedBenefits()
         {
-            IEnumerable<Benefit> benefits = null;//_uow.GetRepository<IBenefitReadRepository>().GetPublishedBenefits();
+            IEnumerable<Benefit> benefits = _uow.GetRepository<IBenefitReadRepository>().GetPublishedBenefits();
             foreach (var benefit in benefits)
             {
                 if (benefit.Pharmacy == null)

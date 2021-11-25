@@ -1,6 +1,7 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Integration.Infrastructure;
+using Integration.MicroServices;
 using Integration.Repositories.Base;
 using Integration.Repositories.DbImplementation;
 using Microsoft.AspNetCore.Builder;
@@ -39,7 +40,7 @@ namespace Integration
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "IntegrationApi", Version = "v1" });
             });
-            //services.AddHostedService<BenefitRabbitMqService>();
+            services.AddHostedService<BenefitRabbitMqService>();
 
             var builder = new ContainerBuilder();
             builder.RegisterModule(new DbModule());

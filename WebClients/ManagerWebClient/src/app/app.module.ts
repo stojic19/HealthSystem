@@ -43,10 +43,15 @@ import { MedicationReportsComponent } from './medication-reports/medication-repo
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MedicineSpecificationRequestsComponent } from './medicine-specification-requests/medicine-specification-requests.component';
+import { BenefitListComponent } from './benefits/benefit-list/benefit-list.component';
+import { BenefitDetailsComponent } from './benefits/benefit-details/benefit-details.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
-  declarations: [AppComponent, HospitalOverviewComponent, LegendComponent, NavbarComponent, FirstBuildingComponent, FloorSelectionComponent, FirstFloorComponent, SecondFloorComponent, FeedbacksManagerComponent, SecondBuildingComponent, FloorFirstComponent, FloorSecondComponent, SelectFloorComponent, HomePageComponent, FooterComponent, RoomInfoComponent, DisplayRoomInfoComponent, EditRoomInfoComponent, EquipmentFormComponent, InitialRoomComponent, DestinationRoomComponent, MoveInfoComponent, FreeTermsComponent, SearchBarComponent, RoomInventoryComponent, HospitalEquipmentComponent, ComplaintDetailsComponent, AddComplaintComponent, ComplaintsListComponent, RegisterPharmacyComponent, PharmaciesListComponent, MedicationReportsComponent, MedicineSpecificationRequestsComponent],
-  imports: [BrowserModule, AppRoutingModule,  NgbModule, CommonModule, HttpClientModule, FormsModule , BrowserAnimationsModule, MatDatepickerModule, MatNativeDateModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule ],
+  declarations: [AppComponent, HospitalOverviewComponent, LegendComponent, NavbarComponent, FirstBuildingComponent, FloorSelectionComponent, FirstFloorComponent, SecondFloorComponent, FeedbacksManagerComponent, SecondBuildingComponent, FloorFirstComponent, FloorSecondComponent, SelectFloorComponent, HomePageComponent, FooterComponent, RoomInfoComponent, DisplayRoomInfoComponent, EditRoomInfoComponent, EquipmentFormComponent, InitialRoomComponent, DestinationRoomComponent, MoveInfoComponent, FreeTermsComponent, SearchBarComponent, RoomInventoryComponent, HospitalEquipmentComponent, ComplaintDetailsComponent, AddComplaintComponent, ComplaintsListComponent, RegisterPharmacyComponent, PharmaciesListComponent, MedicationReportsComponent, MedicineSpecificationRequestsComponent, BenefitListComponent, BenefitDetailsComponent],
+  imports: [BrowserModule, AppRoutingModule,  NgbModule, CommonModule, HttpClientModule, FormsModule , BrowserAnimationsModule, MatDatepickerModule, MatNativeDateModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatCheckboxModule, MatOptionModule, MatSelectModule, ReactiveFormsModule ],
   providers: [HttpClientModule],
   bootstrap: [AppComponent],
 })

@@ -19,6 +19,7 @@ namespace Pharmacy.EfStructures
         public DbSet<Reaction> Reactions { get; set; }
         public DbSet<Precaution> Precautions { get; set; }
         public DbSet<MedicinePotentialDanger> MedicinePotentialDangers { get; set; }
+        public DbSet<Benefit> Benefits { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {

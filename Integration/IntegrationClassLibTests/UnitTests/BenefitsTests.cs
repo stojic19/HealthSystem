@@ -16,9 +16,9 @@ using Xunit;
 
 namespace IntegrationClassLibTests.UnitTests
 {
-    public class ActionsAndBenefitsTests : BaseTest
+    public class BenefitsTests : BaseTest
     {
-        public ActionsAndBenefitsTests(BaseFixture fixture) : base(fixture)
+        public BenefitsTests(BaseFixture fixture) : base(fixture)
         {
             if(Context.Pharmacies.IsNullOrEmpty())
                 MakeBenefits();
@@ -41,10 +41,37 @@ namespace IntegrationClassLibTests.UnitTests
                 .GetVisibleBenefits();
 
             benefits.ShouldNotBeNull();
-            benefits.Count().ShouldBe(2);
+            benefits.Count().ShouldBe(3);
             benefits.ElementAt(0).Pharmacy.Name.ShouldBe("Test pharmacy");
             benefits.ElementAt(0).Pharmacy.City.Name.ShouldBe("Test city");
             benefits.ElementAt(0).Pharmacy.City.Country.Name.ShouldBe("Test country");
+        }
+
+        [Fact]
+        public void Get_published_benefits()
+        {
+            var benefits = UoW.GetRepository<IBenefitReadRepository>()
+                .GetPublishedBenefits();
+
+            benefits.ShouldNotBeNull();
+            benefits.Count().ShouldBe(3);
+            benefits.ElementAt(0).Pharmacy.Name.ShouldBe("Test pharmacy");
+            benefits.ElementAt(0).Pharmacy.City.Name.ShouldBe("Test city");
+            benefits.ElementAt(0).Pharmacy.City.Country.Name.ShouldBe("Test country");
+        }
+
+        [Fact]
+        public void Get_relevant_benefits()
+        {
+            var benefits = UoW.GetRepository<IBenefitReadRepository>()
+                .GetRelevantBenefits();
+
+            benefits.ShouldNotBeNull();
+            benefits.Count().ShouldBe(1);
+            benefits.ElementAt(0).Pharmacy.Name.ShouldBe("Test pharmacy");
+            benefits.ElementAt(0).Pharmacy.City.Name.ShouldBe("Test city");
+            benefits.ElementAt(0).Pharmacy.City.Country.Name.ShouldBe("Test country");
+            benefits.ElementAt(0).Description.ShouldBe("Description 2");
         }
 
         [Fact]
@@ -140,7 +167,7 @@ namespace IntegrationClassLibTests.UnitTests
                 Hidden = false,
                 Title = "Title 1",
                 StartTime = new DateTime(2021, 11, 17),
-                EndTime = new DateTime(2021, 11, 29)
+                EndTime = new DateTime(2021, 11, 20)
             });
             Context.Benefits.Add(new Benefit()
             {
@@ -150,8 +177,8 @@ namespace IntegrationClassLibTests.UnitTests
                 Published = true,
                 Hidden = false,
                 Title = "Title 2",
-                StartTime = new DateTime(2021, 11, 27),
-                EndTime = new DateTime(2021, 12, 6)
+                StartTime = new DateTime(2020, 11, 27),
+                EndTime = new DateTime(2028, 12, 6)
             });
             Context.Benefits.Add(new Benefit()
             {
@@ -161,8 +188,8 @@ namespace IntegrationClassLibTests.UnitTests
                 Published = true,
                 Hidden = false,
                 Title = "Title 3",
-                StartTime = new DateTime(2021, 11, 27),
-                EndTime = new DateTime(2021, 12, 6)
+                StartTime = new DateTime(2021, 10, 27),
+                EndTime = new DateTime(2021, 11, 6)
             });
 
             Context.SaveChanges();

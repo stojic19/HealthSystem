@@ -43,5 +43,19 @@ namespace Integration.Repositories.DbImplementation
             }
             return benefits;
         }
+
+        public IEnumerable<Benefit> GetRelevantBenefits()
+        {
+            IEnumerable<Benefit> allBenefits = GetPublishedBenefits();
+            List<Benefit> benefits = new List<Benefit>();
+            foreach (Benefit benefit in allBenefits)
+            {
+                if (DateTime.Now < benefit.EndTime)
+                {
+                    benefits.Add(benefit);
+                }
+            }
+            return benefits;
+        }
     }
 }

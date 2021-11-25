@@ -13,5 +13,7 @@ namespace Integration.Repositories
         public IEnumerable<Benefit> GetVisibleBenefits();
 
         public IEnumerable<Benefit> GetPublishedBenefits();
+
+        public IEnumerable<Benefit> GetRelevantBenefits();
     }
 }

@@ -79,3 +79,7 @@
     border-bottom: none;
   }
 }
+
+.selected {
+  background-color: #e2eafc;
+}

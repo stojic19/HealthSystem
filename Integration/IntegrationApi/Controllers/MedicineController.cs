@@ -19,10 +19,11 @@ namespace IntegrationAPI.Controllers
     public class MedicineController : ControllerBase
     {
         private PharmacyMasterService _pharmacyMasterService;
-
+        private MedicineInventoryMasterService _medicineInventoryMasterService;
         public MedicineController(IUnitOfWork unitOfWork)
         {
             _pharmacyMasterService = new PharmacyMasterService(unitOfWork);
+            _medicineInventoryMasterService = new MedicineInventoryMasterService(unitOfWork);
         }
 
         [HttpPost]
@@ -70,26 +71,24 @@ namespace IntegrationAPI.Controllers
             }
             MedicineProcurementRequestDTO medicineRequestDTO = MedicineInventoryAdapter.CreateMedicineRequestToEmergencyProcurementRequest(createMedicineRequestDTO, pharmacy);
             IRestResponse response = SendUrgentProcurementRequestToPharmacy(medicineRequestDTO, pharmacy);
-            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+            MedicineProcurementResponseDTO responseDTO = new MedicineProcurementResponseDTO();
+            if (response.StatusCode != System.Net.HttpStatusCode.OK && response.StatusCode != System.Net.HttpStatusCode.NotFound && response.StatusCode != System.Net.HttpStatusCode.Unauthorized)
             {
                 return BadRequest("Pharmacy failed to receive request! Try again");
             }
-            MedicineProcurementResponseDTO responseDTO = JsonConvert.DeserializeObject<MedicineProcurementResponseDTO>(response.Content);
-            if(responseDTO.answer == true)
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-
-                return Ok(responseDTO);
-            }
-            else
-            {
-                return Ok(responseDTO);
-            }
+                responseDTO.answer = true;
+                responseDTO.notificationText = response.Content;
+                _medicineInventoryMasterService.AddMedicineToInventory(medicineRequestDTO.MedicineName, medicineRequestDTO.Quantity);
+            }  
+            return Ok(responseDTO);
         }
 
         private IRestResponse SendUrgentProcurementRequestToPharmacy(MedicineProcurementRequestDTO medicineRequestDTO, Pharmacy pharmacy)
         {
             RestClient client = new RestClient();
-            string targetUrl = pharmacy.BaseUrl + "/api/MedicineProcurement";
+            string targetUrl = pharmacy.BaseUrl + "/api/MedicineProcurement/execute";
             RestRequest request = new RestRequest(targetUrl);
             request.AddJsonBody(medicineRequestDTO);
             return client.Post(request);

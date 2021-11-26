@@ -288,6 +288,29 @@ namespace Pharmacy.Migrations
                         .IsRequired();
                 });
 
+                modelBuilder.Entity("Pharmacy.Model.MedicineReportFile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("FileName")
+                        .HasColumnType("text");
+
+                    b.Property<int>("HospitalId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Host")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+                    b.HasIndex("HospitalId");
+
+                    b.ToTable("MedicineReportFiles");
+                    
+                });
+
             modelBuilder.Entity("Pharmacy.Model.City", b =>
                 {
                     b.HasOne("Pharmacy.Model.Country", "Country")
@@ -360,6 +383,17 @@ namespace Pharmacy.Migrations
                     b.Navigation("FirstMedicine");
 
                     b.Navigation("SecondMedicine");
+                });
+
+            modelBuilder.Entity("Pharmacy.Model.MedicineReportFile", b =>
+                {
+                    b.HasOne("Pharmacy.Model.Hospital", "Hospital")
+                        .WithMany()
+                        .HasForeignKey("HospitalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Hospital");
                 });
 
             modelBuilder.Entity("Pharmacy.Model.Country", b =>

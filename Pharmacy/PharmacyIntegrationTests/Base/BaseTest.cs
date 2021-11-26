@@ -11,6 +11,7 @@ using Xunit;
 
 namespace PharmacyIntegrationTests.Base
 {
+    [Collection("IntegrationTests")]
     public abstract class BaseTest : IClassFixture<BaseFixture>
     {
         private readonly BaseFixture _fixture;

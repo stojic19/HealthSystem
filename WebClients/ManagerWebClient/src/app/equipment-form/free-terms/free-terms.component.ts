@@ -1,15 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { AvailableTermsRequest } from 'src/app/model/available-terms-request';
+import { TimePeriod } from 'src/app/model/time-period';
+import { RoomInventoriesService } from 'src/app/services/room-inventories.service';
 
 @Component({
   selector: 'app-free-terms',
   templateUrl: './free-terms.component.html',
-  styleUrls: ['./free-terms.component.css']
+  styleUrls: ['./free-terms.component.css'],
 })
 export class FreeTermsComponent implements OnInit {
+  @Input()
+  freeTerms: TimePeriod[];
+  @Output()
+  selectedTerm = new EventEmitter<TimePeriod>();
 
-  constructor() { }
+  selectedTermView: TimePeriod;
 
-  ngOnInit(): void {
+  constructor() {}
+
+  ngOnInit(): void {}
+
+  selectTerm(term: TimePeriod) {
+    var newTerm: TimePeriod = {
+      startDate: new Date(),
+      endDate: new Date(),
+    };
+    this.selectedTerm.emit(newTerm);
   }
-
 }

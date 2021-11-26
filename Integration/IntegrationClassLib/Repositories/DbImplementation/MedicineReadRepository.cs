@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Integration.Repositories.DbImplementation
 {
-    class MedicineReadRepository : ReadBaseRepository<int, Medicine>, IMedicineReadRepository
+    public class MedicineReadRepository : ReadBaseRepository<int, Medicine>, IMedicineReadRepository
     {
         public MedicineReadRepository(AppDbContext context) : base(context)
         {

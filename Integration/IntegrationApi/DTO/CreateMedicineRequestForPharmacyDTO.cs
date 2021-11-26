@@ -9,6 +9,7 @@ namespace IntegrationAPI.DTO
     {
         public int PharmacyId { get; set; }
         public String MedicineName { get; set; }
+        public String ManufacturerName { get; set; }
         public int Quantity { get; set; }
     }
 }

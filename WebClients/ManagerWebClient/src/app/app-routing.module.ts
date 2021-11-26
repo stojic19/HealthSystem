@@ -18,6 +18,7 @@ import { RegisterPharmacyComponent } from './pharmacies/register-pharmacy/regist
 import { HospitalEquipmentComponent } from './hospital-equipment/hospital-equipment.component';
 import { BenefitListComponent } from './benefits/benefit-list/benefit-list.component';
 import { BenefitDetailsComponent } from './benefits/benefit-details/benefit-details.component';
+import { MedicationReportsComponent } from './medication-reports/medication-reports/medication-reports.component';
 
 const routes: Routes = [
   { path: 'overview', component: HospitalOverviewComponent },
@@ -36,7 +37,9 @@ const routes: Routes = [
   { path: 'benefit-list', component: BenefitListComponent },
   { path: 'benefit/:id', component: BenefitDetailsComponent },
   { path: 'home', component: HomePageComponent },
-  { path: '', redirectTo: 'home', pathMatch: 'full'}
+  { path: 'medication-consumption-report', component: MedicationReportsComponent},
+  { path: '', redirectTo: 'home', pathMatch: 'full'},
+  { path: 'moveEquipment/:id', component: EquipmentFormComponent }
 ];
 
 @NgModule({

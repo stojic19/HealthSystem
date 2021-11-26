@@ -1,4 +1,6 @@
 import { NgModule } from '@angular/core';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -42,10 +44,68 @@ import { BenefitDetailsComponent } from './benefits/benefit-details/benefit-deta
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
+import { MedicationReportsComponent } from './medication-reports/medication-reports/medication-reports.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
-  declarations: [AppComponent, HospitalOverviewComponent, LegendComponent, NavbarComponent, FirstBuildingComponent, FloorSelectionComponent, FirstFloorComponent, SecondFloorComponent, FeedbacksManagerComponent, SecondBuildingComponent, FloorFirstComponent, FloorSecondComponent, SelectFloorComponent, HomePageComponent, FooterComponent, RoomInfoComponent, DisplayRoomInfoComponent, EditRoomInfoComponent, EquipmentFormComponent, InitialRoomComponent, DestinationRoomComponent, MoveInfoComponent, FreeTermsComponent, SearchBarComponent, RoomInventoryComponent, HospitalEquipmentComponent, ComplaintDetailsComponent, AddComplaintComponent, ComplaintsListComponent, RegisterPharmacyComponent, PharmaciesListComponent, BenefitListComponent, BenefitDetailsComponent],
-  imports: [BrowserModule, AppRoutingModule,  NgbModule, CommonModule, HttpClientModule, FormsModule , BrowserAnimationsModule, MatCheckboxModule, MatOptionModule, MatSelectModule, ReactiveFormsModule],
+  declarations: [
+    AppComponent,
+    HospitalOverviewComponent,
+    LegendComponent,
+    NavbarComponent,
+    FirstBuildingComponent,
+    FloorSelectionComponent,
+    FirstFloorComponent,
+    SecondFloorComponent,
+    FeedbacksManagerComponent,
+    SecondBuildingComponent,
+    FloorFirstComponent,
+    FloorSecondComponent,
+    SelectFloorComponent,
+    HomePageComponent,
+    FooterComponent,
+    RoomInfoComponent,
+    DisplayRoomInfoComponent,
+    EditRoomInfoComponent,
+    EquipmentFormComponent,
+    InitialRoomComponent,
+    DestinationRoomComponent,
+    MoveInfoComponent,
+    FreeTermsComponent,
+    SearchBarComponent,
+    RoomInventoryComponent,
+    HospitalEquipmentComponent,
+    ComplaintDetailsComponent,
+    AddComplaintComponent,
+    ComplaintsListComponent,
+    RegisterPharmacyComponent,
+    PharmaciesListComponent,
+    MedicationReportsComponent,
+    BenefitListComponent, 
+    BenefitDetailsComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    NgbModule,
+    CommonModule,
+    HttpClientModule,
+    FormsModule,
+    BrowserAnimationsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCardModule,
+    MatProgressSpinnerModule,
+    MatCheckboxModule, 
+    MatOptionModule, 
+    MatSelectModule
+  ],
   providers: [HttpClientModule],
   bootstrap: [AppComponent],
 })

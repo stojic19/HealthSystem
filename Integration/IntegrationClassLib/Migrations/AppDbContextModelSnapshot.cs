@@ -190,27 +190,19 @@ namespace Integration.Migrations
                 b.ToTable("Medicines");
             });
 
-            modelBuilder.Entity("Integration.Model.MedicineSpecificationFile", b =>
+            modelBuilder.Entity("Integration.Model.Medicine", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("FileName")
+                    b.Property<string>("Name")
                         .HasColumnType("text");
-
-                    b.Property<string>("Host")
-                        .HasColumnType("text");
-
-                    b.Property<int>("PharmacyId")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PharmacyId");
-
-                    b.ToTable("MedicineSpecificationFiles");
+                    b.ToTable("Medicines");
                 });
 
             modelBuilder.Entity("Integration.Model.Pharmacy", b =>
@@ -247,39 +239,29 @@ namespace Integration.Migrations
             });
 
             modelBuilder.Entity("Integration.Model.Receipt", b =>
-            {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("integer")
-                    .HasAnnotation("Npgsql:ValueGenerationStrategy",
-                        NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                b.Property<int>("AmountSpent")
-                    .HasColumnType("integer");
-
-                b.Property<int>("MedicineId")
-                    .HasColumnType("integer");
-
-                b.Property<DateTime>("ReceiptDate")
-                    .HasColumnType("timestamp without time zone");
-
-                b.HasKey("Id");
-
-                b.HasIndex("MedicineId");
-
-                b.ToTable("Receipts");
-                modelBuilder.Entity("Integration.Model.Benefit", b =>
                 {
-                    b.HasOne("Integration.Model.Pharmacy", "Pharmacy")
-                        .WithMany()
-                        .HasForeignKey("PharmacyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Navigation("Pharmacy");
+                    b.Property<int>("AmountSpent")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("MedicineId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("ReceiptDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MedicineId");
+
+                    b.ToTable("Receipts");
                 });
 
-                modelBuilder.Entity("Integration.Model.City", b =>
+            modelBuilder.Entity("Integration.Model.City", b =>
                 {
                     b.HasOne("Integration.Model.Country", "Country")
                         .WithMany()
@@ -342,7 +324,18 @@ namespace Integration.Migrations
                     b.Navigation("City");
                 });
 
-                modelBuilder.Entity("Integration.Model.Receipt", b =>
+            modelBuilder.Entity("Integration.Model.Receipt", b =>
+                {
+                    b.HasOne("Integration.Model.Medicine", "Medicine")
+                        .WithMany()
+                        .HasForeignKey("MedicineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Medicine");
+                });
+
+            modelBuilder.Entity("Integration.Model.Complaint", b =>
                 {
                     b.HasOne("Integration.Model.Medicine", "Medicine")
                         .WithMany()
@@ -357,7 +350,7 @@ namespace Integration.Migrations
 
                 modelBuilder.Entity("Integration.Model.Pharmacy", b => { b.Navigation("Complaints"); });
 #pragma warning restore 612, 618
-            });
+           
         }
     }
 }

@@ -1,8 +1,7 @@
-﻿using Castle.Core.Internal;
-using Integration.MasterServices;
+﻿using Integration.MasterServices;
 using Integration.Model;
 using Integration.Repositories;
-using IntegrationClassLibTests.Base;
+using IntegrationUnitTests.Base;
 using Shouldly;
 using System;
 using System.Collections.Generic;
@@ -11,22 +10,18 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace IntegrationClassLibTests.UnitTests
+namespace IntegrationUnitTests
 {
     public class MedicineInventoryTests : BaseTest
     {
         public MedicineInventoryTests(BaseFixture fixture) : base(fixture)
         {
-            Context.Medicines.RemoveRange(Context.Medicines);
-            Context.SaveChanges();
-            Context.MedicineInventory.RemoveRange(Context.MedicineInventory);
-            Context.SaveChanges();
-            if (Context.MedicineInventory.IsNullOrEmpty())
-                 MakeMedicineInventory();
+            
         }
         [Fact]
         public void Get_all_medicines()
         {
+            ClearAndMakeData();
             var medicines = UoW.GetRepository<IMedicineReadRepository>()
                 .GetAll();
 
@@ -36,6 +31,7 @@ namespace IntegrationClassLibTests.UnitTests
         [Fact]
         public void Get_all_medicine_inventory()
         {
+            ClearAndMakeData();
             var medicineInventory = UoW.GetRepository<IMedicineInventoryReadRepository>()
                 .GetAll();
 
@@ -45,6 +41,7 @@ namespace IntegrationClassLibTests.UnitTests
         [Fact]
         public void Add_existing_medication_check_quantity_in_inventory()
         {
+            ClearAndMakeData();
             MedicineInventoryMasterService medicineInventoryMasterService = new MedicineInventoryMasterService(UoW);
             medicineInventoryMasterService.AddMedicineToInventory("Brufen", 10);
 
@@ -54,6 +51,7 @@ namespace IntegrationClassLibTests.UnitTests
         [Fact]
         public void Add_existing_medication_check_count_in_medicines()
         {
+            ClearAndMakeData();
             MedicineInventoryMasterService medicineInventoryMasterService = new MedicineInventoryMasterService(UoW);
             medicineInventoryMasterService.AddMedicineToInventory("Brufen", 10);
 
@@ -61,14 +59,30 @@ namespace IntegrationClassLibTests.UnitTests
             medicineInventory.Count().ShouldBe(2);
         }
         [Fact]
+        public void Add_existing_medication_check_count_in_medicine_inventory()
+        {
+            ClearAndMakeData();
+            MedicineInventoryMasterService medicineInventoryMasterService = new MedicineInventoryMasterService(UoW);
+            medicineInventoryMasterService.AddMedicineToInventory("Brufen", 10);
+
+            var medicineInventory = UoW.GetRepository<IMedicineInventoryReadRepository>().GetAll();
+            medicineInventory.Count().ShouldBe(2);
+        }
+        [Fact]
         public void Add_new_medication_check_name_in_medicines()
         {
+            ClearAndMakeData();
             MedicineInventoryMasterService medicineInventoryMasterService = new MedicineInventoryMasterService(UoW);
             medicineInventoryMasterService.AddMedicineToInventory("Diklofenat", 10);
 
             var medicineInventory = UoW.GetRepository<IMedicineInventoryReadRepository>().GetById(3);
             medicineInventory.Medicine.Name.ShouldBe("Diklofenat");
 
+        }
+        private void ClearAndMakeData()
+        {
+            ClearDbContext();
+            MakeMedicineInventory();
         }
         private void MakeMedicineInventory()
         {

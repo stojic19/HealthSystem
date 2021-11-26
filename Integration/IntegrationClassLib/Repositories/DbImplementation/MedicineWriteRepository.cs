@@ -9,9 +9,9 @@ using Integration.Repositories.Base;
 
 namespace Integration.Repositories.DbImplementation
 {
-    class MedicineInventoryWriteRepository : WriteBaseRepository<MedicineInventory>, IMedicineInventoryWriteRepository
+    public class MedicineWriteRepository : WriteBaseRepository<Medicine>, IMedicineWriteRepository
     {
-        public MedicineInventoryWriteRepository(AppDbContext context) : base(context)
+        public MedicineWriteRepository(AppDbContext context) : base(context)
         {
 
         }

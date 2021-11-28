@@ -25,7 +25,7 @@ namespace PharmacyApi.Controllers
 
 
         [HttpPost]
-        public void SendBenefit(BenefitIdDTO dto)
+        public IActionResult SendBenefit(BenefitIdDTO dto)
         {
             Benefit benefit = null;
             try
@@ -54,10 +54,12 @@ namespace PharmacyApi.Controllers
                         basicProperties: null,
                         body: body);
                 }
+
+                return Ok(Responses.Success);
             }
-            catch (Exception e)
+            catch
             {
-                return;
+                return BadRequest("Failed to send benefit to the exchange");
             }
 
         }

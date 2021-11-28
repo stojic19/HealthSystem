@@ -1,0 +1,50 @@
+<div class="panel panel-primary">
+    <div class="panel-heading m-3">
+        <h2>Benefit List</h2>
+    </div>
+    <div class="form-control form-control-lg">
+        <input [(ngModel)]="SearchString"  (keyup)="FilterFn()" placeholder="Filter" > 
+        <mat-checkbox class="checkbox-margin" [(ngModel)]="onlyActive" (change)="FilterFn()" ngDefaultControl >Show only active benefits</mat-checkbox>
+        <mat-form-field appearance="fill">
+            <mat-label>Filter by pharmacy</mat-label>
+            
+            <mat-select class="checkbox-margin" [compareWith]="compareObjects" [(ngModel)]="SearchPharmacy.pharmacy" (selectionChange)="FilterFn()" ngDefaultControl required>
+                <mat-option [value]="allPharmacies">All</mat-option>
+                <mat-option *ngFor="let pharmacy of filterPharmacies" [value]="pharmacy">
+                    {{pharmacy.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Pharmacy</th>
+                    <th>Start time</th>
+                    <th>End time</th>
+                    <th>Publish</th>
+                    <th>Hide</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor='let benefit of benefits'>
+                    <td [routerLink]="['/benefit', benefit.id]">{{benefit.title}}</td>
+                    <td [routerLink]="['/benefit', benefit.id]">{{benefit.pharmacy.name}}</td>
+                    <td [routerLink]="['/benefit', benefit.id]">{{benefit.startTime | date: 'dd-MM-yyyy'}}</td>
+                    <td [routerLink]="['/benefit', benefit.id]">{{benefit.endTime | date: 'dd-MM-yyyy'}}</td>
+                    <td style="width: 15%">
+                        <div *ngIf="!benefit.published; else elseBlock">
+                            <button class="btn btn-primary m-3" (click)="publishBenefit(benefit.id)"><strong>Publish</strong></button>
+                        </div>
+                        <ng-template #elseBlock>Already published</ng-template>
+                    </td>
+                    <td style="width: 10%">
+                        <button class="btn btn-primary m-3" (click)="hideBenefit(benefit.id)"><strong>Hide</strong></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

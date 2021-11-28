@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 using Autofac;
-using Hospital.EfStructures;
-using Hospital.Infrastructure;
-using Hospital.Repositories.Base;
-using Hospital.Repositories.DbImplementation;
+using Hospital.Database.EfStructures;
+using Hospital.Database.Infrastructure;
+using Hospital.SharedModel.Repository.Base;
+using Hospital.SharedModel.Repository.Implementation;
 using Microsoft.EntityFrameworkCore;
 
 namespace HospitalUnitTests.Base
@@ -33,7 +32,7 @@ namespace HospitalUnitTests.Base
 
             builder.RegisterModule(new RepositoryModule()
             {
-                Namespace = "Hospital.Repositories",
+                Namespace = "Repository",
                 RepositoryAssemblies = new List<Assembly>()
                 {
                     (typeof(CityReadRepository)).Assembly

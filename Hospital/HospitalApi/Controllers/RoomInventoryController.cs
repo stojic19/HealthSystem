@@ -109,7 +109,7 @@ namespace HospitalApi.Controllers
             ).Where(ri => ri.InventoryItem.Name.ToLower().Contains(inventoryItemName.ToLower())));
         }
 
-        [HttpGet("getById")]
+        [HttpGet("roomInventory")]
         public IActionResult GetRoomInventoryById([FromQuery(Name = "id")] int id)
         {
             var repo = _uow.GetRepository<IRoomInventoryReadRepository>();

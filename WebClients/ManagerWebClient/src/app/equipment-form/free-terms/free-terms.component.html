@@ -14,6 +14,15 @@
           </tr>
         </thead>
         <tbody>
+          <tr
+            *ngFor="let term of freeTerms"
+            (click)="selectTerm(term)"
+            [ngClass]="selectedTermView == term ? 'selected' : 'notSelected'"
+          >
+            <th scope="row"></th>
+            <td>{{ term.startDate | date }}</td>
+            <td>-</td>
+            <td>{{ term.endDate | date }}</td>
           <tr *ngFor="let term of freeTerms" (click)="selectTerm(term)">
             <th scope="row"></th>
             <td>{{ term.startDate | date }}</td>

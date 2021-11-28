@@ -1,4 +1,6 @@
 import { NgModule } from '@angular/core';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -23,7 +25,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { RoomInfoComponent } from './room-info/room-info.component';
 import { DisplayRoomInfoComponent } from './room-info/display-room-info/display-room-info.component';
 import { EditRoomInfoComponent } from './room-info/edit-room-info/edit-room-info.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EquipmentFormComponent } from './equipment-form/equipment-form.component';
 import { InitialRoomComponent } from './equipment-form/initial-room/initial-room.component';
 import { DestinationRoomComponent } from './equipment-form/destination-room/destination-room.component';
@@ -38,6 +40,11 @@ import { MaterialModule } from './material/material.module';
 import { RatingDecimalComponent } from './components/rating-decimal/rating-decimal.component';
 
 import { RoomInventoryComponent } from './room-inventory/room-inventory.component';
+import { ComplaintDetailsComponent } from './complaints/complaint-details.component';
+import { AddComplaintComponent } from './complaints/add-complaint/add-complaint.component';
+import { ComplaintsListComponent } from './complaints/complaints-list/complaints-list.component';
+import { RegisterPharmacyComponent } from './pharmacies/register-pharmacy/register-pharmacy.component';
+import { PharmaciesListComponent } from './pharmacies/pharmacies-list.component';
 import { HospitalEquipmentComponent } from './hospital-equipment/hospital-equipment.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';

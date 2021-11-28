@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Hospital.EfStructures;
-using Hospital.Repositories.Base;
+using Hospital.Database.EfStructures;
+using Hospital.SharedModel.Repository.Base;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace HospitalUnitTests.Base
 {
+    [Collection("UnitTests")]
     public abstract class BaseTest : IClassFixture<BaseFixture>
     {
         private readonly BaseFixture _fixture;

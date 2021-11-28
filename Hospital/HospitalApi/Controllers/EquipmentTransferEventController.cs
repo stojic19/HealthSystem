@@ -37,7 +37,8 @@ namespace HospitalApi.Controllers
                     return BadRequest("Incorrect format sent! Please try again.");
                 }
 
-                if (!IsEnteredAmountIsCorrect(equipmentTransferEvent)) {
+                if (!IsEnteredAmountIsCorrect(equipmentTransferEvent))
+                {
                     return BadRequest("Incorrect amount entered. Please Try Again!");
                 }
 
@@ -72,7 +73,8 @@ namespace HospitalApi.Controllers
         public IEnumerable<TimePeriod> GetAvailableTerms(AvailableTermDTO availableTermsDTO)
         {
             var transferingEquipmentService = new TransferingEquipmentService(_uow);
-            var timePeriod = new TimePeriod() {
+            var timePeriod = new TimePeriod()
+            {
                 StartTime = availableTermsDTO.StartDate,
                 EndTime = availableTermsDTO.EndDate
             };

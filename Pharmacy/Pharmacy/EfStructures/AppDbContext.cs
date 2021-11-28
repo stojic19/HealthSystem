@@ -11,9 +11,15 @@ namespace Pharmacy.EfStructures
         public DbSet<Complaint> Complaints { get; set; }
         public DbSet<ComplaintResponse> ComplaintResponses { get; set; }
         public DbSet<Hospital> Hospitals { get; set; }
-
+        public DbSet<Manufacturer> Manufacturers { get; set; }
+        public DbSet<Substance> Substances { get; set; }
+        public DbSet<MedicineCombination> MedicineCombinations { get; set; }
+        public DbSet<Benefit> Benefits { get; set; }
+        public DbSet<MedicineReportFile> MedicineReportFiles { get; set; }
+        
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
+
     }
 }

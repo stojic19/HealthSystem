@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PharmacyApi", "PharamcyApi\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pharmacy", "Pharmacy\Pharmacy.csproj", "{796D1903-0F5B-4760-90E7-3B9EDB244123}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PharmacyTests", "PharmacyTests", "{6D0766AB-C7A2-4261-ABE6-03C897261CBA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PharmacyUnitTests", "PharmacyUnitTests\PharmacyUnitTests.csproj", "{17303197-5812-46F6-94BA-D05ECF265B1F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit", "Unit", "{C5B8A13D-ACEB-4BAB-8CC0-64F80D0D53E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PharmacyIntegrationTests", "PharmacyIntegrationTests\PharmacyIntegrationTests.csproj", "{702AE2C3-0FC7-4B4B-9309-400E112A8566}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration", "Integration", "{D2BAEA1C-DD86-4073-9A3A-DA8434C9DC08}"
 EndProject

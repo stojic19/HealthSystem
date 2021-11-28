@@ -51,7 +51,7 @@ namespace HospitalIntegrationTests.Base
             builder.RegisterModule(new DbModule());
             builder.RegisterModule(new RepositoryModule()
             {
-                Namespace = "Hospital.Repositories",
+                Namespace = "Repository",
                 RepositoryAssemblies = new List<Assembly>()
                 {
                     typeof(CityReadRepository).Assembly

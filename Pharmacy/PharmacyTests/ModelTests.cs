@@ -1,4 +1,5 @@
-﻿using Pharmacy.Model;
+﻿using System.Linq;
+using Pharmacy.Model;
 using Pharmacy.Repositories;
 using PharmacyUnitTests.Base;
 using Shouldly;
@@ -15,6 +16,8 @@ namespace PharmacyUnitTests
         [Fact]
         public void City_should_not_be_null()
         {
+            ClearDbContext();
+
             Context.Cities.Add(new City()
             {
                 Id = 2,
@@ -29,6 +32,8 @@ namespace PharmacyUnitTests
             Context.SaveChanges();
 
             var city = UoW.GetRepository<ICityReadRepository>().GetCityByName("Test city");
+            var cities = UoW.GetRepository<ICityReadRepository>().GetAll();
+            cities.Count().ShouldBe(1);
             city.ShouldNotBeNull();
         }
     }

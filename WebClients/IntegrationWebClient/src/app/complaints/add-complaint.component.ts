@@ -28,7 +28,7 @@ export class AddComplaintComponent implements OnInit {
               pharmacyName:this.Pharmacy.name,
               pharmacyId:this.Pharmacy.id
     }
-    this._complaintsService.addComplaint(val).subscribe(res=>{alert(res.toString())});
+    this._complaintsService.addComplaint(val).subscribe(res=>{alert(res)});
   }
 
   LoadPharmacyList(){

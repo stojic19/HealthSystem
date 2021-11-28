@@ -34,7 +34,7 @@ export class RegisterPharamcyComponent implements OnInit {
               },
               baseUrl:this.baseUrl
     }
-    this._PharmacyService.registerPharmacy(val).subscribe(res=>{alert(res.toString())});
+    this._PharmacyService.registerPharmacy(val).subscribe(res=>{alert(res)});
   }
 
 }

@@ -56,7 +56,7 @@ namespace HospitalApi
                 {
                     typeof (CityReadRepository).Assembly
                 },
-                Namespace = "Hospital.Repositories"
+                Namespace = "Repository"
 
 
             }); 

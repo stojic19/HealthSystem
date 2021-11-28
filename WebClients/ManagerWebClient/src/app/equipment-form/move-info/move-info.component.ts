@@ -71,6 +71,25 @@ export class MoveInfoComponent implements OnInit {
       return false;
     }
 
+  emitEndDate() {
+    this.endDate.emit(this.enteredEndDate);
+  }
+
+  emitDuration() {
+    this.duration.emit(this.enteredDuration);
+  }
+
+  isEnteredDataCorrect() {
+    if (this.enteredNumber > this.selectedItem.amount) {
+      this.errorMessage = 'Entered amount is larger than existing!';
+      return false;
+    }
+
+    if (this.enteredNumber < 0 || this.enteredDuration < 0) {
+      this.errorMessage = 'The value you entered must be larger than zero!';
+      return false;
+    }
+
     if (this.enteredStartDate > this.enteredEndDate) {
       this.errorMessage = "End date can't be before start!";
       return false;

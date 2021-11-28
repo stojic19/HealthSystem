@@ -20,6 +20,8 @@ namespace PharmacyUnitTests
         [Fact]
         public void Should_get_Two_Hospitals()
         {
+            ClearDbContext();
+
             Context.Hospitals.Add(new Hospital()
             {
                 ApiKey = Guid.NewGuid(),

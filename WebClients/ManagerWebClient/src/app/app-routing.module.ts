@@ -11,7 +11,16 @@ import { SurveysObserveComponent } from './components/surveys-observe/surveys-ob
 import { EquipmentFormComponent } from './equipment-form/equipment-form.component';
 import { RoomInventoryComponent } from './room-inventory/room-inventory.component';
 import { RoomInfoComponent } from './room-info/room-info.component';
+import { ComplaintsListComponent } from './complaints/complaints-list/complaints-list.component';
+import { ComplaintDetailsComponent } from './complaints/complaint-details.component';
+import { AddComplaintComponent } from './complaints/add-complaint/add-complaint.component';
+import { PharmaciesListComponent } from './pharmacies/pharmacies-list.component';
+import { RegisterPharmacyComponent } from './pharmacies/register-pharmacy/register-pharmacy.component';
 import { HospitalEquipmentComponent } from './hospital-equipment/hospital-equipment.component';
+import { BenefitListComponent } from './benefits/benefit-list/benefit-list.component';
+import { BenefitDetailsComponent } from './benefits/benefit-details/benefit-details.component';
+import { MedicationReportsComponent } from './medication-reports/medication-reports/medication-reports.component';
+import { MedicineSpecificationRequestsComponent } from './medicine-specification-requests/medicine-specification-requests.component';
 
 const routes: Routes = [
   { path: 'overview', component: HospitalOverviewComponent },

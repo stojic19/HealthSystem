@@ -108,7 +108,7 @@ namespace PharmacyApi.Controllers
         [HttpGet]
         public IActionResult GetFilteredMedicine(string medicineName, string substanceName, string medicineType, string manufacturerName)
         {
-            IEnumerable<Medicine> medicines = _uow.GetRepository<IMedicineReadRepository>().GetAll()
+            IEnumerable<Medicine> medicines = UoW.GetRepository<IMedicineReadRepository>().GetAll()
                 .Include(medicine => medicine.Manufacturer)
                 .Include(medicine => medicine.Substances)
                 .Where(medicine => String.IsNullOrEmpty(medicineName) || medicine.Name.Equals(medicineName))
@@ -125,7 +125,7 @@ namespace PharmacyApi.Controllers
         [HttpGet]
         public IActionResult GetFilteredMedicineWithPaging(string medicineName, string substanceName, string medicineType, string manufacturerName, int pageNumber, int pageSize)
         {
-            IEnumerable<Medicine> medicines = _uow.GetRepository<IMedicineReadRepository>().GetAll()
+            IEnumerable<Medicine> medicines = UoW.GetRepository<IMedicineReadRepository>().GetAll()
                 .Include(medicine => medicine.Manufacturer)
                 .Include(medicine => medicine.Substances)
                 .Where(medicine => String.IsNullOrEmpty(medicineName) || medicine.Name.Equals(medicineName))
@@ -143,7 +143,7 @@ namespace PharmacyApi.Controllers
         [HttpGet]
         public IActionResult GetMedicinesThatCanBeCombined(string firstMedicine)
         {
-            IEnumerable<MedicineCombination> medicineCombinations = _uow.GetRepository<IMedicineCombinationReadRepository>().GetAll()
+            IEnumerable<MedicineCombination> medicineCombinations = UoW.GetRepository<IMedicineCombinationReadRepository>().GetAll()
                 .Include(medicine => medicine.FirstMedicine)
                 .Include(medicine => medicine.SecondMedicine)
                 .Where(medicine => medicine.FirstMedicine.Name.Equals(firstMedicine) || medicine.SecondMedicine.Name.Equals(firstMedicine));

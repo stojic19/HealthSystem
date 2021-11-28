@@ -6,24 +6,29 @@ using Microsoft.EntityFrameworkCore;
 using Pharmacy.Model;
 using Pharmacy.Repositories;
 using Pharmacy.Repositories.Base;
+using PharmacyApi.ConfigurationMappers;
+using PharmacyApi.Controllers.Base;
 using PharmacyApi.DTO;
 
 namespace PharmacyApi.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class MedicineController : Controller
+    public class MedicineController : BasePharmacyController
     {
-        private readonly IUnitOfWork _uow;
 
-        public MedicineController(IUnitOfWork uow)
+        public MedicineController(IUnitOfWork uow, PharmacyDetails details) : base(uow, details)
         {
-            _uow = uow;
         }
 
         [HttpPost]
         public IActionResult Create(CreateMedicineDTO medicineDTO)
         {
+
+            if (!IsApiKeyValid(medicineDTO.ApiKey))
+                return BadRequest(ModelState);
+            
+
             int manufacturerId;
             try
             {
@@ -38,19 +43,22 @@ namespace PharmacyApi.Controllers
 
             
             Medicine medicineCreated = CreateNewMedicine(medicineDTO, manufacturerId);
-            _uow.GetRepository<IMedicineWriteRepository>().Add(medicineCreated);
+            UoW.GetRepository<IMedicineWriteRepository>().Add(medicineCreated);
 
 
             return Ok("Medicine succesfully created!");
         }
 
         [HttpDelete]
-        public IActionResult RemoveByName(string medicineName)
+        public IActionResult RemoveByName(Guid APIKey,string medicineName)
         {
+            if (!IsApiKeyValid(APIKey))
+                return BadRequest(ModelState);
+
             if (IsMedicineUnique(medicineName)) return ValidationProblem("Medicine with given name doesn't exist!");
 
-            var removedMedicine = _uow.GetRepository<IMedicineReadRepository>().GetMedicineByName(medicineName);
-            _uow.GetRepository<IMedicineWriteRepository>().Delete(removedMedicine);
+            var removedMedicine = UoW.GetRepository<IMedicineReadRepository>().GetMedicineByName(medicineName);
+            UoW.GetRepository<IMedicineWriteRepository>().Delete(removedMedicine);
 
             return Ok("Medicine removed succesfully!");
         }
@@ -58,10 +66,13 @@ namespace PharmacyApi.Controllers
         [HttpPut]
         public IActionResult Update(UpdateMedicineDTO updateMedicineDTO)
         {
+            if (!IsApiKeyValid(updateMedicineDTO.ApiKey))
+                return BadRequest(ModelState);
+
             if (IsMedicineUnique(updateMedicineDTO.Name)) return ValidationProblem("Medicine with given name doesn't exist!");
 
             var updatedMedicine = CreateUpdatedMedicine(updateMedicineDTO);
-            _uow.GetRepository<IMedicineWriteRepository>().Update(updatedMedicine);
+            UoW.GetRepository<IMedicineWriteRepository>().Update(updatedMedicine);
 
             return Ok("Medicine updated succesfully!");
         }
@@ -70,7 +81,7 @@ namespace PharmacyApi.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            IEnumerable<Medicine> medicines = _uow.GetRepository<IMedicineReadRepository>().GetAll()
+            IEnumerable<Medicine> medicines = UoW.GetRepository<IMedicineReadRepository>().GetAll()
                 .Include(medicine => medicine.Manufacturer)
                 .Include(medicine => medicine.Substances);
 
@@ -83,7 +94,7 @@ namespace PharmacyApi.Controllers
         [HttpGet]
         public IActionResult GetById(int id)
         {
-            Medicine medicine = _uow.GetRepository<IMedicineReadRepository>().GetAll()
+            Medicine medicine = UoW.GetRepository<IMedicineReadRepository>().GetAll()
                 .Include(medicine => medicine.Manufacturer)
                 .Include(medicine => medicine.Substances)
                 .FirstOrDefault(medicine => medicine.Id == id);
@@ -156,7 +167,7 @@ namespace PharmacyApi.Controllers
 
         private int FindManufacturer(string ManufacturerName)
         {
-            var manufacturer = _uow.GetRepository<IManufacturerReadRepository>().GetManufacturerByName(ManufacturerName);
+            var manufacturer = UoW.GetRepository<IManufacturerReadRepository>().GetManufacturerByName(ManufacturerName);
             if (manufacturer != null) return manufacturer.Id;
 
             throw new System.Exception();
@@ -164,7 +175,7 @@ namespace PharmacyApi.Controllers
 
         private bool IsMedicineUnique(string MedicineName)
         {
-            var medicine = _uow.GetRepository<IMedicineReadRepository>().GetMedicineByName(MedicineName);
+            var medicine = UoW.GetRepository<IMedicineReadRepository>().GetMedicineByName(MedicineName);
             if (medicine != null) return false;
             return true;
         }
@@ -182,7 +193,7 @@ namespace PharmacyApi.Controllers
                 WeightInMilligrams = medicineDTO.WeightInMilligrams,
                 Precautions = medicineDTO.Precautions,
                 MedicinePotentialDangers = medicineDTO.MedicinePotentialDangers,
-                Substances = GenerateObjects(medicineDTO.Substances, _uow.GetRepository<ISubstanceReadRepository>().GetSubstanceByName),
+                Substances = GenerateObjects(medicineDTO.Substances, UoW.GetRepository<ISubstanceReadRepository>().GetSubstanceByName),
                 Type = medicineDTO.Type,
                 Quantity = medicineDTO.Quantity
             };
@@ -192,7 +203,7 @@ namespace PharmacyApi.Controllers
 
         private Medicine CreateUpdatedMedicine(UpdateMedicineDTO updateMedicineDTO)
         {
-            var updatedMedicine = _uow.GetRepository<IMedicineReadRepository>().GetMedicineByName(updateMedicineDTO.Name);
+            var updatedMedicine = UoW.GetRepository<IMedicineReadRepository>().GetMedicineByName(updateMedicineDTO.Name);
             updatedMedicine.SideEffects = updateMedicineDTO.SideEffects;
             updatedMedicine.Reactions = updateMedicineDTO.Reactions;
             updatedMedicine.Usage = updateMedicineDTO.Usage;

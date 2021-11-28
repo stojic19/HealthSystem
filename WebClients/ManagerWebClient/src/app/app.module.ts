@@ -39,6 +39,11 @@ import { ComplaintsListComponent } from './complaints/complaints-list/complaints
 import { RegisterPharmacyComponent } from './pharmacies/register-pharmacy/register-pharmacy.component';
 import { PharmaciesListComponent } from './pharmacies/pharmacies-list.component';
 import { HospitalEquipmentComponent } from './hospital-equipment/hospital-equipment.component';
+import { BenefitListComponent } from './benefits/benefit-list/benefit-list.component';
+import { BenefitDetailsComponent } from './benefits/benefit-details/benefit-details.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
 import { MedicationReportsComponent } from './medication-reports/medication-reports/medication-reports.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -80,6 +85,8 @@ import { MedicineSpecificationRequestsComponent } from './medicine-specification
     RegisterPharmacyComponent,
     PharmaciesListComponent,
     MedicationReportsComponent,
+    BenefitListComponent, 
+    BenefitDetailsComponent
     MedicineSpecificationRequestsComponent,
   ],
   imports: [
@@ -96,7 +103,10 @@ import { MedicineSpecificationRequestsComponent } from './medicine-specification
     MatFormFieldModule,
     MatInputModule,
     MatCardModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatCheckboxModule, 
+    MatOptionModule, 
+    MatSelectModule
   ],
   providers: [HttpClientModule],
   bootstrap: [AppComponent],

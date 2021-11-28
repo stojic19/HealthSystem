@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Pharmacy.EfStructures;
@@ -9,9 +10,10 @@ using Pharmacy.EfStructures;
 namespace Pharmacy.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211123003603_AddedBenefit")]
+    partial class AddedBenefit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -288,29 +290,6 @@ namespace Pharmacy.Migrations
                         .IsRequired();
                 });
 
-                modelBuilder.Entity("Pharmacy.Model.MedicineReportFile", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("FileName")
-                        .HasColumnType("text");
-
-                    b.Property<int>("HospitalId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Host")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-                    b.HasIndex("HospitalId");
-
-                    b.ToTable("MedicineReportFiles");
-                    
-                });
-
             modelBuilder.Entity("Pharmacy.Model.City", b =>
                 {
                     b.HasOne("Pharmacy.Model.Country", "Country")
@@ -383,17 +362,6 @@ namespace Pharmacy.Migrations
                     b.Navigation("FirstMedicine");
 
                     b.Navigation("SecondMedicine");
-                });
-
-            modelBuilder.Entity("Pharmacy.Model.MedicineReportFile", b =>
-                {
-                    b.HasOne("Pharmacy.Model.Hospital", "Hospital")
-                        .WithMany()
-                        .HasForeignKey("HospitalId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Hospital");
                 });
 
             modelBuilder.Entity("Pharmacy.Model.Country", b =>

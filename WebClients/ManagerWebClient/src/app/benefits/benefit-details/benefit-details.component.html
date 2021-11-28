@@ -1,0 +1,21 @@
+<div class="m-5"></div>
+<div class="card mx-auto" style="width: 100rem;" *ngIf='id'>
+    <div class="card-header">
+        <div>Benefit ID:  {{benefit.id}}</div>
+        <div>Start time: {{benefit.startTime | date: "dd-MM-yyyy"}}</div>
+        <div>End time: {{benefit.endTime | date: "dd-MM-yyyy"}}</div>
+        <div>Pharmacy: {{benefit.pharmacy.name}}</div>
+        <div *ngIf="benefit.published; else elseBlock">
+          <strong>Published</strong>
+        </div>
+        <ng-template #elseBlock><button class="btn btn-primary m-3" (click)="publishBenefit(benefit.id)"><strong>Publish</strong></button></ng-template>
+        
+    </div>
+    <div class="card-body">
+      <h3 class="card-title text-center m-3">{{benefit.title}}</h3>
+      <p class="card-text text-center ">{{benefit.description}}</p>
+    </div>
+    <div>
+      <button class="btn btn-primary m-3" (click)="hideBenefit(benefit.id)"><strong>Hide</strong></button>
+    </div>
+  </div>

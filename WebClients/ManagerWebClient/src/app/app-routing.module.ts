@@ -16,6 +16,8 @@ import { AddComplaintComponent } from './complaints/add-complaint/add-complaint.
 import { PharmaciesListComponent } from './pharmacies/pharmacies-list.component';
 import { RegisterPharmacyComponent } from './pharmacies/register-pharmacy/register-pharmacy.component';
 import { HospitalEquipmentComponent } from './hospital-equipment/hospital-equipment.component';
+import { BenefitListComponent } from './benefits/benefit-list/benefit-list.component';
+import { BenefitDetailsComponent } from './benefits/benefit-details/benefit-details.component';
 import { MedicationReportsComponent } from './medication-reports/medication-reports/medication-reports.component';
 import { MedicineSpecificationRequestsComponent } from './medicine-specification-requests/medicine-specification-requests.component';
 
@@ -33,6 +35,8 @@ const routes: Routes = [
   { path: 'complaint-add', component: AddComplaintComponent },
   { path: 'pharmacy-register', component: RegisterPharmacyComponent },
   { path: 'pharmacy-list', component: PharmaciesListComponent },
+  { path: 'benefit-list', component: BenefitListComponent },
+  { path: 'benefit/:id', component: BenefitDetailsComponent },
   { path: 'home', component: HomePageComponent },
   { path: 'medication-consumption-report', component: MedicationReportsComponent},
   { path: 'medicine-specification-requests', component: MedicineSpecificationRequestsComponent},

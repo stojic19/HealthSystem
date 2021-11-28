@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Autofac;
+using Integration.Database.EfStructures;
+using Integration.Database.Infrastructure;
+using Integration.Shared.Repository.Base;
+using Integration.Shared.Repository.Implementation;
 using Microsoft.EntityFrameworkCore;
-using Integration.EfStructures;
-using Integration.Infrastructure;
-using Integration.Model;
-using Integration.Repositories.Base;
-using Integration.Repositories.DbImplementation;
 
 namespace IntegrationUnitTests.Base
 {

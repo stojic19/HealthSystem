@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Reflection;
 using Autofac;
 using Microsoft.EntityFrameworkCore;
-using Integration.EfStructures;
-using Integration.Infrastructure;
-using Integration.Model;
-using Integration.Repositories.Base;
-using Integration.Repositories.DbImplementation;
 using System.Net;
 using System.Net.Http;
+using Integration.EfStructures;
+using Integration.Infrastructure;
+using Integration.Repositories.Base;
+using Integration.Repositories.DbImplementation;
 
 namespace IntegrationIntegrationTests.Base
 {

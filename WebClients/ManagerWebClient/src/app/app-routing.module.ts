@@ -19,6 +19,7 @@ import { HospitalEquipmentComponent } from './hospital-equipment/hospital-equipm
 import { BenefitListComponent } from './benefits/benefit-list/benefit-list.component';
 import { BenefitDetailsComponent } from './benefits/benefit-details/benefit-details.component';
 import { MedicationReportsComponent } from './medication-reports/medication-reports/medication-reports.component';
+import { MedicineSpecificationRequestsComponent } from './medicine-specification-requests/medicine-specification-requests.component';
 
 const routes: Routes = [
   { path: 'overview', component: HospitalOverviewComponent },
@@ -38,6 +39,7 @@ const routes: Routes = [
   { path: 'benefit/:id', component: BenefitDetailsComponent },
   { path: 'home', component: HomePageComponent },
   { path: 'medication-consumption-report', component: MedicationReportsComponent},
+  { path: 'medicine-specification-requests', component: MedicineSpecificationRequestsComponent},
   { path: '', redirectTo: 'home', pathMatch: 'full'},
   { path: 'moveEquipment/:id', component: EquipmentFormComponent }
 ];

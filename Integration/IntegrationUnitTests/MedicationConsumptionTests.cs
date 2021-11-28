@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Integration.MasterServices;
-using Integration.MicroServices;
-using Integration.Model;
-using Integration.Repositories;
-using Integration.Repositories.Base;
+using Integration.Partnership.Model;
+using Integration.Partnership.Repository;
+using Integration.Partnership.Service;
+using Integration.Shared.Model;
 using IntegrationUnitTests.Base;
 using Microsoft.EntityFrameworkCore;
 using Shouldly;

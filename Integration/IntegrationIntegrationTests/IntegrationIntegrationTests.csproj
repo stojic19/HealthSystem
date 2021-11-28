@@ -33,7 +33,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\IntegrationApi\IntegrationAPI.csproj" />
-    <ProjectReference Include="..\IntegrationClassLib\Integration.csproj" />
   </ItemGroup>
 
 </Project>

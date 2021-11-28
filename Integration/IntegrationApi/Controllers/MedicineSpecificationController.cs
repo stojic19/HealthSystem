@@ -25,6 +25,7 @@ namespace IntegrationAPI.Controllers
             _unitOfWork = unitOfWork;
         }
         [HttpPost]
+        [Produces("application/json")]
         public IActionResult SendMedicineSpecificationRequest(MedicineSpecificationRequestDTO dto)
         {
             Pharmacy pharmacy = _unitOfWork.GetRepository<IPharmacyReadRepository>().GetById(dto.PharmacyId);
@@ -36,12 +37,17 @@ namespace IntegrationAPI.Controllers
             RestClient client = new RestSharp.RestClient();
             RestRequest request = new RestRequest(pharmacy.BaseUrl + "/api/MedicineSpecification/MedicineSpecificationRequest");
             request.AddJsonBody(new MedicineSpecificationToPharmacyDTO
-                {ApiKey = pharmacy.ApiKey, MedicineName = dto.MedicineName});
+                { ApiKey = pharmacy.ApiKey, MedicineName = dto.MedicineName });
             var response = client.Post(request);
-            if (response.StatusCode != HttpStatusCode.OK) return Ok("Pharmacy does not have medicine with given name!");
+            if (response.StatusCode != HttpStatusCode.OK) return BadRequest("Failed to reach pharmacy or pharmacy does not have medicine with given name!");
             MedicineSpecificationFileDTO medicineSpecificationFile =
                 JsonConvert.DeserializeObject<MedicineSpecificationFileDTO>(response.Content);
-           // _unitOfWork.GetRepository<IMedicineSpecifica>()
+            _unitOfWork.GetRepository<IMedicineSpecificationFileWriteRepository>().Add(new MedicineSpecificationFile
+            {
+                FileName = medicineSpecificationFile.FileName,
+                Host = medicineSpecificationFile.Host,
+                PharmacyId = pharmacy.Id
+            });
             return Ok("Pharmacy has sent the specification file to sftp server");
         }
     }

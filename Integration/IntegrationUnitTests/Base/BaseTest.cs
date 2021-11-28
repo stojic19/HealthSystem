@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Integration.EfStructures;
-using Integration.Model;
-using Integration.Repositories.Base;
+using Integration.Database.EfStructures;
+using Integration.Shared.Repository.Base;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 

@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using IntegrationAPI.Controllers;
 using Integration.Repositories.Base;
 
-namespace Integration
+namespace IntegrationAPI
 {
     public class Program
     {

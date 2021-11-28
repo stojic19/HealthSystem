@@ -10,8 +10,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Integration;
-using Integration.DTO;
 using IntegrationAPI.Adapters;
+using IntegrationAPI.DTO;
 using RestSharp;
 
 namespace IntegrationAPI.Controllers

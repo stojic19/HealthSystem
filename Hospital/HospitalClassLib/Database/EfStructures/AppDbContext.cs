@@ -1,7 +1,7 @@
-﻿using Hospital.Medical_records.Model;
-using Hospital.Rooms_and_equipment.Model;
+﻿using Hospital.MedicalRecords.Model;
+using Hospital.RoomsAndEquipment.Model;
 using Hospital.Schedule.Model;
-using Hospital.Shared_model.Model;
+using Hospital.SharedModel.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hospital.Database.EfStructures

@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Hospital.MedicalRecords.Model;
+using System;
 using System.Collections.Generic;
-using Hospital.Medical_records.Model;
 
 namespace Hospital.Schedule.Model
 {

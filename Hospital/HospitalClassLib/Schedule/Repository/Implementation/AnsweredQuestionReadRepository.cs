@@ -1,8 +1,8 @@
-﻿using System.Linq;
-using Hospital.Database.EfStructures;
+﻿using Hospital.Database.EfStructures;
 using Hospital.Schedule.Model;
-using Hospital.Shared_model.Model.Enumerations;
-using Hospital.Shared_model.Repository.Base;
+using Hospital.SharedModel.Model.Enumerations;
+using Hospital.SharedModel.Repository.Base;
+using System.Linq;
 
 namespace Hospital.Schedule.Repository.Implementation
 {

@@ -1,5 +1,5 @@
-﻿using System;
-using Hospital.Shared_model.Model;
+﻿using Hospital.SharedModel.Model;
+using System;
 
 namespace Hospital.Schedule.Model
 {

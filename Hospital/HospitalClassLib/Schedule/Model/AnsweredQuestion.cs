@@ -1,4 +1,4 @@
-﻿using Hospital.Shared_model.Model.Enumerations;
+﻿using Hospital.SharedModel.Model.Enumerations;
 
 namespace Hospital.Schedule.Model
 {

@@ -1,6 +1,6 @@
-﻿using System;
-using Hospital.Medical_records.Model;
-using Hospital.Shared_model.Model.Enumerations;
+﻿using Hospital.MedicalRecords.Model;
+using Hospital.SharedModel.Model.Enumerations;
+using System;
 
 namespace Hospital.Schedule.Model
 {

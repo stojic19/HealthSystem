@@ -1,6 +1,6 @@
 ﻿using Hospital.Schedule.Model;
-using Hospital.Shared_model.Model.Enumerations;
-using Hospital.Shared_model.Repository.Base;
+using Hospital.SharedModel.Model.Enumerations;
+using Hospital.SharedModel.Repository.Base;
 
 namespace Hospital.Schedule.Repository
 {

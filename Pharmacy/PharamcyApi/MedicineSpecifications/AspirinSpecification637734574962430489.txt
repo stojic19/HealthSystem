@@ -1,0 +1,1 @@
+{"Name":"Aspirin","Manufacturer":"Test Manufacturer","SideEffects":"Gubitak kose","Reactions":"Sta","Precautions":"Cuvati van domasaja dece","MedicinePotentialDangers":"Gubitak kose","Substances":["Penicilin"],"Type":"Analgetik","Usage":"Jedna tableta","WeightInMilligrams":100.0}

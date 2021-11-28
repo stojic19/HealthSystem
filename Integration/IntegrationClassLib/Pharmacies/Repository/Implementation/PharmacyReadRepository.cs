@@ -4,7 +4,7 @@ using Integration.Database.EfStructures;
 using Integration.Shared.Repository.Base;
 using Microsoft.EntityFrameworkCore;
 
-namespace Integration.Pharmacy.Repository.Implementation
+namespace Integration.Pharmacies.Repository.Implementation
 {
     public class PharmacyReadRepository : ReadBaseRepository<int, Model.Pharmacy>, IPharmacyReadRepository
     {

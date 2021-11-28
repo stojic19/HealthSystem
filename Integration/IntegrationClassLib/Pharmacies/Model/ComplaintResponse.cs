@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Integration.Pharmacy.Model
+namespace Integration.Pharmacies.Model
 {
     public class ComplaintResponse
     {

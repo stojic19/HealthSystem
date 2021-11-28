@@ -1,5 +1,5 @@
 ﻿using Integration.Partnership.Model;
-using Integration.Pharmacy.Model;
+using Integration.Pharmacies.Model;
 using Integration.Shared.Model;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,7 +12,7 @@ namespace Integration.Database.EfStructures
         public DbSet<ComplaintResponse> ComplaintResponses { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<Manager> Managers { get; set; }
-        public DbSet<Pharmacy.Model.Pharmacy> Pharmacies { get; set; }
+        public DbSet<Pharmacy> Pharmacies { get; set; }
         public DbSet<Medicine> Medicines { get; set; }
         public DbSet<Receipt> Receipts { get; set; }
         public DbSet<Benefit> Benefits { get; set; }

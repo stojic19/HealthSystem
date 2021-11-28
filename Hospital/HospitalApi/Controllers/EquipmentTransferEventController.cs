@@ -1,16 +1,14 @@
-﻿using AutoMapper;
-using Hospital.Model;
-using Hospital.Repositories;
-using Hospital.Repositories.Base;
-using Hospital.Services;
+﻿using Hospital.RoomsAndEquipment.Model;
+using Hospital.RoomsAndEquipment.Repository;
+using Hospital.RoomsAndEquipment.Service;
+using Hospital.SharedModel.Model.Wrappers;
+using Hospital.SharedModel.Repository.Base;
 using HospitalApi.DTOs;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HospitalApi.Controllers
 {

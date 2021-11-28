@@ -1,6 +1,7 @@
-﻿using Integration.MasterServices;
-using Integration.Model;
-using Integration.Repositories.Base;
+﻿using Integration.Pharmacies.Model;
+using Integration.Pharmacies.Service;
+using Integration.Shared.Model;
+using Integration.Shared.Repository.Base;
 using IntegrationAPI.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;

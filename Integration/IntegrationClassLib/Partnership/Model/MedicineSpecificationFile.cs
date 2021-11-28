@@ -1,4 +1,6 @@
-﻿namespace Integration.Partnership.Model
+﻿using Integration.Pharmacies.Model;
+
+namespace Integration.Partnership.Model
 {
     public class MedicineSpecificationFile
     {
@@ -6,6 +8,6 @@
         public string FileName { get; set; }
         public string Host { get; set; }
         public int PharmacyId { get; set; }
-        public Pharmacy.Model.Pharmacy Pharmacy { get; set; }
+        public Pharmacy Pharmacy { get; set; }
     }
 }

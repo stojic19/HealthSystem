@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Integration.Shared.Repository.Base;
 
-namespace Integration.Pharmacy.Repository
+namespace Integration.Pharmacies.Repository
 {
     public interface IPharmacyReadRepository : IReadBaseRepository<int, Model.Pharmacy>
     {

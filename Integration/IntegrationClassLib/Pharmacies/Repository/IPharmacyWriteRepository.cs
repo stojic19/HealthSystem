@@ -1,6 +1,6 @@
 ﻿using Integration.Shared.Repository.Base;
 
-namespace Integration.Pharmacy.Repository
+namespace Integration.Pharmacies.Repository
 {
     public interface IPharmacyWriteRepository : IWriteBaseRepository<Model.Pharmacy>
     {

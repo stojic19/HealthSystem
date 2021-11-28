@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using Autofac;
+﻿using Autofac;
+using Integration.Database.EfStructures;
+using Integration.Database.Infrastructure;
+using Integration.Shared.Repository.Base;
+using Integration.Shared.Repository.Implementation;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using Integration.EfStructures;
-using Integration.Infrastructure;
-using Integration.Repositories.Base;
-using Integration.Repositories.DbImplementation;
+using System.Reflection;
 
 namespace IntegrationIntegrationTests.Base
 {

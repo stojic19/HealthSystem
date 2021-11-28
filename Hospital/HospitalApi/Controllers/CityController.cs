@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using Hospital.SharedModel.Model;
+using Hospital.SharedModel.Repository;
+using Hospital.SharedModel.Repository.Base;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Hospital.Repositories.Base;
-using Hospital.Model;
-using Hospital.Repositories;
 
 namespace HospitalApi.Controllers
 {

@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Integration.Pharmacy.Repository;
+using Integration.Pharmacies.Repository;
 using Integration.Shared.Model;
 using Integration.Shared.Repository;
 using Integration.Shared.Repository.Base;
 using Integration.Shared.Service;
 using Microsoft.EntityFrameworkCore;
 
-namespace Integration.Pharmacy.Service
+namespace Integration.Pharmacies.Service
 {
     public class PharmacyMasterService
     {

@@ -1,8 +1,8 @@
-﻿using Integration.Pharmacy.Model;
-using Integration.Pharmacy.Repository;
+﻿using Integration.Pharmacies.Model;
+using Integration.Pharmacies.Repository;
 using Integration.Shared.Repository.Base;
 
-namespace Integration.Pharmacy.Service
+namespace Integration.Pharmacies.Service
 {
     public class ComplaintResponseMasterService
     {

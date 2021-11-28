@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Integration.Shared.Model;
 
-namespace Integration.Pharmacy.Service
+namespace Integration.Pharmacies.Service
 {
     public class PharmacyMicroSerivce
     {

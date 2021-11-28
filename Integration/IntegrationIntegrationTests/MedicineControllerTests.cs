@@ -1,10 +1,11 @@
-﻿using System;
-using System.Net;
-using System.Threading.Tasks;
-using Integration.Model;
+﻿using Integration.Pharmacies.Model;
+using Integration.Shared.Model;
 using IntegrationAPI.DTO;
 using IntegrationIntegrationTests.Base;
 using Shouldly;
+using System;
+using System.Net;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace IntegrationIntegrationTests

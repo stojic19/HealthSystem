@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Integration.Shared.Model;
 
-namespace Integration.Pharmacy.Model
+namespace Integration.Pharmacies.Model
 {
     public class Pharmacy
     {

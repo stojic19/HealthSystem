@@ -5,7 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Integration.Partnership.Model;
 using Integration.Partnership.Repository;
-using Integration.Pharmacy.Repository;
+using Integration.Pharmacies.Model;
+using Integration.Pharmacies.Repository;
 using Integration.Shared.Repository.Base;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
@@ -61,7 +62,7 @@ namespace Integration.Partnership.Service
                 var jsonMessage = Encoding.UTF8.GetString(body);
                 Console.WriteLine("Message received: " + jsonMessage);
                 BenefitCreateDTO dto = JsonConvert.DeserializeObject<BenefitCreateDTO>(jsonMessage);
-                Pharmacy.Model.Pharmacy pharmacy = _uow.GetRepository<IPharmacyReadRepository>().GetByName(dto.PharmacyName).ElementAt(0);
+                Pharmacy pharmacy = _uow.GetRepository<IPharmacyReadRepository>().GetByName(dto.PharmacyName).ElementAt(0);
                 Benefit benefit = new Benefit()
                 {
                     Description = dto.Description,

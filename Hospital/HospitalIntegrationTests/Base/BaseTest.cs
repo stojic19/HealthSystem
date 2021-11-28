@@ -1,8 +1,8 @@
-﻿using System.Net;
+﻿using Hospital.SharedModel.Repository.Base;
+using Newtonsoft.Json;
+using System.Net;
 using System.Net.Http;
 using System.Text;
-using Hospital.Repositories.Base;
-using Newtonsoft.Json;
 using Xunit;
 
 namespace HospitalIntegrationTests.Base

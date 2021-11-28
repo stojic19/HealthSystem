@@ -1,7 +1,7 @@
 ﻿using Integration.Database.EfStructures;
 using Integration.Shared.Repository.Base;
 
-namespace Integration.Pharmacy.Repository.Implementation
+namespace Integration.Pharmacies.Repository.Implementation
 {
     public class PharmacyWriteRepository : WriteBaseRepository<Model.Pharmacy>, IPharmacyWriteRepository
     {

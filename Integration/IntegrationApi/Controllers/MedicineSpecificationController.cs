@@ -39,7 +39,7 @@ namespace IntegrationAPI.Controllers
             request.AddJsonBody(new MedicineSpecificationToPharmacyDTO
                 { ApiKey = pharmacy.ApiKey, MedicineName = dto.MedicineName });
             var response = client.Post(request);
-            if (response.StatusCode != HttpStatusCode.OK) return Ok("Failed to reach pharmacy or pharmacy does not have medicine with given name!");
+            if (response.StatusCode != HttpStatusCode.OK) return BadRequest("Failed to reach pharmacy or pharmacy does not have medicine with given name!");
             MedicineSpecificationFileDTO medicineSpecificationFile =
                 JsonConvert.DeserializeObject<MedicineSpecificationFileDTO>(response.Content);
             _unitOfWork.GetRepository<IMedicineSpecificationFileWriteRepository>().Add(new MedicineSpecificationFile

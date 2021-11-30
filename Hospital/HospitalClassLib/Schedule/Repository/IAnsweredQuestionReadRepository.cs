@@ -1,14 +1,15 @@
-﻿using Hospital.Schedule.Model;
-using Hospital.SharedModel.Model.Enumerations;
+﻿using System.Collections.Generic;
+using Hospital.Schedule.Model;
+using Hospital.Schedule.Model.Wrappers;
 using Hospital.SharedModel.Repository.Base;
 
 namespace Hospital.Schedule.Repository
 {
     public interface IAnsweredQuestionReadRepository : IReadBaseRepository<int, AnsweredQuestion>
     {
-        public double GetAvgQuestionRating(int questionId);
-        public double GetAvgSectionRating(SurveyCategory surveyCategory);
-        public double GetNumOfRatingForQuestion(int questionId, int rating);
+        public List<QuestionStatistic> GetAverageQuestionRatingForAllQuestions();
+        public List<CategoryStatistic> GetAverageQuestionRatingForAllCategories();
+        public List<RatingCount> GetNumberOfEachRatingForEachQuestion();
     }
 
 }

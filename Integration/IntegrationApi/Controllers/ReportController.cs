@@ -1,18 +1,17 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Integration.Partnership.Model;
+using Integration.Partnership.Service;
+using Integration.Pharmacies.Model;
+using Integration.Pharmacies.Service;
+using Integration.Shared.Model;
+using Integration.Shared.Repository.Base;
+using IntegrationAPI.DTO;
 using Microsoft.AspNetCore.Mvc;
-using System;
+using Newtonsoft.Json;
+using Renci.SshNet;
+using RestSharp;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using Integration.MasterServices;
-using Integration.Model;
-using Integration.Repositories.Base;
-using IntegrationAPI.DTO;
-using RestSharp;
-using Newtonsoft.Json;
-using Renci.SshNet;
 
 namespace IntegrationAPI.Controllers
 {

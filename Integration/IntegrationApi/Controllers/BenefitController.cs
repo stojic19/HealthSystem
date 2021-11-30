@@ -1,13 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Integration.Repositories.Base;
-using Integration.Model;
-using Integration.Repositories;
+﻿using Integration.Partnership.Model;
+using Integration.Partnership.Repository;
+using Integration.Pharmacies.Repository;
+using Integration.Shared.Repository.Base;
 using IntegrationAPI.DTO;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace IntegrationAPI.Controllers
 {

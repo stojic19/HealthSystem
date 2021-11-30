@@ -1,9 +1,8 @@
-
-﻿using Hospital.Model;
-using Hospital.Model.Enumerations;
-﻿using AutoMapper;
-using Hospital.Repositories;
-using Hospital.Repositories.Base;
+using AutoMapper;
+using Hospital.Schedule.Model;
+using Hospital.Schedule.Repository;
+using Hospital.SharedModel.Model.Enumerations;
+using Hospital.SharedModel.Repository.Base;
 using HospitalApi.DTOs;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
@@ -12,8 +11,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Hospital.Model.Enumerations;
 
 namespace HospitalApi.Controllers
 {

@@ -68,16 +68,7 @@ then
     OUTPUT="fix: $FILE_CONTENT"
 elif [[ $CURRBRANCH == "nuget/integration" || $CURRBRANCH == "nuget/hospital" ]];
 then
-    echo ""
-    
-    echo -e "\t${RED}You are trying to commit to $CURRBRANCH!"
-    echo -e "\t${WHITE}You cannot commit to this branch but you can merge into it!"
-    echo -e "\tThe agreed flow is that you rebase your feature branch onto this branch"
-    echo -e "\tThen solve the conflicts there."
-    echo -e "\tAnd then merge back into this branch"
-    echo ""
-
-    exit 1
+	OUTPUT="$FILE_CONTENT"
 elif [[ $CURRBRANCH == "" ]];
 then
     echo ""

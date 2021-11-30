@@ -1,15 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Integration.MasterServices;
-using Integration.Model;
-using Integration.Repositories;
-using Integration.Repositories.Base;
-using IntegrationAPI.Adapters;
+﻿using Integration.Pharmacies.Model;
+using Integration.Pharmacies.Repository;
+using Integration.Pharmacies.Service;
+using Integration.Shared.Repository.Base;
 using IntegrationAPI.DTO;
+using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace IntegrationAPI.Controllers
 {

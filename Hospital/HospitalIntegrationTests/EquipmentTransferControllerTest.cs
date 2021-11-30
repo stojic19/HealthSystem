@@ -1,13 +1,11 @@
-﻿using Hospital.Model;
-using Hospital.Model.Enumerations;
-using Hospital.Repositories;
+﻿using Hospital.RoomsAndEquipment.Model;
+using Hospital.RoomsAndEquipment.Repository;
+using Hospital.SharedModel.Model.Enumerations;
 using HospitalIntegrationTests.Base;
 using Shouldly;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -22,9 +20,10 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Add_transfer_request_should_return_200()
         {
-            InsertRoom(2);
-            InsertRoom(3);
-            InsertInventoryItem(11);
+            var sourceRoom = InsertRoom("SR-2");
+            var destinationRoom = InsertRoom("SR-3");
+            var inventoryItem = InsertInventoryItem("Chair");
+            var roomInventoryItem = InsertInventoryInRoom(sourceRoom.Id, inventoryItem.Id, 4);
 
             CheckAndDeleteRequests(new DateTime(2025, 11, 22, 0, 0, 0));
 
@@ -32,9 +31,9 @@ namespace HospitalIntegrationTests
             {
                 StartDate = new DateTime(2025, 11, 22, 0, 0, 0),
                 EndDate = new DateTime(2025, 11, 22, 16, 2, 2),
-                InitalRoomId = 2,
-                DestinationRoomId = 3,
-                InventoryItemId = 11,
+                InitalRoomId = sourceRoom.Id,
+                DestinationRoomId = destinationRoom.Id,
+                InventoryItemId = inventoryItem.Id,
                 Quantity = 2
             };
 
@@ -59,9 +58,10 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Add_transfer_request_should_return_400()
         {
-            InsertRoom(2);
-            InsertRoom(3);
-            InsertInventoryItem(11);
+            var sourceRoom = InsertRoom("SR-2");
+            var destinationRoom = InsertRoom("SR-3");
+            var inventoryItem = InsertInventoryItem("Chair");
+            var roomInventoryItem = InsertInventoryInRoom(sourceRoom.Id, inventoryItem.Id, 4);
 
             CheckAndDeleteRequests(new DateTime(2025, 11, 22, 0, 0, 0));
 
@@ -69,9 +69,9 @@ namespace HospitalIntegrationTests
             {
                 StartDate = new DateTime(2025, 11, 22, 0, 0, 0),
                 EndDate = new DateTime(2025, 11, 22, 16, 2, 2),
-                InitalRoomId = 2,
-                DestinationRoomId = 3,
-                InventoryItemId = 11,
+                InitalRoomId = sourceRoom.Id,
+                DestinationRoomId = destinationRoom.Id,
+                InventoryItemId = inventoryItem.Id,
                 Quantity = 58
             };
 
@@ -105,33 +105,37 @@ namespace HospitalIntegrationTests
             }
         }
 
-        private void InsertInventoryItem(int inventoryId)
+        private InventoryItem InsertInventoryItem(string name)
         {
             var inventoryItem = UoW.GetRepository<IInventoryItemReadRepository>()
-                .GetById(inventoryId);
+                .GetAll()
+                .FirstOrDefault(x => x.Name == name);
 
             if(inventoryItem == null)
             {
                 inventoryItem = new InventoryItem()
                 {
-                    Name = "Chair",
+                    Name = name,
                     InventoryItemType = InventoryItemType.Dynamic
                 };
 
                 UoW.GetRepository<IInventoryItemWriteRepository>().Add(inventoryItem);
             }
+
+            return inventoryItem;
         }
 
-        private void InsertRoom(int roomId)
+        private Room InsertRoom(string name)
         {
             var room = UoW.GetRepository<IRoomReadRepository>()
-                .GetById(roomId);
+                .GetAll()
+                .FirstOrDefault(x => x.Name == name);
 
             if (room == null)
             {
                 room = new Room()
                 {
-                    Name = "SR-2",
+                    Name = name,
                     Description = "Room for storage",
                     DimensionX = 7,
                     DimensionY = 8.5,
@@ -142,6 +146,33 @@ namespace HospitalIntegrationTests
 
                 UoW.GetRepository<IRoomWriteRepository>().Add(room);
             }
+
+            return room;
+        }
+
+        private RoomInventory InsertInventoryInRoom(int roomId, int inventoryId, int amount)
+        {
+            var roomInventory = UoW.GetRepository<IRoomInventoryReadRepository>()
+                .GetAll()
+                .FirstOrDefault(x => x.InventoryItemId == inventoryId && x.RoomId == roomId);
+
+            if (roomInventory == null)
+            {
+                roomInventory = new RoomInventory()
+                {
+                    Amount = amount,
+                    InventoryItemId = inventoryId,
+                    RoomId = roomId
+                };
+                UoW.GetRepository<IRoomInventoryWriteRepository>().Add(roomInventory);
+            }
+            else if (roomInventory.Amount < amount)
+            {
+                roomInventory.Amount = amount;
+                UoW.GetRepository<IRoomInventoryWriteRepository>().Update(roomInventory);
+            }
+                
+            return roomInventory;
         }
     }
 }

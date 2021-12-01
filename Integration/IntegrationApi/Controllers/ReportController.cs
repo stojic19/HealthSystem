@@ -12,6 +12,8 @@ using RestSharp;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using IntegrationAPI.Adapters.PDF;
+using IntegrationAPI.Adapters.PDF.Implementation;
 
 namespace IntegrationAPI.Controllers
 {
@@ -98,8 +100,11 @@ namespace IntegrationAPI.Controllers
         {
             string path = "MedicineReports" + Path.DirectorySeparatorChar + "Report-" +
                           report.createdDate.Ticks.ToString() + ".txt";
-            SaveFile(report, path);
-            SaveToSftp(path, credentials);
+            //SaveFile(report, path);
+            IPDFAdapter adapter = new DynamicPDFAdapter();
+            string fileName = adapter.MakeMedicineConsumptionReportPdf(report);
+            string dest = "MedicineReports" + Path.DirectorySeparatorChar + fileName;
+            SaveToSftp(dest, credentials);
         }
         private void SaveFile(MedicineConsumptionReportDTO consumptionReport, string path)
         {

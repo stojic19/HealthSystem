@@ -21,10 +21,8 @@ export class FreeTermsComponent implements OnInit {
   ngOnInit(): void {}
 
   selectTerm(term: TimePeriod) {
-    var newTerm: TimePeriod = {
-      startDate: new Date(),
-      endDate: new Date(),
-    };
-    this.selectedTerm.emit(newTerm);
+    this.selectedTerm.emit(term);
+    this.selectedTermView = term;
+    console.log(term);
   }
 }

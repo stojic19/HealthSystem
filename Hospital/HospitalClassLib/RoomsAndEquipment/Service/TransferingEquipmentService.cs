@@ -18,19 +18,19 @@ namespace Hospital.Rooms_and_equipment.Service
             this.uow = unitOfWork;
         }
 
-        public IEnumerable<TimePeriod> GetAvailableTerms(TimePeriod timePeriod, int roomId, int duration)
+        public IEnumerable<TimePeriod> GetAvailableTerms(TimePeriod timePeriod, int initialRoomId, int destinationRoomId, int duration)
         {
             var availableTerms = new List<TimePeriod>();
-            var possibleTerms = GetPossibleTerms(timePeriod, roomId, duration);
+            var possibleTerms = GetPossibleTerms(timePeriod, duration);
             foreach (TimePeriod term in possibleTerms)
             {
-                if (IsAvailable(term, roomId))
+                if (IsAvailable(term, initialRoomId) && IsAvailable(term, destinationRoomId))
                     availableTerms.Add(term);
             }
             return availableTerms;
         }
 
-        private List<TimePeriod> GetPossibleTerms(TimePeriod timePeriod, int roomId, int duration)
+        private List<TimePeriod> GetPossibleTerms(TimePeriod timePeriod, int duration)
         {
             var possibleTerms = new List<TimePeriod>();
             TimeSpan wantedInterval = timePeriod.EndTime - timePeriod.StartTime;
@@ -87,7 +87,7 @@ namespace Hospital.Rooms_and_equipment.Service
         }
         public void StartEquipmentTransferEvent() {
             var repo = uow.GetRepository<IEquipmentTransferEventReadRepository>();
-            foreach (EquipmentTransferEvent transferEvent in repo.GetAll()) {
+            foreach (EquipmentTransferEvent transferEvent in repo.GetAll().ToList()) {
                 if (DateTime.Compare(transferEvent.EndDate, DateTime.Now) <= 0) {
                     ExecuteTransfer(transferEvent);
                 }

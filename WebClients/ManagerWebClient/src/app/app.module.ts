@@ -85,8 +85,8 @@ import { MedicineSpecificationRequestsComponent } from './medicine-specification
     RegisterPharmacyComponent,
     PharmaciesListComponent,
     MedicationReportsComponent,
-    BenefitListComponent, 
-    BenefitDetailsComponent
+    BenefitListComponent,
+    BenefitDetailsComponent,
     MedicineSpecificationRequestsComponent,
   ],
   imports: [
@@ -104,9 +104,9 @@ import { MedicineSpecificationRequestsComponent } from './medicine-specification
     MatInputModule,
     MatCardModule,
     MatProgressSpinnerModule,
-    MatCheckboxModule, 
-    MatOptionModule, 
-    MatSelectModule
+    MatCheckboxModule,
+    MatOptionModule,
+    MatSelectModule,
   ],
   providers: [HttpClientModule],
   bootstrap: [AppComponent],

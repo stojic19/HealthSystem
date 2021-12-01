@@ -1,14 +1,16 @@
 ﻿using Hospital.RoomsAndEquipment.Model;
 using Hospital.RoomsAndEquipment.Repository;
+using Hospital.RoomsAndEquipment.Service;
 using Hospital.SharedModel.Repository.Base;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace HospitalApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class RoomInventoryController : ControllerBase
     {
@@ -29,7 +31,8 @@ namespace HospitalApi.Controllers
         [HttpGet]
         public IActionResult GetRoomInventory([FromQuery(Name = "roomId")] int roomId)
         {
-
+            var transferingService = new TransferingEquipmentService(_uow);
+            transferingService.StartEquipmentTransferEvent();
             var roomInventoryRepo = _uow.GetRepository<IRoomInventoryReadRepository>();
             return Ok(
             roomInventoryRepo.GetAll().Select(ri => new RoomInventory()
@@ -46,13 +49,13 @@ namespace HospitalApi.Controllers
                 }
             }
             ).Where(roomInventory => roomInventory.RoomId == roomId));
-
         }
 
-        [HttpGet("hospitalInventory")]
+        [HttpGet]
         public IActionResult GetHospitalInventory()
         {
-
+            var transferingService = new TransferingEquipmentService(_uow);
+            transferingService.StartEquipmentTransferEvent();
             var roomInventoryRepo = _uow.GetRepository<IRoomInventoryReadRepository>();
             return Ok(
             roomInventoryRepo.GetAll().Select(ri => new RoomInventory()
@@ -74,10 +77,9 @@ namespace HospitalApi.Controllers
                 }
             }
             ));
-
         }
 
-        [HttpGet("find")]
+        [HttpGet]
         public IActionResult FindByInventoryItemName([FromQuery(Name = "inventoryItemName")] string inventoryItemName)
         {
             var roomInventoryRepo = _uow.GetRepository<IRoomInventoryReadRepository>();
@@ -106,7 +108,7 @@ namespace HospitalApi.Controllers
             ).Where(ri => ri.InventoryItem.Name.ToLower().Contains(inventoryItemName.ToLower())));
         }
 
-        [HttpGet("roomInventory")]
+        [HttpGet]
         public IActionResult GetRoomInventoryById([FromQuery(Name = "id")] int id)
         {
             var repo = _uow.GetRepository<IRoomInventoryReadRepository>();
@@ -132,7 +134,7 @@ namespace HospitalApi.Controllers
             ).Where(ri => ri.Id == id));
         }
 
-        [HttpGet("amount")]
+        [HttpGet]
         public IActionResult GetRoomInventoryAmount(int roomId, int itemId)
         {
             var roomInventoryRepo = _uow.GetRepository<IRoomInventoryReadRepository>();

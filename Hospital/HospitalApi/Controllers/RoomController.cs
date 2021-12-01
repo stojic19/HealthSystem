@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace HospitalApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     [EnableCors("MyCorsImplementationPolicy")]
     public class RoomController : ControllerBase
@@ -42,7 +42,7 @@ namespace HospitalApi.Controllers
         }
 
 
-        [HttpGet("find")]
+        [HttpGet]
         public IActionResult FindByNameAndBuildingName([FromQuery(Name = "name")] string name, [FromQuery(Name = "buildingName")] string buildingName)
         {
             var roomRepo = _uow.GetRepository<IRoomReadRepository>();
@@ -54,7 +54,7 @@ namespace HospitalApi.Controllers
             return Ok(roomRepo.GetAll().Where(room => room.Name.ToLower().Contains(name.ToLower()) && room.BuildingName.Contains(buildingName)));
         }
 
-        [HttpGet("all")]
+        [HttpGet]
         public IEnumerable<Room> GetAllRooms()
         {
             var roomRepo = _uow.GetRepository<IRoomReadRepository>();

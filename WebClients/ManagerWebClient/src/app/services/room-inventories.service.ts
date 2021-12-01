@@ -11,37 +11,45 @@ import { map } from 'rxjs/operators';
 })
 export class RoomInventoriesService {
   constructor(private http: HttpClient) {}
-  public availableTerms: TimePeriod[];
 
   getRoomInventory(roomId: number) {
-    return this.http.get(`${environment.baseUrl}` + 'api/RoomInventory', {
-      params: {
-        roomId: roomId,
-      },
-    });
+    return this.http.get(
+      `${environment.baseUrl}` + 'api/RoomInventory/GetRoomInventory',
+      {
+        params: {
+          roomId: roomId,
+        },
+      }
+    );
   }
 
   getHospitalInventory() {
     return this.http.get(
-      `${environment.baseUrl}` + 'api/RoomInventory/hospitalInventory'
+      `${environment.baseUrl}` + 'api/RoomInventory/GetHospitalInventory'
     );
   }
 
   getEquipmentByName(equipmentName: string) {
-    return this.http.get(`${environment.baseUrl}` + 'api/RoomInventory/find', {
-      params: {
-        inventoryItemName: equipmentName,
-      },
-    });
+    return this.http.get(
+      `${environment.baseUrl}` + 'api/RoomInventory/FindByInventoryItemName',
+      {
+        params: {
+          inventoryItemName: equipmentName,
+        },
+      }
+    );
   }
 
   getItemById(itemId: number) {
     return this.http
-      .get(`${environment.baseUrl}` + 'api/RoomInventory/getById', {
-        params: {
-          id: itemId,
-        },
-      })
+      .get(
+        `${environment.baseUrl}` + 'api/RoomInventory/GetRoomInventoryById',
+        {
+          params: {
+            id: itemId,
+          },
+        }
+      )
       .toPromise()
       .then((result) => {
         return result;
@@ -53,7 +61,7 @@ export class RoomInventoriesService {
 
   getItemAmount(roomId: number, itemId: number) {
     return this.http.get<number>(
-      `${environment.baseUrl}` + 'api/RoomInventory/amount',
+      `${environment.baseUrl}` + 'api/RoomInventory/GetRoomInventoryAmount',
       {
         params: {
           itemId: itemId,
@@ -64,16 +72,19 @@ export class RoomInventoriesService {
   }
 
   getAvailableTerms(request: AvailableTermsRequest) {
-    return this.http
-      .post('/api/EquipmentTransferEvent', request)
-      .toPromise()
-      .then((result) => (this.availableTerms = result as TimePeriod[]));
+    return this.http.post(
+      '/api/EquipmentTransferEvent/GetAvailableTerms',
+      request
+    );
   }
 
   addEquipmentTransferEvent(newTransfer: EquipmentTransferEvent) {
     console.log(newTransfer);
     return this.http
-      .post('/api/EquipmentTransferEvent/addEvent', newTransfer)
+      .post(
+        '/api/EquipmentTransferEvent/AddNewEquipmentTransferEvent',
+        newTransfer
+      )
       .subscribe();
   }
 }

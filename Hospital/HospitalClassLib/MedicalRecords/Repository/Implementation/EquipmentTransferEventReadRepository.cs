@@ -1,9 +1,8 @@
 ﻿using Hospital.Database.EfStructures;
 using Hospital.RoomsAndEquipment.Model;
-using Hospital.RoomsAndEquipment.Repository;
 using Hospital.SharedModel.Repository.Base;
 
-namespace Hospital.Repositories.DbImplementation
+namespace Hospital.RoomsAndEquipment.Repository.Implementation
 {
     public class EquipmentTransferEventReadRepository : ReadBaseRepository<int, EquipmentTransferEvent>, IEquipmentTransferEventReadRepository
     {

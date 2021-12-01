@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using Autofac;
+﻿using Autofac;
 using Hospital.Database.EfStructures;
 using Hospital.Database.Infrastructure;
 using Hospital.SharedModel.Repository.Base;
 using Hospital.SharedModel.Repository.Implementation;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace HospitalUnitTests.Base
 {

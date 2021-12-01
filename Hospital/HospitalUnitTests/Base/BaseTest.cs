@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Hospital.Database.EfStructures;
+﻿using Hospital.Database.EfStructures;
 using Hospital.SharedModel.Repository.Base;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using Xunit;
 
 namespace HospitalUnitTests.Base

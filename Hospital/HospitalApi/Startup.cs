@@ -1,3 +1,8 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using Hospital.Database.Infrastructure;
+using Hospital.SharedModel.Repository.Base;
+using Hospital.SharedModel.Repository.Implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -14,6 +19,9 @@ using Hospital.Repositories.Base;
 using Autofac.Extensions.DependencyInjection;
 using Hospital.EfStructures;
 using Hospital.Model;
+using System.Reflection;
+using Hospital.Database.EfStructures;
+using Hospital.SharedModel.Model;
 using Microsoft.AspNetCore.Identity;
 
 namespace HospitalApi

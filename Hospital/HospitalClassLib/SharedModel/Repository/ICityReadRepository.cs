@@ -1,4 +1,4 @@
-﻿using Hospital.SharedModel.Model;
+using Hospital.SharedModel.Model;
 using Hospital.SharedModel.Repository.Base;
 using System.Collections.Generic;
 

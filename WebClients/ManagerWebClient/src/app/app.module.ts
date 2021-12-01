@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
@@ -34,9 +34,6 @@ import { FreeTermsComponent } from './equipment-form/free-terms/free-terms.compo
 import { SearchBarComponent } from './first-building/search-bar/search-bar.component';
 
 import { QuestionObserveComponent } from './components/question-observe/question-observe.component';
-import { SurveySectionObserveComponent } from './components/survey-section-observe/survey-section-observe.component';
-import { SurveysObserveComponent } from './components/surveys-observe/surveys-observe.component';
-import { MaterialModule } from './material/material.module';
 import { RatingDecimalComponent } from './components/rating-decimal/rating-decimal.component';
 
 import { RoomInventoryComponent } from './room-inventory/room-inventory.component';
@@ -48,6 +45,15 @@ import { PharmaciesListComponent } from './pharmacies/pharmacies-list.component'
 import { HospitalEquipmentComponent } from './hospital-equipment/hospital-equipment.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MedicineSpecificationRequestsComponent } from './medicine-specification-requests/medicine-specification-requests.component';
+import { SurveySectionObserveComponent } from './components/survey-section-observe/survey-section-observe.component';
+import { SurveysObserveComponent } from './components/surveys-observe/surveys-observe.component';
+import { MaterialModule } from './material/material.module';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSelectModule } from '@angular/material/select';
+import { MedicationReportsComponent } from './medication-reports/medication-reports/medication-reports.component';
+import { BenefitListComponent } from './benefits/benefit-list/benefit-list.component';
+import { BenefitDetailsComponent } from './benefits/benefit-details/benefit-details.component';
 
 @NgModule({
   declarations: [
@@ -77,9 +83,18 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     SearchBarComponent,
     RoomInventoryComponent,
     HospitalEquipmentComponent,
-    SurveysObserveComponent,
-    SurveySectionObserveComponent,
+    ComplaintDetailsComponent,
+    AddComplaintComponent,
+    ComplaintsListComponent,
+    RegisterPharmacyComponent,
+    PharmaciesListComponent,
+    MedicationReportsComponent,
+    BenefitListComponent, 
+    BenefitDetailsComponent,
+    MedicineSpecificationRequestsComponent,
     RatingDecimalComponent,
+    SurveySectionObserveComponent,
+    SurveysObserveComponent,
   ],
   imports: [
     BrowserModule,
@@ -92,6 +107,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MaterialModule,
     MatCardModule,
     MatProgressSpinnerModule,
+    MatCheckboxModule, 
+    MatOptionModule, 
+    MatSelectModule,
+    MaterialModule
   ],
   providers: [HttpClientModule],
   bootstrap: [AppComponent],

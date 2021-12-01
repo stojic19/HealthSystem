@@ -1,13 +1,15 @@
-﻿using Integration.MasterServices;
-using Integration.Model;
-using Integration.Repositories;
-using IntegrationUnitTests.Base;
+﻿using IntegrationUnitTests.Base;
 using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Integration.Partnership.Model;
+using Integration.Partnership.Repository;
+using Integration.Partnership.Service;
+using Integration.Shared.Model;
+using Integration.Shared.Repository;
 using Xunit;
 
 namespace IntegrationUnitTests

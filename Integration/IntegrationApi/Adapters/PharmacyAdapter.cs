@@ -1,9 +1,5 @@
-﻿using Integration.Model;
+﻿using Integration.Pharmacies.Model;
 using IntegrationAPI.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace IntegrationAPI.Adapters
 {

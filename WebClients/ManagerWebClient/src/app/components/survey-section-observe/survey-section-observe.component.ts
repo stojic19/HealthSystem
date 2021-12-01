@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ISurvey } from 'src/app/interfaces/survey';
+import { ISurveySectionStatistic } from 'src/app/interfaces/survey-section-statistic';
+import { ISurveyStatistic } from 'src/app/interfaces/survey-statistic';
 import { SurveyObserveService } from 'src/app/services/survey-observe.service';
 
 @Component({
@@ -9,14 +10,12 @@ import { SurveyObserveService } from 'src/app/services/survey-observe.service';
 })
 export class SurveySectionObserveComponent implements OnInit {
 
-  survey!: ISurvey;
+  survey!: ISurveyStatistic;
   selectedTab!: string;
-  @Input() category!: string;
-  constructor(private _surveyService: SurveyObserveService) { }
+  @Input() section: ISurveySectionStatistic;
+  constructor(private _surveyService: SurveyObserveService) {  }
 
   ngOnInit(): void {
-    this.survey = this._surveyService.getSurvey();
   }
-  
 
 }

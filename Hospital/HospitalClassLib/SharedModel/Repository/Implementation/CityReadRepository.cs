@@ -3,6 +3,7 @@ using Hospital.SharedModel.Model;
 using Hospital.SharedModel.Repository.Base;
 using System.Collections.Generic;
 using System.Linq;
+using Hospital.SharedModel.Repository;
 
 namespace Hospital.SharedModel.Repository.Implementation
 {

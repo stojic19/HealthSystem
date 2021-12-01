@@ -7,7 +7,6 @@ import { HospitalOverviewComponent } from './hospital-overview/hospital-overview
 import { MaterialModule } from './material/material.module';
 import { SecondBuildingComponent } from './second-building/second-building.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
-import { SurveysObserveComponent } from './components/surveys-observe/surveys-observe.component';
 import { EquipmentFormComponent } from './equipment-form/equipment-form.component';
 import { RoomInventoryComponent } from './room-inventory/room-inventory.component';
 import { RoomInfoComponent } from './room-info/room-info.component';
@@ -21,6 +20,9 @@ import { BenefitListComponent } from './benefits/benefit-list/benefit-list.compo
 import { BenefitDetailsComponent } from './benefits/benefit-details/benefit-details.component';
 import { MedicationReportsComponent } from './medication-reports/medication-reports/medication-reports.component';
 import { MedicineSpecificationRequestsComponent } from './medicine-specification-requests/medicine-specification-requests.component';
+import { SurveysObserveComponent } from './components/surveys-observe/surveys-observe.component';
+import { SurveySectionObserveComponent } from './components/survey-section-observe/survey-section-observe.component';
+import { RatingDecimalComponent } from './components/rating-decimal/rating-decimal.component';
 
 const routes: Routes = [
   { path: 'overview', component: HospitalOverviewComponent },
@@ -37,20 +39,16 @@ const routes: Routes = [
   },
   { path: 'moveEquipment/:id', component: EquipmentFormComponent },
   { path: 'home', component: HomePageComponent },
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'medication-consumption-report', component: MedicationReportsComponent},
+  { path: 'medicine-specification-requests', component: MedicineSpecificationRequestsComponent},
+  { path: '', redirectTo: 'home', pathMatch: 'full'},
+  { path: 'moveEquipment/:id', component: EquipmentFormComponent },
+  { path: 'surveys', component: SurveysObserveComponent},
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes), CommonModule, MaterialModule],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
-export const routingComponents = [
-  HospitalOverviewComponent,
-  FirstBuildingComponent,
-  FeedbacksManagerComponent,
-  SecondBuildingComponent,
-  RoomInventoryComponent,
-  HospitalEquipmentComponent,
-  SurveysObserveComponent,
-];
+export class AppRoutingModule { }
+export const routingComponents = [HospitalOverviewComponent, FirstBuildingComponent, FeedbacksManagerComponent, SecondBuildingComponent, RoomInventoryComponent, HospitalEquipmentComponent,SurveysObserveComponent,SurveySectionObserveComponent,RatingDecimalComponent];

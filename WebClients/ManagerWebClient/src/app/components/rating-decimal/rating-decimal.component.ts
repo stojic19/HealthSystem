@@ -9,7 +9,6 @@ export class RatingDecimalComponent implements OnInit {
 
   @Input() currentRate!: number;
   constructor() { }
-
   ngOnInit(): void {
   }
 

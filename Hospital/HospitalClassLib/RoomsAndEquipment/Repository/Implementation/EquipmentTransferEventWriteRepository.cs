@@ -1,6 +1,7 @@
 ﻿using Hospital.Database.EfStructures;
 using Hospital.RoomsAndEquipment.Model;
-using Hospital.SharedModel.Repository.Base;
+using Hospital.RoomsAndEquipment.Repository;
+
 
 namespace Hospital.RoomsAndEquipment.Repository.Implementation
 {

@@ -1,23 +1,13 @@
-﻿using Integration.DTO;
-using Integration.Model;
-using Microsoft.AspNetCore.Http;
+﻿using Integration.Pharmacies.Model;
+using Integration.Pharmacies.Service;
+using Integration.Shared.Model;
+using Integration.Shared.Repository.Base;
+using IntegrationAPI.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using RestSharp;
-using Integration.Repositories.Base;
-using Integration.Repositories;
-using Microsoft.EntityFrameworkCore;
-using IntegrationAPI.DTO;
-using IntegrationAPI.Adapters;
-using Integration.MasterServices;
 
-namespace Integration.Controllers
+namespace IntegrationAPI.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]

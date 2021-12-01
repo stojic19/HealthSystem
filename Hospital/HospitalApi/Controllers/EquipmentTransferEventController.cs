@@ -77,7 +77,7 @@ namespace HospitalApi.Controllers
                 EndTime = availableTermsDTO.EndDate
             };
             
-            var terms = transferingEquipmentService.GetAvailableTerms(timePeriod, availableTermsDTO.RoomId, availableTermsDTO.Duration);
+            var terms = transferingEquipmentService.GetAvailableTerms(timePeriod, availableTermsDTO.InitialRoomId, availableTermsDTO.DestinationRoomId, availableTermsDTO.Duration);
             var availableTerms = new List<TimePeriodDTO>();
             foreach (TimePeriod term in terms)
             {

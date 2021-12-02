@@ -32,7 +32,7 @@ namespace IntegrationUnitTests.Base
 
             builder.RegisterModule(new RepositoryModule()
             {
-                Namespace = "Integration.Repositories",
+                Namespace = "Repository",
                 RepositoryAssemblies = new List<Assembly>()
                 {
                     (typeof(CityReadRepository)).Assembly

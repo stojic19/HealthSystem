@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ceTe.DynamicPDF;
 using ceTe.DynamicPDF.PageElements;
-using IntegrationAPI.DTO;
+using PharmacyApi.DTO.MedicineDTO;
 using Path = System.IO.Path;
 
 namespace IntegrationAPI.Adapters.PDF.Implementation
@@ -50,68 +50,68 @@ namespace IntegrationAPI.Adapters.PDF.Implementation
             _lastPage.Elements.Add(label);
         }
 
-        public string MakeMedicineConsumptionReportPdf(MedicineConsumptionReportDTO dto)
-        {
-            MakeTitle("Medicine consumption report");
-            WriteLine(0, 20, "Time period, from " 
-                             + dto.startDate.ToShortDateString()
-                             + " to " + dto.endDate.ToShortDateString());
-            WriteLine(0, 20, "Medicine with most amount spent: "
-                             + dto.MedicineConsumptions[0].MedicineName
-                             + ". Amount spent: " + dto.MedicineConsumptions[0].Amount);
-            int lastIndex = dto.MedicineConsumptions.Count - 1;
-            WriteLine(0, 20, "Medicine with least amount spent: "
-                             + dto.MedicineConsumptions[lastIndex].MedicineName
-                             + ". Amount spent: " + dto.MedicineConsumptions[lastIndex].Amount);
-            WriteLine(0, 40, "List of medications spent:");
-            Table2 table = new Table2(0, _currentY + 20, 503, dto.MedicineConsumptions.Count * 31 + 42);
-            table.CellDefault.Border.Color = RgbColor.Blue;
-            table.CellSpacing = 1.0f;
-            table.Columns.Add(350);
-            table.Columns.Add(150);
-            Row2 row1 = table.Rows.Add(40, Font.HelveticaBold, 16, RgbColor.Black,
-                RgbColor.Gray);
-            row1.CellDefault.Align = TextAlign.Center;
-            row1.CellDefault.VAlign = VAlign.Center;
-            row1.Cells.Add("Medication name");
-            row1.Cells.Add("Amount spent");
-            _currentY += 50;
-            for (int i = 0; i < dto.MedicineConsumptions.Count; i++)
-            {
-                MedicineConsumptionDTO medicineConsumption = dto.MedicineConsumptions[i];
-                _currentY += 32;
-                if (_currentY >= 650)
-                {
-                    _lastPage.Elements.Add(table);
-                    AddNewPage();
-                    _currentY = 0;
-                    table = new Table2(0, _currentY + 20, 503, (dto.MedicineConsumptions.Count - i) * 31 + 2);
-                    table.CellDefault.Border.Color = RgbColor.Blue;
-                    table.CellSpacing = 1.0f;
-                    table.Columns.Add(350);
-                    table.Columns.Add(150);
-                }
-                Row2 row = table.Rows.Add(30);
-                row.CellDefault.Align = TextAlign.Center;
-                row.CellDefault.VAlign = VAlign.Center;
-                row.Cells.Add(medicineConsumption.MedicineName);
-                row.Cells.Add(Convert.ToString(medicineConsumption.Amount));
-            }
-            _lastPage.Elements.Add(table);
-            if (_document.Pages.Count > 1) _currentY = table.Height;
-            else _currentY = 100 + table.Height;
-            WriteLine(400,30, "Hospital name");
-            WriteLine(400,20, "Manager name");
-            string fileName = "Report-" + dto.createdDate.Ticks.ToString() + ".pdf";
-            SaveDocument("MedicineReports" + Path.DirectorySeparatorChar + fileName);
-            return fileName;
-        }
-
         public void MakeTitle(string text)
         {
             Label naslov = new Label(text, _currentY, 0, 512, 16, Font.HelveticaBold, 16, TextAlign.Center, RgbColor.Black);
             _lastPage.Elements.Add(naslov);
         }
 
+        public string MakeMedicineSpecificationPdf(MedicineDTO dto)
+        {
+            MakeTitle(dto.Name + " Specification");
+            WriteLine(0, 20, "Manufacturer: " + dto.Manufacturer);
+            WriteLine(0, 20, "Type: " + dto.Type);
+            WriteLine(0, 20, "Usage: " + dto.Usage);
+            CreateTextArea(0, 20, "Side effects: " + dto.SideEffects);
+            CreateTextArea(0, 20, "Reactions: " + dto.Reactions);
+            CreateTextArea(0, 20, "Precautions: " + dto.Precautions);
+            CreateTextArea(0, 20, "Potential dangers: " + dto.MedicinePotentialDangers);
+            WriteLine(0, 20, "Substances: ");
+            Table2 table = new Table2(50, _currentY + 20, 402, dto.Substances.Count * 31 + 42);
+            table.CellDefault.Border.Color = RgbColor.Blue;
+            table.CellSpacing = 1.0f;
+            table.Columns.Add(400);
+            Row2 row1 = table.Rows.Add(40, Font.HelveticaBold, 16, RgbColor.Black,
+                RgbColor.Gray);
+            row1.CellDefault.Align = TextAlign.Center;
+            row1.CellDefault.VAlign = VAlign.Center;
+            row1.Cells.Add("Substance name");
+            _currentY += 40;
+            for (int i = 0; i < dto.Substances.Count; i++)
+            {
+                string substance = dto.Substances[i];
+                _currentY += 32;
+                if (_currentY >= 650)
+                {
+                    _lastPage.Elements.Add(table);
+                    AddNewPage();
+                    _currentY = 0;
+                    table = new Table2(0, _currentY + 20, 503, (dto.Substances.Count - i) * 31 + 2);
+                    table.CellDefault.Border.Color = RgbColor.Blue;
+                    table.CellSpacing = 1.0f;
+                    table.Columns.Add(400);
+                }
+                Row2 row = table.Rows.Add(30);
+                row.CellDefault.Align = TextAlign.Center;
+                row.CellDefault.VAlign = VAlign.Center;
+                row.Cells.Add(substance);
+            }
+            _lastPage.Elements.Add(table);
+            if (_document.Pages.Count > 1) _currentY = table.Height;
+            //else _currentY = 200 + table.Height;
+            WriteLine(400, 30, "Pharmacy name");
+            string fileName = dto.Name + DateTime.Now.Ticks + ".pdf";
+            SaveDocument("MedicineSpecifications" + Path.DirectorySeparatorChar + fileName);
+            return fileName;
+        }
+
+        public void CreateTextArea(float xMargin, float yMargin, string text)
+        {
+            int rows = (int)(text.Length / 75) + 1;
+            TextArea textArea = new TextArea(text, xMargin, _currentY + yMargin, 512, rows * 20, Font.HelveticaBold, _fontSize,
+                TextAlign.Left, RgbColor.Black);
+            _currentY = _currentY + rows * 20;
+            _lastPage.Elements.Add(textArea);
+        }
     }
 }

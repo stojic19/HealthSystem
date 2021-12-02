@@ -1,5 +1,4 @@
-﻿using Hospital.EfStructures;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Integration.Database.EfStructures;
 
 namespace Integration.Shared.Repository.Base

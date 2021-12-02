@@ -1,6 +1,8 @@
-﻿using Integration.DTO;
-using Integration.Model;
-using Microsoft.AspNetCore.Http;
+﻿using Integration.Pharmacies.Model;
+using Integration.Pharmacies.Service;
+using Integration.Shared.Model;
+using Integration.Shared.Repository.Base;
+using IntegrationAPI.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using RestSharp;

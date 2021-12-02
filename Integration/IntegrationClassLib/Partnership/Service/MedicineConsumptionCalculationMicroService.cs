@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Integration.Model;
+using Integration.Partnership.Model;
 
 namespace Integration.Partnership.Service
 {

@@ -1,16 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using RabbitMQ.Client;
-using System.Threading;
-using Integration.Model;
-using Integration.Repositories;
-using Integration.Repositories.Base;
-using IntegrationAPI.DTO;
+using Integration.Partnership.Model;
+using Integration.Partnership.Repository;
+using Integration.Pharmacies.Model;
+using Integration.Pharmacies.Repository;
+using Integration.Shared.Repository.Base;
 using RabbitMQ.Client.Events;
 using Newtonsoft.Json;
 

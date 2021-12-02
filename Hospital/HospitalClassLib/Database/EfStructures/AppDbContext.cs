@@ -1,4 +1,9 @@
-﻿using Hospital.Model;
+﻿using Hospital.MedicalRecords.Model;
+using Hospital.RoomsAndEquipment.Model;
+using Hospital.Schedule.Model;
+using Hospital.SharedModel.Model;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hospital.Database.EfStructures

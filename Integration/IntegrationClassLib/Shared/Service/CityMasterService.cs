@@ -1,11 +1,7 @@
-﻿using Integration.Model;
-using Integration.Repositories;
-using Integration.Repositories.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Integration.Shared.Model;
+using Integration.Shared.Repository;
+using Integration.Shared.Repository.Base;
 
 namespace Integration.Shared.Service
 {

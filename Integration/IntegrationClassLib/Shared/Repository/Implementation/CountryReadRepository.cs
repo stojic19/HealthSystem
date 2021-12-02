@@ -1,6 +1,7 @@
-﻿using Integration.EfStructures;
-using Integration.Model;
-using Integration.Repositories.Base;
+﻿using System.Linq;
+using Integration.Database.EfStructures;
+using Integration.Shared.Model;
+using Integration.Shared.Repository.Base;
 using Microsoft.EntityFrameworkCore;
 
 namespace Integration.Shared.Repository.Implementation

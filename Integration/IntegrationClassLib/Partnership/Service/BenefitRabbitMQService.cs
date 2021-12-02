@@ -1,17 +1,18 @@
-﻿using Integration.Partnership.Model;
-using Integration.Partnership.Repository;
-using Integration.Shared.Repository.Base;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Extensions.Hosting;
-using Newtonsoft.Json;
-using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
-using System;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Integration.Pharmacies.Model;
-using Integration.Pharmacies.Repository;
+using RabbitMQ.Client;
+using System.Threading;
+using Integration.Model;
+using Integration.Repositories;
+using Integration.Repositories.Base;
+using IntegrationAPI.DTO;
+using RabbitMQ.Client.Events;
+using Newtonsoft.Json;
 
 namespace Integration.Partnership.Service
 {

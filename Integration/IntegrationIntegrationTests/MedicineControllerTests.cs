@@ -1,10 +1,14 @@
-﻿using System;
-using System.Net;
-using System.Threading.Tasks;
+﻿using Castle.Core.Internal;
 using Integration.Model;
 using IntegrationAPI.DTO;
 using IntegrationIntegrationTests.Base;
 using Shouldly;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace IntegrationIntegrationTests

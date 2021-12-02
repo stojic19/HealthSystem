@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Hospital.SharedModel.Repository;
 
-namespace Hospital.Shared_model.Repository.Implementation
+namespace Hospital.Repositories.DbImplementation
 {
     public class CityReadRepository : ReadBaseRepository<int, City>, ICityReadRepository
     {

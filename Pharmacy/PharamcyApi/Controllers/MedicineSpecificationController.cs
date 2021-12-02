@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using IntegrationAPI.Adapters.PDF;
+using IntegrationAPI.Adapters.PDF.Implementation;
 using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -90,9 +92,12 @@ namespace PharmacyApi.Controllers
 
         private string saveMedicineSpecificationsToSftpServer(MedicineDTO medicine, SftpCredentialsDTO credentials)
         {
-            string fileName = medicine.Name + "Specification" + DateTime.Now.Ticks + ".txt";
+            //string fileName = medicine.Name + "Specification" + DateTime.Now.Ticks + ".txt";
+            //string path = "MedicineSpecifications" + Path.DirectorySeparatorChar + fileName;
+            //saveFile(medicine, path);
+            IPDFAdapter adapter = new DynamicPDFAdapter();
+            string fileName = adapter.MakeMedicineSpecificationPdf(medicine);
             string path = "MedicineSpecifications" + Path.DirectorySeparatorChar + fileName;
-            saveFile(medicine, path);
             saveToSftp(path, credentials);
             return fileName;
         }

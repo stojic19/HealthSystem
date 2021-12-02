@@ -1,8 +1,12 @@
-﻿using Integration.Database.EfStructures;
-using Integration.Partnership.Model;
-using Integration.Shared.Repository.Base;
+﻿using Integration.EfStructures;
+using Integration.Model;
+using Integration.Repositories.Base;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Integration.Partnership.Repository.Implementation
 {

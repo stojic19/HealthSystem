@@ -1,5 +1,5 @@
-﻿using Integration.EfStructures;
-using Integration.Repositories.Base;
+﻿using Integration.Database.EfStructures;
+using Integration.Shared.Repository.Base;
 using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http;

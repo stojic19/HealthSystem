@@ -1,12 +1,9 @@
-﻿using Hospital.MedicalRecords.Model;
-using Hospital.RoomsAndEquipment.Model;
-using Hospital.Schedule.Model;
-using Hospital.SharedModel.Model;
+﻿using Hospital.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hospital.Database.EfStructures
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
         public DbSet<Allergy> Allergies { get; set; }
         public DbSet<City> Cities { get; set; }
@@ -29,7 +26,9 @@ namespace Hospital.Database.EfStructures
         public DbSet<Specialization> Specializations { get; set; }
         public DbSet<Staff> Staffs { get; set; }
         public DbSet<Survey> Surveys { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<AnsweredQuestion> AnsweredQuestions { get; set; }
+        public DbSet<AnsweredSurvey> AnsweredSurveys { get; set; }
+        public DbSet<EquipmentTransferEvent> EquipmentTransferEvents { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {

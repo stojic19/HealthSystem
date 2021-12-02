@@ -4,6 +4,14 @@ using Integration.Shared.Model;
 using Integration.Shared.Repository.Base;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
+using System.Threading.Tasks;
+using Integration.MicroServices;
+using Integration.Model;
+using Integration.Repositories;
+using Integration.Repositories.Base;
 
 namespace Integration.Partnership.Service
 {

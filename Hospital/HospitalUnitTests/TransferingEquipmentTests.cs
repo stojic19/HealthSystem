@@ -1,13 +1,12 @@
-﻿using Hospital.Model;
-using Hospital.Repositories;
-using Hospital.Services;
+﻿using Hospital.RoomsAndEquipment.Model;
+using Hospital.RoomsAndEquipment.Repository;
+using Hospital.Schedule.Model;
+using Hospital.SharedModel.Model.Wrappers;
 using HospitalUnitTests.Base;
 using Shouldly;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Hospital.RoomsAndEquipment.Service;
 using Xunit;
 
 namespace HospitalUnitTests

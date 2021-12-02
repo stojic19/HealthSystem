@@ -1,6 +1,6 @@
-﻿using Autofac;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection;
+using Autofac;
 using Module = Autofac.Module;
 
 namespace Integration.Database.Infrastructure

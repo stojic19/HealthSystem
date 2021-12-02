@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Integration.Model;
+﻿using Integration.Shared.Model;
 
 namespace IntegrationAPI.DTO
 {

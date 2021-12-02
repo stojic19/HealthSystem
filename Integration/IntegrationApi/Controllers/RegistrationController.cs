@@ -1,7 +1,6 @@
-﻿using Integration.MasterServices;
+﻿using Integration.DTO;
 using Integration.Model;
-using Integration.Repositories.Base;
-using IntegrationAPI.DTO;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using RestSharp;

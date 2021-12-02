@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Integration.Infrastructure;
-using Integration.MicroServices;
-using Integration.Repositories.Base;
-using Integration.Repositories.DbImplementation;
+using Integration.Database.Infrastructure;
+using Integration.Partnership.Service;
+using Integration.Shared.Repository.Base;
+using Integration.Shared.Repository.Implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -15,7 +15,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
 namespace IntegrationAPI
@@ -53,7 +52,7 @@ namespace IntegrationAPI
                 {
                     typeof (CityReadRepository).Assembly
                 },
-                Namespace = "Integration.Repositories"
+                Namespace = "Repository"
 
 
             });

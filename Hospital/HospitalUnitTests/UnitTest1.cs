@@ -1,8 +1,7 @@
-using Hospital.Model;
-using Hospital.Repositories;
+using Hospital.SharedModel.Model;
+using Hospital.SharedModel.Repository;
 using HospitalUnitTests.Base;
 using Shouldly;
-using System;
 using System.Linq;
 using Xunit;
 

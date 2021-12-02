@@ -1,29 +1,26 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using Integration.Model;
-using Integration.Repositories;
-using Integration.Repositories.Base;
+﻿using System;
+using System.IO;
+using Integration.Partnership.Model;
+using Integration.Partnership.Repository;
+using Integration.Pharmacies.Model;
+using Integration.Pharmacies.Repository;
+using Integration.Shared.Repository.Base;
 using IntegrationAPI.DTO;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using RestSharp;
+using System.Net;
+using IntegrationAPI.Controllers.Base;
+using Renci.SshNet;
 
 namespace IntegrationAPI.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class MedicineSpecificationController : ControllerBase
+    public class MedicineSpecificationController : BaseSftpController
     {
-        private readonly IUnitOfWork _unitOfWork;
 
-        public MedicineSpecificationController(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
+        public MedicineSpecificationController(IUnitOfWork unitOfWork) : base(unitOfWork) { }
         [HttpPost]
         [Produces("application/json")]
         public IActionResult SendMedicineSpecificationRequest(MedicineSpecificationRequestDTO dto)
@@ -39,9 +36,22 @@ namespace IntegrationAPI.Controllers
             request.AddJsonBody(new MedicineSpecificationToPharmacyDTO
                 { ApiKey = pharmacy.ApiKey, MedicineName = dto.MedicineName });
             var response = client.Post(request);
-            if (response.StatusCode != HttpStatusCode.OK) return BadRequest("Failed to reach pharmacy or pharmacy does not have medicine with given name!");
+            if (response.StatusCode != HttpStatusCode.OK) return NotFound("Failed to reach pharmacy or pharmacy does not have medicine with given name!");
             MedicineSpecificationFileDTO medicineSpecificationFile =
                 JsonConvert.DeserializeObject<MedicineSpecificationFileDTO>(response.Content);
+            try
+            {
+                SftpClient sftpClient = new SftpClient(new PasswordConnectionInfo(sftpCredentials.Host, sftpCredentials.Username, sftpCredentials.Password));
+                sftpClient.Connect();
+                Stream fileStream = System.IO.File.OpenWrite("MedicineSpecifications" + Path.DirectorySeparatorChar + medicineSpecificationFile.FileName);
+                sftpClient.DownloadFile(medicineSpecificationFile.FileName, fileStream);
+                sftpClient.Disconnect();
+                fileStream.Close();
+            }
+            catch
+            {
+                return Problem("Failed to save file, error while trying to download from sftp");
+            }
             _unitOfWork.GetRepository<IMedicineSpecificationFileWriteRepository>().Add(new MedicineSpecificationFile
             {
                 FileName = medicineSpecificationFile.FileName,
@@ -50,5 +60,6 @@ namespace IntegrationAPI.Controllers
             });
             return Ok("Pharmacy has sent the specification file to sftp server");
         }
+
     }
 }

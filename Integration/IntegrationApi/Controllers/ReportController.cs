@@ -1,28 +1,30 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Integration.Partnership.Model;
+using Integration.Partnership.Service;
+using Integration.Pharmacies.Model;
+using Integration.Pharmacies.Service;
+using Integration.Shared.Model;
+using Integration.Shared.Repository.Base;
+using IntegrationAPI.DTO;
 using Microsoft.AspNetCore.Mvc;
-using System;
+using Newtonsoft.Json;
+using Renci.SshNet;
+using RestSharp;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using Integration.MasterServices;
-using Integration.Model;
-using Integration.Repositories.Base;
-using IntegrationAPI.DTO;
-using RestSharp;
-using Newtonsoft.Json;
-using Renci.SshNet;
+using IntegrationAPI.Adapters.PDF;
+using IntegrationAPI.Adapters.PDF.Implementation;
+using IntegrationAPI.Controllers.Base;
 
 namespace IntegrationAPI.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class ReportController : ControllerBase
+    public class ReportController : BaseSftpController
     {
         private readonly PharmacyMasterService _pharmacyMasterService;
         private readonly MedicineConsumptionMasterService _medicineConsumptionMasterService;
-        public ReportController(IUnitOfWork unitOfWork)
+        public ReportController(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
             _pharmacyMasterService = new PharmacyMasterService(unitOfWork);
             _medicineConsumptionMasterService = new MedicineConsumptionMasterService(unitOfWork);
@@ -54,7 +56,6 @@ namespace IntegrationAPI.Controllers
         [Produces("application/json")]
         public IActionResult SendConsumptionReport(MedicineConsumptionReportDTO report)
         {
-            SftpCredentialsDTO sftpCredentials = getSftpCredentials();
             try
             {
                 SaveMedicineReportToSftpServer(report, sftpCredentials);
@@ -84,23 +85,15 @@ namespace IntegrationAPI.Controllers
                 client.PostAsync<IActionResult>(request);
             }
         }
-
-        private SftpCredentialsDTO getSftpCredentials()
-        {
-            return new SftpCredentialsDTO
-            {
-                Host = "192.168.0.13",
-                Password = "password",
-                Username = "tester"
-            };
-        }
-
         private void SaveMedicineReportToSftpServer(MedicineConsumptionReportDTO report, SftpCredentialsDTO credentials)
         {
             string path = "MedicineReports" + Path.DirectorySeparatorChar + "Report-" +
                           report.createdDate.Ticks.ToString() + ".txt";
-            SaveFile(report, path);
-            SaveToSftp(path, credentials);
+            //SaveFile(report, path);
+            IPDFAdapter adapter = new DynamicPDFAdapter();
+            string fileName = adapter.MakeMedicineConsumptionReportPdf(report);
+            string dest = "MedicineReports" + Path.DirectorySeparatorChar + fileName;
+            SaveToSftp(dest, credentials);
         }
         private void SaveFile(MedicineConsumptionReportDTO consumptionReport, string path)
         {

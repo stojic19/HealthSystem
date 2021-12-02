@@ -12,6 +12,9 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Hospital.Database.EfStructures;
+using Hospital.SharedModel.Model;
+using Microsoft.AspNetCore.Identity;
 
 namespace HospitalApi
 {
@@ -50,7 +53,9 @@ namespace HospitalApi
                 Namespace = "Repository"
 
 
-            }); 
+            });
+            services.AddIdentity<User, IdentityRole<int>>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<AppDbContext>();
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
             builder.Populate(services);
             var container = builder.Build();

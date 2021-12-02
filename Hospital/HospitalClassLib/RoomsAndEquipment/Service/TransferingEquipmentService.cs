@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Hospital.Rooms_and_equipment.Service
+namespace Hospital.RoomsAndEquipment.Service
 {
     public class TransferingEquipmentService
     {

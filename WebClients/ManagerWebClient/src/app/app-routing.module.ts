@@ -20,6 +20,9 @@ import { BenefitListComponent } from './benefits/benefit-list/benefit-list.compo
 import { BenefitDetailsComponent } from './benefits/benefit-details/benefit-details.component';
 import { MedicationReportsComponent } from './medication-reports/medication-reports/medication-reports.component';
 import { MedicineSpecificationRequestsComponent } from './medicine-specification-requests/medicine-specification-requests.component';
+import { SurveysObserveComponent } from './components/surveys-observe/surveys-observe.component';
+import { SurveySectionObserveComponent } from './components/survey-section-observe/survey-section-observe.component';
+import { RatingDecimalComponent } from './components/rating-decimal/rating-decimal.component';
 
 const routes: Routes = [
   { path: 'overview', component: HospitalOverviewComponent },
@@ -41,7 +44,8 @@ const routes: Routes = [
   { path: 'medication-consumption-report', component: MedicationReportsComponent},
   { path: 'medicine-specification-requests', component: MedicineSpecificationRequestsComponent},
   { path: '', redirectTo: 'home', pathMatch: 'full'},
-  { path: 'moveEquipment/:id', component: EquipmentFormComponent }
+  { path: 'moveEquipment/:id', component: EquipmentFormComponent },
+  { path: 'surveys', component: SurveysObserveComponent},
 ];
 
 @NgModule({
@@ -49,4 +53,4 @@ const routes: Routes = [
   exports: [RouterModule],
 })
 export class AppRoutingModule { }
-export const routingComponents = [HospitalOverviewComponent, FirstBuildingComponent, FeedbacksManagerComponent, SecondBuildingComponent, RoomInventoryComponent, HospitalEquipmentComponent];
+export const routingComponents = [HospitalOverviewComponent, FirstBuildingComponent, FeedbacksManagerComponent, SecondBuildingComponent, RoomInventoryComponent, HospitalEquipmentComponent,SurveysObserveComponent,SurveySectionObserveComponent,RatingDecimalComponent];

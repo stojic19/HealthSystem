@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HospitalApi\HospitalApi.csproj" />
+    <ProjectReference Include="..\HospitalClassLib\Hospital.csproj" />
   </ItemGroup>
 
 </Project>

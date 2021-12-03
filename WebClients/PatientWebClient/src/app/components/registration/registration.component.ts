@@ -5,7 +5,9 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { IChosenDoctor } from 'src/app/interfaces/chosen-doctor';
+import { ICity } from 'src/app/interfaces/city';
 import {
   BloodType,
   IMedicalRecord,
@@ -16,7 +18,9 @@ import { INewAllergy } from 'src/app/interfaces/new-allergy';
 import { INewPatient, Gender } from 'src/app/interfaces/new-patient';
 import { AllergensService } from 'src/app/services/AllergenService/allergens.service';
 import { ChosenDoctorService } from 'src/app/services/ChosenDoctorService/chosen-doctor.service';
+import { CityService } from 'src/app/services/CityService/city.service';
 import { RegistrationService } from 'src/app/services/PatientService/registration.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-registration',
@@ -24,9 +28,11 @@ import { RegistrationService } from 'src/app/services/PatientService/registratio
   styleUrls: ['./registration.component.css'],
 })
 export class RegistrationComponent implements OnInit {
+  errorMessage!: string;
   newPatient!: INewPatient;
   doctors!: IChosenDoctor[];
   allergens!: IMedicationIngredient[];
+  cities!: ICity[];
   createForm!: FormGroup;
   passMatch: boolean = false;
   gender = Object.values(Gender).filter((value) => typeof value === 'string');
@@ -37,7 +43,10 @@ export class RegistrationComponent implements OnInit {
     private formBuilder: FormBuilder,
     private doctorService: ChosenDoctorService,
     private allergensService: AllergensService,
-    private registrationService: RegistrationService
+    private cityService: CityService,
+    private registrationService: RegistrationService,
+    private _snackBar: MatSnackBar,
+    private router: Router
   ) {
     this.newPatient = {} as INewPatient;
     this.newPatient.medicalRecord = {} as IMedicalRecord;
@@ -67,10 +76,7 @@ export class RegistrationComponent implements OnInit {
         Validators.required,
         Validators.pattern('^\\d{1,3}$'),
       ]),
-      city: new FormControl(null, [
-        Validators.required,
-        Validators.pattern('^[A-ZŠĐŽČĆ][a-zšđćčžA-ZŠĐŽČĆ ]*$'),
-      ]),
+      city: new FormControl(null, [Validators.required]),
       email: new FormControl(null, [Validators.required, Validators.email]),
       phone: new FormControl(null, [Validators.required]),
       height: new FormControl(null, [Validators.pattern('^\\d{1,3}$')]),
@@ -100,13 +106,29 @@ export class RegistrationComponent implements OnInit {
     this.allergensService.getAll().subscribe((res) => {
       this.allergens = res;
     });
+
+    this.cityService.getAll().subscribe((res) => {
+      this.cities = res;
+    });
   }
 
   onSubmit(): void {
     this.createPatient();
-    this.registrationService
-      .registerPatient(this.newPatient)
-      .subscribe((res) => console.log(res));
+    this.registrationService.registerPatient(this.newPatient).subscribe(
+      (res) => {
+        this.router.navigate(['/']);
+        this._snackBar.open(
+          'Your registration request has been sumbitted. Please check your email and confirm your email adress to activate your account.',
+          'Dismiss'
+        );
+      },
+      (err) => {
+        let parts = err.error.split(':');
+        let mess = parts[parts.length - 1];
+        let description = mess.substring(1, mess.length - 4);
+        this._snackBar.open(description, 'Dismiss');
+      }
+    );
   }
 
   getDr(event: any) {
@@ -122,6 +144,10 @@ export class RegistrationComponent implements OnInit {
       allergy.medicalIngredientId = id;
       this.newPatient.medicalRecord.allergies.push(allergy);
     });
+  }
+
+  getCity(event: any) {
+    this.newPatient.cityId = event.value;
   }
 
   getBloodType(event: any) {
@@ -147,12 +173,10 @@ export class RegistrationComponent implements OnInit {
     this.newPatient.middleName = this.createForm.value.middleName;
     this.newPatient.street = this.createForm.value.street;
     this.newPatient.streetNumber = this.createForm.value.streetNumber;
-    this.newPatient.cityId = 1;
     this.newPatient.dateOfBirth = new Date(
       this.createForm.value.dateOfBirth.getTime() -
         this.createForm.value.dateOfBirth.getTimezoneOffset() * 60000
     );
-    //this.newPatient.medicalRecordId = 9;
     this.newPatient.medicalRecord.weight = this.createForm.value.weight;
     this.newPatient.medicalRecord.height = this.createForm.value.height;
     this.newPatient.phoneNumber = this.createForm.value.phoneNumber;

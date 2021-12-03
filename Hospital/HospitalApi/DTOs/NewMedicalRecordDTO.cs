@@ -13,7 +13,6 @@ namespace HospitalApi.DTOs
         public BloodType BloodType { get; set; }
         public JobStatus JobStatus { get; set; }
         public IEnumerable<NewAllergyDTO> Allergies { get; set; }
-        //public int Id { get; set; }
   
     }
 }

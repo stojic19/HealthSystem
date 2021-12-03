@@ -12,6 +12,7 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Text.Json.Serialization;
 using Hospital.Database.EfStructures;
 using Hospital.SharedModel.Model;
 using Microsoft.AspNetCore.Identity;
@@ -32,7 +33,10 @@ namespace HospitalApi
         {
             services.AddCors(options => options.AddPolicy("MyCorsImplementationPolicy", builder => builder.WithOrigins("*")));
 
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(opt =>
+            {
+                opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

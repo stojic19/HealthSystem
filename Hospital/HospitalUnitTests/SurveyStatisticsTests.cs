@@ -136,7 +136,7 @@ namespace HospitalUnitTests
             Context.SaveChanges();
             #endregion
             SurveyStatisticsService service = new SurveyStatisticsService(UoW);
-            var temp = service.GetAverageQuestionRatingForAllSurveyQuestions();
+            var temp = service.GetAverageQuestionRatingForAllSurveyQuestions().OrderBy(o => o.QuestionId).ToList();
             double avg1 = temp[0].AverageRating;
             double avg2 = temp[1].AverageRating;
             avg1.ShouldBe(3);

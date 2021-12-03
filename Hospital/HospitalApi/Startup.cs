@@ -51,11 +51,15 @@ namespace HospitalApi
             var builder = new ContainerBuilder();
             builder.RegisterModule(new DbModule());
 
-            services.AddIdentity<User, IdentityRole<int>>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<AppDbContext>();
-
-            // TODO: add options here
-
+            services.AddIdentity<User, IdentityRole<int>>(options =>
+                {
+                    options.SignIn.RequireConfirmedAccount = true;
+                    options.Password.RequireDigit = true;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequiredLength = 6;
+                    options.SignIn.RequireConfirmedAccount = true;
+                })
+                .AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
             builder.RegisterModule(new RepositoryModule()
             {
@@ -67,7 +71,7 @@ namespace HospitalApi
                 Namespace = "Repository"
 
 
-            }); 
+            });
             
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
             builder.Populate(services);

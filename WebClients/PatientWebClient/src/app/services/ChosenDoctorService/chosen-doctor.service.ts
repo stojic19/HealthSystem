@@ -10,6 +10,6 @@ export class ChosenDoctorService {
   constructor(private _http: HttpClient) {}
 
   getAllNonLoaded(): Observable<IChosenDoctor[]> {
-    return this._http.get<IChosenDoctor[]>('/api/Doctor/GetNonloadedDoctors');
+    return this._http.get<IChosenDoctor[]>('/api/Doctor');
   }
 }

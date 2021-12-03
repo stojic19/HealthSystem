@@ -314,6 +314,317 @@
         </button>
       </div>
     </form>
+  <div class="container" [formGroup]="createForm" style="width: 70%">
+    <br />
+    <!-- <form [formGroup]="createForm"> -->
+    <div class="separateMe">
+      <div style="width: 100%; display: flex">
+        <mat-form-field appearance="fill">
+          <mat-label>First Name</mat-label>
+          <input matInput formControlName="firstName" />
+          <mat-error
+            *ngIf="
+              createForm?.get('firstName')?.valid &&
+              createForm?.get('firstName')?.touched &&
+              createForm?.get('firstName')?.errors?.required
+            "
+            >First name is required.</mat-error
+          >
+          <mat-error>Invalid input</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Last Name</mat-label>
+          <input matInput formControlName="lastName" />
+          <mat-error
+            *ngIf="
+              createForm?.get('lastName')?.valid &&
+              createForm?.get('lastName')?.touched &&
+              createForm?.get('lastName')?.errors?.required
+            "
+            >Last name is required.</mat-error
+          >
+          <mat-error>Invalid input</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Middle Name</mat-label>
+          <input matInput formControlName="middleName" />
+          <mat-error
+            *ngIf="
+              createForm?.get('middleName')?.valid &&
+              createForm?.get('middleName')?.touched &&
+              createForm?.get('middleName')?.errors?.required
+            "
+            >Middle name is required.</mat-error
+          >
+          <mat-error>Invalid input</mat-error>
+        </mat-form-field>
+      </div>
+      <div style="width: 100%; display: flex">
+        <mat-form-field appearance="fill">
+          <mat-label>Gender</mat-label>
+          <mat-select
+            formControlName="gender"
+            (selectionChange)="getGender($event)"
+          >
+            <mat-option *ngFor="let g of gender" [value]="g">
+              {{ g }}
+            </mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="
+              !createForm?.get('gender')?.valid &&
+              createForm?.get('gender')?.touched &&
+              createForm?.get('gender')?.errors?.required
+            "
+            >Please select gender</mat-error
+          >
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Date of Birth</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            formControlName="dateOfBirth"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <div style="width: 100%; display: flex">
+        <mat-form-field appearance="fill">
+          <mat-label class="col-4">Street</mat-label>
+          <input matInput formControlName="street" />
+          <mat-error
+            *ngIf="
+              !createForm?.get('street')?.valid &&
+              createForm?.get('street')?.touched &&
+              createForm?.get('street')?.errors?.required
+            "
+            >Street is required</mat-error
+          >
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label class="col-4">Street Number</mat-label>
+          <input matInput formControlName="streetNumber" />
+          <mat-error
+            *ngIf="
+              !createForm?.get('streetNumber')?.valid &&
+              createForm?.get('streetNumber')?.touched &&
+              createForm?.get('streetNumber')?.errors?.required
+            "
+            >Street number is required</mat-error
+          >
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label class="col-4">City</mat-label>
+          <input matInput formControlName="city" />
+          <mat-error
+            *ngIf="
+              !createForm?.get('city')?.valid &&
+              createForm?.get('city')?.touched &&
+              createForm?.get('city')?.errors?.required
+            "
+            >City is required</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div style="width: 100%; display: flex">
+        <mat-form-field appearance="fill">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" />
+          <mat-error
+            *ngIf="
+              !createForm?.get('email')?.valid &&
+              createForm?.get('email')?.touched &&
+              createForm?.get('email')?.errors?.required
+            "
+            >Email is required</mat-error
+          >
+          <mat-error
+            *ngIf="
+              !createForm?.get('email')?.valid &&
+              createForm?.get('email')?.touched &&
+              createForm?.get('email')?.errors?.email
+            "
+            >Invalid email!</mat-error
+          >
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Phone Number</mat-label>
+          <input matInput formControlName="phone" />
+          <mat-error
+            *ngIf="
+              !createForm?.get('phone')?.valid &&
+              createForm?.get('phone')?.touched &&
+              createForm?.get('phone')?.errors?.required
+            "
+            >Phone number is required</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <hr />
+      <div style="width: 100%; display: flex">
+        <mat-form-field appearance="fill">
+          <mat-label>Height</mat-label>
+          <input matInput type="number" formControlName="height" />
+          <mat-error>Invalid input</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Weight</mat-label>
+          <input matInput type="number" formControlName="weight" />
+          <mat-error>Invalid input</mat-error>
+        </mat-form-field>
+      </div>
+      <mat-form-field appearance="fill">
+        <mat-label>Job Status</mat-label>
+        <mat-select
+          formControlName="jobStatus"
+          (selectionChange)="getjobStatus($event)"
+        >
+          <mat-option value="Undefined">Undefined</mat-option>
+          <mat-option value="Employed">Employed</mat-option>
+          <mat-option value="Unemployed">Unemployed</mat-option>
+          <mat-option value="Student">Student</mat-option>
+          <mat-option value="Retired">Retired</mat-option>
+          <mat-option value="Child">Child</mat-option>
+        </mat-select>
+        <mat-error
+          *ngIf="
+            !createForm?.get('jobStatus')?.valid &&
+            createForm?.get('jobStatus')?.touched &&
+            createForm?.get('jobStatus')?.errors?.required
+          "
+          >Please select job status</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Blood Type</mat-label>
+        <mat-select
+          formControlName="bloodType"
+          (selectionChange)="getBloodType($event)"
+        >
+          <mat-option *ngFor="let bt of bloodType" [value]="bt">
+            {{ bt }}</mat-option
+          >
+        </mat-select>
+        <mat-error
+          *ngIf="
+            !createForm?.get('bloodType')?.valid &&
+            createForm?.get('bloodType')?.touched &&
+            createForm?.get('bloodType')?.errors?.required
+          "
+          >Please select blood type</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Allergens</mat-label>
+        <mat-select
+          multiple
+          formControlName="allergens"
+          (selectionChange)="getAllergens($event)"
+        >
+          <mat-option *ngFor="let al of allergens" value="{{ al.id }}">
+            {{ al.name }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Doctor Right</mat-label>
+        <mat-select formControlName="drRight" (selectionChange)="getDr($event)">
+          <mat-option *ngFor="let dr of doctors" value="{{ dr.id }}">
+            {{ dr.firstName }} {{ dr.lastName }}</mat-option
+          >
+        </mat-select>
+        <mat-error
+          *ngIf="
+            !createForm?.get('drRight')?.valid &&
+            createForm?.get('drRight')?.touched &&
+            createForm?.get('drRight')?.errors?.required
+          "
+          >Please choose your doctor</mat-error
+        >
+      </mat-form-field>
+      <hr />
+      <mat-form-field appearance="fill">
+        <mat-label>Username</mat-label>
+        <input matInput formControlName="username" />
+        <mat-error
+          *ngIf="
+            !createForm?.get('username')?.valid &&
+            createForm?.get('username')?.touched &&
+            createForm?.get('username')?.errors?.required
+          "
+          >Username is required</mat-error
+        >
+        <mat-error
+          *ngIf="
+            !createForm?.get('username')?.valid &&
+            createForm?.get('username')?.touched &&
+            createForm?.get('username')?.errors?.minlength
+          "
+          >Username must be at least 6 characters long</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          type="password"
+          formControlName="password"
+          (input)="onPasswordInput()"
+        />
+        <mat-error
+          *ngIf="
+            !createForm?.get('password')?.valid &&
+            createForm?.get('password')?.touched &&
+            createForm?.get('password')?.errors?.required
+          "
+          >Password is required</mat-error
+        >
+        <mat-error
+          *ngIf="
+            !createForm?.get('password')?.valid &&
+            createForm?.get('password')?.touched &&
+            createForm?.get('password')?.errors?.minlength
+          "
+          >Password must be at least 8 characters long</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Confirm Password</mat-label>
+        <input
+          type="password"
+          matInput
+          formControlName="passConfirmed"
+          (input)="onPasswordInput()"
+        />
+        <mat-error
+          *ngIf="
+            !createForm?.get('passConfirmed')?.valid &&
+            createForm?.get('passConfirmed')?.touched &&
+            createForm?.get('passConfirmed')?.errors?.required
+          "
+          >Password is required</mat-error
+        >
+        <mat-error *ngIf="!passMatch">Passwords does not match! </mat-error>
+      </mat-form-field>
+    </div>
+    <br /><br />
+    <div style="display: flex; justify-content: center">
+      <button
+        mat-raised-button
+        (click)="onSubmit()"
+        color="accent"
+        class="icon-display"
+      >
+        Register
+      </button>
+    </div>
+    <!-- </form> -->
   </div>
 
   <hr />

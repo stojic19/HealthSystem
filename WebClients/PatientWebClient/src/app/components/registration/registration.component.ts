@@ -12,9 +12,11 @@ import {
   JobStatus,
 } from 'src/app/interfaces/medical-record';
 import { IMedicationIngredient } from 'src/app/interfaces/medication-ingredient';
+import { INewAllergy } from 'src/app/interfaces/new-allergy';
 import { INewPatient, Gender } from 'src/app/interfaces/new-patient';
-import { AllergensService } from 'src/app/services/AllergensService/allergens.service';
+import { AllergensService } from 'src/app/services/AllergenService/allergens.service';
 import { ChosenDoctorService } from 'src/app/services/ChosenDoctorService/chosen-doctor.service';
+import { RegistrationService } from 'src/app/services/PatientService/registration.service';
 
 @Component({
   selector: 'app-registration',
@@ -34,7 +36,8 @@ export class RegistrationComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private doctorService: ChosenDoctorService,
-    private allergensService: AllergensService
+    private allergensService: AllergensService,
+    private registrationService: RegistrationService
   ) {
     this.newPatient = {} as INewPatient;
     this.newPatient.medicalRecord = {} as IMedicalRecord;
@@ -104,14 +107,18 @@ export class RegistrationComponent implements OnInit {
   }
 
   getDr(event: any) {
-    this.newPatient.medicalRecord.doctor.id = event.value;
+    this.newPatient.medicalRecord.doctorId = event.value;
   }
 
-  // if this doensnt work, try passing the whole object or at least its index !!!
   getAllergens(event: any) {
-    this.newPatient.medicalRecord.allergies.push(
-      event.value as IMedicationIngredient
-    );
+    this.newPatient.medicalRecord.allergies = [] as INewAllergy[];
+    let ids = [];
+    ids = event.value.toString().split(',');
+    ids.forEach((id: number) => {
+      let allergy = {} as INewAllergy;
+      allergy.medicalIngredientId = id;
+      this.newPatient.medicalRecord.allergies.push(allergy);
+    });
   }
 
   getBloodType(event: any) {
@@ -128,7 +135,26 @@ export class RegistrationComponent implements OnInit {
 
   onPasswordInput(): void {
     this.passMatch =
-      this.createForm.value.password.toString() ===
-      this.createForm.value.passConfirmed.toString();
+      this.createForm.value.password === this.createForm.value.passConfirmed;
+  }
+
+  createPatient(): void {
+    this.newPatient.firstName = this.createForm.value.firstName;
+    this.newPatient.lastName = this.createForm.value.lastName;
+    this.newPatient.middleName = this.createForm.value.middleName;
+    this.newPatient.street = this.createForm.value.street;
+    this.newPatient.streetNumber = this.createForm.value.streetNumber;
+    this.newPatient.cityId = 1;
+    this.newPatient.dateOfBirth = new Date(
+      this.createForm.value.dateOfBirth.getTime() -
+        this.createForm.value.dateOfBirth.getTimezoneOffset() * 60000
+    );
+    //this.newPatient.medicalRecordId = 9;
+    this.newPatient.medicalRecord.weight = this.createForm.value.weight;
+    this.newPatient.medicalRecord.height = this.createForm.value.height;
+    this.newPatient.phoneNumber = this.createForm.value.phoneNumber;
+    this.newPatient.email = this.createForm.value.email;
+    this.newPatient.userName = this.createForm.value.username;
+    this.newPatient.password = this.createForm.value.password;
   }
 }

@@ -1,15 +1,17 @@
+import { Observable } from 'rxjs';
 import { IChosenDoctor } from './chosen-doctor';
+import { INewAllergy } from './new-allergy';
 
 export enum BloodType {
-  Undefined = 'Undefined',
-  ONegative = '0 Negative',
-  OPositive = '0 Positive',
-  ANegative = 'A Negative',
-  APositive = 'A Positive',
-  BNegative = 'B Negative',
-  BPositive = 'B Positive',
-  ABNegative = 'AB Negative',
-  ABPositive = 'AB Positive',
+  Undefined,
+  ONegative,
+  OPositive,
+  ANegative,
+  APositive,
+  BNegative,
+  BPositive,
+  ABNegative,
+  ABPositive,
 }
 
 export enum JobStatus {
@@ -24,8 +26,9 @@ export enum JobStatus {
 export interface IMedicalRecord {
   height: number;
   weight: number;
+  doctorId: number;
   doctor: IChosenDoctor;
   bloodType: BloodType;
-  allergies: any;
+  allergies: Array<INewAllergy>;
   jobStatus: JobStatus;
 }

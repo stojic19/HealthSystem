@@ -1,12 +1,12 @@
 import { IMedicalRecord } from './medical-record';
 
 export enum Gender {
-  Female = 'Female',
-  Male = 'Male',
+  Male,
+  Female,
 }
 
 export interface INewPatient {
-  username: string;
+  userName: string;
   password: string;
   firstName: string;
   middleName: string;
@@ -18,5 +18,6 @@ export interface INewPatient {
   street: string;
   streetNumber: string;
   cityId: number; // create city??
+  //medicalRecordId: number;
   medicalRecord: IMedicalRecord;
 }

@@ -14,8 +14,6 @@ import { PatientFeedbackComponent } from './components/patient-feedback/patient-
 import { HttpClientModule } from '@angular/common/http';
 import { FeedbacksPageComponent } from './components/feedbacks-page/feedbacks-page.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SurveyComponent } from './components/survey/survey.component';
-import { SurveyPageComponent } from './components/survey-page/survey-page.component';
 import { MainComponent } from './components/main/main.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 
@@ -28,8 +26,6 @@ import { RegistrationComponent } from './components/registration/registration.co
     FeedbackComponent,
     PatientFeedbackComponent,
     FeedbacksPageComponent,
-    SurveyComponent,
-    SurveyPageComponent,
     MainComponent,
     RegistrationComponent,
   ],
@@ -43,6 +39,7 @@ import { RegistrationComponent } from './components/registration/registration.co
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule,
   ],
   providers: [HttpClientModule],
   bootstrap: [AppComponent],

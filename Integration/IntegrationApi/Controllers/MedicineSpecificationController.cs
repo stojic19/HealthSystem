@@ -56,7 +56,9 @@ namespace IntegrationAPI.Controllers
             {
                 FileName = medicineSpecificationFile.FileName,
                 Host = medicineSpecificationFile.Host,
-                PharmacyId = pharmacy.Id
+                PharmacyId = pharmacy.Id,
+                MedicineName = medicineSpecificationFile.MedicineName,
+                ReceivedDate = medicineSpecificationFile.Date
             });
             return Ok("Pharmacy has sent the specification file to sftp server");
         }

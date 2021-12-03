@@ -63,7 +63,9 @@ namespace PharmacyApi.Controllers
             MedicineSpecificationFileDTO medicineSpecificationFileDto = new MedicineSpecificationFileDTO
             {
                 Host = credentials.Host,
-                FileName = fileName
+                FileName = fileName,
+                Date = DateTime.Now,
+                MedicineName = medicine.Name
             };
             return Ok(medicineSpecificationFileDto);
         }

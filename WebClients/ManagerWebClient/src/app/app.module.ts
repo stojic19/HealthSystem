@@ -50,6 +50,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MedicineSpecificationRequestsComponent } from './medicine-specification-requests/medicine-specification-requests.component';
+import { RatingDecimalComponent } from './components/rating-decimal/rating-decimal.component';
+import { SurveySectionObserveComponent } from './components/survey-section-observe/survey-section-observe.component';
+import { SurveysObserveComponent } from './components/surveys-observe/surveys-observe.component';
+import { MaterialModule } from './material/material.module';
 
 @NgModule({
   declarations: [
@@ -86,8 +90,11 @@ import { MedicineSpecificationRequestsComponent } from './medicine-specification
     PharmaciesListComponent,
     MedicationReportsComponent,
     BenefitListComponent, 
-    BenefitDetailsComponent
+    BenefitDetailsComponent,
     MedicineSpecificationRequestsComponent,
+    RatingDecimalComponent,
+    SurveySectionObserveComponent,
+    SurveysObserveComponent,
   ],
   imports: [
     BrowserModule,
@@ -106,7 +113,8 @@ import { MedicineSpecificationRequestsComponent } from './medicine-specification
     MatProgressSpinnerModule,
     MatCheckboxModule, 
     MatOptionModule, 
-    MatSelectModule
+    MatSelectModule,
+    MaterialModule
   ],
   providers: [HttpClientModule],
   bootstrap: [AppComponent],

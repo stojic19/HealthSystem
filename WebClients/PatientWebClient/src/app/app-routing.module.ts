@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { PatientMedicalRecordComponent } from './components/patient-medical-record/patient-medical-record.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,10 @@ const routes: Routes = [
       {
         path: 'feedbacks',
         component: FeedbacksPageComponent,
+      },
+      {
+        path: 'record',
+        component: PatientMedicalRecordComponent,
       },
     ],
   },

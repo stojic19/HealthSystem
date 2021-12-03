@@ -49,6 +49,7 @@ namespace HospitalApi
                     options.Password.RequireDigit = true;
                     options.Password.RequireNonAlphanumeric = false;
                     options.Password.RequiredLength = 6;
+                    options.SignIn.RequireConfirmedAccount = true;
                 })
                 .AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
@@ -63,8 +64,7 @@ namespace HospitalApi
 
 
             });
-            services.AddIdentity<User, IdentityRole<int>>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<AppDbContext>();
+            
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
             builder.Populate(services);
             var container = builder.Build();

@@ -29,6 +29,12 @@ namespace HospitalApi.Controllers
         public async Task<IActionResult> Register([FromBody] NewPatientDTO newUser)
         {
             var userToCreate = _mapper.Map<Patient>(newUser);
+            ////var userToCreate = new Patient();
+            ////userToCreate.UserName = newUser.UserName;
+            ////userToCreate.PasswordHash = newUser.Password;
+            ////userToCreate.MedicalRecord = _mapper.Map<MedicalRecord>(newUser.MedicalRecord);
+            ////userToCreate.MedicalRecord.DoctorId = 2;
+
 
             var result = await _userManager.CreateAsync(userToCreate, newUser.Password);
 

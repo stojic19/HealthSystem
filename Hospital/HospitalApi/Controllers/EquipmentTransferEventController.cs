@@ -67,6 +67,7 @@ namespace HospitalApi.Controllers
             return true;
         }
 
+<<<<<<< HEAD
         [HttpPost]
         public IEnumerable<TimePeriodDTO> GetAvailableTerms(AvailableTermDTO availableTermsDTO)
         {
@@ -93,5 +94,18 @@ namespace HospitalApi.Controllers
 
             return availableTerms;
         }
+=======
+        //[HttpPost]
+        //public IEnumerable<TimePeriod> GetAvailableTerms(AvailableTermDTO availableTermsDTO)
+        //{
+        //    var transferingEquipmentService = new TransferingEquipmentService(_uow);
+        //    var timePeriod = new TimePeriod()
+        //    {
+        //        StartTime = availableTermsDTO.StartDate,
+        //        EndTime = availableTermsDTO.EndDate
+        //    };
+        //    return transferingEquipmentService.GetAvailableTerms(timePeriod, availableTermsDTO.RoomId, availableTermsDTO.Duration);
+        //}
+>>>>>>> feature/register-patient
     }
 }

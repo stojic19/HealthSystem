@@ -20,7 +20,6 @@ namespace Hospital.SharedModel.Repository.Implementation
             var medRecords = _context.Set<MedicalRecord>().AsEnumerable();
 
             var query = medRecords
-                .Where(x => !x.Patient.IsBlocked && x.Patient.EmailConfirmed && x.Doctor.Specialization.Name.ToLower().Equals("general practice"))
                 .GroupBy(t => new { Doctor = t.DoctorId })
                 .Select(g => new { Count = g.Count(p => p.Id > 0), Doctor = g.Key.Doctor });
 
@@ -32,7 +31,8 @@ namespace Hospital.SharedModel.Repository.Implementation
                 .Where(g => g.Count <= min + 2)
                 .Select(g => g.Doctor).ToList();
 
-            var doctors = _context.Set<Doctor>().AsEnumerable();
+            var doctors = _context.Set<Doctor>()
+                .Where(d => d.Specialization.Name.ToLower().Equals("general practice")).AsEnumerable();
 
             return retVal.Select(id => doctors.FirstOrDefault(d => d.Id == id)).AsEnumerable();
         }

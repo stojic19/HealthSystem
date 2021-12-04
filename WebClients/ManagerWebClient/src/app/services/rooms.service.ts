@@ -12,7 +12,7 @@ export class RoomsService {
 
   getFirstFloorOfFirstBuilding() {
     return this.http
-      .get(`${environment.baseUrl}` + 'api/Room', {
+      .get(`${environment.baseUrl}` + 'api/Room/GetRoomsByLocation', {
         params: {
           floorNumber: 1,
           buildingName: 'Building 1',
@@ -24,7 +24,7 @@ export class RoomsService {
 
   getFirstFloorOfSecondBuilding() {
     return this.http
-      .get(`${environment.baseUrl}` + 'api/Room', {
+      .get(`${environment.baseUrl}` + 'api/Room/GetRoomsByLocation', {
         params: {
           floorNumber: 1,
           buildingName: 'Building 2',
@@ -36,7 +36,7 @@ export class RoomsService {
 
   getSecondFloorOfFirstBuilding() {
     return this.http
-      .get(`${environment.baseUrl}` + 'api/Room', {
+      .get(`${environment.baseUrl}` + 'api/Room/GetRoomsByLocation', {
         params: {
           floorNumber: 2,
           buildingName: 'Building 1',
@@ -48,7 +48,7 @@ export class RoomsService {
 
   getSecondFloorOfSecondBuilding() {
     return this.http
-      .get(`${environment.baseUrl}` + 'api/Room', {
+      .get(`${environment.baseUrl}` + 'api/Room/GetRoomsByLocation', {
         params: {
           floorNumber: 2,
           buildingName: 'Building 2',
@@ -59,21 +59,27 @@ export class RoomsService {
   }
 
   getRoomsByNameFirstBuilding(roomName: string) {
-    return this.http.get(`${environment.baseUrl}` + 'api/Room/find', {
-      params: {
-        name: roomName,
-        buildingName: 'Building 1',
-      },
-    });
+    return this.http.get(
+      `${environment.baseUrl}` + 'api/Room/FindByNameAndBuildingName',
+      {
+        params: {
+          name: roomName,
+          buildingName: 'Building 1',
+        },
+      }
+    );
   }
 
   getRoomsByNameSecondBuilding(roomName: string) {
-    return this.http.get(`${environment.baseUrl}` + 'api/Room/find', {
-      params: {
-        name: roomName,
-        buildingName: 'Building 2',
-      },
-    });
+    return this.http.get(
+      `${environment.baseUrl}` + 'api/Room/FindByNameAndBuildingName',
+      {
+        params: {
+          name: roomName,
+          buildingName: 'Building 2',
+        },
+      }
+    );
   }
 
   editRoom(room: Room) {
@@ -82,6 +88,6 @@ export class RoomsService {
   }
 
   getAllRooms() {
-    return this.http.get(`${environment.baseUrl}` + 'api/Room/all');
+    return this.http.get(`${environment.baseUrl}` + 'api/Room/GetAllRooms');
   }
 }

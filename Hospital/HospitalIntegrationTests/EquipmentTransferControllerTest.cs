@@ -39,7 +39,7 @@ namespace HospitalIntegrationTests
 
             var content = GetContent(newRequest);
 
-            var response = await Client.PostAsync(BaseUrl + "api/EquipmentTransferEvent/addEvent", content);
+            var response = await Client.PostAsync(BaseUrl + "api/EquipmentTransferEvent/AddNewEquipmentTransferEvent", content);
 
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
             response.ShouldNotBeNull();
@@ -77,7 +77,7 @@ namespace HospitalIntegrationTests
 
             var content = GetContent(newRequest);
 
-            var response = await Client.PostAsync(BaseUrl + "api/EquipmentTransferEvent/addEvent", content);
+            var response = await Client.PostAsync(BaseUrl + "api/EquipmentTransferEvent/AddNewEquipmentTransferEvent", content);
 
             response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
             response.ShouldNotBeNull();

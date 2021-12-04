@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 namespace HospitalApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     [EnableCors("MyCorsImplementationPolicy")]
 
@@ -25,7 +25,7 @@ namespace HospitalApi.Controllers
             _uow = uow;
         }
 
-        [HttpPost("addEvent")]
+        [HttpPost]
         public IActionResult AddNewEquipmentTransferEvent(EquipmentTransferEvent equipmentTransferEvent)
         {
             try
@@ -35,7 +35,7 @@ namespace HospitalApi.Controllers
                     return BadRequest("Incorrect format sent! Please try again.");
                 }
 
-                if (!IsEnteredAmountIsCorrect(equipmentTransferEvent))
+                if (!IsEnteredAmountCorrect(equipmentTransferEvent))
                 {
                     return BadRequest("Incorrect amount entered. Please Try Again!");
                 }
@@ -56,7 +56,7 @@ namespace HospitalApi.Controllers
             }
         }
 
-        private bool IsEnteredAmountIsCorrect(EquipmentTransferEvent equipmentTransferEvent)
+        private bool IsEnteredAmountCorrect(EquipmentTransferEvent equipmentTransferEvent)
         {
             var roomInventory = _uow.GetRepository<IRoomInventoryReadRepository>()
                 .GetByRoomAndInventoryItem(equipmentTransferEvent.InitalRoomId, equipmentTransferEvent.InventoryItemId);
@@ -67,16 +67,31 @@ namespace HospitalApi.Controllers
             return true;
         }
 
-        //[HttpPost]
-        //public IEnumerable<TimePeriod> GetAvailableTerms(AvailableTermDTO availableTermsDTO)
-        //{
-        //    var transferingEquipmentService = new TransferingEquipmentService(_uow);
-        //    var timePeriod = new TimePeriod()
-        //    {
-        //        StartTime = availableTermsDTO.StartDate,
-        //        EndTime = availableTermsDTO.EndDate
-        //    };
-        //    return transferingEquipmentService.GetAvailableTerms(timePeriod, availableTermsDTO.RoomId, availableTermsDTO.Duration);
-        //}
+        [HttpPost]
+        public IEnumerable<TimePeriodDTO> GetAvailableTerms(AvailableTermDTO availableTermsDTO)
+        {
+            var transferingEquipmentService = new TransferingEquipmentService(_uow);
+            var timePeriod = new TimePeriod()
+            {
+                StartTime = availableTermsDTO.StartDate,
+                EndTime = availableTermsDTO.EndDate
+            };
+            
+            var terms = transferingEquipmentService.GetAvailableTerms(timePeriod, availableTermsDTO.InitialRoomId, availableTermsDTO.DestinationRoomId, availableTermsDTO.Duration);
+            var availableTerms = new List<TimePeriodDTO>();
+            foreach (TimePeriod term in terms)
+            {
+                string start = term.StartTime.ToString("g");
+                string end = term.EndTime.ToString("g");
+                TimePeriodDTO dto = new TimePeriodDTO()
+                {
+                    StartDate = start,
+                    EndDate = end
+                };
+                availableTerms.Add(dto);
+            }
+
+            return availableTerms;
+        }
     }
 }

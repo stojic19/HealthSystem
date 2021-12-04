@@ -9,18 +9,26 @@ using IntegrationAPI.DTO;
 
 namespace IntegrationAPI.Controllers.Base
 {
-    public abstract class BaseSftpController : ControllerBase
+    public abstract class BaseIntegrationController : ControllerBase
     {
         protected readonly IUnitOfWork _unitOfWork;
-        protected readonly SftpCredentialsDTO sftpCredentials;
-        protected BaseSftpController(IUnitOfWork uow)
+        protected readonly SftpCredentialsDTO _sftpCredentials;
+        protected readonly HospitalDTO _hospitalInfo;
+        protected BaseIntegrationController(IUnitOfWork uow)
         {
             _unitOfWork = uow;
-            sftpCredentials = new SftpCredentialsDTO
+            _sftpCredentials = new SftpCredentialsDTO
             {
                 Host = "192.168.0.13",
                 Password = "password",
                 Username = "tester"
+            };
+            _hospitalInfo = new HospitalDTO
+            {
+                Name = "Nasa bolnica",
+                StreetName = "Vojvode Stepe",
+                StreetNumber = "14",
+                CityName = "Novi Sad"
             };
         }
     }

@@ -12,7 +12,7 @@ namespace IntegrationAPI.Adapters.PDF
         public void WriteLine(float xMargin, float yMargin, string text);
         public void SaveDocument(string destination);
         public void SetFontSize(float size);
-        public string MakeMedicineConsumptionReportPdf(MedicineConsumptionReportDTO dto);
+        public string MakeMedicineConsumptionReportPdf(MedicineConsumptionReportToPdfDTO dto);
         public void MakeTitle(string text);
     }
 }

@@ -50,12 +50,12 @@ namespace IntegrationAPI.Adapters.PDF.Implementation
             _lastPage.Elements.Add(label);
         }
 
-        public string MakeMedicineConsumptionReportPdf(MedicineConsumptionReportDTO dto)
+        public string MakeMedicineConsumptionReportPdf(MedicineConsumptionReportToPdfDTO dto)
         {
             MakeTitle("Medicine consumption report");
             WriteLine(0, 20, "Time period, from " 
-                             + dto.startDate.ToShortDateString()
-                             + " to " + dto.endDate.ToShortDateString());
+                             + dto.StartDate.ToShortDateString()
+                             + " to " + dto.EndDate.ToShortDateString());
             WriteLine(0, 20, "Medicine with most amount spent: "
                              + dto.MedicineConsumptions[0].MedicineName
                              + ". Amount spent: " + dto.MedicineConsumptions[0].Amount);
@@ -100,9 +100,8 @@ namespace IntegrationAPI.Adapters.PDF.Implementation
             _lastPage.Elements.Add(table);
             if (_document.Pages.Count > 1) _currentY = table.Height;
             else _currentY = 100 + table.Height;
-            WriteLine(400,30, "Hospital name");
-            WriteLine(400,20, "Manager name");
-            string fileName = "Report-" + dto.createdDate.Ticks.ToString() + ".pdf";
+            WriteLine(350,30, dto.HospitalName);
+            string fileName = "Report-" + dto.CreatedDate.Ticks.ToString() + ".pdf";
             SaveDocument("MedicineReports" + Path.DirectorySeparatorChar + fileName);
             return fileName;
         }

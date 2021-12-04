@@ -21,7 +21,7 @@ namespace IntegrationAPI.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class MedicineSpecificationController : BaseSftpController
+    public class MedicineSpecificationController : BaseIntegrationController
     {
         public MedicineSpecificationController(IUnitOfWork unitOfWork) : base(unitOfWork) { }
 
@@ -81,7 +81,7 @@ namespace IntegrationAPI.Controllers
                 JsonConvert.DeserializeObject<MedicineSpecificationFileDTO>(response.Content);
             try
             {
-                SftpClient sftpClient = new SftpClient(new PasswordConnectionInfo(sftpCredentials.Host, sftpCredentials.Username, sftpCredentials.Password));
+                SftpClient sftpClient = new SftpClient(new PasswordConnectionInfo(_sftpCredentials.Host, _sftpCredentials.Username, _sftpCredentials.Password));
                 sftpClient.Connect();
                 Stream fileStream = System.IO.File.OpenWrite("MedicineSpecifications" + Path.DirectorySeparatorChar + medicineSpecificationFile.FileName);
                 sftpClient.DownloadFile(medicineSpecificationFile.FileName, fileStream);

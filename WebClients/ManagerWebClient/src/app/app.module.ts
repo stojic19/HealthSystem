@@ -86,8 +86,8 @@ import { MedicineSpecificationRequestsComponent } from './medicine-specification
     PharmaciesListComponent,
     MedicationReportsComponent,
     BenefitListComponent, 
-    BenefitDetailsComponent
-    MedicineSpecificationRequestsComponent,
+    BenefitDetailsComponent,
+    MedicineSpecificationRequestsComponent
   ],
   imports: [
     BrowserModule,

@@ -3,9 +3,7 @@ using Hospital.Model;
 using Hospital.Model.Enumerations;
 using HospitalApi.DTOs;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace HospitalApi.AutoMapperProfiles
 {

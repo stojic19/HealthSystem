@@ -9,12 +9,12 @@
         </ng-container>
         <ng-container matColumnDef="Date">
             <th mat-header-cell *matHeaderCellDef> Date </th>
-            <td mat-cell *matCellDef="let element">{{element.startTime | date}} </td>
+            <td mat-cell *matCellDef="let element">{{element.startDate | date}} </td>
         </ng-container>
         <ng-container matColumnDef="Time">
             <th mat-header-cell *matHeaderCellDef> Time </th>
-            <td mat-cell *matCellDef="let element">{{element.startTime | date:'shortTime'}}
-                - {{element.endTime | date:'shortTime'}}
+            <td mat-cell *matCellDef="let element">{{element.startDate | date:'shortTime'}}
+                - {{element.endDate | date:'shortTime'}}
             </td>
         </ng-container>
         <ng-container matColumnDef="Button">

@@ -5,7 +5,7 @@ export enum SurveyCategory {
     StaffSurvey
 }
 export interface ISurveySection {
-    name: String;
+
     questions: IQuestion[];
     category: SurveyCategory;
 }

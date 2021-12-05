@@ -18,8 +18,8 @@ namespace Hospital.Repositories.DbImplementation
             AnsweredSurvey answeredSurvey = new AnsweredSurvey();
             answeredSurvey.AnsweredDate = DateTime.Now;
             answeredSurvey.AnsweredQuestions = answers;
-            answeredSurvey.PatientId = userId;
-            answeredSurvey.ScheduledEventId = scheduledEventId;
+          //  answeredSurvey.PatientId = userId;
+            //answeredSurvey.ScheduledEventId = scheduledEventId;
 
         }
     }

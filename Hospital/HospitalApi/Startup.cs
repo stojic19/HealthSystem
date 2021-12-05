@@ -15,6 +15,9 @@ using Autofac.Extensions.DependencyInjection;
 using Hospital.EfStructures;
 using Hospital.Model;
 using Microsoft.AspNetCore.Identity;
+using Hospital.Services;
+using Hospital.Services.ServiceImpl;
+using System.Text.Json.Serialization;
 
 namespace HospitalApi
 {
@@ -30,9 +33,12 @@ namespace HospitalApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+
             services.AddCors(options => options.AddPolicy("MyCorsImplementationPolicy", builder => builder.WithOrigins("*")));
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+             );
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -47,6 +53,8 @@ namespace HospitalApi
                 .AddEntityFrameworkStores<AppDbContext>();
 
             // TODO: add options here
+            services.AddScoped<IPatientSurveyService, PatientSurveyService>();
+            services.AddScoped<IScheduledEventsService, ScheduledEventsService>();
 
 
             builder.RegisterModule(new RepositoryModule()

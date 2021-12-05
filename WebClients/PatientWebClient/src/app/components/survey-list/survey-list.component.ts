@@ -1,3 +1,4 @@
+import { ScheduledEventsService } from './../../services/ScheduledEventsService/scheduled-events.service';
 import { Router } from '@angular/router';
 import { IScheduledEvent } from 'src/app/interfaces/scheduled-event-interface';
 import { ISurvey } from 'src/app/interfaces/survey/isurvey';
@@ -20,7 +21,7 @@ export class SurveyListComponent implements OnInit {
   allEvents!: IScheduledEvent[];
 
 
-  constructor(private Router: Router) { }
+  constructor(private Router: Router, private eventsService: ScheduledEventsService) { }
 
   openSurveyPage(id: number) {
     // <tr mat-row *matRowDef="let element; columns: columnsToDisplay" routerLink="/surveys/{{element.id}}">
@@ -28,32 +29,14 @@ export class SurveyListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //#region 
-    this.allEvents = [{
-      id: 0,
-      isDone: true,
-      startTime: new Date('October 17, 2021 15:30:00'),
-      endTime: new Date('October 17, 2021 16:24:00')
-    },
-    {
-      id: 1,
-      isDone: true,
-      startTime: new Date('September 21, 2021 10:30:00'),
-      endTime: new Date('September 21, 2021 11:24:00')
+    //TODO: User service to return user Id so I can query 
+    this.eventsService.getEventsForPatient().subscribe((res) => {
+      console.log(res);
 
-    },
-    {
-      id: 2,
-      isDone: true,
-      startTime: new Date('June 10, 2021 14:30:00'),
-      endTime: new Date('June 10, 2021 15:24:00')
-
-    }
-
-    ]
+      this.allEvents = res;
+    })
 
   }
-  //#endregion
 
 
 }

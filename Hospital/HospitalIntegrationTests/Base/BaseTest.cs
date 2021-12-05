@@ -7,6 +7,7 @@ using Xunit;
 
 namespace HospitalIntegrationTests.Base
 {
+    [Collection("IntegrationTests")]
     public abstract class BaseTest : IClassFixture<BaseFixture>
     {
         private readonly BaseFixture _fixture;
@@ -18,6 +19,7 @@ namespace HospitalIntegrationTests.Base
         public IUnitOfWork UoW => _fixture.UoW;
         public HttpClient Client => _fixture.Client;
         public CookieContainer CookieContainer => _fixture.CookieContainer;
+        public string BaseUrl => "https://localhost:44303/";
 
         public void AddCookie(string name, string value, string domain)
         {

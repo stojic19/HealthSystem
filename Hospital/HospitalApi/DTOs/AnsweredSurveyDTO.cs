@@ -8,12 +8,11 @@ namespace HospitalApi.DTOs
 {
     public class AnsweredSurveyDTO
     {
-        public int Id { get; set; }
-        public IEnumerable<AnsweredQuestionDTO> AnsweredQuestions { get; set; }
+ 
+        public IEnumerable<AnsweredQuestionDTO> questions { get; set; }
         public DateTime AnsweredDate { get; set; }
-        public int PatientId { get; set; }
-        public Patient Patient { get; set; }
-        public int SurveyId { get; set; }
-        public Survey Survey { get; set; }
+       
+        public int SurveyId { get; set; }  
+        public int ScheduledEventId { get; set; }
     }
 }

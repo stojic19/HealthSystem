@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace HospitalApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]/[action]")]
     public class CityController : ControllerBase
     {
         private readonly IUnitOfWork uow;
@@ -21,7 +21,7 @@ namespace HospitalApi.Controllers
 
             var CityReadRepo = uow.GetRepository<ICityReadRepository>();
 
-            return CityReadRepo.GetAll(); //
+            return CityReadRepo.GetAll(); 
         }
 
 

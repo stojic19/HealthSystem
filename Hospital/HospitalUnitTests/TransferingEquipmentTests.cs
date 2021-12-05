@@ -27,6 +27,11 @@ namespace HospitalUnitTests
                 Id = 1,
                 Name = "Test room"
             });
+            Context.Rooms.Add(new Room()
+            { 
+                Id = 2,
+                Name = "Test room 2"
+            });
             Context.SaveChanges();
 
             var timePeriod = new TimePeriod()
@@ -36,7 +41,7 @@ namespace HospitalUnitTests
             };
 
             var availableTerms = new TransferingEquipmentService(UoW)
-                .GetAvailableTerms(timePeriod, 1, 1);
+                .GetAvailableTerms(timePeriod, 1, 2, 1);
             availableTerms.ShouldNotBeNull();
             availableTerms.Count().ShouldBe(24);
         }
@@ -56,28 +61,22 @@ namespace HospitalUnitTests
                 Id = 1,
                 Name = "Test room"
             });
-            Context.ScheduledEvents.Add(new ScheduledEvent()
+            Context.Rooms.Add(new Room()
             {
-                Id = 1,
-                StartDate = DateTime.Now.AddHours(6),
-                EndDate = DateTime.Now.AddHours(8),
-                RoomId = 1
+                Id = 2,
+                Name = "Test room 2"
             });
             Context.ScheduledEvents.Add(new ScheduledEvent()
             {
                 Id = 2,
                 StartDate = DateTime.Now.AddHours(3),
                 EndDate = DateTime.Now.AddHours(3.5),
-                Room = new Room()
-                {
-                    Id = 2,
-                    Name = "Test name"
-                }
+                RoomId = 2,
             });
             Context.SaveChanges();
 
             var availableTerms = new TransferingEquipmentService(UoW)
-                .GetAvailableTerms(timePeriod, 2, 1);
+                .GetAvailableTerms(timePeriod, 2, 1, 1);
             availableTerms.ShouldNotBeNull();
             availableTerms.Count().ShouldBe(23);
         }
@@ -90,6 +89,11 @@ namespace HospitalUnitTests
             {
                 Id = 1,
                 Name = "Test room"
+            });
+            Context.Rooms.Add(new Room()
+            {
+                Id = 2,
+                Name = "Test room 2"
             });
             Context.ScheduledEvents.Add(new ScheduledEvent()
             {
@@ -107,7 +111,7 @@ namespace HospitalUnitTests
             };
 
             var availableTerms = new TransferingEquipmentService(UoW)
-                .GetAvailableTerms(timePeriod, 1, 1);
+                .GetAvailableTerms(timePeriod, 1, 2, 1);
             availableTerms.ShouldNotBeNull();
             availableTerms.Count().ShouldBe(1);
         }
@@ -120,6 +124,11 @@ namespace HospitalUnitTests
             {
                 Id = 1,
                 Name = "Test room"
+            });
+            Context.Rooms.Add(new Room()
+            {
+                Id = 2,
+                Name = "Test room 2"
             });
             Context.ScheduledEvents.Add(new ScheduledEvent()
             {
@@ -137,7 +146,7 @@ namespace HospitalUnitTests
             };
 
             var availableTerms = new TransferingEquipmentService(UoW)
-                .GetAvailableTerms(timePeriod, 1, 1);
+                .GetAvailableTerms(timePeriod, 1, 2, 1);
             availableTerms.ShouldNotBeNull();
             availableTerms.ShouldBeEmpty();
         }
@@ -150,6 +159,11 @@ namespace HospitalUnitTests
             {
                 Id = 1,
                 Name = "Test room"
+            });
+            Context.Rooms.Add(new Room()
+            {
+                Id = 2,
+                Name = "Test room 2"
             });
             Context.ScheduledEvents.Add(new ScheduledEvent()
             {
@@ -167,7 +181,7 @@ namespace HospitalUnitTests
             };
 
             var availableTerms = new TransferingEquipmentService(UoW)
-               .GetAvailableTerms(timePeriod, 1, 1);
+               .GetAvailableTerms(timePeriod, 1, 2, 1);
             availableTerms.ShouldNotBeNull();
             availableTerms.Count().ShouldBe(2);
         }
@@ -180,6 +194,11 @@ namespace HospitalUnitTests
             {
                 Id = 1,
                 Name = "Test room"
+            });
+            Context.Rooms.Add(new Room()
+            {
+                Id = 2,
+                Name = "Test room 2"
             });
             Context.ScheduledEvents.Add(new ScheduledEvent()
             {
@@ -196,7 +215,7 @@ namespace HospitalUnitTests
             };
 
             var availableTerms = new TransferingEquipmentService(UoW)
-               .GetAvailableTerms(timePeriod, 1, 1);
+               .GetAvailableTerms(timePeriod, 1, 2, 1);
             availableTerms.ShouldNotBeNull();
             availableTerms.Count().ShouldBe(1);
         }

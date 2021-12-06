@@ -18,10 +18,8 @@ export class MedicineSpecificationListComponent implements OnInit {
             .subscribe(specifications => this.specifications = specifications);
   }
 
-  showPdf(fileName: string): void {
-    this._medicineSpecificationService.getSpecificationPdf(fileName).subscribe((r: any) => this.answer = r)
-    console.log(this.answer)
-
+  showPDF(fileName: any): void {
+    this._medicineSpecificationService.openPdf(fileName)
   }
 
 }

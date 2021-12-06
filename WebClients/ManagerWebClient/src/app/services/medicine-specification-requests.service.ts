@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -19,9 +19,15 @@ export class MedicineSpecificationRequestsService {
     return this._httpClient.get<any[]>(this._APIUrl+'/MedicineSpecification/GetAllMedicineSpecificationFiles');
   }
 
-  getSpecificationPdf(fileName: string): any
+  openPdf(fileName: string): void
   {
-    return this._httpClient.get(this._APIUrl+'/MedicineSpecification/getSpecificationPdf?fileName=' + fileName)
+    this._httpClient.post(this._APIUrl+'/MedicineSpecification/getSpecificationPdf?fileName=' + fileName, {location: "report.pdf"}, { responseType: 'blob' }).subscribe(
+      (response) => {
+          var blob = new Blob([response], { type: "application/pdf" });
+          window.open(URL.createObjectURL(blob), "_blank")
+      },
+      e => { throwError(e); }
+    );
   }
 
   sendRequest(val:any)

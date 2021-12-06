@@ -49,6 +49,7 @@ namespace HospitalIntegrationTests
             {
                 UserName = "testUserName",
                 Password = "Test Passw0rd",
+                Email = "testemail@gmail.com",
                 CityId = 1,
                 MedicalRecord = medRec
             };

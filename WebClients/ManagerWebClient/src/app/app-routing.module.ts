@@ -44,6 +44,7 @@ const routes: Routes = [
   { path: 'home', component: HomePageComponent },
   { path: 'medication-consumption-report', component: MedicationReportsComponent},
   { path: 'medicine-specification-requests', component: MedicineSpecificationListComponent},
+  { path: 'new-medicine-specification-request', component: MedicineSpecificationRequestsComponent},
   { path: '', redirectTo: 'home', pathMatch: 'full'},
   { path: 'moveEquipment/:id', component: EquipmentFormComponent },
   { path: 'surveys', component: SurveysObserveComponent},

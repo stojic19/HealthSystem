@@ -1,0 +1,24 @@
+<div class="panel panel-primary">
+    <div class="panel-heading m-3">
+        <h2>Medicine Specification List</h2>
+    </div>
+    
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Medicine name</th>
+                    <th>Pharmacy name</th>
+                    <th>Received time</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor='let specification of specifications'>
+                    <td>{{specification.medicineName}}</td>
+                    <td>{{specification.pharmacyName}}</td>
+                    <td>{{specification.receivedDate | date: 'dd-MM-yyyy hh:mm'}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

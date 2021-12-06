@@ -54,6 +54,7 @@ import { RatingDecimalComponent } from './components/rating-decimal/rating-decim
 import { SurveySectionObserveComponent } from './components/survey-section-observe/survey-section-observe.component';
 import { SurveysObserveComponent } from './components/surveys-observe/surveys-observe.component';
 import { MaterialModule } from './material/material.module';
+import { MedicineSpecificationListComponent } from './medicine-specification-requests/medicine-specification-list/medicine-specification-list.component';
 
 @NgModule({
   declarations: [
@@ -95,6 +96,7 @@ import { MaterialModule } from './material/material.module';
     RatingDecimalComponent,
     SurveySectionObserveComponent,
     SurveysObserveComponent,
+    MedicineSpecificationListComponent,
   ],
   imports: [
     BrowserModule,

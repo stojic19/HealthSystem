@@ -23,6 +23,7 @@ import { MedicineSpecificationRequestsComponent } from './medicine-specification
 import { SurveysObserveComponent } from './components/surveys-observe/surveys-observe.component';
 import { SurveySectionObserveComponent } from './components/survey-section-observe/survey-section-observe.component';
 import { RatingDecimalComponent } from './components/rating-decimal/rating-decimal.component';
+import { MedicineSpecificationListComponent } from './medicine-specification-requests/medicine-specification-list/medicine-specification-list.component';
 
 const routes: Routes = [
   { path: 'overview', component: HospitalOverviewComponent },
@@ -42,7 +43,7 @@ const routes: Routes = [
   { path: 'benefit/:id', component: BenefitDetailsComponent },
   { path: 'home', component: HomePageComponent },
   { path: 'medication-consumption-report', component: MedicationReportsComponent},
-  { path: 'medicine-specification-requests', component: MedicineSpecificationRequestsComponent},
+  { path: 'medicine-specification-requests', component: MedicineSpecificationListComponent},
   { path: '', redirectTo: 'home', pathMatch: 'full'},
   { path: 'moveEquipment/:id', component: EquipmentFormComponent },
   { path: 'surveys', component: SurveysObserveComponent},

@@ -47,11 +47,12 @@ namespace IntegrationAPI.Controllers
             return retVal;
         }
 
-        [HttpGet]
+        [HttpGet, Produces("application/pdf")]
         public IActionResult GetSpecificationPdf([FromQuery(Name = "fileName")] string fileName)
         {
             try
             {
+                Response.Headers["Content-Disposition"] = $"inline; filename={fileName}";
                 var stream = new FileStream("MedicineSpecifications" + Path.DirectorySeparatorChar + fileName, FileMode.Open);
                 return File(stream, "application/pdf", fileName);
             }

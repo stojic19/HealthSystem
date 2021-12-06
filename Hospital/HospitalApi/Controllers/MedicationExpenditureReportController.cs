@@ -25,7 +25,7 @@ namespace HospitalApi.Controllers
         [HttpPost]
         public IActionResult GetMedicationExpenditureReport(TimePeriod timePeriod)
         {
-            if (timePeriod.EndTime == null || timePeriod.StartTime == null || timePeriod.StartTime > timePeriod.EndTime)
+            if (timePeriod.EndTime == DateTime.MinValue || timePeriod.StartTime == DateTime.MinValue || timePeriod.StartTime > timePeriod.EndTime)
             {
                 return BadRequest("Wrong time period!");
             }

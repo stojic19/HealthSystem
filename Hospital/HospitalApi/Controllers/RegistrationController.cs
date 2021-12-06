@@ -6,6 +6,7 @@ using Hospital.SharedModel.Model;
 using HospitalApi.DTOs;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Hospital.MedicalRecords.Service;
 
 namespace HospitalApi.Controllers
 {
@@ -38,8 +39,10 @@ namespace HospitalApi.Controllers
 
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(userFromDB);
 
-            // TODO: use token to build activation URL and call sendEmail method // 
-
+            var confirmationLink = Url.Action("ConfirmEmail", "Email", new { token, email = newUser.Email }, Request.Scheme);
+            //var confirmationLink = Url.PageLink("http://localhost:4200/confirmationEmail?token=" + token + "&email=" + newUser.Email);
+            EmailService emailService = new EmailService();
+            bool emailResponse = emailService.SendEmail(userFromDB.Email, confirmationLink);
             return Ok(result);
 
         }

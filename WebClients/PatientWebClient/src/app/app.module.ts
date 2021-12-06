@@ -16,6 +16,7 @@ import { FeedbacksPageComponent } from './components/feedbacks-page/feedbacks-pa
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MainComponent } from './components/main/main.component';
 import { RegistrationComponent } from './components/registration/registration.component';
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { RegistrationComponent } from './components/registration/registration.co
     FeedbacksPageComponent,
     MainComponent,
     RegistrationComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,

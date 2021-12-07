@@ -66,9 +66,21 @@ namespace IntegrationAPI.Controllers
                 return BadRequest("No pharmacy has the needed medicine");
             }
 
+            var sftpResponse = SendPrescriptionWithSftp(foundPharmacy, dto);
+            var httpResponse = SendPrescriptionWithHttp(foundPharmacy, dto);
 
 
             return Ok(foundPharmacy.Name);
+        }
+
+        private IActionResult SendPrescriptionWithSftp(Pharmacy pharmacy, PrescriptionDTO dto)
+        {
+            return Ok();
+        }
+
+        private IActionResult SendPrescriptionWithHttp(Pharmacy pharmacy, PrescriptionDTO dto)
+        {
+            return Ok();
         }
     }
 }

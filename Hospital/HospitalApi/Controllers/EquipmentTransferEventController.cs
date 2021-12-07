@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HospitalApi.Controllers
 {
@@ -59,7 +60,7 @@ namespace HospitalApi.Controllers
         private bool IsEnteredAmountCorrect(EquipmentTransferEvent equipmentTransferEvent)
         {
             var roomInventory = _uow.GetRepository<IRoomInventoryReadRepository>()
-                .GetByRoomAndInventoryItem(equipmentTransferEvent.InitalRoomId, equipmentTransferEvent.InventoryItemId);
+                .GetByRoomAndInventoryItem(equipmentTransferEvent.InitialRoomId, equipmentTransferEvent.InventoryItemId);
 
             if (roomInventory.Amount < equipmentTransferEvent.Quantity)
                 return false;
@@ -76,7 +77,7 @@ namespace HospitalApi.Controllers
                 StartTime = availableTermsDTO.StartDate,
                 EndTime = availableTermsDTO.EndDate
             };
-            
+
             var terms = transferingEquipmentService.GetAvailableTerms(timePeriod, availableTermsDTO.InitialRoomId, availableTermsDTO.DestinationRoomId, availableTermsDTO.Duration);
             var availableTerms = new List<TimePeriodDTO>();
             foreach (TimePeriod term in terms)
@@ -92,6 +93,16 @@ namespace HospitalApi.Controllers
             }
 
             return availableTerms;
+        }
+
+        [HttpGet]
+        public IEnumerable<EquipmentTransferEvent> GetTransferEventsByRoom(int roomId)
+        {
+            var transferEventRepo = _uow.GetRepository<IEquipmentTransferEventReadRepository>();
+            
+            return transferEventRepo.GetAll()
+                .Where(transfer => transfer.DestinationRoomId == roomId ||
+                                    transfer.InitialRoomId == roomId);
         }
     }
 }

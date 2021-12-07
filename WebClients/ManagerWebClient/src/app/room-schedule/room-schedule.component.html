@@ -1,7 +1,7 @@
 <div class="row mb-3 mt-1 d-flex justify-content-center">
   <div style="width: 80%; margin: auto">
     <h4 class="mb-4 title" style="text-align: center">
-      R O O M <span class="ms-4">E Q U I P M E N T</span>
+      R O O M <span class="ms-4">S C H E D U L E</span>
     </h4>
   </div>
 
@@ -12,6 +12,7 @@
       class="table-responsive custom-table-responsive"
     >
       <table
+        *ngIf="!isLoading"
         class="
           table table-hover
           justify-content-center
@@ -20,18 +21,23 @@
       >
         <thead>
           <tr>
-            <th class="col-md-4">Name</th>
-            <th class="col-md-4">Inventory type</th>
-            <th class="col-md-4">Amount</th>
+            <th class="col-md-4">Type</th>
+            <th class="col-md-4">Start</th>
+            <th class="col-md-4">End</th>
+            <th class="col-md-4">Cancel</th>
+            <!-- da li je potrebno neko dugme za detalje -->
           </tr>
         </thead>
-        <tbody *ngIf="!isLoading">
-          <tr *ngFor="let inventory of roomInventories">
-            <td>{{ inventory.inventoryItem.name }}</td>
-            <td>
-              {{ inventory.inventoryItem.inventoryItemType }}
+        <tbody>
+          <tr *ngFor="let event of equipmentTransferEvents">
+            <td>Equipment Transfer</td>
+            <td>{{ event.startDate | date: "dd.MM.yyyy HH:mm" }}</td>
+            <td>{{ event.endDate | date: "dd.MM.yyyy HH:mm" }}</td>
+            <td class="pt-1">
+              <div class="buttonWrapper">
+                <button class="btn btn-danger cancelButton">Cancel</button>
+              </div>
             </td>
-            <td>{{ inventory.amount }}</td>
           </tr>
         </tbody>
       </table>

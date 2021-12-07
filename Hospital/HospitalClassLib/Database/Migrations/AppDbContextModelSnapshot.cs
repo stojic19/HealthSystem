@@ -159,6 +159,29 @@ namespace Hospital.Migrations
                     b.ToTable("Medications");
                 });
 
+            modelBuilder.Entity("Hospital.MedicalRecords.Model.MedicationExpenditureLog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("AmountSpent")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("MedicationId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MedicationId");
+
+                    b.ToTable("MedicationExpenditureLogs");
+                });
+
             modelBuilder.Entity("Hospital.MedicalRecords.Model.MedicationIngredient", b =>
                 {
                     b.Property<int>("Id")
@@ -913,6 +936,17 @@ namespace Hospital.Migrations
                         .IsRequired();
 
                     b.Navigation("Doctor");
+                });
+
+            modelBuilder.Entity("Hospital.MedicalRecords.Model.MedicationExpenditureLog", b =>
+                {
+                    b.HasOne("Hospital.MedicalRecords.Model.Medication", "Medication")
+                        .WithMany()
+                        .HasForeignKey("MedicationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Medication");
                 });
 
             modelBuilder.Entity("Hospital.MedicalRecords.Model.Prescription", b =>

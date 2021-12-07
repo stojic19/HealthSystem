@@ -12,16 +12,19 @@ using RestSharp;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using IntegrationAPI.Adapters.PDF;
+using IntegrationAPI.Adapters.PDF.Implementation;
+using IntegrationAPI.Controllers.Base;
 
 namespace IntegrationAPI.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class ReportController : ControllerBase
+    public class ReportController : BaseIntegrationController
     {
         private readonly PharmacyMasterService _pharmacyMasterService;
         private readonly MedicineConsumptionMasterService _medicineConsumptionMasterService;
-        public ReportController(IUnitOfWork unitOfWork)
+        public ReportController(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
             _pharmacyMasterService = new PharmacyMasterService(unitOfWork);
             _medicineConsumptionMasterService = new MedicineConsumptionMasterService(unitOfWork);
@@ -53,20 +56,20 @@ namespace IntegrationAPI.Controllers
         [Produces("application/json")]
         public IActionResult SendConsumptionReport(MedicineConsumptionReportDTO report)
         {
-            SftpCredentialsDTO sftpCredentials = getSftpCredentials();
+            string fileName;
             try
             {
-                SaveMedicineReportToSftpServer(report, sftpCredentials);
+                fileName = SaveMedicineReportToSftpServer(report, _sftpCredentials);
             }
             catch
             {
                 return BadRequest("Failed to contact sftp server");
             }
-            SendToPharmacies(report, sftpCredentials);
+            SendToPharmacies(report, fileName);
             return Ok("Report sent to pharmacies");
         }
 
-        private void SendToPharmacies(MedicineConsumptionReportDTO report, SftpCredentialsDTO sftpCredentials)
+        private void SendToPharmacies(MedicineConsumptionReportDTO report, string fileName)
         {
             var pharmacies = _pharmacyMasterService.GetPharmacies();
             foreach (Pharmacy pharmacy in pharmacies)
@@ -77,29 +80,28 @@ namespace IntegrationAPI.Controllers
                 request.AddJsonBody(new ReportDTO
                 {
                     ApiKey = pharmacy.ApiKey,
-                    FileName = "Report-" + report.createdDate.Ticks.ToString() + ".txt",
-                    Host = sftpCredentials.Host
+                    FileName = fileName,
+                    Host = _sftpCredentials.Host
                 });
                 client.PostAsync<IActionResult>(request);
             }
         }
-
-        private SftpCredentialsDTO getSftpCredentials()
+        private string SaveMedicineReportToSftpServer(MedicineConsumptionReportDTO report, SftpCredentialsDTO credentials)
         {
-            return new SftpCredentialsDTO
+            //SaveFile(report, path);
+            IPDFAdapter adapter = new DynamicPDFAdapter();
+            MedicineConsumptionReportToPdfDTO medicineConsumptionReportToPdfDto = new MedicineConsumptionReportToPdfDTO
             {
-                Host = "192.168.0.13",
-                Password = "password",
-                Username = "tester"
+                StartDate = report.startDate,
+                EndDate = report.endDate,
+                CreatedDate = report.createdDate,
+                MedicineConsumptions = report.MedicineConsumptions,
+                HospitalName = _hospitalInfo.Name
             };
-        }
-
-        private void SaveMedicineReportToSftpServer(MedicineConsumptionReportDTO report, SftpCredentialsDTO credentials)
-        {
-            string path = "MedicineReports" + Path.DirectorySeparatorChar + "Report-" +
-                          report.createdDate.Ticks.ToString() + ".txt";
-            SaveFile(report, path);
-            SaveToSftp(path, credentials);
+            string fileName = adapter.MakeMedicineConsumptionReportPdf(medicineConsumptionReportToPdfDto);
+            string dest = "MedicineReports" + Path.DirectorySeparatorChar + fileName;
+            SaveToSftp(dest, credentials);
+            return fileName;
         }
         private void SaveFile(MedicineConsumptionReportDTO consumptionReport, string path)
         {

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
-
+	
   <ItemGroup>
     <PackageReference Include="ceTe.DynamicPDF.CoreSuite.NET" Version="11.21.0" />
     <PackageReference Include="RabbitMQ.Client" Version="6.2.2" />
@@ -19,6 +19,11 @@
     <Reference Include="Pharmacy">
       <HintPath>..\Pharmacy\bin\Debug\net5.0\Pharmacy.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="Protos\medicineInventoryModel.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\medicineInventoryService.proto" GrpcServices="Server" />
   </ItemGroup>
 
 

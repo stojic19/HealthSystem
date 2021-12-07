@@ -85,6 +85,7 @@ namespace HospitalIntegrationTests
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
             var presc = UoW.GetRepository<IPrescriptionReadRepository>().GetAll()
                 .FirstOrDefault(x => x.StartDate == content.StartDate);
+            presc.ShouldNotBeNull();
             UoW.GetRepository<IPrescriptionWriteRepository>().Delete(presc);
             UoW.GetRepository<ICountryWriteRepository>().Delete(country);
             UoW.GetRepository<IRoomWriteRepository>().Delete(room);

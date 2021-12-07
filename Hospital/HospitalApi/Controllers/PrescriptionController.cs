@@ -61,7 +61,8 @@ namespace HospitalApi.Controllers
                 PatientLastName = patient.LastName,
                 StartDate = newPrescription.StartDate,
                 EndDate = newPrescription.EndDate,
-                IssuedDate = newPrescription.IssuedDate
+                IssuedDate = newPrescription.IssuedDate,
+                MedicineName = medication.Name
             });
             var response = restClient.PostAsync<IActionResult>(request);
             return Ok();

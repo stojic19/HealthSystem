@@ -96,7 +96,7 @@ namespace Hospital.RoomsAndEquipment.Service
 
         private void ExecuteTransfer(EquipmentTransferEvent transferEvent) {
             var initialRoom = uow.GetRepository<IRoomInventoryReadRepository>()
-                .GetByRoomAndInventoryItem(transferEvent.InitalRoomId, transferEvent.InventoryItemId);
+                .GetByRoomAndInventoryItem(transferEvent.InitialRoomId, transferEvent.InventoryItemId);
 
             var destinationRoom = uow.GetRepository<IRoomInventoryReadRepository>()
                 .GetByRoomAndInventoryItem(transferEvent.DestinationRoomId, transferEvent.InventoryItemId);

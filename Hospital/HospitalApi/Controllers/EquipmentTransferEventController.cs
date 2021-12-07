@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HospitalApi.Controllers
 {
@@ -93,6 +94,16 @@ namespace HospitalApi.Controllers
             }
 
             return availableTerms;
+        }
+
+        [HttpGet]
+        public IEnumerable<EquipmentTransferEvent> GetTransferEventsByRoom(int roomId)
+        {
+            var transferEventRepo = _uow.GetRepository<IEquipmentTransferEventReadRepository>();
+            
+            return transferEventRepo.GetAll()
+                .Where(transfer => transfer.DestinationRoomId == roomId ||
+                                    transfer.InitialRoomId == roomId);
         }
     }
 }

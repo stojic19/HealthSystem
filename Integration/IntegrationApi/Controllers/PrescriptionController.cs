@@ -78,13 +78,6 @@ namespace IntegrationAPI.Controllers
         {
             IPDFAdapter adapter = new DynamicPDFAdapter();
             string fileName = adapter.MakePrescriptionPdf(dto, "sftp");
-            return fileName;
-        }
-
-        private string SendPrescriptionWithHttp(Pharmacy pharmacy, PrescriptionDTO dto)
-        {
-            IPDFAdapter adapter = new DynamicPDFAdapter();
-            string fileName = adapter.MakePrescriptionPdf(dto, "http");
             string path = "Prescriptions" + Path.DirectorySeparatorChar + "Sftp" + Path.DirectorySeparatorChar + fileName;
             SftpClient sftpClient = new SftpClient(new PasswordConnectionInfo(_sftpCredentials.Host, _sftpCredentials.Username, _sftpCredentials.Password));
             sftpClient.Connect();
@@ -93,6 +86,13 @@ namespace IntegrationAPI.Controllers
             sftpClient.UploadFile(fileStream, filePath);
             sftpClient.Disconnect();
             fileStream.Close();
+            return fileName;
+        }
+
+        private string SendPrescriptionWithHttp(Pharmacy pharmacy, PrescriptionDTO dto)
+        {
+            IPDFAdapter adapter = new DynamicPDFAdapter();
+            string fileName = adapter.MakePrescriptionPdf(dto, "http");
             return fileName;
         }
     }

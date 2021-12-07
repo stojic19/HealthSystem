@@ -1,5 +1,6 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Grpc.Core;
 using Integration.Database.Infrastructure;
 using Integration.Partnership.Service;
 using Integration.Shared.Repository.Base;
@@ -26,6 +27,7 @@ namespace IntegrationAPI
         }
 
         public IConfiguration Configuration { get; }
+        private Server server;
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
@@ -41,6 +43,8 @@ namespace IntegrationAPI
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "IntegrationApi", Version = "v1" });
             });
             services.AddHostedService<BenefitRabbitMqService>();
+
+            services.AddGrpc();
 
             var builder = new ContainerBuilder();
             builder.RegisterModule(new DbModule());
@@ -62,7 +66,7 @@ namespace IntegrationAPI
             return new AutofacServiceProvider(container);
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime applicationLifetime)
         {
 
             app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
@@ -84,6 +88,23 @@ namespace IntegrationAPI
             {
                 endpoints.MapControllers();
             });
+
+            server = new Server
+            {
+                Services = { },
+                Ports = { new ServerPort("127.0.0.1", 3000, ServerCredentials.Insecure) }
+            };
+            server.Start();
+
+            applicationLifetime.ApplicationStopping.Register(OnShutdown);
+        }
+
+        private void OnShutdown()
+        {
+            if (server != null)
+            {
+                server.ShutdownAsync().Wait();
+            }
 
         }
     }

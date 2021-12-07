@@ -4,18 +4,25 @@ using System.Linq;
 using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Grpc.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Hosting.Internal;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Pharmacy.EfStructures;
 using Pharmacy.Infrastructure;
 using Pharmacy.Repositories.Base;
 using Pharmacy.Repositories.DbImplementation;
 using PharmacyApi.ConfigurationMappers;
+using PharmacyApi.GrpcServices;
+using PharmacyApi.Protos;
 
 namespace PharmacyApi
 {
@@ -27,6 +34,8 @@ namespace PharmacyApi
         }
 
         public IConfiguration Configuration { get; }
+
+        private Server server;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
@@ -54,6 +63,8 @@ namespace PharmacyApi
 
             services.AddSingleton<PharmacyDetails>(details);
 
+            //services.AddGrpc();
+            
             var builder = new ContainerBuilder();
             builder.RegisterModule(new DbModule());
             builder.RegisterModule(new RepositoryModule()
@@ -70,11 +81,15 @@ namespace PharmacyApi
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
             builder.Populate(services);
             var container = builder.Build();
+            //services.AddTransient<MedicineInventoryServiceImpl>(_ =>
+            //{
+            //    return new MedicineInventoryServiceImpl(container.Resolve<IUnitOfWork>());
+            //});
             return new AutofacServiceProvider(container);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime applicationLifetime)
         {
             if (env.IsDevelopment())
             {
@@ -92,7 +107,27 @@ namespace PharmacyApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+
+                //endpoints.MapGrpcService<MedicineInventoryServiceImpl>();
             });
+
+            server = new Server
+            {
+                Services = { MedicineInventoryService.BindService(new MedicineInventoryServiceImpl())},
+                Ports = { new ServerPort("127.0.0.1", 8787, ServerCredentials.Insecure) }
+            };
+            server.Start();
+
+            applicationLifetime.ApplicationStopping.Register(OnShutdown);
+        }
+
+        private void OnShutdown()
+        {
+            if (server != null)
+            {
+                server.ShutdownAsync().Wait();
+            }
+
         }
     }
 }

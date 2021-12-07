@@ -15,6 +15,8 @@ using System.Reflection;
 using System.Text.Json.Serialization;
 using Hospital.Database.EfStructures;
 using Hospital.SharedModel.Model;
+using HospitalApi.HttpRequestSenders;
+using HospitalApi.HttpRequestSenders.Implementation;
 using Microsoft.AspNetCore.Identity;
 
 namespace HospitalApi
@@ -70,6 +72,7 @@ namespace HospitalApi
             });
             
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
+            builder.RegisterType<HttpRequestSender>().As<IHttpRequestSender>();
             builder.Populate(services);
             var container = builder.Build();
             return new AutofacServiceProvider(container);

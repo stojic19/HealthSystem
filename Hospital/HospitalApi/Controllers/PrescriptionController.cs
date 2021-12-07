@@ -8,6 +8,7 @@ using Hospital.MedicalRecords.Model;
 using Hospital.MedicalRecords.Repository;
 using Hospital.SharedModel.Repository.Base;
 using HospitalApi.DTOs;
+using HospitalApi.HttpRequestSenders;
 using RestSharp;
 
 namespace HospitalApi.Controllers
@@ -17,10 +18,12 @@ namespace HospitalApi.Controllers
     public class PrescriptionController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IHttpRequestSender _httpRequestSender;
         private readonly string _integrationBaseUrl;
-        public PrescriptionController(IUnitOfWork unitOfWork)
+        public PrescriptionController(IUnitOfWork unitOfWork, IHttpRequestSender httpRequestSender)
         {
             _unitOfWork = unitOfWork;
+            _httpRequestSender = httpRequestSender;
             _integrationBaseUrl = "https://localhost:44302/";
         }
 

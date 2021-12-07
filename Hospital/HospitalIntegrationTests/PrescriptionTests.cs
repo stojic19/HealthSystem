@@ -11,8 +11,14 @@ using Hospital.RoomsAndEquipment.Repository;
 using Hospital.SharedModel.Model;
 using Hospital.SharedModel.Model.Enumerations;
 using Hospital.SharedModel.Repository;
+using HospitalApi.Controllers;
 using HospitalApi.DTOs;
+using HospitalApi.HttpRequestSenders;
 using HospitalIntegrationTests.Base;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
+using Newtonsoft.Json;
+using RestSharp;
 using Shouldly;
 using Xunit;
 
@@ -73,7 +79,7 @@ namespace HospitalIntegrationTests
                 Name = "PrescriptionTestMedication"
             };
             UoW.GetRepository<IPatientWriteRepository>().Add(patient);
-            UoW.GetRepository<IMedicationWriteRepository>().Add(medication);
+            UoW.GetRepository<IMedicationWriteRepository>().Add(medication); 
             var content = new NewPrescriptionDTO
             {
                 PatientId = patient.Id,
@@ -81,16 +87,31 @@ namespace HospitalIntegrationTests
                 EndDate = new DateTime(2022, 11, 20),
                 StartDate = new DateTime(2020, 1, 3)
             };
-            var response = await Client.PostAsync(BaseUrl + "api/Prescription/CreateNewPrescription", GetContent(content));
-            response.StatusCode.ShouldBe(HttpStatusCode.OK);
+            var integrationContent = new PrescriptionToIntegrationDTO
+            {
+                EndDate = new DateTime(2022, 11, 20),
+                StartDate = new DateTime(2020, 1, 3),
+                IssuedDate = DateTime.Now,
+                MedicineName = medication.Name,
+                PatientFirstName = patient.FirstName,
+                PatientLastName = patient.LastName
+            };
+            var stubSender = new Mock<IHttpRequestSender>();
+            RestResponse response = new RestResponse();
+            response.StatusCode = HttpStatusCode.OK;
+            stubSender.Setup(m => m.Post(IntegrationBaseUrl + "api/Prescription/PostPrescription",
+                content)).Returns(response);
+            PrescriptionController controller = new PrescriptionController(UoW, stubSender.Object);
+            var result = controller.CreateNewPrescription(content).GetType();
             var presc = UoW.GetRepository<IPrescriptionReadRepository>().GetAll()
                 .FirstOrDefault(x => x.StartDate == content.StartDate);
-            presc.ShouldNotBeNull();
             UoW.GetRepository<IPrescriptionWriteRepository>().Delete(presc);
             UoW.GetRepository<ICountryWriteRepository>().Delete(country);
             UoW.GetRepository<IRoomWriteRepository>().Delete(room);
             UoW.GetRepository<ISpecializationWriteRepository>().Delete(specialization);
             UoW.GetRepository<IMedicationWriteRepository>().Delete(medication);
+            presc.MedicationId.ShouldBe(medication.Id);
+            result.ShouldBe(typeof(OkResult));
         }
     }
 }

@@ -22,8 +22,6 @@ namespace HospitalUnitTests
                 Id = 1,
                 Name = "Test name",
                 Description = "Test description",
-                DimensionX = 3.5,
-                DimensionY = 4,
                 FloorNumber = 1,
                 BuildingName = "Test building"
             });
@@ -42,8 +40,6 @@ namespace HospitalUnitTests
                 Id = 1,
                 Name = "Test name",
                 Description = "Test description",
-                DimensionX = 3.5,
-                DimensionY = 4,
                 FloorNumber = 1,
                 BuildingName = "Test building"
             });
@@ -52,8 +48,6 @@ namespace HospitalUnitTests
                 Id = 2,
                 Name = "Test name",
                 Description = "Test description",
-                DimensionX = 3.5,
-                DimensionY = 4,
                 FloorNumber = 1,
                 BuildingName = "Test building"
             });
@@ -62,8 +56,6 @@ namespace HospitalUnitTests
                 Id = 3,
                 Name = "Room name",
                 Description = "Test description",
-                DimensionX = 3.5,
-                DimensionY = 4,
                 FloorNumber = 1,
                 BuildingName = "Test building"
             });
@@ -87,8 +79,6 @@ namespace HospitalUnitTests
                     Id = 1,
                     Name = "Test name",
                     Description = "Test description",
-                    DimensionX = 3.5,
-                    DimensionY = 4,
                     FloorNumber = 1,
                     BuildingName = "Test building"
                 },

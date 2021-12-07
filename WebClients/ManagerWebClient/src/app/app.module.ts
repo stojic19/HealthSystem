@@ -54,6 +54,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MedicationReportsComponent } from './medication-reports/medication-reports/medication-reports.component';
 import { BenefitListComponent } from './benefits/benefit-list/benefit-list.component';
 import { BenefitDetailsComponent } from './benefits/benefit-details/benefit-details.component';
+import { MedicineSpecificationListComponent } from './medicine-specification-requests/medicine-specification-list/medicine-specification-list.component';
 
 @NgModule({
   declarations: [
@@ -95,6 +96,7 @@ import { BenefitDetailsComponent } from './benefits/benefit-details/benefit-deta
     RatingDecimalComponent,
     SurveySectionObserveComponent,
     SurveysObserveComponent,
+    MedicineSpecificationListComponent,
   ],
   imports: [
     BrowserModule,

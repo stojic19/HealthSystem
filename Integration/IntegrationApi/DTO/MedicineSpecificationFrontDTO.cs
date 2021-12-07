@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PharmacyApi.DTO
+namespace IntegrationAPI.DTO
 {
-    public class MedicineSpecificationFileDTO
+    public class MedicineSpecificationFrontDTO
     {
         public string FileName { get; set; }
-        public string Host { get; set; }
+        public string PharmacyName { get; set; }
         public string MedicineName { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime ReceivedDate { get; set; }
     }
 }

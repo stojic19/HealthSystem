@@ -10,6 +10,7 @@ namespace Pharmacy.Model
     {
         public int Id { get; set; }
         public string FileName { get; set; }
+        public DateTime ReceivedDate { get; set; }
         public string Host { get; set; }
         public int HospitalId { get; set; }
         public Hospital Hospital { get; set; }

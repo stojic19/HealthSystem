@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ceTe.DynamicPDF;
 using ceTe.DynamicPDF.PageElements;
+using ceTe.DynamicPDF.PageElements.BarCoding;
 using IntegrationAPI.DTO;
 using Path = System.IO.Path;
 
@@ -135,7 +136,7 @@ namespace IntegrationAPI.Adapters.PDF.Implementation
             switch (requestType)
             {
                 case "http":
-                    //insert qr code
+                    AddQrCodePrescription(dto, hospitalDto, 400, 30);
                     fileName = "Prescription-http-" + dto.IssuedDate.Ticks.ToString() + ".pdf";
                     SaveDocument("Prescriptions" + Path.DirectorySeparatorChar + "Http" + Path.DirectorySeparatorChar + fileName);
                     break;
@@ -154,5 +155,25 @@ namespace IntegrationAPI.Adapters.PDF.Implementation
             _lastPage.Elements.Add(naslov);
         }
 
+        private void AddQrCodePrescription(PrescriptionDTO prescDto, HospitalDTO hospDto, float xMargin, float yMargin)
+        {
+            string text = MakePrescriptionTextForQr(prescDto, hospDto);
+            QrCode qrCode = new QrCode(text, xMargin, _currentY + yMargin);
+            _currentY = _currentY + yMargin;
+            _lastPage.Elements.Add(qrCode);
+        }
+
+        private string MakePrescriptionTextForQr(PrescriptionDTO prescDto, HospitalDTO hospDto)
+        {
+            string text = "";
+            text += prescDto.PatientFirstName + ";";
+            text += prescDto.PatientLastName + ";";
+            text += prescDto.StartDate.ToShortDateString() + ";";
+            text += prescDto.EndDate.ToShortDateString() + ";";
+            text += prescDto.IssuedDate.ToShortDateString() + ";";
+            text += hospDto.Name + ";";
+            text += hospDto.StreetName + " " + hospDto.StreetNumber + ", " + hospDto.CityName + ";";
+            return text;
+        }
     }
 }

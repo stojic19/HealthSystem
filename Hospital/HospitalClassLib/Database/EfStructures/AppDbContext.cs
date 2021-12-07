@@ -1,4 +1,5 @@
-﻿using Hospital.MedicalRecords.Model;
+﻿using Hospital.GraphicalEditor.Model;
+using Hospital.MedicalRecords.Model;
 using Hospital.RoomsAndEquipment.Model;
 using Hospital.Schedule.Model;
 using Hospital.SharedModel.Model;
@@ -35,6 +36,8 @@ namespace Hospital.Database.EfStructures
         public DbSet<AnsweredSurvey> AnsweredSurveys { get; set; }
         public DbSet<EquipmentTransferEvent> EquipmentTransferEvents { get; set; }
         public DbSet<MedicationExpenditureLog> MedicationExpenditureLogs { get; set; }
+        public DbSet<RoomPosition> RoomPositions { get; set; }
+        public DbSet<RoomRenovationEvent> RoomRenovationEvents { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {

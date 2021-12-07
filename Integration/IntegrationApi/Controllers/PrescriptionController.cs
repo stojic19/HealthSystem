@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using IntegrationAPI.Adapters.PDF;
+using IntegrationAPI.Adapters.PDF.Implementation;
 
 namespace IntegrationAPI.Controllers
 {
@@ -69,18 +71,21 @@ namespace IntegrationAPI.Controllers
             var sftpResponse = SendPrescriptionWithSftp(foundPharmacy, dto);
             var httpResponse = SendPrescriptionWithHttp(foundPharmacy, dto);
 
-
-            return Ok(foundPharmacy.Name);
+            return Ok(foundPharmacy.Name + " " + sftpResponse + " " + httpResponse);
         }
 
-        private IActionResult SendPrescriptionWithSftp(Pharmacy pharmacy, PrescriptionDTO dto)
+        private string SendPrescriptionWithSftp(Pharmacy pharmacy, PrescriptionDTO dto)
         {
-            return Ok();
+            IPDFAdapter adapter = new DynamicPDFAdapter();
+            string fileName = adapter.MakePrescriptionPdf(dto, "sftp");
+            return fileName;
         }
 
-        private IActionResult SendPrescriptionWithHttp(Pharmacy pharmacy, PrescriptionDTO dto)
+        private string SendPrescriptionWithHttp(Pharmacy pharmacy, PrescriptionDTO dto)
         {
-            return Ok();
+            IPDFAdapter adapter = new DynamicPDFAdapter();
+            string fileName = adapter.MakePrescriptionPdf(dto, "http");
+            return fileName;
         }
     }
 }

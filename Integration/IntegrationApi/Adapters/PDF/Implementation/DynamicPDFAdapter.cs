@@ -106,6 +106,48 @@ namespace IntegrationAPI.Adapters.PDF.Implementation
             return fileName;
         }
 
+        public string MakePrescriptionPdf(PrescriptionDTO dto, string requestType)
+        {
+            MakeTitle("Prescription");
+            WriteLine(0, 60, "Patient first name: "
+                             + dto.PatientFirstName);
+            WriteLine(0, 20, "Patient last name: "
+                             + dto.PatientLastName);
+            WriteLine(0, 20, "Consumption, from "
+                             + dto.StartDate.ToShortDateString()
+                             + " to " + dto.EndDate.ToShortDateString());
+            WriteLine(0, 20, "Issued: "
+                             + dto.IssuedDate.ToShortDateString());
+
+            WriteLine(0, 40, "Hospital info");
+            HospitalDTO hospitalDto = new HospitalDTO()
+            {
+                Name = "Nasa bolnica",
+                StreetName = "Vojvode Stepe",
+                StreetNumber = "14",
+                CityName = "Novi Sad"
+            };
+            WriteLine(0, 20, "Hospital name: "
+                             + hospitalDto.Name);
+            WriteLine(0, 20, "Address: " + hospitalDto.StreetName + " " + hospitalDto.StreetNumber + ", " + hospitalDto.CityName);
+
+            string fileName = "";
+            switch (requestType)
+            {
+                case "http":
+                    //insert qr code
+                    fileName = "Prescription-http-" + dto.IssuedDate.Ticks.ToString() + ".pdf";
+                    SaveDocument("Prescriptions" + Path.DirectorySeparatorChar + "Http" + Path.DirectorySeparatorChar + fileName);
+                    break;
+                case "sftp":
+                    fileName = "Prescription-sftp-" + dto.IssuedDate.Ticks.ToString() + ".pdf";
+                    SaveDocument("Prescriptions" + Path.DirectorySeparatorChar + "Sftp" + Path.DirectorySeparatorChar + fileName);
+                    break;
+            }
+
+            return fileName;
+        }
+
         public void MakeTitle(string text)
         {
             Label naslov = new Label(text, _currentY, 0, 512, 16, Font.HelveticaBold, 16, TextAlign.Center, RgbColor.Black);

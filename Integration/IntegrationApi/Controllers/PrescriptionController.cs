@@ -7,29 +7,28 @@ using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using IntegrationAPI.Adapters.PDF;
 using IntegrationAPI.Adapters.PDF.Implementation;
+using IntegrationAPI.Controllers.Base;
+using Renci.SshNet;
 
 namespace IntegrationAPI.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class PrescriptionController : ControllerBase
+    public class PrescriptionController : BaseIntegrationController
     {
-        private IUnitOfWork _uow;
 
-        public PrescriptionController(IUnitOfWork uow)
-        {
-            _uow = uow;
-        }
+        public PrescriptionController(IUnitOfWork uow) : base(uow){}
 
         [HttpPost]
         public IActionResult PostPrescription(PrescriptionDTO dto)
         {
-            var pharmacies = _uow.GetRepository<IPharmacyReadRepository>().GetAll();
+            var pharmacies = _unitOfWork.GetRepository<IPharmacyReadRepository>().GetAll();
             Pharmacy foundPharmacy = null;
             foreach(var pharmacy in pharmacies)
             {
@@ -69,6 +68,14 @@ namespace IntegrationAPI.Controllers
             }
 
             var sftpResponse = SendPrescriptionWithSftp(foundPharmacy, dto);
+            string path = "Prescriptions" + Path.DirectorySeparatorChar + sftpResponse;
+            SftpClient sftpClient = new SftpClient(new PasswordConnectionInfo(_sftpCredentials.Host, _sftpCredentials.Username, _sftpCredentials.Password));
+            sftpClient.Connect();
+            Stream fileStream = System.IO.File.OpenRead(path);
+            string filePath = Path.GetFileName(path);
+            sftpClient.UploadFile(fileStream, filePath);
+            sftpClient.Disconnect();
+            fileStream.Close();
             var httpResponse = SendPrescriptionWithHttp(foundPharmacy, dto);
 
             return Ok(foundPharmacy.Name + " " + sftpResponse + " " + httpResponse);

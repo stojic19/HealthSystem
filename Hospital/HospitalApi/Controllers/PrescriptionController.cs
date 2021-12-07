@@ -21,7 +21,7 @@ namespace HospitalApi.Controllers
         public PrescriptionController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _integrationBaseUrl = "https:/localhost:44302/";
+            _integrationBaseUrl = "https://localhost:44302/";
         }
 
         [HttpPost]
@@ -54,7 +54,7 @@ namespace HospitalApi.Controllers
             var writeRepo = _unitOfWork.GetRepository<IPrescriptionWriteRepository>();
             writeRepo.Add(newPrescription);
             RestClient restClient = new RestClient();
-            RestRequest request = new RestRequest(_integrationBaseUrl + "api/Prescription/SendToPharmacy");
+            RestRequest request = new RestRequest(_integrationBaseUrl + "api/Prescription/PostPrescription");
             request.AddJsonBody(new PrescriptionToIntegrationDTO
             {
                 PatientFirstName = patient.FirstName,

@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { throwMatDuplicatedDrawerError } from '@angular/material/sidenav';
 import { ActivatedRoute } from '@angular/router';
 import { EquipmentTransferEvent } from '../model/equipment-transfer-event';
-import { RoomInventoriesService } from '../services/room-inventories.service';
+import { RoomRenovationEvent } from '../model/room-renovation-event';
 import { RoomScheduleService } from '../services/room-schedule.service';
 
 @Component({
@@ -23,15 +22,16 @@ export class RoomScheduleComponent implements OnInit {
   }
 
   equipmentTransferEvents: EquipmentTransferEvent[];
+  renovationEvents: RoomRenovationEvent[];
   isLoading = true;
   selectedEvent: EquipmentTransferEvent;
 
   ngOnInit(): void {
-    this.getAllScheduledEvents();
+    this.getAllEquipmentTransfers();
+    this.getAllRenovations();
   }
 
-  getAllScheduledEvents() {
-    this.isLoading = false;
+  getAllEquipmentTransfers() {
     this.roomScheduleService
       .getTransferEventsByRoom(this.roomId)
       .toPromise()
@@ -39,5 +39,21 @@ export class RoomScheduleComponent implements OnInit {
         this.equipmentTransferEvents = res as EquipmentTransferEvent[];
         this.isLoading = false;
       });
+  }
+
+  getAllRenovations() {
+    this.isLoading = false;
+    this.roomScheduleService
+      .getRenovationsByRoom(this.roomId)
+      .toPromise()
+      .then((res) => {
+        this.renovationEvents = res as RoomRenovationEvent[];
+        this.isLoading = false;
+      });
+  }
+
+  getAllAppointments() {
+    this.isLoading = false;
+    //dodati ucitavanje termina
   }
 }

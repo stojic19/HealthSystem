@@ -63,8 +63,11 @@ namespace HospitalApi.Controllers
             var roomInventory = _uow.GetRepository<IRoomInventoryReadRepository>()
                 .GetByRoomAndInventoryItem(equipmentTransferEvent.InitialRoomId, equipmentTransferEvent.InventoryItemId);
 
-            if (roomInventory.Amount < equipmentTransferEvent.Quantity)
-                return false;
+            if(roomInventory != null)
+            {
+                if (roomInventory.Amount < equipmentTransferEvent.Quantity)
+                    return false;
+            }
 
             return true;
         }

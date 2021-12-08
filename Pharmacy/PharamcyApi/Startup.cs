@@ -37,6 +37,8 @@ namespace PharmacyApi
 
         private Server server;
 
+        private IUnitOfWork unitOfWork;
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
@@ -62,9 +64,7 @@ namespace PharmacyApi
             }
 
             services.AddSingleton<PharmacyDetails>(details);
-
-            //services.AddGrpc();
-            
+           
             var builder = new ContainerBuilder();
             builder.RegisterModule(new DbModule());
             builder.RegisterModule(new RepositoryModule()
@@ -81,10 +81,13 @@ namespace PharmacyApi
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
             builder.Populate(services);
             var container = builder.Build();
-            //services.AddTransient<MedicineInventoryServiceImpl>(_ =>
-            //{
-            //    return new MedicineInventoryServiceImpl(container.Resolve<IUnitOfWork>());
-            //});
+
+            unitOfWork = container.Resolve<IUnitOfWork>();
+            services.AddTransient<MedicineInventoryServiceImpl>(_ =>
+            {
+                return new MedicineInventoryServiceImpl(unitOfWork);
+            });
+
             return new AutofacServiceProvider(container);
         }
 
@@ -107,14 +110,12 @@ namespace PharmacyApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-
-                //endpoints.MapGrpcService<MedicineInventoryServiceImpl>();
             });
 
             server = new Server
             {
-                Services = { MedicineInventoryService.BindService(new MedicineInventoryServiceImpl())},
-                Ports = { new ServerPort("127.0.0.1", 8787, ServerCredentials.Insecure) }
+                Services = { MedicineInventoryService.BindService(new MedicineInventoryServiceImpl(unitOfWork))},
+                Ports = { new ServerPort("127.0.0.1", 5000, ServerCredentials.Insecure) }
             };
             server.Start();
 

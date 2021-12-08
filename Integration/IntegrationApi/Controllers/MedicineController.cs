@@ -99,9 +99,9 @@ namespace IntegrationAPI.Controllers
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 responseDTO.Answer = true;
-                responseDTO.NotificationText = response.Content;
-                _medicineInventoryMasterService.AddMedicineToInventory(medicineRequestDTO.MedicineName, medicineRequestDTO.Quantity);
-            }  
+                responseDTO.ExceptionMessage = response.Content;
+                // poslati bolnici nabavljen lek
+            }
             return Ok(responseDTO);
         }
 
@@ -110,6 +110,10 @@ namespace IntegrationAPI.Controllers
             MedicineProcurementGrpcResponseDTO grpcResponseDTO = MedicineInventorygRPCService.UrgentMedicineProcurement(createMedicineRequestDTO, pharmacy);
             if (grpcResponseDTO.ConnectionSuccesfull)
             {
+                if(grpcResponseDTO.Response.Answer == true) 
+                {
+                    // poslati bolnici nabavljen lek
+                }
                 return Ok(grpcResponseDTO.Response);
             }
             else

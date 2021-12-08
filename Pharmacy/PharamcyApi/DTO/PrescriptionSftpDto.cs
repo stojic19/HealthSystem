@@ -6,10 +6,8 @@ using PharmacyApi.DTO.Base;
 
 namespace PharmacyApi.DTO
 {
-    public class PrescriptionHttpDto : BaseCommunicationDTO
+    public class PrescriptionSftpDto : BaseCommunicationDTO
     {
-        public byte[] FileContent { get; set; }
         public string FileName { get; set; }
-
     }
 }

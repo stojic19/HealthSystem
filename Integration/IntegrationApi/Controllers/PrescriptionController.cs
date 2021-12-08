@@ -72,7 +72,10 @@ namespace IntegrationAPI.Controllers
             
             var httpResponse = SendPrescriptionWithHttp(foundPharmacy, dto);
 
-            return Ok(foundPharmacy.Name + " " + sftpResponse + " " + httpResponse);
+            string fullResponse = "Pharmacy: " + foundPharmacy.Name + "\n" +
+                                  "SFTP: " + sftpResponse + "\n" +
+                                  "HTTP: " + httpResponse;
+            return Ok(fullResponse);
         }
 
         private string SendPrescriptionWithSftp(Pharmacy pharmacy, PrescriptionDTO dto)
@@ -87,7 +90,19 @@ namespace IntegrationAPI.Controllers
             sftpClient.UploadFile(fileStream, filePath);
             sftpClient.Disconnect();
             fileStream.Close();
-            return fileName;
+
+            PrescriptionSendSftpDto prescDto = new PrescriptionSendSftpDto()
+            {
+                ApiKey = pharmacy.ApiKey,
+                FileName = fileName
+            };
+            RestClient client = new RestClient();
+            string targetUrl = pharmacy.BaseUrl + "/api/Prescription/ReceivePrescriptionSftp";
+            RestRequest request = new RestRequest(targetUrl);
+            request.AddJsonBody(prescDto);
+            var response = client.Post(request).Content;
+
+            return response;
         }
 
         private string SendPrescriptionWithHttp(Pharmacy pharmacy, PrescriptionDTO dto)
@@ -103,7 +118,7 @@ namespace IntegrationAPI.Controllers
                 FileName = fileName
             };
             RestClient client = new RestClient();
-            string targetUrl = pharmacy.BaseUrl + "/api/Prescription/ReceivePrescription";
+            string targetUrl = pharmacy.BaseUrl + "/api/Prescription/ReceivePrescriptionHttp";
             RestRequest request = new RestRequest(targetUrl);
             request.AddJsonBody(prescDto);
             var response = client.Post(request).Content;

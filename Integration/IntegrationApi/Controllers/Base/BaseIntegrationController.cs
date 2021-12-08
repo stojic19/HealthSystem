@@ -19,7 +19,7 @@ namespace IntegrationAPI.Controllers.Base
             _unitOfWork = uow;
             _sftpCredentials = new SftpCredentialsDTO
             {
-                Host = "192.168.0.13",
+                Host = "192.168.0.22",
                 Password = "password",
                 Username = "tester"
             };

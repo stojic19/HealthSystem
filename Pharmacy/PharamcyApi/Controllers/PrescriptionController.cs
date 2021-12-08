@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using IntegrationAPI.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Pharmacy.Repositories.Base;
 using PharmacyApi.ConfigurationMappers;
 using PharmacyApi.Controllers.Base;
+using PharmacyApi.DTO;
+using Renci.SshNet;
 
 namespace PharmacyApi.Controllers
 {
@@ -20,7 +21,7 @@ namespace PharmacyApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult ReceivePrescription(PrescriptionHttpDto prescriptionHttpDto)
+        public IActionResult ReceivePrescriptionHttp(PrescriptionHttpDto prescriptionHttpDto)
         {
             if (!IsApiKeyValid(prescriptionHttpDto.ApiKey))
             {
@@ -38,7 +39,32 @@ namespace PharmacyApi.Controllers
             {
                 return BadRequest("Failed to save prescription");
             }
-            
+        }
+
+        [HttpPost]
+        public IActionResult ReceivePrescriptionSftp(PrescriptionSftpDto prescriptionSftpDto)
+        {
+            if (!IsApiKeyValid(prescriptionSftpDto.ApiKey))
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                SftpClient sftpClient = new SftpClient(new PasswordConnectionInfo(_sftpCredentials.Host, _sftpCredentials.Username, _sftpCredentials.Password));
+                sftpClient.Connect();
+                Stream fileStream = System.IO.File.OpenWrite("Prescriptions" + Path.DirectorySeparatorChar + prescriptionSftpDto.FileName);
+                sftpClient.DownloadFile(prescriptionSftpDto.FileName, fileStream);
+                sftpClient.Disconnect();
+                fileStream.Close();
+
+                return Ok("Done");
+            }
+            catch
+            {
+                return BadRequest("Failed to save prescription");
+            }
+
         }
     }
 }

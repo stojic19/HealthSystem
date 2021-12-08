@@ -35,7 +35,12 @@
             <td>{{ event.endDate | date: "dd.MM.yyyy HH:mm" }}</td>
             <td class="pt-1">
               <div class="buttonWrapper">
-                <button class="btn btn-danger cancelButton">Cancel</button>
+                <button
+                  class="btn btn-danger cancelButton"
+                  (click)="confirmTransferCancelDialog()"
+                >
+                  Cancel
+                </button>
               </div>
             </td>
           </tr>
@@ -45,7 +50,12 @@
             <td>{{ event.endDate | date: "dd.MM.yyyy HH:mm" }}</td>
             <td class="pt-1">
               <div class="buttonWrapper">
-                <button class="btn btn-danger cancelButton">Cancel</button>
+                <button
+                  class="btn btn-danger cancelButton"
+                  (click)="confirmRenovationCancelDialog()"
+                >
+                  Cancel
+                </button>
               </div>
             </td>
           </tr>

@@ -21,6 +21,8 @@ namespace Integration.Pharmacies.Model
 
         public string BaseUrl { get; set; }
 
+        public bool GrpcSupported { get; set; }
+
         public bool isEqual(Pharmacy pharmacy)
         {
             return Name.Equals(pharmacy.Name) && StreetName.Equals(pharmacy.StreetName) && StreetNumber.Equals(pharmacy.StreetNumber)

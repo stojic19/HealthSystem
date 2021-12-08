@@ -8,6 +8,6 @@ namespace IntegrationAPI.DTO
         public String MedicineName { get; set; }
         public String ManufacturerName { get; set; }
         public int Quantity { get; set; }
-        public bool GrpcCommunication { get; set; }
+
     }
 }

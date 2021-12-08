@@ -37,7 +37,7 @@ namespace IntegrationAPI.Controllers
             {
                 return BadRequest("Pharmacy id doesn't exist.");
             }
-            if(createMedicineRequestDTO.GrpcCommunication)
+            if(pharmacy.GrpcSupported)
             {
                 return CheckMedicineAvailabilityGrpc(createMedicineRequestDTO, pharmacy);
             }
@@ -85,7 +85,7 @@ namespace IntegrationAPI.Controllers
             {
                 return BadRequest("Pharmacy id doesn't exist.");
             }
-            if (createMedicineRequestDTO.GrpcCommunication)
+            if (pharmacy.GrpcSupported)
             {
                 return MedicineProcurementGrpc(createMedicineRequestDTO, pharmacy);
             }

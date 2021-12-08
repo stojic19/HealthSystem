@@ -24,6 +24,7 @@
   <ItemGroup>
     <Folder Include="GraphicalEditor\Service\" />
     <Folder Include="Database\Migrations\" />
+    <Folder Include="MedicalRecords\Service\" />
     <Folder Include="SharedModel\Service\" />
   </ItemGroup>
 

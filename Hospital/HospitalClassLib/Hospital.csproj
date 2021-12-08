@@ -22,10 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="GraphicalEditor\Model\" />
-    <Folder Include="GraphicalEditor\Repository\Implementation\" />
     <Folder Include="GraphicalEditor\Service\" />
-    <Folder Include="MedicalRecords\Service\" />
     <Folder Include="Database\Migrations\" />
     <Folder Include="SharedModel\Service\" />
   </ItemGroup>

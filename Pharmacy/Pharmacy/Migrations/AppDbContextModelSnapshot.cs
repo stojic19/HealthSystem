@@ -258,6 +258,32 @@ namespace Pharmacy.Migrations
                     b.ToTable("MedicineCombinations");
                 });
 
+            modelBuilder.Entity("Pharmacy.Model.MedicineReportFile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("FileName")
+                        .HasColumnType("text");
+
+                    b.Property<int>("HospitalId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Host")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("ReceivedDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HospitalId");
+
+                    b.ToTable("MedicineReportFiles");
+                });
+
             modelBuilder.Entity("Pharmacy.Model.Substance", b =>
                 {
                     b.Property<int>("Id")
@@ -286,29 +312,6 @@ namespace Pharmacy.Migrations
                         .HasForeignKey("SubstancesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-                modelBuilder.Entity("Pharmacy.Model.MedicineReportFile", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("FileName")
-                        .HasColumnType("text");
-
-                    b.Property<int>("HospitalId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Host")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-                    b.HasIndex("HospitalId");
-
-                    b.ToTable("MedicineReportFiles");
-                    
                 });
 
             modelBuilder.Entity("Pharmacy.Model.City", b =>

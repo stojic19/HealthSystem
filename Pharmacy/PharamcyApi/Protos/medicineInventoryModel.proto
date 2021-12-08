@@ -11,7 +11,7 @@ message CheckMedicineAvailabilityRequestModel {
 
 message CheckMedicineAvailabilityResponseModel {
 	bool answer = 1;
-	//string exceptionMessage = 2;
+	string exceptionMessage = 2;
 }
 
 message MedicineProcurementRequestModel {
@@ -23,5 +23,5 @@ message MedicineProcurementRequestModel {
 
 message MedicineProcurementResponseModel {
 	bool answer = 1;
-	//string exceptionMessage = 2;
+	string exceptionMessage = 2;
 }

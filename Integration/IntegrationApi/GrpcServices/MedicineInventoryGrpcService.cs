@@ -16,18 +16,15 @@ namespace IntegrationAPI.gRPCServices
         {
             try
             {
-                var channel = new Channel("https://localhost:8787", ChannelCredentials.Insecure);
-                var client = new MedicineInventory.MedicineInventoryClient(channel);
+                var channel = new Channel(pharmacy.BaseUrl, ChannelCredentials.Insecure);
+                var client = new MedicineInventoryService.MedicineInventoryServiceClient(channel);
                 var input = new CheckMedicineAvailabilityRequestModel() { ApiKey = pharmacy.ApiKey.ToString(), ManufacturerName = medicineRequestDTO.ManufacturerName, MedicineName = medicineRequestDTO.MedicineName, Quantity = medicineRequestDTO.Quantity };
-                Console.WriteLine(pharmacy.BaseUrl);
-                var response = client.CheckMedicineAvailabilityAsync(input);
-                Console.WriteLine(response);
-                return new CheckMedicineAvailabilityGrpcResponseDTO { ConnectionSuccesfull = true, Response = new CheckMedicineAvailabilityResponseDTO { Answer = response.ResponseAsync.Result.Answer } };
+                var response = client.CheckMedicineAvailability(input);
+                return new CheckMedicineAvailabilityGrpcResponseDTO { ConnectionSuccesfull = true, ExceptionMessage = response.ExceptionMessage, Response = new CheckMedicineAvailabilityResponseDTO { Answer = response.Answer } };
             }
             catch (Exception exc)
             {
-                Console.WriteLine(exc.StackTrace);
-                return new CheckMedicineAvailabilityGrpcResponseDTO { ConnectionSuccesfull = false, Response = new CheckMedicineAvailabilityResponseDTO() };
+                return new CheckMedicineAvailabilityGrpcResponseDTO { ConnectionSuccesfull = false, ExceptionMessage = exc.Message, Response = new CheckMedicineAvailabilityResponseDTO() };
             }
         }
 
@@ -35,15 +32,15 @@ namespace IntegrationAPI.gRPCServices
         {
             try
             {
-                var channel = GrpcChannel.ForAddress(pharmacy.BaseUrl);
-                var medicineinventoryClient = new MedicineInventory.MedicineInventoryClient(channel);
-                var informationForChecking = new MedicineProcurementRequestModel { ApiKey = pharmacy.ApiKey.ToString(), ManufacturerName = medicineRequestDTO.ManufacturerName, MedicineName = medicineRequestDTO.MedicineName, Quantity = medicineRequestDTO.Quantity };
-                var response = medicineinventoryClient.EmergencyMedicineProcurement(informationForChecking);
-                return new MedicineProcurementGrpcResponseDTO { ConnectionSuccesfull = true, Response = new MedicineProcurementResponseDTO { Answer = response.Answer } };
+                var channel = new Channel(pharmacy.BaseUrl, ChannelCredentials.Insecure);
+                var client = new MedicineInventoryService.MedicineInventoryServiceClient(channel);
+                var input = new MedicineProcurementRequestModel { ApiKey = pharmacy.ApiKey.ToString(), ManufacturerName = medicineRequestDTO.ManufacturerName, MedicineName = medicineRequestDTO.MedicineName, Quantity = medicineRequestDTO.Quantity };
+                var response = client.EmergencyMedicineProcurement(input);
+                return new MedicineProcurementGrpcResponseDTO { ConnectionSuccesfull = true, Response = new MedicineProcurementResponseDTO { Answer = response.Answer, ExceptionMessage = response.ExceptionMessage } };
             }
-            catch
+            catch (Exception exc)
             {
-                return new MedicineProcurementGrpcResponseDTO { ConnectionSuccesfull = false, Response = new MedicineProcurementResponseDTO() };
+                return new MedicineProcurementGrpcResponseDTO { ConnectionSuccesfull = false, Response = new MedicineProcurementResponseDTO { ExceptionMessage = exc.Message } };
             }
         }
     }

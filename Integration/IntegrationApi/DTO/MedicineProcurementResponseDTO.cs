@@ -2,7 +2,7 @@
 {
     public class MedicineProcurementResponseDTO
     {
-        public bool answer{ get; set; }
-        public string notificationText { get; set; }
+        public bool Answer{ get; set; }
+        public string NotificationText { get; set; }
     }
 }

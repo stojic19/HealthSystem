@@ -68,7 +68,7 @@ namespace HospitalApi.Controllers
                 prescriptionToIntegrationDTO);
             var writeRepo = _unitOfWork.GetRepository<IPrescriptionWriteRepository>();
             writeRepo.Add(newPrescription);
-            return Ok();
+            return Ok(response.Content);
         }
     }
 }

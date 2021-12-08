@@ -38,7 +38,7 @@ namespace Pharmacy.Services
                 throw new MedicineUnavailableException();
             }
 
-            Medicine medicine = _uow.GetRepository<IMedicineReadRepository>().GetMedicineByNameAndManufacturerName(medicineName, manufacturerName);
+            Medicine medicine = _uow.GetRepository<IMedicineReadRepository>().GetMedicineByName(medicineName);
 
             medicine.Quantity -= quantity;
 

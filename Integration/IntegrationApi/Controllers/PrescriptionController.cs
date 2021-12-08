@@ -50,16 +50,13 @@ namespace IntegrationAPI.Controllers
                 {
                     continue;
                 }
-                else
-                {
 
-                    CheckMedicineAvailabilityResponseDTO responseDTO = 
+                CheckMedicineAvailabilityResponseDTO responseDTO = 
                         JsonConvert.DeserializeObject<CheckMedicineAvailabilityResponseDTO>(content);
-                    if (responseDTO.answer)
-                    {
-                        foundPharmacy = pharmacy;
-                        break;
-                    }
+                if (responseDTO.answer)
+                {
+                    foundPharmacy = pharmacy;
+                    break;
                 }
             }
 

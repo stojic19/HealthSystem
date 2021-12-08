@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Hospital.MedicalRecords.Model;
 using Hospital.MedicalRecords.Repository;
@@ -54,11 +55,7 @@ namespace HospitalApi.Controllers
                 StartDate = newPrescriptionDto.StartDate,
                 IssuedDate = DateTime.Now
             };
-            var writeRepo = _unitOfWork.GetRepository<IPrescriptionWriteRepository>();
-            writeRepo.Add(newPrescription);
-            RestClient restClient = new RestClient();
-            RestRequest request = new RestRequest(_integrationBaseUrl + "api/Prescription/PostPrescription");
-            request.AddJsonBody(new PrescriptionToIntegrationDTO
+            var prescriptionToIntegrationDTO = new PrescriptionToIntegrationDTO
             {
                 PatientFirstName = patient.FirstName,
                 PatientLastName = patient.LastName,
@@ -66,8 +63,11 @@ namespace HospitalApi.Controllers
                 EndDate = newPrescription.EndDate,
                 IssuedDate = newPrescription.IssuedDate,
                 MedicineName = medication.Name
-            });
-            var response = restClient.PostAsync<IActionResult>(request);
+            };
+            var response = _httpRequestSender.Post(_integrationBaseUrl + "api/Prescription/PostPrescription",
+                prescriptionToIntegrationDTO);
+            var writeRepo = _unitOfWork.GetRepository<IPrescriptionWriteRepository>();
+            writeRepo.Add(newPrescription);
             return Ok();
         }
     }

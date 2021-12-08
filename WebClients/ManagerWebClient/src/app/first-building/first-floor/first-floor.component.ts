@@ -1,6 +1,8 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { Room } from 'src/app/interfaces/room';
-import { RoomsService } from 'src/app/services/rooms.service';
+import { RoomPosition } from 'src/app/model/room-position.model';
+import { RoomPositionService } from 'src/app/services/room-position.service';
+
 
 @Component({
   selector: 'app-first-floor',
@@ -19,15 +21,25 @@ export class FirstFloorComponent implements OnInit {
   selectedRoom = new EventEmitter();
   @Input() public roomForDisplay = '';
 
-  constructor(public service: RoomsService) {
+
+  constructor(public service: RoomPositionService) {
     this.service.getFirstFloorOfFirstBuilding();
   }
 
   ngOnInit(): void {
+
   }
 
   selectRoom(room: Room) {
     this.selectedRoom.emit(room);
+  }
+
+  calculateX(roomPosition: RoomPosition) {
+    return roomPosition.dimensionX + roomPosition.width / 2;
+  }
+
+  calculateY(roomPosition: RoomPosition) {
+    return roomPosition.dimensionY + roomPosition.height / 2;
   }
 
 }

@@ -24,6 +24,15 @@ namespace HospitalApi.AutoMapperProfiles
             CreateMap<NewAllergyDTO, Allergy>();
             CreateMap<NewMedicalRecordDTO, MedicalRecord>();
             CreateMap<NewPatientDTO, Patient>();
+
+            CreateMap<ScheduleAppointmentDTO, ScheduledEvent>()
+                .ForMember(toSchedule => toSchedule.EndDate, opt => opt.MapFrom(src => src.StartDate.AddHours(1)))
+                .ForMember(toSchedule => toSchedule.IsCanceled, opt => opt.MapFrom(src => false))
+                .ForMember(toSchedule => toSchedule.IsDone, opt => opt.MapFrom(src => false))
+                .ForMember(toSchedule => toSchedule.ScheduledEventType, opt => opt.MapFrom(src => ScheduledEventType.Appointment))
+                .ForMember(toSchedule => toSchedule.AnsweredSurveyId, opt => opt.MapFrom(src => 3)).ReverseMap();
+
+            CreateMap<Doctor, SpecializedDoctorDTO>();
         }
     }
 }

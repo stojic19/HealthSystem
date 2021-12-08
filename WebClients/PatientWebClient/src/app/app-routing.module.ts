@@ -11,6 +11,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { BasicAppointmentComponent } from './components/basic-appointment/basic-appointment.component';
+import { MedicalRecordComponent } from './components/medical-record/medical-record.component';
 
 const routes: Routes = [
   {
@@ -28,6 +29,10 @@ const routes: Routes = [
       {
         path: 'appointments',
         component: BasicAppointmentComponent,
+      },
+      {
+        path: 'medicalRecord',
+        component: MedicalRecordComponent,
       },
     ],
   },

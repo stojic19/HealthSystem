@@ -17,6 +17,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MainComponent } from './components/main/main.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { BasicAppointmentComponent } from './components/basic-appointment/basic-appointment.component';
+import { MedicalRecordComponent } from './components/medical-record/medical-record.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { BasicAppointmentComponent } from './components/basic-appointment/basic-
     MainComponent,
     RegistrationComponent,
     BasicAppointmentComponent,
+    MedicalRecordComponent,
   ],
   imports: [
     BrowserModule,

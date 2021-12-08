@@ -2,19 +2,24 @@
   <mat-stepper [linear]="true" orientation="horizontal" #stepper>
     <mat-step [stepControl]="firstFormGroup">
       <form [formGroup]="firstFormGroup">
-        <ng-template matStepLabel
-          >Choose a date range for your appointment</ng-template
-        >
+        <ng-template matStepLabel>Choose a time period</ng-template>
         <mat-form-field appearance="fill" class="example-form-field">
           <mat-label>Enter a date range</mat-label>
           <mat-date-range-input [rangePicker]="rangePicker">
             <input
               matStartDate
               placeholder="Start date"
-              formControlName="firstCtrl"
+              #dateRangeStart
+              formControlName="start"
               required
             />
-            <input matEndDate placeholder="End date" />
+            <input
+              matEndDate
+              placeholder="End date"
+              #dateRangeEnd
+              formControlName="end"
+              (dateChange)="dateRangeChange(dateRangeStart, dateRangeEnd)"
+            />
           </mat-date-range-input>
           <mat-datepicker-toggle
             matSuffix
@@ -42,10 +47,14 @@
         <mat-form-field appearance="fill">
           <mat-label>Specialities</mat-label>
           <mat-select formControlName="secondCtrl">
-            <mat-option value="Undefined">Cardiology</mat-option>
-            <mat-option value="Employed">General practice</mat-option>
-            <mat-option value="Unemployed">Dentology</mat-option>
-            <mat-option value="Student">Radiology</mat-option>
+            <mat-option
+              #matOption1
+              (click)="getDocsForSpec(matOption1)"
+              *ngFor="let s of specializations"
+              value="{{ s.id }}"
+            >
+              {{ s.name }}</mat-option
+            >
           </mat-select>
         </mat-form-field>
         <div>
@@ -54,18 +63,19 @@
         </div>
       </form>
     </mat-step>
-    <mat-step
-      [stepControl]="thirdFormGroup"
-      label="Choose a doctor for your appointment"
-    >
+    <mat-step [stepControl]="thirdFormGroup" label="Pick a doctor">
       <form [formGroup]="thirdFormGroup">
         <mat-form-field appearance="fill">
           <mat-label>Doctors</mat-label>
           <mat-select formControlName="thirdCtrl">
-            <mat-option value="Marko">Marko</mat-option>
-            <mat-option value="Petar">Petar</mat-option>
-            <mat-option value="Đorđe">Đorđe</mat-option>
-            <mat-option value="Maksim">Maksim</mat-option>
+            <mat-option
+              #matOption2
+              (click)="getTerms(matOption2)"
+              *ngFor="let dr of doctors"
+              value="{{ dr.id }}"
+            >
+              {{ dr.firstName }} {{ dr.lastName }}</mat-option
+            >
           </mat-select>
         </mat-form-field>
         <div>
@@ -75,52 +85,35 @@
       </form>
     </mat-step>
     <mat-step
+      style="width: 500px"
       [stepControl]="fourthFormGroup"
-      label="Choose a term that works for you"
+      label="Pick a term that works for you"
     >
       <form [formGroup]="fourthFormGroup">
-        <mat-form-field appearance="fill">
-          <input matInput formControlName="fourthCtrl" />
+        <mat-form-field appearance="fill" style="width: 300px">
           <mat-label>Available Appointments</mat-label>
-          <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-            <!--- Note that these columns can be defined in any order.
-                  The actual rendered columns are set as a property on the row definition" -->
-
-            <!-- Position Column -->
-            <ng-container matColumnDef="position">
-              <th mat-header-cell *matHeaderCellDef>No.</th>
-              <td mat-cell *matCellDef="let element">{{ element.position }}</td>
-            </ng-container>
-
-            <!-- Name Column -->
-            <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef>Name</th>
-              <td mat-cell *matCellDef="let element">{{ element.name }}</td>
-            </ng-container>
-
-            <!-- Weight Column -->
-            <ng-container matColumnDef="weight">
-              <th mat-header-cell *matHeaderCellDef>Weight</th>
-              <td mat-cell *matCellDef="let element">{{ element.weight }}</td>
-            </ng-container>
-
-            <!-- Symbol Column -->
-            <ng-container matColumnDef="symbol">
-              <th mat-header-cell *matHeaderCellDef>Symbol</th>
-              <td mat-cell *matCellDef="let element">{{ element.symbol }}</td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-          </table>
+          <mat-selection-list #matList [multiple]="false">
+            <mat-list-option
+              #matOpr
+              (click)="termPicked(matOpr)"
+              *ngFor="let term of availableTerms"
+              [value]="term"
+            >
+              {{ term }}
+            </mat-list-option>
+          </mat-selection-list>
+          <input
+            matInput
+            placeholder=" "
+            formControlName="fourthCtrl"
+            readonly
+          />
         </mat-form-field>
       </form>
 
       <div>
         <button mat-button matStepperPrevious>Back</button>
-        <button mat-button (click)="stepper.reset()">
-          Schedule appointment
-        </button>
+        <button mat-button (click)="schedule()">Schedule appointment</button>
       </div>
     </mat-step>
   </mat-stepper>

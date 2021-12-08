@@ -12,9 +12,9 @@ namespace Hospital.MedicalRecords.Repository.Implementation
         {
         }
 
-        public Patient GetPatientWithCity()
+        public Patient GetPatient(int id)
         {
-            return GetAll().Include(x => x.City).First();
+            return GetAll().Include(x => x.City).First(x=>x.Id==id);
         }
     }
 }

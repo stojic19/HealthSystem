@@ -12,10 +12,10 @@ namespace Hospital.MedicalRecords.Repository.Implementation
         {
         }
 
-        public MedicalRecord GetMedicalRecordForPatient(int id)
+        public MedicalRecord GetMedicalRecord(int id)
         {
             return GetAll().Include(x => x.Doctor).Include(x => x.Allergies).
-                            ThenInclude(x => x.MedicationIngredient).First();
+                            ThenInclude(x => x.MedicationIngredient).First(x=>x.Id == id);
         }
     }
 }

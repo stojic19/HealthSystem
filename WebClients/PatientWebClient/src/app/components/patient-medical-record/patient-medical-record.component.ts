@@ -13,7 +13,11 @@ export class PatientMedicalRecordComponent implements OnInit {
   patient! : IPatient;
   sub!: Subscription;
   constructor(private _service: MedicalRecordService) {
-    
+    this.sub = this._service.get().subscribe({
+      next: (patient : IPatient) => {
+        this.patient = patient;
+      }
+    });
    }
 
   ngOnInit(): void {

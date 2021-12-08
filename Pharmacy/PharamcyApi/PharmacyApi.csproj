@@ -21,5 +21,9 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Prescriptions\" />
+  </ItemGroup>
+
 
 </Project>

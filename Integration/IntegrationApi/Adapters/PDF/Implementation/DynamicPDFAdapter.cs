@@ -114,6 +114,8 @@ namespace IntegrationAPI.Adapters.PDF.Implementation
                              + dto.PatientFirstName);
             WriteLine(0, 20, "Patient last name: "
                              + dto.PatientLastName);
+            WriteLine(0, 20, "Medicine name: "
+                             + dto.MedicineName);
             WriteLine(0, 20, "Consumption, from "
                              + dto.StartDate.ToShortDateString()
                              + " to " + dto.EndDate.ToShortDateString());

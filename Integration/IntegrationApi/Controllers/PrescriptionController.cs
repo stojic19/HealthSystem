@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using IntegrationAPI.Adapters.PDF;
 using IntegrationAPI.Adapters.PDF.Implementation;
@@ -93,7 +94,21 @@ namespace IntegrationAPI.Controllers
         {
             IPDFAdapter adapter = new DynamicPDFAdapter();
             string fileName = adapter.MakePrescriptionPdf(dto, "http");
-            return fileName;
+
+            byte[] file = System.IO.File.ReadAllBytes("Prescriptions" + Path.DirectorySeparatorChar + "Http" + Path.DirectorySeparatorChar + fileName);
+            PrescriptionSendHttpDto prescDto = new PrescriptionSendHttpDto()
+            {
+                ApiKey = pharmacy.ApiKey,
+                FileContent = file,
+                FileName = fileName
+            };
+            RestClient client = new RestClient();
+            string targetUrl = pharmacy.BaseUrl + "/api/Prescription/ReceivePrescription";
+            RestRequest request = new RestRequest(targetUrl);
+            request.AddJsonBody(prescDto);
+            var response = client.Post(request).Content;
+            
+            return response;
         }
     }
 }

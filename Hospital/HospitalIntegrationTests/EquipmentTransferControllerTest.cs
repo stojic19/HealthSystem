@@ -31,10 +31,10 @@ namespace HospitalIntegrationTests
             {
                 StartDate = new DateTime(2025, 11, 22, 0, 0, 0),
                 EndDate = new DateTime(2025, 11, 22, 16, 2, 2),
-                InitalRoomId = sourceRoom.Id,
+                InitialRoomId = sourceRoom.Id,
                 DestinationRoomId = destinationRoom.Id,
                 InventoryItemId = inventoryItem.Id,
-                Quantity = 2
+                Quantity = 2,
             };
 
             var content = GetContent(newRequest);
@@ -48,7 +48,7 @@ namespace HospitalIntegrationTests
                 .GetAll()
                 .FirstOrDefault(x => x.StartDate == newRequest.StartDate &&
                                 x.EndDate == newRequest.EndDate &&
-                                x.InitalRoomId == newRequest.InitalRoomId &&
+                                x.InitialRoomId == newRequest.InitialRoomId &&
                                 x.DestinationRoomId == newRequest.DestinationRoomId &&
                                 x.InventoryItemId == newRequest.InventoryItemId);
 
@@ -69,7 +69,7 @@ namespace HospitalIntegrationTests
             {
                 StartDate = new DateTime(2025, 11, 22, 0, 0, 0),
                 EndDate = new DateTime(2025, 11, 22, 16, 2, 2),
-                InitalRoomId = sourceRoom.Id,
+                InitialRoomId = sourceRoom.Id,
                 DestinationRoomId = destinationRoom.Id,
                 InventoryItemId = inventoryItem.Id,
                 Quantity = 58
@@ -86,7 +86,7 @@ namespace HospitalIntegrationTests
                 .GetAll()
                 .FirstOrDefault(x => x.StartDate == newRequest.StartDate &&
                                 x.EndDate == newRequest.EndDate &&
-                                x.InitalRoomId == newRequest.InitalRoomId &&
+                                x.InitialRoomId == newRequest.InitialRoomId &&
                                 x.DestinationRoomId == newRequest.DestinationRoomId &&
                                 x.InventoryItemId == newRequest.InventoryItemId);
 
@@ -137,8 +137,8 @@ namespace HospitalIntegrationTests
                 {
                     Name = name,
                     Description = "Room for storage",
-                    DimensionX = 7,
-                    DimensionY = 8.5,
+                    Width = 7,
+                    Height = 8.5,
                     FloorNumber = 1,
                     BuildingName = "Building 2",
                     RoomType = RoomType.Storage

@@ -12,13 +12,8 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using Autofac;
-using Hospital.Infrastructure;
 using System.Reflection;
-using Hospital.Repositories.DbImplementation;
-using Hospital.Repositories.Base;
 using Autofac.Extensions.DependencyInjection;
-using Hospital.EfStructures;
-using Hospital.Model;
 using System.Reflection;
 using System.Text.Json.Serialization;
 using Hospital.Database.EfStructures;
@@ -41,9 +36,10 @@ namespace HospitalApi
         {
             services.AddCors(options => options.AddPolicy("MyCorsImplementationPolicy", builder => builder.WithOrigins("*")));
 
-            services.AddControllers().AddNewtonsoftJson(options =>
-               options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-            );
+            services.AddControllers();
+            //.AddNewtonsoftJson(options =>
+            //   options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            //);
 
             services.AddControllers().AddJsonOptions(opt =>
             {

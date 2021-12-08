@@ -1,4 +1,4 @@
-﻿using Hospital.Model.Enumerations;
+﻿using Hospital.SharedModel.Model.Enumerations;
 using System;
 using System.Collections.Generic;
 using System.Linq;

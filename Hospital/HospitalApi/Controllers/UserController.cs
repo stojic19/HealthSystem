@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Hospital.Model;
+using Hospital.SharedModel.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;

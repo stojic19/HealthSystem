@@ -16,11 +16,6 @@ namespace PharmacyApi.GrpcServices
         private readonly HospitalAuthService _hospitalAuthService;
         private readonly MedicineProcurementService _medicineProcurementService;
 
-        public MedicineInventoryServiceImpl()
-        {
-
-        }
-
         public MedicineInventoryServiceImpl(IUnitOfWork uow)
         {
             _hospitalAuthService = new HospitalAuthService(uow);
@@ -32,21 +27,17 @@ namespace PharmacyApi.GrpcServices
             CheckMedicineAvailabilityResponseModel response = new CheckMedicineAvailabilityResponseModel();
             try
             {
-                //_hospitalAuthService.ValidateApiKey(Guid.Parse(request.ApiKey));
-                //bool answer = _medicineProcurementService.IsMedicineAvailable(request.MedicineName, request.ManufacturerName, request.Quantity);
-                response.Answer = true; 
-                System.Diagnostics.Debug.WriteLine(response);
-                return Task.FromResult(response);
+                _hospitalAuthService.ValidateApiKey(Guid.Parse(request.ApiKey));
+                bool answer = _medicineProcurementService.IsMedicineAvailable(request.MedicineName, request.ManufacturerName, (int)request.Quantity);
+                return Task.FromResult(new CheckMedicineAvailabilityResponseModel() { Answer = answer, ExceptionMessage = ""});
             }
             catch (UnauthorizedAccessException exception)
             {
-                response.Answer = false;
-                return Task.FromResult(response);
+                return Task.FromResult(new CheckMedicineAvailabilityResponseModel() { Answer = false, ExceptionMessage = exception.Message });
             }
             catch (MedicineFromManufacturerNotFoundException exception)
             {
-                response.Answer = false;
-                return Task.FromResult(response);
+                return Task.FromResult(new CheckMedicineAvailabilityResponseModel() { Answer = false, ExceptionMessage = exception.Message });
             }
         }
 
@@ -57,19 +48,19 @@ namespace PharmacyApi.GrpcServices
                 _hospitalAuthService.ValidateApiKey(Guid.Parse(request.ApiKey));
                 _medicineProcurementService.ExecuteProcurement(request.MedicineName, request.ManufacturerName, (int)request.Quantity);
 
-                return Task.FromResult(new MedicineProcurementResponseModel { Answer = true });
+                return Task.FromResult(new MedicineProcurementResponseModel { Answer = true , ExceptionMessage = "" });
             }
             catch (UnauthorizedAccessException exception)
             {
-                return Task.FromResult(new MedicineProcurementResponseModel { Answer = false });
+                return Task.FromResult(new MedicineProcurementResponseModel { Answer = false, ExceptionMessage = exception.Message });
             }
             catch (MedicineFromManufacturerNotFoundException exception)
             {
-                return Task.FromResult(new MedicineProcurementResponseModel { Answer = false });
+                return Task.FromResult(new MedicineProcurementResponseModel { Answer = false, ExceptionMessage = exception.Message });
             }
             catch (MedicineUnavailableException exception)
             {
-                return Task.FromResult(new MedicineProcurementResponseModel { Answer = false });
+                return Task.FromResult(new MedicineProcurementResponseModel { Answer = false, ExceptionMessage = exception.Message });
             }
         }
     }

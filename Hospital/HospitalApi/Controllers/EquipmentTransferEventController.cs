@@ -59,7 +59,7 @@ namespace HospitalApi.Controllers
         private bool IsEnteredAmountCorrect(EquipmentTransferEvent equipmentTransferEvent)
         {
             var roomInventory = _uow.GetRepository<IRoomInventoryReadRepository>()
-                .GetByRoomAndInventoryItem(equipmentTransferEvent.InitalRoomId, equipmentTransferEvent.InventoryItemId);
+                .GetByRoomAndInventoryItem(equipmentTransferEvent.InitialRoomId, equipmentTransferEvent.InventoryItemId);
 
             if (roomInventory.Amount < equipmentTransferEvent.Quantity)
                 return false;
@@ -67,8 +67,7 @@ namespace HospitalApi.Controllers
             return true;
         }
 
-<<<<<<< HEAD
-        [HttpPost]
+       /* [HttpPost]
         public IEnumerable<TimePeriodDTO> GetAvailableTerms(AvailableTermDTO availableTermsDTO)
         {
             var transferingEquipmentService = new TransferingEquipmentService(_uow);
@@ -94,18 +93,6 @@ namespace HospitalApi.Controllers
 
             return availableTerms;
         }
-=======
-        //[HttpPost]
-        //public IEnumerable<TimePeriod> GetAvailableTerms(AvailableTermDTO availableTermsDTO)
-        //{
-        //    var transferingEquipmentService = new TransferingEquipmentService(_uow);
-        //    var timePeriod = new TimePeriod()
-        //    {
-        //        StartTime = availableTermsDTO.StartDate,
-        //        EndTime = availableTermsDTO.EndDate
-        //    };
-        //    return transferingEquipmentService.GetAvailableTerms(timePeriod, availableTermsDTO.RoomId, availableTermsDTO.Duration);
-        //}
->>>>>>> feature/register-patient
+        }*/
     }
 }

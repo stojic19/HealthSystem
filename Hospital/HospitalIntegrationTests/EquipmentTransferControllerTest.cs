@@ -31,7 +31,7 @@ namespace HospitalIntegrationTests
             {
                 StartDate = new DateTime(2025, 11, 22, 0, 0, 0),
                 EndDate = new DateTime(2025, 11, 22, 16, 2, 2),
-                InitalRoomId = sourceRoom.Id,
+                InitialRoomId = sourceRoom.Id,
                 DestinationRoomId = destinationRoom.Id,
                 InventoryItemId = inventoryItem.Id,
                 Quantity = 2
@@ -48,7 +48,7 @@ namespace HospitalIntegrationTests
                 .GetAll()
                 .FirstOrDefault(x => x.StartDate == newRequest.StartDate &&
                                 x.EndDate == newRequest.EndDate &&
-                                x.InitalRoomId == newRequest.InitalRoomId &&
+                                x.InitialRoomId == newRequest.InitialRoomId &&
                                 x.DestinationRoomId == newRequest.DestinationRoomId &&
                                 x.InventoryItemId == newRequest.InventoryItemId);
 
@@ -69,7 +69,7 @@ namespace HospitalIntegrationTests
             {
                 StartDate = new DateTime(2025, 11, 22, 0, 0, 0),
                 EndDate = new DateTime(2025, 11, 22, 16, 2, 2),
-                InitalRoomId = sourceRoom.Id,
+                InitialRoomId = sourceRoom.Id,
                 DestinationRoomId = destinationRoom.Id,
                 InventoryItemId = inventoryItem.Id,
                 Quantity = 58
@@ -86,7 +86,7 @@ namespace HospitalIntegrationTests
                 .GetAll()
                 .FirstOrDefault(x => x.StartDate == newRequest.StartDate &&
                                 x.EndDate == newRequest.EndDate &&
-                                x.InitalRoomId == newRequest.InitalRoomId &&
+                                x.InitialRoomId == newRequest.InitialRoomId &&
                                 x.DestinationRoomId == newRequest.DestinationRoomId &&
                                 x.InventoryItemId == newRequest.InventoryItemId);
 
@@ -130,7 +130,7 @@ namespace HospitalIntegrationTests
             var room = UoW.GetRepository<IRoomReadRepository>()
                 .GetAll()
                 .FirstOrDefault(x => x.Name == name);
-
+            /*
             if (room == null)
             {
                 room = new Room()
@@ -146,7 +146,7 @@ namespace HospitalIntegrationTests
 
                 UoW.GetRepository<IRoomWriteRepository>().Add(room);
             }
-
+            */
             return room;
         }
 

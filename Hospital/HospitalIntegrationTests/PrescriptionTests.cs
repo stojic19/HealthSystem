@@ -100,9 +100,11 @@ namespace HospitalIntegrationTests
             RestResponse response = new RestResponse();
             response.StatusCode = HttpStatusCode.OK;
             stubSender.Setup(m => m.Post(IntegrationBaseUrl + "api/Prescription/PostPrescription",
-                content)).Returns(response);
+                integrationContent)).Returns(response);
+            //ACT
             PrescriptionController controller = new PrescriptionController(UoW, stubSender.Object);
             var result = controller.CreateNewPrescription(content).GetType();
+            //ASSERT
             var presc = UoW.GetRepository<IPrescriptionReadRepository>().GetAll()
                 .FirstOrDefault(x => x.StartDate == content.StartDate);
             UoW.GetRepository<IPrescriptionWriteRepository>().Delete(presc);

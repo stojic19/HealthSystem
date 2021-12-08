@@ -20,7 +20,7 @@ namespace IntegrationAPI.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class ReportController : BaseSftpController
+    public class ReportController : BaseIntegrationController
     {
         private readonly PharmacyMasterService _pharmacyMasterService;
         private readonly MedicineConsumptionMasterService _medicineConsumptionMasterService;
@@ -56,19 +56,20 @@ namespace IntegrationAPI.Controllers
         [Produces("application/json")]
         public IActionResult SendConsumptionReport(MedicineConsumptionReportDTO report)
         {
+            string fileName;
             try
             {
-                SaveMedicineReportToSftpServer(report, sftpCredentials);
+                fileName = SaveMedicineReportToSftpServer(report, _sftpCredentials);
             }
             catch
             {
                 return BadRequest("Failed to contact sftp server");
             }
-            SendToPharmacies(report, sftpCredentials);
+            SendToPharmacies(report, fileName);
             return Ok("Report sent to pharmacies");
         }
 
-        private void SendToPharmacies(MedicineConsumptionReportDTO report, SftpCredentialsDTO sftpCredentials)
+        private void SendToPharmacies(MedicineConsumptionReportDTO report, string fileName)
         {
             var pharmacies = _pharmacyMasterService.GetPharmacies();
             foreach (Pharmacy pharmacy in pharmacies)
@@ -79,21 +80,28 @@ namespace IntegrationAPI.Controllers
                 request.AddJsonBody(new ReportDTO
                 {
                     ApiKey = pharmacy.ApiKey,
-                    FileName = "Report-" + report.createdDate.Ticks.ToString() + ".txt",
-                    Host = sftpCredentials.Host
+                    FileName = fileName,
+                    Host = _sftpCredentials.Host
                 });
                 client.PostAsync<IActionResult>(request);
             }
         }
-        private void SaveMedicineReportToSftpServer(MedicineConsumptionReportDTO report, SftpCredentialsDTO credentials)
+        private string SaveMedicineReportToSftpServer(MedicineConsumptionReportDTO report, SftpCredentialsDTO credentials)
         {
-            string path = "MedicineReports" + Path.DirectorySeparatorChar + "Report-" +
-                          report.createdDate.Ticks.ToString() + ".txt";
             //SaveFile(report, path);
             IPDFAdapter adapter = new DynamicPDFAdapter();
-            string fileName = adapter.MakeMedicineConsumptionReportPdf(report);
+            MedicineConsumptionReportToPdfDTO medicineConsumptionReportToPdfDto = new MedicineConsumptionReportToPdfDTO
+            {
+                StartDate = report.startDate,
+                EndDate = report.endDate,
+                CreatedDate = report.createdDate,
+                MedicineConsumptions = report.MedicineConsumptions,
+                HospitalName = _hospitalInfo.Name
+            };
+            string fileName = adapter.MakeMedicineConsumptionReportPdf(medicineConsumptionReportToPdfDto);
             string dest = "MedicineReports" + Path.DirectorySeparatorChar + fileName;
             SaveToSftp(dest, credentials);
+            return fileName;
         }
         private void SaveFile(MedicineConsumptionReportDTO consumptionReport, string path)
         {

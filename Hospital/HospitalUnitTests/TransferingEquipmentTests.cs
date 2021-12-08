@@ -230,7 +230,7 @@ namespace HospitalUnitTests
                 Id = 1,
                 StartDate = new DateTime(2021, 11, 22, 0, 0, 0),
                 EndDate = new DateTime(2021, 11, 22, 16, 2, 2),
-                InitalRoom = new Room() {
+                InitialRoom = new Room() {
                     Id = 1,
                     Name = "Test initial room"
                 },
@@ -287,7 +287,7 @@ namespace HospitalUnitTests
                 Id = 1,
                 StartDate = new DateTime(2021, 11, 22, 0, 0, 0),
                 EndDate = new DateTime(2021, 11, 22, 16, 2, 2),
-                InitalRoom = new Room()
+                InitialRoom = new Room()
                 {
                     Id = 1,
                     Name = "Test initial room"
@@ -343,7 +343,7 @@ namespace HospitalUnitTests
                 Id = 1,
                 StartDate = new DateTime(2021, 11, 22, 0, 0, 0),
                 EndDate = new DateTime(2021, 11, 22, 16, 2, 2),
-                InitalRoom = new Room()
+                InitialRoom = new Room()
                 {
                     Id = 1,
                     Name = "Test initial room"

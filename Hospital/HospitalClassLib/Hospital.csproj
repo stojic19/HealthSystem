@@ -22,7 +22,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
+    <Folder Include="GraphicalEditor\Service\" />
+    <Folder Include="Database\Migrations\" />
+    <Folder Include="SharedModel\Service\" />
   </ItemGroup>
 
 </Project>

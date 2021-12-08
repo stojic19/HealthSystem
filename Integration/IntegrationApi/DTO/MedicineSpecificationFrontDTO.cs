@@ -9,5 +9,7 @@ namespace IntegrationAPI.DTO
     {
         public string FileName { get; set; }
         public string PharmacyName { get; set; }
+        public string MedicineName { get; set; }
+        public DateTime ReceivedDate { get; set; }
     }
 }

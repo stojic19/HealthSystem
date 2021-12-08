@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Integration.Partnership.Model;
 using Integration.Partnership.Repository;
@@ -10,17 +11,56 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using RestSharp;
 using System.Net;
+using ceTe.DynamicPDF.PageElements;
 using IntegrationAPI.Controllers.Base;
+using Microsoft.EntityFrameworkCore;
 using Renci.SshNet;
+using Path = System.IO.Path;
 
 namespace IntegrationAPI.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class MedicineSpecificationController : BaseSftpController
+    public class MedicineSpecificationController : BaseIntegrationController
     {
-
         public MedicineSpecificationController(IUnitOfWork unitOfWork) : base(unitOfWork) { }
+
+        [HttpGet]
+        public IEnumerable<MedicineSpecificationFrontDTO> GetAllMedicineSpecificationFiles()
+        {
+            var allSpecFiles = 
+                _unitOfWork.GetRepository<IMedicineSpecificationFileReadRepository>()
+                .GetAll()
+                .Include(x => x.Pharmacy);
+            List<MedicineSpecificationFrontDTO> retVal = new List<MedicineSpecificationFrontDTO>();
+            foreach (MedicineSpecificationFile medicineSpecificationFile in allSpecFiles)
+            {
+                retVal.Add(new MedicineSpecificationFrontDTO
+                {
+                    MedicineName = medicineSpecificationFile.MedicineName,
+                    PharmacyName = medicineSpecificationFile.Pharmacy.Name,
+                    FileName = medicineSpecificationFile.FileName,
+                    ReceivedDate = medicineSpecificationFile.ReceivedDate
+                });
+            }
+
+            return retVal;
+        }
+
+        [HttpPost, Produces("application/pdf")]
+        public IActionResult GetSpecificationPdf([FromQuery(Name = "fileName")] string fileName)
+        {
+            try
+            {
+                var stream = new FileStream("MedicineSpecifications" + Path.DirectorySeparatorChar + fileName, FileMode.Open);
+                return File(stream, "application/pdf", fileName);
+            }
+            catch
+            {
+                return NotFound("File not found");
+            }
+        }
+
         [HttpPost]
         [Produces("application/json")]
         public IActionResult SendMedicineSpecificationRequest(MedicineSpecificationRequestDTO dto)
@@ -41,7 +81,7 @@ namespace IntegrationAPI.Controllers
                 JsonConvert.DeserializeObject<MedicineSpecificationFileDTO>(response.Content);
             try
             {
-                SftpClient sftpClient = new SftpClient(new PasswordConnectionInfo(sftpCredentials.Host, sftpCredentials.Username, sftpCredentials.Password));
+                SftpClient sftpClient = new SftpClient(new PasswordConnectionInfo(_sftpCredentials.Host, _sftpCredentials.Username, _sftpCredentials.Password));
                 sftpClient.Connect();
                 Stream fileStream = System.IO.File.OpenWrite("MedicineSpecifications" + Path.DirectorySeparatorChar + medicineSpecificationFile.FileName);
                 sftpClient.DownloadFile(medicineSpecificationFile.FileName, fileStream);
@@ -56,7 +96,9 @@ namespace IntegrationAPI.Controllers
             {
                 FileName = medicineSpecificationFile.FileName,
                 Host = medicineSpecificationFile.Host,
-                PharmacyId = pharmacy.Id
+                PharmacyId = pharmacy.Id,
+                MedicineName = medicineSpecificationFile.MedicineName,
+                ReceivedDate = medicineSpecificationFile.Date
             });
             return Ok("Pharmacy has sent the specification file to sftp server");
         }

@@ -19,6 +19,35 @@ namespace Hospital.Migrations
                 .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+            modelBuilder.Entity("Hospital.GraphicalEditor.Model.RoomPosition", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<double>("DimensionX")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("DimensionY")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("Height")
+                        .HasColumnType("double precision");
+
+                    b.Property<int>("RoomId")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("Width")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoomId");
+
+                    b.ToTable("RoomPositions");
+                });
+
             modelBuilder.Entity("Hospital.MedicalRecords.Model.Allergy", b =>
                 {
                     b.Property<int>("Id")
@@ -159,6 +188,42 @@ namespace Hospital.Migrations
                     b.ToTable("Medications");
                 });
 
+            modelBuilder.Entity("Hospital.MedicalRecords.Model.MedicationExpenditureLog", b =>
+
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("AmountSpent")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MedicationIngredients");
+                });
+
+            modelBuilder.Entity("Hospital.MedicalRecords.Model.Prescription", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("MedicationId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MedicationId");
+
+                    b.ToTable("MedicationExpenditureLogs");
+                });
+
             modelBuilder.Entity("Hospital.MedicalRecords.Model.MedicationIngredient", b =>
                 {
                     b.Property<int>("Id")
@@ -223,7 +288,7 @@ namespace Hospital.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int?>("InitalRoomId")
+                    b.Property<int?>("InitialRoomId")
                         .HasColumnType("integer");
 
                     b.Property<int?>("InventoryItemId")
@@ -239,7 +304,7 @@ namespace Hospital.Migrations
 
                     b.HasIndex("DestinationRoomId");
 
-                    b.HasIndex("InitalRoomId");
+                    b.HasIndex("InitialRoomId");
 
                     b.HasIndex("InventoryItemId");
 
@@ -277,20 +342,20 @@ namespace Hospital.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<double>("DimensionX")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("DimensionY")
-                        .HasColumnType("double precision");
-
                     b.Property<int>("FloorNumber")
                         .HasColumnType("integer");
+
+                    b.Property<double>("Height")
+                        .HasColumnType("double precision");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
                     b.Property<int>("RoomType")
                         .HasColumnType("integer");
+
+                    b.Property<double>("Width")
+                        .HasColumnType("double precision");
 
                     b.HasKey("Id");
 
@@ -320,6 +385,43 @@ namespace Hospital.Migrations
                     b.HasIndex("RoomId");
 
                     b.ToTable("RoomInventories");
+                });
+
+            modelBuilder.Entity("Hospital.RoomsAndEquipment.Model.RoomRenovationEvent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<bool>("IsCanceled")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsDone")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsMerge")
+                        .HasColumnType("boolean");
+
+                    b.Property<int?>("MergeRoomId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("RoomId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MergeRoomId");
+
+                    b.HasIndex("RoomId");
+
+                    b.ToTable("RoomRenovationEvents");
                 });
 
             modelBuilder.Entity("Hospital.Schedule.Model.AnsweredQuestion", b =>
@@ -366,7 +468,7 @@ namespace Hospital.Migrations
                     b.Property<int>("SurveyId")
                         .HasColumnType("integer");
 
-                    b.HasKey("Id");
+                    b.HasIndex("SurveyId");
 
                     b.HasIndex("PatientId");
 
@@ -863,6 +965,17 @@ namespace Hospital.Migrations
                     b.HasDiscriminator().HasValue("Doctor");
                 });
 
+            modelBuilder.Entity("Hospital.GraphicalEditor.Model.RoomPosition", b =>
+                {
+                    b.HasOne("Hospital.RoomsAndEquipment.Model.Room", "Room")
+                        .WithMany()
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Room");
+                });
+
             modelBuilder.Entity("Hospital.MedicalRecords.Model.Allergy", b =>
                 {
                     b.HasOne("Hospital.MedicalRecords.Model.MedicalRecord", null)
@@ -915,6 +1028,17 @@ namespace Hospital.Migrations
                     b.Navigation("Doctor");
                 });
 
+            modelBuilder.Entity("Hospital.MedicalRecords.Model.MedicationExpenditureLog", b =>
+                {
+                    b.HasOne("Hospital.MedicalRecords.Model.Medication", "Medication")
+                        .WithMany()
+                        .HasForeignKey("MedicationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Medication");
+                });
+
             modelBuilder.Entity("Hospital.MedicalRecords.Model.Prescription", b =>
                 {
                     b.HasOne("Hospital.MedicalRecords.Model.MedicalRecord", null)
@@ -942,9 +1066,9 @@ namespace Hospital.Migrations
                         .WithMany()
                         .HasForeignKey("DestinationRoomId");
 
-                    b.HasOne("Hospital.RoomsAndEquipment.Model.Room", "InitalRoom")
+                    b.HasOne("Hospital.RoomsAndEquipment.Model.Room", "InitialRoom")
                         .WithMany()
-                        .HasForeignKey("InitalRoomId");
+                        .HasForeignKey("InitialRoomId");
 
                     b.HasOne("Hospital.RoomsAndEquipment.Model.InventoryItem", "InventoryItem")
                         .WithMany()
@@ -952,7 +1076,7 @@ namespace Hospital.Migrations
 
                     b.Navigation("DestinationRoom");
 
-                    b.Navigation("InitalRoom");
+                    b.Navigation("InitialRoom");
 
                     b.Navigation("InventoryItem");
                 });
@@ -972,6 +1096,21 @@ namespace Hospital.Migrations
                         .IsRequired();
 
                     b.Navigation("InventoryItem");
+
+                    b.Navigation("Room");
+                });
+
+            modelBuilder.Entity("Hospital.RoomsAndEquipment.Model.RoomRenovationEvent", b =>
+                {
+                    b.HasOne("Hospital.RoomsAndEquipment.Model.Room", "MergeRoom")
+                        .WithMany()
+                        .HasForeignKey("MergeRoomId");
+
+                    b.HasOne("Hospital.RoomsAndEquipment.Model.Room", "Room")
+                        .WithMany()
+                        .HasForeignKey("RoomId");
+
+                    b.Navigation("MergeRoom");
 
                     b.Navigation("Room");
                 });

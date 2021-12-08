@@ -1,5 +1,7 @@
 ﻿using Hospital.RoomsAndEquipment.Model;
 using Hospital.RoomsAndEquipment.Repository;
+using Hospital.Schedule.Model;
+using Hospital.Schedule.Repository;
 using Hospital.SharedModel.Repository.Base;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -61,5 +63,14 @@ namespace HospitalApi.Controllers
             return roomRepo.GetAll();
         }
 
+        [HttpGet]
+        public IEnumerable<ScheduledEvent> GetScheduledEventsByRoom(int roomId)
+        {
+            var scheduleRepo = _uow.GetRepository<IScheduledEventReadRepository>();
+
+            return scheduleRepo.GetAll()
+                .Where(scheduledEvent => scheduledEvent.IsCanceled == false &&
+                                        scheduledEvent.RoomId == roomId);
+        }
     }
 }

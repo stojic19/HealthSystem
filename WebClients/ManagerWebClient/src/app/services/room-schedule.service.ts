@@ -19,4 +19,26 @@ export class RoomScheduleService {
       }
     );
   }
+
+  getRenovationsByRoom(roomId: number) {
+    return this.http.get(
+      `${environment.baseUrl}` + 'api/RoomRenovation/GetRenovationsByRoom',
+      {
+        params: {
+          roomId: roomId,
+        },
+      }
+    );
+  }
+
+  getAppointmentsByRoom(roomId: number) {
+    return this.http.get(
+      `${environment.baseUrl}` + 'api/Room/GetScheduledEventsByRoom',
+      {
+        params: {
+          roomId: roomId,
+        },
+      }
+    );
+  }
 }

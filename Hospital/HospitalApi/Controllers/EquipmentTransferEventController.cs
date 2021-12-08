@@ -1,6 +1,7 @@
 ﻿using Hospital.RoomsAndEquipment.Model;
 using Hospital.RoomsAndEquipment.Repository;
 using Hospital.RoomsAndEquipment.Service;
+using Hospital.Schedule.Service;
 using Hospital.SharedModel.Model.Wrappers;
 using Hospital.SharedModel.Repository.Base;
 using HospitalApi.DTOs;
@@ -62,8 +63,11 @@ namespace HospitalApi.Controllers
             var roomInventory = _uow.GetRepository<IRoomInventoryReadRepository>()
                 .GetByRoomAndInventoryItem(equipmentTransferEvent.InitialRoomId, equipmentTransferEvent.InventoryItemId);
 
-            if (roomInventory.Amount < equipmentTransferEvent.Quantity)
-                return false;
+            if(roomInventory != null)
+            {
+                if (roomInventory.Amount < equipmentTransferEvent.Quantity)
+                    return false;
+            }
 
             return true;
         }
@@ -72,13 +76,14 @@ namespace HospitalApi.Controllers
         public IEnumerable<TimePeriodDTO> GetAvailableTerms(AvailableTermDTO availableTermsDTO)
         {
             var transferingEquipmentService = new TransferingEquipmentService(_uow);
+            var dateService = new AvailableTermsService(_uow);
             var timePeriod = new TimePeriod()
             {
                 StartTime = availableTermsDTO.StartDate,
                 EndTime = availableTermsDTO.EndDate
             };
 
-            var terms = transferingEquipmentService.GetAvailableTerms(timePeriod, availableTermsDTO.InitialRoomId, availableTermsDTO.DestinationRoomId, availableTermsDTO.Duration);
+            var terms = dateService.GetAvailableTerms(timePeriod, availableTermsDTO.InitialRoomId, availableTermsDTO.DestinationRoomId, availableTermsDTO.Duration);
             var availableTerms = new List<TimePeriodDTO>();
             foreach (TimePeriod term in terms)
             {

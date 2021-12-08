@@ -39,6 +39,16 @@
               </div>
             </td>
           </tr>
+          <tr *ngFor="let event of renovationEvents">
+            <td>Renovation</td>
+            <td>{{ event.startDate | date: "dd.MM.yyyy HH:mm" }}</td>
+            <td>{{ event.endDate | date: "dd.MM.yyyy HH:mm" }}</td>
+            <td class="pt-1">
+              <div class="buttonWrapper">
+                <button class="btn btn-danger cancelButton">Cancel</button>
+              </div>
+            </td>
+          </tr>
         </tbody>
       </table>
       <mat-card

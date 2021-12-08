@@ -32,7 +32,7 @@
 
   <ItemGroup>
     <Protobuf Include="Protos\medicineInventoryModel.proto" GrpcServices="Server" />
-    <Protobuf Include="Protos\medicineInventoryService.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\medicineInventoryService.proto" GrpcServices="Service" />
   </ItemGroup>
 
 

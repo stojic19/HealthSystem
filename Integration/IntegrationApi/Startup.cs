@@ -42,8 +42,6 @@ namespace IntegrationAPI
             });
             services.AddHostedService<BenefitRabbitMqService>();
 
-            services.AddGrpc();
-
             var builder = new ContainerBuilder();
             builder.RegisterModule(new DbModule());
             builder.RegisterModule(new RepositoryModule()
@@ -102,7 +100,6 @@ namespace IntegrationAPI
             {
                 server.ShutdownAsync().Wait();
             }
-
         }
     }
 }

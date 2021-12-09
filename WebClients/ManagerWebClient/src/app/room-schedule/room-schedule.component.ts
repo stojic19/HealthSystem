@@ -3,11 +3,16 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { EquipmentTransferEvent } from '../model/equipment-transfer-event';
 import { RoomRenovationEvent } from '../model/room-renovation-event';
+import { Schedule } from '../model/schedule';
 import { RoomScheduleService } from '../services/room-schedule.service';
 import {
   ConfirmDialogComponent,
   ConfirmDialogModel,
 } from './confirm-dialog/confirm-dialog.component';
+import {
+  DetailsDialogComponent,
+  DetailsDialogModel,
+} from './details-dialog/details-dialog.component';
 
 @Component({
   selector: 'app-room-schedule',
@@ -29,13 +34,15 @@ export class RoomScheduleComponent implements OnInit {
 
   equipmentTransferEvents: EquipmentTransferEvent[];
   renovationEvents: RoomRenovationEvent[];
+  scheduledEvents: Schedule[];
   isLoading = true;
-  selectedEvent: EquipmentTransferEvent;
+  selectedTransferEvent: EquipmentTransferEvent;
   result: boolean;
 
   ngOnInit(): void {
     this.getAllEquipmentTransfers();
     this.getAllRenovations();
+    this.getAllAppointments();
   }
 
   getAllEquipmentTransfers() {
@@ -49,7 +56,6 @@ export class RoomScheduleComponent implements OnInit {
   }
 
   getAllRenovations() {
-    this.isLoading = false;
     this.roomScheduleService
       .getRenovationsByRoom(this.roomId)
       .toPromise()
@@ -60,8 +66,13 @@ export class RoomScheduleComponent implements OnInit {
   }
 
   getAllAppointments() {
-    this.isLoading = false;
-    //dodati ucitavanje termina
+    this.roomScheduleService
+      .getAppointmentsByRoom(this.roomId)
+      .toPromise()
+      .then((res) => {
+        this.scheduledEvents = res as Schedule[];
+        this.isLoading = false;
+      });
   }
 
   confirmTransferCancelDialog(): void {
@@ -98,6 +109,35 @@ export class RoomScheduleComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((dialogResult) => {
       this.result = dialogResult;
+    });
+  }
+
+  openDialog(schedule: Schedule): void {
+    const eventType = schedule.scheduledEventType;
+    const startDate = schedule.startDate;
+    const endDate = schedule.endDate;
+    const roomName = schedule.room.name;
+    const buildingName = schedule.room.buildingName;
+    const patientFirstName = schedule.patient.firstName;
+    const patientLastName = schedule.patient.lastName;
+    const doctorFirstName = schedule.doctor.firstName;
+    const doctorLastName = schedule.doctor.lastName;
+
+    const dialogData = new DetailsDialogModel(
+      eventType,
+      startDate,
+      endDate,
+      roomName,
+      buildingName,
+      patientFirstName,
+      patientLastName,
+      doctorFirstName,
+      doctorLastName
+    );
+
+    const dialogRef = this.dialog.open(DetailsDialogComponent, {
+      maxWidth: '600px',
+      data: dialogData,
     });
   }
 }

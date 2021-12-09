@@ -58,6 +58,7 @@ import { MedicineSpecificationListComponent } from './medicine-specification-req
 import { RoomScheduleComponent } from './room-schedule/room-schedule.component';
 import { ConfirmDialogComponent } from './room-schedule/confirm-dialog/confirm-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { DetailsDialogComponent } from './room-schedule/details-dialog/details-dialog.component';
 
 @NgModule({
   declarations: [
@@ -102,6 +103,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MedicineSpecificationListComponent,
     RoomScheduleComponent,
     ConfirmDialogComponent,
+    DetailsDialogComponent,
   ],
   imports: [
     BrowserModule,

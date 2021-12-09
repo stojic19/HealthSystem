@@ -24,7 +24,7 @@
             <th class="col-md-4">Type</th>
             <th class="col-md-4">Start</th>
             <th class="col-md-4">End</th>
-            <th class="col-md-4">Cancel</th>
+            <th class="col-md-4">Options</th>
             <!-- da li je potrebno neko dugme za detalje -->
           </tr>
         </thead>
@@ -59,6 +59,23 @@
               </div>
             </td>
           </tr>
+          <tr *ngFor="let event of scheduledEvents">
+            <td>{{ event.scheduledEventType }}</td>
+            <td>{{ event.startDate | date: "dd.MM.yyyy HH:mm" }}</td>
+            <td>{{ event.endDate | date: "dd.MM.yyyy HH:mm" }}</td>
+            <td class="pt-1">
+              <div class="buttonWrapper">
+                <button
+                  class="btn btn-secondary cancelButton"
+                  data-bs-toggle="modal"
+                  data-bs-target="#exampleModal"
+                  (click)="openDialog(event)"
+                >
+                  Details
+                </button>
+              </div>
+            </td>
+          </tr>
         </tbody>
       </table>
       <mat-card
@@ -71,3 +88,60 @@
     </div>
   </div>
 </div>
+
+<!-- <div class="modal" id="exampleModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header" style="border-bottom: 0 none">
+        <h1 mat-dialog-title>
+          {{ selectedAppointment.scheduledEventType }} details
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div
+        mat-dialog-content
+        class="modal-body justify-content-center align-items-center"
+      >
+        <p>
+          START:
+          <b> {{ selectedAppointment.startDate | date: "dd.MM.yyyy HH:mm" }}</b
+          ><br />
+          END:
+          <b>{{ selectedAppointment.endDate | date: "dd.MM.yyyy HH:mm" }}</b
+          ><br />
+          ROOM:
+          <b
+            >{{ selectedAppointment.room.name }} ,
+            {{ selectedAppointment.room.buildingName }}</b
+          >
+          <br />
+          PATIENT:
+          <b
+            >{{ selectedAppointment.patient.firstName }}
+            {{ selectedAppointment.patient.lastName }}</b
+          >
+          <br />
+          DOCTOR:
+          <b
+            >{{ selectedAppointment.doctor.firstName }}
+            {{ selectedAppointment.doctor.lastName }}</b
+          >
+        </p>
+      </div>
+      <div
+        mat-dialog-actions
+        class="justify-content-center align-items-center modal-footer"
+        style="border-top: 0 none"
+      >
+        <button mat-raised-button color="accent" data-bs-dismiss="modal">
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div> -->

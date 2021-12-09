@@ -1,34 +1,36 @@
 <div class="card shadow-sm">
-    <!--Displaying basic room info-->
-    <div class="card-body">
-        <div class="d-flex justify-content-center my-3">
-            <h5 class="card-title">{{room.name}}</h5>
-        </div>
+  <!--Displaying basic room info-->
+  <div class="card-body">
+    <div class="d-flex justify-content-center my-3">
+      <h5 class="card-title">{{ room.name }}</h5>
+    </div>
 
-        <div class="row my-1 ms-2">
-            <div class="col-11">
-                <p>{{room.description}}</p>
-            </div>              
-        </div>
+    <div class="row my-1 ms-2">
+      <div class="col-11">
+        <p>{{ room.description }}</p>
+      </div>
+    </div>
 
-        <div class="row ms-2 my-1">
-            <div class="col-3">
-                <p class="text-muted">Size:</p>
-            </div>
-            <div class="col-8">
-                <p>{{room.dimensionX}} x {{room.dimensionY}}</p>
-            </div>              
-        </div>
+    <div class="row ms-2 my-1">
+      <div class="col-3">
+        <p class="text-muted">Size:</p>
+      </div>
+      <div class="col-8">
+        <p>{{ room.width }} x {{ room.height }}</p>
+      </div>
+    </div>
 
-        <div class="row my-3">
-            <div class="col-lg-6">
-                <button class="btn btn-secondary" (click)="startEditing()"><i class="fas fa-edit"> Edit</i></button>
-            </div>
-            <div class="col-lg-6">
-                <button class="btn btn-secondary" (click)="showRoomInventory(room.id)"> Show inventory</button>
-            </div>  
-        </div>
-
-    </div>    
+    <div class="row my-3">
+      <div class="col-lg-6">
+        <button class="btn btn-secondary" (click)="startEditing()">
+          <i class="fas fa-edit"> Edit</i>
+        </button>
+      </div>
+      <div class="col-lg-6">
+        <button class="btn btn-secondary" (click)="showRoomInventory(room.id)">
+          Show inventory
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
-

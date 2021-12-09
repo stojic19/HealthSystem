@@ -32,7 +32,8 @@ namespace HospitalApi.Controllers
                 return BadRequest("Invalid medicine name.");
             }
             _medicationInventoryMasterService.AddMedicineToInventory(medicationRequestDTO.MedicineName, medicationRequestDTO.Quantity);
-            return Ok("Succesfully added medicine.");
+            AddMedicationResponseDTO responseDTO = new AddMedicationResponseDTO() { Answer = "Succesfully added medicine." };
+            return Ok(responseDTO);
         }
     }
 }

@@ -85,22 +85,22 @@ namespace HospitalIntegrationTests
                 PatientId = patient.Id,
                 MedicineId = medication.Id,
                 EndDate = new DateTime(2022, 11, 20),
-                StartDate = new DateTime(2020, 1, 3)
+                StartDate = new DateTime(2020, 1, 3),
             };
             var integrationContent = new PrescriptionToIntegrationDTO
             {
-                EndDate = new DateTime(2022, 11, 20),
-                StartDate = new DateTime(2020, 1, 3),
+                PatientFirstName = patient.FirstName,
+                PatientLastName = patient.LastName,
+                StartDate = content.StartDate,
+                EndDate = content.EndDate,
                 IssuedDate = DateTime.Now,
                 MedicineName = medication.Name,
-                PatientFirstName = patient.FirstName,
-                PatientLastName = patient.LastName
             };
             var stubSender = new Mock<IHttpRequestSender>();
             RestResponse response = new RestResponse();
             response.StatusCode = HttpStatusCode.OK;
             stubSender.Setup(m => m.Post(IntegrationBaseUrl + "api/Prescription/PostPrescription",
-                integrationContent)).Returns(response);
+                It.IsAny<PrescriptionToIntegrationDTO>())).Returns(response);
             //ACT
             PrescriptionController controller = new PrescriptionController(UoW, stubSender.Object);
             var result = controller.CreateNewPrescription(content).GetType();
@@ -113,7 +113,7 @@ namespace HospitalIntegrationTests
             UoW.GetRepository<ISpecializationWriteRepository>().Delete(specialization);
             UoW.GetRepository<IMedicationWriteRepository>().Delete(medication);
             presc.MedicationId.ShouldBe(medication.Id);
-            result.ShouldBe(typeof(OkResult));
+            result.ShouldBe(typeof(OkObjectResult));
         }
     }
 }

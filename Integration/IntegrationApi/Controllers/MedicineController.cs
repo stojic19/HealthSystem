@@ -17,12 +17,10 @@ namespace IntegrationAPI.Controllers
     public class MedicineController : ControllerBase
     {
         private PharmacyMasterService _pharmacyMasterService;
-        private MedicineInventoryMasterService _medicineInventoryMasterService;
 
         public MedicineController(IUnitOfWork unitOfWork)
         {
             _pharmacyMasterService = new PharmacyMasterService(unitOfWork);
-            _medicineInventoryMasterService = new MedicineInventoryMasterService(unitOfWork);
         }
 
         [HttpPost]
@@ -99,8 +97,14 @@ namespace IntegrationAPI.Controllers
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 responseDTO.Answer = true;
+                response = SendMedicineToHospital(new AddMedicineRequestDTO() { MedicineName = createMedicineRequestDTO.MedicineName, Quantity = createMedicineRequestDTO.Quantity });
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    responseDTO.ExceptionMessage = response.Content;
+                    return Ok(responseDTO);
+                }
                 responseDTO.ExceptionMessage = response.Content;
-                // poslati bolnici nabavljen lek
+                return BadRequest(responseDTO);
             }
             return Ok(responseDTO);
         }
@@ -110,9 +114,16 @@ namespace IntegrationAPI.Controllers
             MedicineProcurementGrpcResponseDTO grpcResponseDTO = MedicineInventorygRPCService.UrgentMedicineProcurement(createMedicineRequestDTO, pharmacy);
             if (grpcResponseDTO.ConnectionSuccesfull)
             {
-                if(grpcResponseDTO.Response.Answer == true) 
+                if (grpcResponseDTO.Response.Answer == true) 
                 {
-                    // poslati bolnici nabavljen lek
+                    IRestResponse response = SendMedicineToHospital(new AddMedicineRequestDTO() { MedicineName = createMedicineRequestDTO.MedicineName, Quantity = createMedicineRequestDTO.Quantity });
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        grpcResponseDTO.Response.ExceptionMessage = response.Content.ToString();
+                        return Ok(grpcResponseDTO);
+                    }
+                    grpcResponseDTO.Response.ExceptionMessage = response.Content;
+                    return BadRequest(grpcResponseDTO);
                 }
                 return Ok(grpcResponseDTO.Response);
             }
@@ -126,6 +137,15 @@ namespace IntegrationAPI.Controllers
         {
             RestClient client = new RestClient();
             string targetUrl = pharmacy.BaseUrl + "/api/MedicineProcurement/execute";
+            RestRequest request = new RestRequest(targetUrl);
+            request.AddJsonBody(medicineRequestDTO);
+            return client.Post(request);
+        }
+
+        private IRestResponse SendMedicineToHospital(AddMedicineRequestDTO medicineRequestDTO)
+        {
+            RestClient client = new RestClient();
+            string targetUrl = "https://localhost:44303/api/Medication/AddMedicineQuantity";
             RestRequest request = new RestRequest(targetUrl);
             request.AddJsonBody(medicineRequestDTO);
             return client.Post(request);

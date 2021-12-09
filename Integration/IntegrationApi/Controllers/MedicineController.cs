@@ -4,6 +4,7 @@ using Integration.Pharmacies.Service;
 using Integration.Shared.Repository.Base;
 using IntegrationAPI.Adapters;
 using IntegrationAPI.DTO;
+using IntegrationAPI.DTO.MedicineProcurement;
 using IntegrationAPI.gRPCServices;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -98,9 +99,10 @@ namespace IntegrationAPI.Controllers
             {
                 responseDTO.Answer = true;
                 response = SendMedicineToHospital(new AddMedicineRequestDTO() { MedicineName = createMedicineRequestDTO.MedicineName, Quantity = createMedicineRequestDTO.Quantity });
+                MedicineProcurementHospitalResponseDTO responseFromHospitalDTO = JsonConvert.DeserializeObject<MedicineProcurementHospitalResponseDTO>(response.Content);
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    responseDTO.ExceptionMessage = response.Content;
+                    responseDTO.ExceptionMessage = responseFromHospitalDTO.Answer;
                     return Ok(responseDTO);
                 }
                 responseDTO.ExceptionMessage = response.Content;
@@ -117,9 +119,10 @@ namespace IntegrationAPI.Controllers
                 if (grpcResponseDTO.Response.Answer == true) 
                 {
                     IRestResponse response = SendMedicineToHospital(new AddMedicineRequestDTO() { MedicineName = createMedicineRequestDTO.MedicineName, Quantity = createMedicineRequestDTO.Quantity });
+                    MedicineProcurementHospitalResponseDTO responseFromHospitalDTO = JsonConvert.DeserializeObject<MedicineProcurementHospitalResponseDTO>(response.Content);
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
-                        grpcResponseDTO.Response.ExceptionMessage = response.Content.ToString();
+                        grpcResponseDTO.Response.ExceptionMessage = responseFromHospitalDTO.Answer;
                         return Ok(grpcResponseDTO);
                     }
                     grpcResponseDTO.Response.ExceptionMessage = response.Content;

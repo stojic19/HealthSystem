@@ -58,17 +58,20 @@ namespace Hospital.RoomsAndEquipment.Service
 
             Room newRoom = new Room()
             {
-                Name = selectedRoom.Name + "s",
-                Description = selectedRoom.Description,
+                Name = roomRenovationEvent.FirstRoomName,
+                Description = roomRenovationEvent.FirstRoomDescription,
                 BuildingName = selectedRoom.BuildingName,
                 FloorNumber = selectedRoom.FloorNumber,
-                RoomType = selectedRoom.RoomType,
+                RoomType = roomRenovationEvent.FirstRoomType,
                 Width = width,
                 Height = height
             };
 
             var roomWriteRepo = uow.GetRepository<IRoomWriteRepository>();
             roomWriteRepo.Add(newRoom);
+            selectedRoom.Name = roomRenovationEvent.SecondRoomName;
+            selectedRoom.Description = roomRenovationEvent.SecondRoomDescription;
+            selectedRoom.RoomType = roomRenovationEvent.SecondRoomType;
             roomWriteRepo.Update(selectedRoom);
             // kreiranje novih pozicija
             GetNewPositionsWhenSplitting(selectedRoom, newRoom);
@@ -130,6 +133,9 @@ namespace Hospital.RoomsAndEquipment.Service
                 firstRoom.Width += secondRoom.Width;
             }
 
+            firstRoom.Name = roomRenovationEvent.FirstRoomName;
+            firstRoom.Description = roomRenovationEvent.FirstRoomDescription;
+            firstRoom.RoomType = roomRenovationEvent.FirstRoomType;
             roomWriteRepo.Update(firstRoom);
             //brisanje stare
             roomWriteRepo.Delete(secondRoom);

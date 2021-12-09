@@ -2,8 +2,8 @@ export class Room {
     id! : number;
     name! : string;
     description! : string;
-    dimensionX! : number;
-    dimensionY! : number;
+    width! : number;
+    height! : number;
     floorNumber! : number;
     buildingName! : string;
     doctors! : [];

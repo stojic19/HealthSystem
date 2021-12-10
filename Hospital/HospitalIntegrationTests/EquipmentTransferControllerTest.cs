@@ -39,7 +39,7 @@ namespace HospitalIntegrationTests
 
             var content = GetContent(newRequest);
 
-            var response = await Client.PostAsync(BaseUrl + "api/EquipmentTransferEvent/addEvent", content);
+            var response = await Client.PostAsync(BaseUrl + "api/EquipmentTransferEvent/AddNewEquipmentTransferEvent", content);
 
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
             response.ShouldNotBeNull();
@@ -77,7 +77,7 @@ namespace HospitalIntegrationTests
 
             var content = GetContent(newRequest);
 
-            var response = await Client.PostAsync(BaseUrl + "api/EquipmentTransferEvent/addEvent", content);
+            var response = await Client.PostAsync(BaseUrl + "api/EquipmentTransferEvent/AddNewEquipmentTransferEvent", content);
 
             response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
             response.ShouldNotBeNull();
@@ -137,8 +137,8 @@ namespace HospitalIntegrationTests
                 {
                     Name = name,
                     Description = "Room for storage",
-                    /*DimensionX = 7,
-                    DimensionY = 8.5,*/
+                    Width = 7,
+                    Height = 8.5,
                     FloorNumber = 1,
                     BuildingName = "Building 2",
                     RoomType = RoomType.Storage

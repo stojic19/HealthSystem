@@ -9,5 +9,7 @@ namespace PharmacyApi.DTO
     {
         public string FileName { get; set; }
         public string Host { get; set; }
+        public string MedicineName { get; set; }
+        public DateTime Date { get; set; }
     }
 }

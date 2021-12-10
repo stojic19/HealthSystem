@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
-import { EquipmentTransferEvent } from '../model/equipment-transfer-event';
+import { ActivatedRoute, Router } from '@angular/router';
+import {
+  EquipmentTransferEvent,
+  EquipmentTransferEventDTO,
+} from '../model/equipment-transfer-event';
 import { RoomRenovationEvent } from '../model/room-renovation-event';
 import { Schedule } from '../model/schedule';
 import { RoomScheduleService } from '../services/room-schedule.service';
@@ -32,12 +35,12 @@ export class RoomScheduleComponent implements OnInit {
     });
   }
 
-  equipmentTransferEvents: EquipmentTransferEvent[];
+  equipmentTransferEvents: EquipmentTransferEventDTO[];
   renovationEvents: RoomRenovationEvent[];
   scheduledEvents: Schedule[];
   isLoading = true;
-  selectedTransferEvent: EquipmentTransferEvent;
-  result: boolean;
+  transferCancelResult: boolean;
+  renovationCancelResult: boolean;
 
   ngOnInit(): void {
     this.getAllEquipmentTransfers();
@@ -50,7 +53,7 @@ export class RoomScheduleComponent implements OnInit {
       .getTransferEventsByRoom(this.roomId)
       .toPromise()
       .then((res) => {
-        this.equipmentTransferEvents = res as EquipmentTransferEvent[];
+        this.equipmentTransferEvents = res as EquipmentTransferEventDTO[];
         this.isLoading = false;
       });
   }
@@ -75,7 +78,7 @@ export class RoomScheduleComponent implements OnInit {
       });
   }
 
-  confirmTransferCancelDialog(): void {
+  confirmTransferCancelDialog(transfer: EquipmentTransferEventDTO): void {
     const message = 'Are you sure you want to cancel selected transfer?';
 
     const dialogData = new ConfirmDialogModel(
@@ -89,8 +92,15 @@ export class RoomScheduleComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((dialogResult) => {
-      this.result = dialogResult;
-      console.log(this.result);
+      this.transferCancelResult = dialogResult;
+      console.log(this.transferCancelResult);
+
+      if (this.transferCancelResult) {
+        console.log('tu sam');
+        this.roomScheduleService.cancelEquipmentTransferEvent(transfer);
+      }
+
+      window.location.reload();
     });
   }
 
@@ -108,7 +118,7 @@ export class RoomScheduleComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((dialogResult) => {
-      this.result = dialogResult;
+      this.renovationCancelResult = dialogResult;
     });
   }
 
@@ -136,8 +146,22 @@ export class RoomScheduleComponent implements OnInit {
     );
 
     const dialogRef = this.dialog.open(DetailsDialogComponent, {
-      maxWidth: '600px',
+      maxWidth: '500px',
+      height: '300px',
       data: dialogData,
     });
+  }
+
+  checkIfEventIsTomorrow(event: EquipmentTransferEvent) {
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const start = new Date(event.startDate);
+
+    if (start.getTime() <= tomorrow.getTime()) {
+      return false;
+    }
+
+    return true;
   }
 }

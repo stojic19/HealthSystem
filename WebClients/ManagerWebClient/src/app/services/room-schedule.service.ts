@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { EquipmentTransferEventDTO } from '../model/equipment-transfer-event';
 
 @Injectable({
   providedIn: 'root',
@@ -40,5 +41,14 @@ export class RoomScheduleService {
         },
       }
     );
+  }
+
+  cancelEquipmentTransferEvent(transfer: EquipmentTransferEventDTO) {
+    return this.http
+      .post(
+        '/api/EquipmentTransferEvent/CancelEquipmentTransferEvent',
+        transfer
+      )
+      .subscribe();
   }
 }

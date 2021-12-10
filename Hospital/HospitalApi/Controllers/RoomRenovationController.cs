@@ -101,9 +101,8 @@ namespace HospitalApi.Controllers
         {
             var roomRenovationRepo = _uow.GetRepository<IRoomRenovationEventReadRepository>();
             return roomRenovationRepo.GetAll()
-                .Where(renovation => renovation.IsCanceled == false &&
-                                     (renovation.RoomId == roomId ||
-                                     renovation.MergeRoomId == roomId));
+                .Where(renovation => renovation.RoomId == roomId ||
+                                     renovation.MergeRoomId == roomId);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Hospital.RoomsAndEquipment.Model;
+﻿using AutoMapper;
+using Hospital.RoomsAndEquipment.Model;
 using Hospital.RoomsAndEquipment.Repository;
 using Hospital.RoomsAndEquipment.Service;
 using Hospital.Schedule.Service;
@@ -21,10 +22,12 @@ namespace HospitalApi.Controllers
     public class EquipmentTransferEventController : ControllerBase
     {
         private readonly IUnitOfWork _uow;
+        private readonly IMapper _mapper;
 
-        public EquipmentTransferEventController(IUnitOfWork uow)
+        public EquipmentTransferEventController(IUnitOfWork uow, IMapper mapper)
         {
             _uow = uow;
+            _mapper = mapper;
         }
 
         [HttpPost]
@@ -107,6 +110,28 @@ namespace HospitalApi.Controllers
             return transferEventRepo.GetAll()
                 .Where(transfer => transfer.DestinationRoomId == roomId ||
                                     transfer.InitialRoomId == roomId);
+        }
+
+        [HttpPost]
+        public IActionResult CancelEquipmentTransferEvent(EquipmentTransferEventDTO transferEventDTO)
+        {
+            try
+            {
+                if (transferEventDTO == null)
+                {
+                    return BadRequest("Incorrect format sent! Please try again.");
+                }
+
+                var cancellingEventsService = new CancellingEventsService(_uow);
+                cancellingEventsService.CancelEquipmentTransferEvent(_mapper.Map<EquipmentTransferEvent>(transferEventDTO));
+
+                return Ok("Your transfer event has been canceled.");
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error cancelling transfer event.");
+            }
+
         }
     }
 }

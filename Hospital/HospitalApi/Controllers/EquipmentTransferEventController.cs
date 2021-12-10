@@ -1,6 +1,7 @@
 ﻿using Hospital.RoomsAndEquipment.Model;
 using Hospital.RoomsAndEquipment.Repository;
 using Hospital.RoomsAndEquipment.Service;
+using Hospital.Schedule.Service;
 using Hospital.SharedModel.Model.Wrappers;
 using Hospital.SharedModel.Repository.Base;
 using HospitalApi.DTOs;
@@ -70,14 +71,14 @@ namespace HospitalApi.Controllers
        /* [HttpPost]
         public IEnumerable<TimePeriodDTO> GetAvailableTerms(AvailableTermDTO availableTermsDTO)
         {
-            var transferingEquipmentService = new TransferingEquipmentService(_uow);
+            var availableTermsService = new AvailableTermsService(_uow);
             var timePeriod = new TimePeriod()
             {
                 StartTime = availableTermsDTO.StartDate,
                 EndTime = availableTermsDTO.EndDate
             };
             
-            var terms = transferingEquipmentService.GetAvailableTerms(timePeriod, availableTermsDTO.InitialRoomId, availableTermsDTO.DestinationRoomId, availableTermsDTO.Duration);
+            var terms = availableTermsService.GetAvailableTerms(timePeriod, availableTermsDTO.InitialRoomId, availableTermsDTO.DestinationRoomId, availableTermsDTO.Duration);
             var availableTerms = new List<TimePeriodDTO>();
             foreach (TimePeriod term in terms)
             {

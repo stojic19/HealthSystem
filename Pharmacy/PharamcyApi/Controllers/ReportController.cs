@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using Pharmacy.Repositories.Base;
 using PharmacyApi.ConfigurationMappers;
 using PharmacyApi.Controllers.Base;
 using PharmacyApi.DTO;
+using Renci.SshNet;
 
 namespace PharmacyApi.Controllers
 {
@@ -35,8 +37,23 @@ namespace PharmacyApi.Controllers
             {
                 HospitalId = hospital.Id,
                 FileName = consumptionReportDto.FileName,
-                Host = consumptionReportDto.Host
+                Host = consumptionReportDto.Host,
+                ReceivedDate = DateTime.Now
             };
+            try
+            {
+                //TODO: promeniti kredencijale
+                SftpClient sftpClient = new SftpClient(new PasswordConnectionInfo("192.168.0.13", "tester", "password"));
+                sftpClient.Connect();
+                Stream fileStream = System.IO.File.OpenWrite("MedicineReports" + Path.DirectorySeparatorChar + consumptionReportDto.FileName);
+                sftpClient.DownloadFile(consumptionReportDto.FileName, fileStream);
+                sftpClient.Disconnect();
+                fileStream.Close();
+            }
+            catch
+            {
+                return Problem("Failed to save file, error while trying to download from sftp");
+            }
             try
             {
                 UoW.GetRepository<IMedicineReportFileWriteRepository>().Add(medicineReportFile);

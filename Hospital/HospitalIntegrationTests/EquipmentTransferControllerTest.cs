@@ -2,6 +2,7 @@
 using Hospital.RoomsAndEquipment.Repository;
 using Hospital.SharedModel.Model.Enumerations;
 using HospitalIntegrationTests.Base;
+using Newtonsoft.Json;
 using Shouldly;
 using System;
 using System.Linq;

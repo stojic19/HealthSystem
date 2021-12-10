@@ -33,27 +33,7 @@ namespace IntegrationAPI.Controllers
             Pharmacy foundPharmacy = null;
             foreach(var pharmacy in pharmacies)
             {
-                CreateMedicineRequestForPharmacyDTO medicineDto = new CreateMedicineRequestForPharmacyDTO()
-                {
-                    PharmacyId = pharmacy.Id,
-                    MedicineName = dto.MedicineName,
-                    Quantity = 1,
-                    ManufacturerName = "Manufacturer 1"
-                };
-                RestClient restClient = new RestClient();
-                RestRequest request = new RestRequest($"{Request.Scheme}://{Request.Host}" + "/api/Medicine/RequestMedicineInformation");
-                request.AddJsonBody(medicineDto);
-                var response = restClient.Post(request);
-                var content = response.Content;
-                Console.WriteLine(content);
-                if((HttpStatusCode)response.GetType().GetProperty("StatusCode").GetValue(response, null) != HttpStatusCode.OK)
-                {
-                    continue;
-                }
-
-                CheckMedicineAvailabilityResponseDTO responseDTO = 
-                        JsonConvert.DeserializeObject<CheckMedicineAvailabilityResponseDTO>(content);
-                if (responseDTO.answer)
+                if (CheckMedicineInPharmacy(dto, pharmacy))
                 {
                     foundPharmacy = pharmacy;
                     break;
@@ -72,55 +52,120 @@ namespace IntegrationAPI.Controllers
             string fullResponse = "Pharmacy: " + foundPharmacy.Name + "\n" +
                                   "SFTP: " + sftpResponse + "\n" +
                                   "HTTP: " + httpResponse;
-            return Ok(fullResponse);
+            if (sftpResponse.Equals("Done") || httpResponse.Equals("Done"))
+            {
+                return Ok(fullResponse);
+            }
+            else
+            {
+                return BadRequest(fullResponse);
+            }
+            
+        }
+
+        private bool CheckMedicineInPharmacy(PrescriptionDTO dto, Pharmacy pharmacy)
+        {
+            CreateMedicineRequestForPharmacyDTO medicineDto = new CreateMedicineRequestForPharmacyDTO()
+            {
+                PharmacyId = pharmacy.Id,
+                MedicineName = dto.MedicineName,
+                Quantity = 1,
+                ManufacturerName = "Manufacturer 1"
+            };
+            try
+            {
+                RestClient restClient = new RestClient();
+                RestRequest request =
+                    new RestRequest($"{Request.Scheme}://{Request.Host}" + "/api/Medicine/RequestMedicineInformation");
+                request.AddJsonBody(medicineDto);
+                var response = restClient.Post(request);
+                var content = response.Content;
+                Console.WriteLine(content);
+                if ((HttpStatusCode) response.GetType().GetProperty("StatusCode").GetValue(response, null) !=
+                    HttpStatusCode.OK)
+                {
+                    return false;
+                }
+
+                CheckMedicineAvailabilityResponseDTO responseDTO =
+                    JsonConvert.DeserializeObject<CheckMedicineAvailabilityResponseDTO>(content);
+                if (responseDTO.answer)
+                {
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+
+            return false;
         }
 
         private string SendPrescriptionWithSftp(Pharmacy pharmacy, PrescriptionDTO dto)
         {
-            IPDFAdapter adapter = new DynamicPDFAdapter();
-            string fileName = adapter.MakePrescriptionPdf(dto, "sftp");
-            string path = "Prescriptions" + Path.DirectorySeparatorChar + "Sftp" + Path.DirectorySeparatorChar + fileName;
-            SftpClient sftpClient = new SftpClient(new PasswordConnectionInfo(_sftpCredentials.Host, _sftpCredentials.Username, _sftpCredentials.Password));
-            sftpClient.Connect();
-            Stream fileStream = System.IO.File.OpenRead(path);
-            string filePath = Path.GetFileName(path);
-            sftpClient.UploadFile(fileStream, filePath);
-            sftpClient.Disconnect();
-            fileStream.Close();
-
-            PrescriptionSendSftpDto prescDto = new PrescriptionSendSftpDto()
+            try
             {
-                ApiKey = pharmacy.ApiKey,
-                FileName = fileName
-            };
-            RestClient client = new RestClient();
-            string targetUrl = pharmacy.BaseUrl + "/api/Prescription/ReceivePrescriptionSftp";
-            RestRequest request = new RestRequest(targetUrl);
-            request.AddJsonBody(prescDto);
-            var response = client.Post(request).Content;
+                IPDFAdapter adapter = new DynamicPDFAdapter();
+                string fileName = adapter.MakePrescriptionPdf(dto, "sftp");
+                string path = "Prescriptions" + Path.DirectorySeparatorChar + "Sftp" + Path.DirectorySeparatorChar +
+                              fileName;
+                SftpClient sftpClient = new SftpClient(new PasswordConnectionInfo(_sftpCredentials.Host,
+                    _sftpCredentials.Username, _sftpCredentials.Password));
+                sftpClient.Connect();
+                Stream fileStream = System.IO.File.OpenRead(path);
+                string filePath = Path.GetFileName(path);
+                sftpClient.UploadFile(fileStream, filePath);
+                sftpClient.Disconnect();
+                fileStream.Close();
 
-            return response;
+                PrescriptionSendSftpDto prescDto = new PrescriptionSendSftpDto()
+                {
+                    ApiKey = pharmacy.ApiKey,
+                    FileName = fileName
+                };
+                RestClient client = new RestClient();
+                string targetUrl = pharmacy.BaseUrl + "/api/Prescription/ReceivePrescriptionSftp";
+                RestRequest request = new RestRequest(targetUrl);
+                request.AddJsonBody(prescDto);
+                var response = client.Post(request).Content;
+
+                return response;
+            }
+            catch
+            {
+                return "Cannot send prescription";
+            }
+            
         }
 
         private string SendPrescriptionWithHttp(Pharmacy pharmacy, PrescriptionDTO dto)
         {
-            IPDFAdapter adapter = new DynamicPDFAdapter();
-            string fileName = adapter.MakePrescriptionPdf(dto, "http");
-
-            byte[] file = System.IO.File.ReadAllBytes("Prescriptions" + Path.DirectorySeparatorChar + "Http" + Path.DirectorySeparatorChar + fileName);
-            PrescriptionSendHttpDto prescDto = new PrescriptionSendHttpDto()
+            try
             {
-                ApiKey = pharmacy.ApiKey,
-                FileContent = file,
-                FileName = fileName
-            };
-            RestClient client = new RestClient();
-            string targetUrl = pharmacy.BaseUrl + "/api/Prescription/ReceivePrescriptionHttp";
-            RestRequest request = new RestRequest(targetUrl);
-            request.AddJsonBody(prescDto);
-            var response = client.Post(request).Content;
-            
-            return response;
+                IPDFAdapter adapter = new DynamicPDFAdapter();
+                string fileName = adapter.MakePrescriptionPdf(dto, "http");
+
+                byte[] file = System.IO.File.ReadAllBytes("Prescriptions" + Path.DirectorySeparatorChar + "Http" +
+                                                          Path.DirectorySeparatorChar + fileName);
+                PrescriptionSendHttpDto prescDto = new PrescriptionSendHttpDto()
+                {
+                    ApiKey = pharmacy.ApiKey,
+                    FileContent = file,
+                    FileName = fileName
+                };
+                RestClient client = new RestClient();
+                string targetUrl = pharmacy.BaseUrl + "/api/Prescription/ReceivePrescriptionHttp";
+                RestRequest request = new RestRequest(targetUrl);
+                request.AddJsonBody(prescDto);
+                var response = client.Post(request).Content;
+
+                return response;
+            }
+            catch
+            {
+                return "Cannot send prescription";
+            }
         }
     }
 }

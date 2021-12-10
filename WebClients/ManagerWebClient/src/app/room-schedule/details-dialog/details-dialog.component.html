@@ -1,8 +1,8 @@
-<h1 mat-dialog-title>{{ eventType }} details</h1>
+<h1 mat-dialog-title class="title">{{ eventType }} details</h1>
 
 <div
   mat-dialog-content
-  class="modal-body justify-content-center align-items-center"
+  class="justify-content-center align-items-center content"
 >
   <p>
     START:
@@ -26,5 +26,5 @@
   class="justify-content-center align-items-center"
   style="border-top: 0 none"
 >
-  <button mat-raised-button color="accent" data-bs-dismiss="modal">OK</button>
+  <button mat-raised-button color="accent" (click)="onConfirm()">OK</button>
 </div>

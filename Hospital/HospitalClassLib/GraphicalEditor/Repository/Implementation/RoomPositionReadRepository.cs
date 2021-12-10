@@ -14,5 +14,13 @@ namespace Hospital.GraphicalEditor.Repository.Implementation
         public RoomPositionReadRepository(AppDbContext context) : base(context)
         {
         }
+
+        public RoomPosition GetByRoom(int? roomId)
+        {
+            var roomPositions = GetAll()
+                                      .Where(roomPosition => roomPosition.RoomId == roomId);
+
+            return roomPositions.FirstOrDefault();
+        }
     }
 }

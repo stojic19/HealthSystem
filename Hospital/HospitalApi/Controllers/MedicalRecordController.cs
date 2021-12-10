@@ -25,8 +25,8 @@ namespace HospitalApi.Controllers
         public IActionResult GetPatientWithRecord()
         {
             var patientRepo = _uow.GetRepository<IPatientReadRepository>();
-            var loggedPatient = patientRepo.GetAll().First();
-            var patient = patientRepo.GetPatient(loggedPatient.Id);
+            var loggedInPatient = patientRepo.GetAll().First();
+            var patient = patientRepo.GetPatient(loggedInPatient.Id);
             var medicalRecordRepo = _uow.GetRepository<IMedicalRecordReadRepository>();
             var medicalRecord = medicalRecordRepo.GetMedicalRecord(patient.MedicalRecordId);
             patient.MedicalRecord = medicalRecord;

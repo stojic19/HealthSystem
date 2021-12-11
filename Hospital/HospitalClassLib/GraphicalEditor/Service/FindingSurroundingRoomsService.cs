@@ -37,11 +37,15 @@ namespace Hospital.GraphicalEditor.Service
 
         public bool AreNeighbors(RoomPosition firstPosition, RoomPosition secondPosition)
         {
-            if (!firstPosition.Room.BuildingName.Equals(secondPosition.Room.BuildingName))
+            var roomRepo = uow.GetRepository<IRoomReadRepository>();
+            var firstRoom = roomRepo.GetById(firstPosition.RoomId);
+            var secondRoom = roomRepo.GetById(secondPosition.RoomId);
+
+            if (!firstRoom.BuildingName.Equals(secondRoom.BuildingName))
                 return false;
-            else if (firstPosition.Room.FloorNumber != secondPosition.Room.FloorNumber)
+            else if (firstRoom.FloorNumber != secondRoom.FloorNumber)
                 return false;
-            else if (firstPosition.Room.BuildingName.Equals("Building 1"))
+            else if (firstRoom.BuildingName.Equals("Building 1"))
             {
                 if (firstPosition.DimensionY + firstPosition.Height == secondPosition.DimensionY)
                 {
@@ -52,7 +56,7 @@ namespace Hospital.GraphicalEditor.Service
                     return true;
                 }
             }
-            else if (firstPosition.Room.BuildingName.Equals("Building 2"))
+            else if (firstRoom.BuildingName.Equals("Building 2"))
             {
                 if (firstPosition.DimensionX + firstPosition.Width == secondPosition.DimensionX)
                 {

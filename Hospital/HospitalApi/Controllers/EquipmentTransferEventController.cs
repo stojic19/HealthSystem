@@ -125,7 +125,6 @@ namespace HospitalApi.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error cancelling transfer event.");
             }
-
         }
     }
 }

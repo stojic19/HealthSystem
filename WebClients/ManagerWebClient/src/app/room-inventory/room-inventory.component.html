@@ -28,11 +28,8 @@
         <tbody *ngIf="!isLoading">
           <tr *ngFor="let inventory of roomInventories">
             <td>{{ inventory.inventoryItem.name }}</td>
-            <td *ngIf="inventory.inventoryItem.inventoryItemType == 0">
-              Static
-            </td>
-            <td *ngIf="inventory.inventoryItem.inventoryItemType == 1">
-              Dynamic
+            <td>
+              {{ inventory.inventoryItem.inventoryItemType }}
             </td>
             <td>{{ inventory.amount }}</td>
           </tr>

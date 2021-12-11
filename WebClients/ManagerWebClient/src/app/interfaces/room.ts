@@ -1,3 +1,11 @@
+export enum RoomType {
+  AppointmentRoom,
+  OperationRoom,
+  Storage,
+  Bedroom,
+  OfficeRoom,
+}
+
 export class Room {
     id! : number;
     name! : string;

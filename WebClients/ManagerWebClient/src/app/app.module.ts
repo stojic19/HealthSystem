@@ -59,6 +59,11 @@ import { RenovationFormComponent } from './renovation-form/renovation-form.compo
 import { RenovationTypeComponent } from './renovation-form/renovation-type/renovation-type.component';
 import { FirstRoomComponent } from './renovation-form/first-room/first-room.component';
 import { SurroundingRoomComponent } from './renovation-form/surrounding-room/surrounding-room.component';
+import { RoomScheduleComponent } from './room-schedule/room-schedule.component';
+import { ConfirmDialogComponent } from './room-schedule/confirm-dialog/confirm-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { DetailsDialogComponent } from './room-schedule/details-dialog/details-dialog.component';
+
 
 @NgModule({
   declarations: [
@@ -105,6 +110,10 @@ import { SurroundingRoomComponent } from './renovation-form/surrounding-room/sur
     RenovationTypeComponent,
     FirstRoomComponent,
     SurroundingRoomComponent,
+    RoomScheduleComponent,
+    ConfirmDialogComponent,
+    DetailsDialogComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -125,6 +134,7 @@ import { SurroundingRoomComponent } from './renovation-form/surrounding-room/sur
     MatOptionModule,
     MatSelectModule,
     MaterialModule,
+    MatDialogModule,
   ],
   providers: [HttpClientModule],
   bootstrap: [AppComponent],

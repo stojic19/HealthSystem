@@ -55,6 +55,10 @@ import { SurveySectionObserveComponent } from './components/survey-section-obser
 import { SurveysObserveComponent } from './components/surveys-observe/surveys-observe.component';
 import { MaterialModule } from './material/material.module';
 import { MedicineSpecificationListComponent } from './medicine-specification-requests/medicine-specification-list/medicine-specification-list.component';
+import { RenovationFormComponent } from './renovation-form/renovation-form.component';
+import { RenovationTypeComponent } from './renovation-form/renovation-type/renovation-type.component';
+import { FirstRoomComponent } from './renovation-form/first-room/first-room.component';
+import { SurroundingRoomComponent } from './renovation-form/surrounding-room/surrounding-room.component';
 
 @NgModule({
   declarations: [
@@ -97,6 +101,10 @@ import { MedicineSpecificationListComponent } from './medicine-specification-req
     SurveySectionObserveComponent,
     SurveysObserveComponent,
     MedicineSpecificationListComponent,
+    RenovationFormComponent,
+    RenovationTypeComponent,
+    FirstRoomComponent,
+    SurroundingRoomComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,4 @@
-name: Sonar analysis for Hospital sln
+name: Sonar analysis for Integration sln
 on:
   pull_request:
     branches:

@@ -25,7 +25,7 @@ namespace HospitalApi.AutoMapperProfiles
             CreateMap<NewAllergyDTO, Allergy>();
             CreateMap<NewMedicalRecordDTO, MedicalRecord>();
             CreateMap<NewPatientDTO, Patient>();
-            CreateMap<EquipmentTransferEventDTO, EquipmentTransferEvent>();
+            CreateMap<EquipmentTransferEventDto, EquipmentTransferEvent>();
         }
     }
 }

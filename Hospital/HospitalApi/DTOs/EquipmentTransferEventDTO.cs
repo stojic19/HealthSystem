@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace HospitalApi.DTOs
 {
-    public class EquipmentTransferEventDTO
+    public class EquipmentTransferEventDto
     {
         public int Id { get; set; }
         public DateTime StartDate { get; set; }

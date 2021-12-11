@@ -30,7 +30,7 @@ namespace HospitalIntegrationTests
             var roomInventoryItem = InsertInventoryInRoom(sourceRoom.Id, inventoryItem.Id, 4);
             var transferRequest = InsertTransferRequest(new DateTime(2025, 11, 22, 0, 0, 0), sourceRoom.Id, destinationRoom.Id, inventoryItem.Id);
 
-            var content = GetContent(new EquipmentTransferEventDTO()
+            var content = GetContent(new EquipmentTransferEventDto()
             {
                 Id = transferRequest.Id,
                 StartDate = transferRequest.StartDate,

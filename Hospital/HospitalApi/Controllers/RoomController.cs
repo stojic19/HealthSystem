@@ -91,8 +91,8 @@ namespace HospitalApi.Controllers
                         LastName = scheduledEvent.Patient.LastName
                     },
                 })
-                .Where(scheduledEvent => scheduledEvent.IsCanceled == false &&
-                                        scheduledEvent.IsDone == false &&
+                .Where(scheduledEvent => !scheduledEvent.IsCanceled &&
+                                        !scheduledEvent.IsDone &&
                                         scheduledEvent.RoomId == roomId);
         }
     }

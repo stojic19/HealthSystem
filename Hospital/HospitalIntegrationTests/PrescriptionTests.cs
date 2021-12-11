@@ -31,7 +31,7 @@ namespace HospitalIntegrationTests
         }
 
         [Fact]
-        public async Task New_prescription_should_return_200()
+        public void New_prescription_should_return_200()
         {
             Country country = new Country
             {

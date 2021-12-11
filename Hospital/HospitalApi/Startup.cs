@@ -18,6 +18,8 @@ using Hospital.SharedModel.Model;
 using HospitalApi.HttpRequestSenders;
 using HospitalApi.HttpRequestSenders.Implementation;
 using Microsoft.AspNetCore.Identity;
+using Hospital.Schedule.Service.ServiceInterface;
+using Hospital.Schedule.Service;
 
 namespace HospitalApi
 {
@@ -35,10 +37,18 @@ namespace HospitalApi
         {
             services.AddCors(options => options.AddPolicy("MyCorsImplementationPolicy", builder => builder.WithOrigins("*")));
 
+            services.AddControllers().AddNewtonsoftJson(options =>
+               options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
+
             services.AddControllers().AddJsonOptions(opt =>
             {
                 opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
+
+            services.AddControllers().AddNewtonsoftJson(options =>
+                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+             );
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -58,6 +68,11 @@ namespace HospitalApi
                     options.SignIn.RequireConfirmedAccount = true;
                 })
                 .AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+
+            services.AddScoped<IPatientSurveyService, PatientSurveyService>();
+            services.AddScoped<IScheduledEventsService, ScheduledEventsService>();
+            services.AddScoped<ISurveyService, SurveyService>();
+            
 
             builder.RegisterModule(new RepositoryModule()
             {

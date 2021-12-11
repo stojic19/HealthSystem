@@ -40,6 +40,7 @@ namespace IntegrationAPI.Controllers
                     MedicineName = medicineSpecificationFile.MedicineName,
                     PharmacyName = medicineSpecificationFile.Pharmacy.Name,
                     FileName = medicineSpecificationFile.FileName,
+
                     ReceivedDate = medicineSpecificationFile.ReceivedDate
                 });
             }

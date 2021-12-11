@@ -38,6 +38,7 @@ namespace IntegrationAPI.Controllers
             IRestResponse response = SendMedicineRequestToPharmacy(medicineRequestDTO, pharmacy);
             if (response.StatusCode != System.Net.HttpStatusCode.OK)
             {
+
                 return BadRequest("Pharmacy failed to receive request! Try again");
             }
             CheckMedicineAvailabilityResponseDTO responseDTO = JsonConvert.DeserializeObject <CheckMedicineAvailabilityResponseDTO>(response.Content);

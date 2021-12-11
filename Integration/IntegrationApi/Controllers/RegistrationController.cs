@@ -32,6 +32,7 @@ namespace IntegrationAPI.Controllers
                 Name = "Nasa bolnica",
                 StreetName = "Vojvode Stepe",
                 StreetNumber = "14",
+
                 CityName = city.Name
             };
             RestClient client = new RestClient();

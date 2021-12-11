@@ -40,6 +40,7 @@ namespace IntegrationAPI.Controllers
                 createdDate = report.createdDate,
                 startDate = report.startDate,
                 endDate = report.endDate,
+
                 MedicineConsumptions = new List<MedicineConsumptionDTO>()
             };
             foreach (MedicineConsumption medicineConsumption in report.MedicineConsumptions)

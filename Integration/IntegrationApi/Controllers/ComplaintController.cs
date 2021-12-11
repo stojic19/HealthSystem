@@ -28,6 +28,7 @@ namespace IntegrationAPI.Controllers
             IEnumerable<Complaint> complaints = _complaintMasterService.GetComplaints();
             foreach (Complaint complaint in complaints)
             {
+
                 complaint.Pharmacy.Complaints = null;
                 if (complaint.ComplaintResponse != null) complaint.ComplaintResponse.Complaint = null;
             }

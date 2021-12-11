@@ -21,6 +21,7 @@ namespace IntegrationAPI.Controllers
         public IEnumerable<Pharmacy> GetPharmacies()
         {
             return _pharmacyMasterService.GetPharmacies();
+
         }
     }
 }

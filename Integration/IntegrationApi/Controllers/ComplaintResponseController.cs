@@ -21,6 +21,7 @@ namespace IntegrationAPI.Controllers
             _unitOfWork = unitOfWork;
             _complaintResponseMasterService = new ComplaintResponseMasterService(unitOfWork);
             _pharmacyMasterService = new PharmacyMasterService(unitOfWork);
+
         }
 
         [HttpPost]

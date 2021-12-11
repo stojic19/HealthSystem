@@ -91,9 +91,6 @@ namespace HospitalApi.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error inserting event event in the database.");
             }
-        public RoomRenovationController(IUnitOfWork uow)
-        {
-            this._uow = uow;
         }
 
         [HttpGet]
@@ -104,5 +101,6 @@ namespace HospitalApi.Controllers
                 .Where(renovation => renovation.RoomId == roomId ||
                                      renovation.MergeRoomId == roomId);
         }
+
     }
 }

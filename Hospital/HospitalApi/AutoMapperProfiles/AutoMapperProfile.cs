@@ -5,6 +5,7 @@ using HospitalApi.DTOs;
 using System;
 using Hospital.MedicalRecords.Model;
 using Hospital.SharedModel.Model;
+using Hospital.RoomsAndEquipment.Model;
 
 namespace HospitalApi.AutoMapperProfiles
 {
@@ -29,7 +30,7 @@ namespace HospitalApi.AutoMapperProfiles
             CreateMap<Doctor, DoctorDTO>();
             CreateMap<MedicalRecord, MedicalRecordDTO>();
             CreateMap<Patient, PatientDTO>();
-
+            CreateMap<EquipmentTransferEventDto, EquipmentTransferEvent>();
         }
     }
 }

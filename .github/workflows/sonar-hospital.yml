@@ -2,8 +2,7 @@ name: Sonar analysis for Hospital sln
 on:
   push:
     branches:
-      - '!nuget/hospital'
-      - '!nuget/integration'
+      - development
     paths:
       - Hospital/**
 jobs:

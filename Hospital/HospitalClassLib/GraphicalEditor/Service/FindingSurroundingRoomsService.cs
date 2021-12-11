@@ -1,6 +1,7 @@
 ﻿using Hospital.GraphicalEditor.Model;
 using Hospital.GraphicalEditor.Repository;
 using Hospital.RoomsAndEquipment.Model;
+using Hospital.RoomsAndEquipment.Repository;
 using Hospital.SharedModel.Repository.Base;
 using System;
 using System.Collections.Generic;
@@ -20,13 +21,15 @@ namespace Hospital.GraphicalEditor.Service
 
         public IEnumerable<Room> GetSurroundingRooms(RoomPosition roomPosition)
         {
+            var roomRepo = uow.GetRepository<IRoomReadRepository>();
             var repo = uow.GetRepository<IRoomPositionReadRepository>();
             List<Room> foundRooms = new List<Room>();
             foreach (RoomPosition position in repo.GetAll().ToList())
             {
                 if (AreNeighbors(roomPosition, position))
                 {
-                    foundRooms.Add(position.Room);
+                    var room = roomRepo.GetById(roomPosition.RoomId);
+                    foundRooms.Add(room);
                 }
             }
             return foundRooms;

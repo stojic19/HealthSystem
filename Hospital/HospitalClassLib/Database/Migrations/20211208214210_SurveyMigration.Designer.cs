@@ -3,15 +3,17 @@ using System;
 using Hospital.Database.EfStructures;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Hospital.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211208214210_SurveyMigration")]
+    partial class SurveyMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -226,26 +228,6 @@ namespace Hospital.Migrations
                     b.ToTable("MedicationIngredients");
                 });
 
-            modelBuilder.Entity("Hospital.MedicalRecords.Model.MedicationInventory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("MedicationId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MedicationId");
-
-                    b.ToTable("MedicationInventory");
-                });
-
             modelBuilder.Entity("Hospital.MedicalRecords.Model.Prescription", b =>
                 {
                     b.Property<int>("Id")
@@ -404,14 +386,11 @@ namespace Hospital.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("FirstRoomDescription")
-                        .HasColumnType("text");
+                    b.Property<bool>("IsCanceled")
+                        .HasColumnType("boolean");
 
-                    b.Property<string>("FirstRoomName")
-                        .HasColumnType("text");
-
-                    b.Property<int>("FirstRoomType")
-                        .HasColumnType("integer");
+                    b.Property<bool>("IsDone")
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("IsMerge")
                         .HasColumnType("boolean");
@@ -420,15 +399,6 @@ namespace Hospital.Migrations
                         .HasColumnType("integer");
 
                     b.Property<int?>("RoomId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("SecondRoomDescription")
-                        .HasColumnType("text");
-
-                    b.Property<string>("SecondRoomName")
-                        .HasColumnType("text");
-
-                    b.Property<int>("SecondRoomType")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("StartDate")
@@ -1048,17 +1018,6 @@ namespace Hospital.Migrations
                 });
 
             modelBuilder.Entity("Hospital.MedicalRecords.Model.MedicationExpenditureLog", b =>
-                {
-                    b.HasOne("Hospital.MedicalRecords.Model.Medication", "Medication")
-                        .WithMany()
-                        .HasForeignKey("MedicationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Medication");
-                });
-
-            modelBuilder.Entity("Hospital.MedicalRecords.Model.MedicationInventory", b =>
                 {
                     b.HasOne("Hospital.MedicalRecords.Model.Medication", "Medication")
                         .WithMany()

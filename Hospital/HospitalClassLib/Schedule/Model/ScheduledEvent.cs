@@ -25,8 +25,5 @@ namespace Hospital.Schedule.Model
 
         public int? RoomId { get; set; }
         public Room Room { get; set; }
-
-        public int AnsweredSurveyId { get; set; }
-        public AnsweredSurvey AnsweredSurvey { get; set; }
     }
 }

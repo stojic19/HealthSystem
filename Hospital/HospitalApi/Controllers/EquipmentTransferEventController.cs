@@ -37,11 +37,11 @@ namespace HospitalApi.Controllers
                     return BadRequest("Incorrect format sent! Please try again.");
                 }
 
-                if (!IsEnteredAmountCorrect(equipmentTransferEvent))
+               /* if (!IsEnteredAmountCorrect(equipmentTransferEvent))
                 {
                     return BadRequest("Incorrect amount entered. Please Try Again!");
                 }
-
+               */
                 var repo = _uow.GetRepository<IEquipmentTransferEventWriteRepository>();
                 EquipmentTransferEvent addedEvent = repo.Add(equipmentTransferEvent);
 
@@ -57,7 +57,7 @@ namespace HospitalApi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error inserting transfer event in the database.");
             }
         }
-
+        /*
         private bool IsEnteredAmountCorrect(EquipmentTransferEvent equipmentTransferEvent)
         {
             var roomInventory = _uow.GetRepository<IRoomInventoryReadRepository>()

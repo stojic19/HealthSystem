@@ -19,6 +19,8 @@ using System.Text.Json.Serialization;
 using Hospital.Database.EfStructures;
 using Hospital.SharedModel.Model;
 using Microsoft.AspNetCore.Identity;
+using Hospital.Schedule.Service.ServiceInterface;
+using Hospital.Schedule.Service;
 
 namespace HospitalApi
 {
@@ -46,6 +48,10 @@ namespace HospitalApi
                 opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
 
+            services.AddControllers().AddNewtonsoftJson(options =>
+                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+             );
+
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddSwaggerGen(c =>
@@ -64,6 +70,11 @@ namespace HospitalApi
                     options.SignIn.RequireConfirmedAccount = true;
                 })
                 .AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+
+            services.AddScoped<IPatientSurveyService, PatientSurveyService>();
+            services.AddScoped<IScheduledEventsService, ScheduledEventsService>();
+            services.AddScoped<ISurveyService, SurveyService>();
+            
 
             builder.RegisterModule(new RepositoryModule()
             {

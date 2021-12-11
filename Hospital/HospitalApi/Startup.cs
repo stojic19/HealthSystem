@@ -57,6 +57,7 @@ namespace HospitalApi
                 })
                 .AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
+
             builder.RegisterModule(new RepositoryModule()
             {
 

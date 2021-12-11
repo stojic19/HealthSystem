@@ -1,4 +1,5 @@
-﻿using Hospital.RoomsAndEquipment.Model;
+﻿using AutoMapper;
+using Hospital.RoomsAndEquipment.Model;
 using Hospital.RoomsAndEquipment.Repository;
 using Hospital.RoomsAndEquipment.Service;
 using Hospital.Schedule.Service;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HospitalApi.Controllers
 {
@@ -20,10 +22,12 @@ namespace HospitalApi.Controllers
     public class EquipmentTransferEventController : ControllerBase
     {
         private readonly IUnitOfWork _uow;
+        private readonly IMapper _mapper;
 
-        public EquipmentTransferEventController(IUnitOfWork uow)
+        public EquipmentTransferEventController(IUnitOfWork uow, IMapper mapper)
         {
             _uow = uow;
+            _mapper = mapper;
         }
 
         [HttpPost]
@@ -62,10 +66,7 @@ namespace HospitalApi.Controllers
             var roomInventory = _uow.GetRepository<IRoomInventoryReadRepository>()
                 .GetByRoomAndInventoryItem(equipmentTransferEvent.InitialRoomId, equipmentTransferEvent.InventoryItemId);
 
-            if (roomInventory.Amount < equipmentTransferEvent.Quantity)
-                return false;
-
-            return true;
+            return roomInventory != null && roomInventory.Amount > equipmentTransferEvent.Quantity;
         }
 
         [HttpPost]
@@ -93,6 +94,37 @@ namespace HospitalApi.Controllers
             }
 
             return availableTerms;
+        }
+
+        [HttpGet]
+        public IEnumerable<EquipmentTransferEvent> GetTransferEventsByRoom(int roomId)
+        {
+            var transferEventRepo = _uow.GetRepository<IEquipmentTransferEventReadRepository>();
+            
+            return transferEventRepo.GetAll()
+                .Where(transfer => transfer.DestinationRoomId == roomId ||
+                                    transfer.InitialRoomId == roomId);
+        }
+
+        [HttpPost]
+        public IActionResult CancelEquipmentTransferEvent(EquipmentTransferEventDto transferEventDTO)
+        {
+            try
+            {
+                if (transferEventDTO == null)
+                {
+                    return BadRequest("Incorrect format sent! Please try again.");
+                }
+
+                var cancellingEventsService = new CancellingEventsService(_uow);
+                cancellingEventsService.CancelEquipmentTransferEvent(_mapper.Map<EquipmentTransferEvent>(transferEventDTO));
+
+                return Ok("Your transfer event has been canceled.");
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error cancelling transfer event.");
+            }
         }
     }
 }

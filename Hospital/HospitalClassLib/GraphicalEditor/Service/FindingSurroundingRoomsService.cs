@@ -28,7 +28,7 @@ namespace Hospital.GraphicalEditor.Service
             {
                 if (AreNeighbors(roomPosition, position))
                 {
-                    var room = roomRepo.GetById(roomPosition.RoomId);
+                    var room = roomRepo.GetById(position.RoomId);
                     foundRooms.Add(room);
                 }
             }

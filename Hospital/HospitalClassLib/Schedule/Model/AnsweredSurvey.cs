@@ -13,5 +13,7 @@ namespace Hospital.Schedule.Model
        public Survey Survey { get; set; }
        public int PatientId { get; set; }
        public Patient Patient { get; set; }
+       public int ScheduledEventId { get; set; }
+       public ScheduledEvent ScheduledEvent { get; set;}
     }
 }

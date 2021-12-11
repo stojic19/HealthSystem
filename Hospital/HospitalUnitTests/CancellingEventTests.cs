@@ -76,11 +76,9 @@ namespace HospitalUnitTests
             var renovation = new RoomRenovationEvent()
             {
                 Id = 1,
-                StartDate = new DateTime(2021, 12, 09, 12, 0, 0),
-                EndDate = new DateTime(2021, 12, 15, 13, 0, 0),
+                StartDate = new DateTime(2022, 12, 25, 12, 0, 0),
+                EndDate = new DateTime(2022, 12, 26, 13, 0, 0),
                 IsMerge = false,
-                IsCanceled = false,
-                IsDone = false,
                 RoomId = 1
             };
             Context.RoomRenovationEvents.Add(renovation);
@@ -91,8 +89,7 @@ namespace HospitalUnitTests
 
             var updatedEvent = UoW.GetRepository<IRoomRenovationEventReadRepository>()
                 .GetById(renovation.Id);
-            updatedEvent.ShouldNotBeNull();
-            updatedEvent.IsCanceled = false;
+            updatedEvent.ShouldBeNull();
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Hospital.Schedule.Service
 {
     public class SurveyService : ISurveyService
     {
-        private IUnitOfWork UoW;
+        private readonly IUnitOfWork UoW;
 
         public SurveyService(IUnitOfWork UoW)
         {

@@ -9,7 +9,7 @@ namespace Hospital.Schedule.Service
 {
     public class ScheduledEventsService : IScheduledEventsService
     {
-        private IUnitOfWork UoW;
+        private readonly IUnitOfWork UoW;
         public ScheduledEventsService(IUnitOfWork UoW)
         {
             this.UoW = UoW;
@@ -17,14 +17,14 @@ namespace Hospital.Schedule.Service
         public List<ScheduledEvent> getFinishedUserEvents(int userId)
         {
             return UoW.GetRepository<IScheduledEventReadRepository>().GetAll()
-                        .Where(x => x.IsDone == true && x.Patient.Id == userId)
+                        .Where(x => x.IsDone && x.Patient.Id == userId)
                         .ToList();
         }
 
         public int getNumberOfFinishedEvents(int userId)
         {
             var count = UoW.GetRepository<IScheduledEventReadRepository>().GetAll()
-                        .Where(x => x.IsDone == true && x.Patient.Id == userId)
+                        .Where(x => x.IsDone && x.Patient.Id == userId)
                         .GroupBy(t => t.Patient)
                         .Select(g => g.Count());
 

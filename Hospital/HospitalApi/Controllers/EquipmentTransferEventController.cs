@@ -69,7 +69,7 @@ namespace HospitalApi.Controllers
             return roomInventory != null && roomInventory.Amount > equipmentTransferEvent.Quantity;
         }
 
-        [HttpPost]
+       /* [HttpPost]
         public IEnumerable<TimePeriodDTO> GetAvailableTerms(AvailableTermDTO availableTermsDTO)
         {
             var availableTermsService = new AvailableTermsService(_uow);
@@ -126,5 +126,6 @@ namespace HospitalApi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error cancelling transfer event.");
             }
         }
+
     }
 }

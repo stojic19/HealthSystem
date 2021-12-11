@@ -40,6 +40,7 @@ namespace IntegrationAPI
             });
             services.AddHostedService<BenefitRabbitMqService>();
 
+
             var builder = new ContainerBuilder();
             builder.RegisterModule(new DbModule());
             builder.RegisterModule(new RepositoryModule()

@@ -22,5 +22,11 @@ namespace IntegrationAPI.Controllers
         {
             return _pharmacyMasterService.GetPharmacies();
         }
+
+        [HttpGet("{id:int}")]
+        public Pharmacy GetPharmacyById(int id)
+        {
+            return _pharmacyMasterService.GetPharmacyById(id);
+        }
     }
 }

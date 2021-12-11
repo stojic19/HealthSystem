@@ -19,6 +19,14 @@ export class PharmacyService{
         return this._httpClient.get<any[]>(this._APIUrl +'/Pharmacy/GetPharmacies');
     }
 
+    getPharmacyById(id: number): Observable<any[]>{
+        return this._httpClient.get<any[]>(this._APIUrl+`/Pharmacy/GetPharmacyById/${id}`);
+    }
+
+    updatePharmacy(val: any){
+        return this._httpClient.post<any[]>(this._APIUrl + '/Pharmacy/UpdatePharmacy', val);
+    }
+
     checkMedicine(val: any): Observable<IMedicineResponse>{
         return this._httpClient.post<IMedicineResponse>(this._APIUrl + '/Medicine/RequestMedicineInformation', val);
     }

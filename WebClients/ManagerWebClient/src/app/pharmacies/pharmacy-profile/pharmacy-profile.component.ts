@@ -11,6 +11,7 @@ export class PharmacyProfileComponent implements OnInit {
   pharmacy: any;
   id: number = -1;
   imageSrc: string = "./assets/images/no-image.jpg";
+  imageFile: File;
 
   constructor(private _route: ActivatedRoute, private _pharmacyService: PharmacyService) { }
 
@@ -18,7 +19,9 @@ export class PharmacyProfileComponent implements OnInit {
     let id = Number(this._route.snapshot.paramMap.get('id'));
     this.id = id;
 
-    //add http get method
+    this._pharmacyService.getPharmacyById(id)
+    .subscribe(pharmacies => {this.pharmacy = pharmacies},
+      (error) => alert(error.error));
   }
 
   onFileChange(event) {
@@ -27,13 +30,31 @@ export class PharmacyProfileComponent implements OnInit {
     if(event.target.files && event.target.files.length) {
       const [file] = event.target.files;
       reader.readAsDataURL(file);
-      reader.onload = () => {this.imageSrc = reader.result as string;};
-
+      reader.onload = () => {this.imageSrc = reader.result as string};
+      this.imageFile = file;
     }
   }
 
   UpdatePharmacy(){
-    //add http post method
+    this._pharmacyService.updatePharmacy(this.MakeRequest())
+    .subscribe(res => {},
+      (error) => alert(error.error)
+      );
+  }
+
+  MakeRequest(){
+    var updatedPharmacy = {           //napraviti DTO na backu
+      PharmacyId : this.pharmacy.id,
+      PharmacyName: this.pharmacy.name,
+      StreetNumber: this.pharmacy.streetNumber,
+      StreetName: this.pharmacy.streetName,
+      CityName: this.pharmacy.city.name,
+      PostalCode: this.pharmacy.city.postalCode,
+      Country: this.pharmacy.city.country.name,
+      Description: this.pharmacy.description,
+      Image: this.imageFile
+    }
+    return updatedPharmacy;
   }
 
 }

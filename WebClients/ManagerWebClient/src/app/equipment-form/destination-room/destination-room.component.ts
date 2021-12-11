@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Room } from 'src/app/interfaces/room';
+import { Room, RoomType } from 'src/app/interfaces/room';
 import { RoomInventory } from 'src/app/model/room-inventory.model';
 import { RoomsService } from 'src/app/services/rooms.service';
 
@@ -19,6 +19,7 @@ export class DestinationRoomComponent implements OnInit {
   thisRoom = new Room();
   public searchRoomName = '';
   foundRooms: Room[];
+  roomType = RoomType;
 
   constructor(public roomsService: RoomsService) {}
 

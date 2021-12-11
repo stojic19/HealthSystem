@@ -1,0 +1,33 @@
+<br>
+<br>
+<div class="row">
+    <mat-card class="col-md-8 mx-auto ">
+        <div class="container">
+            <mat-list *ngIf='section'>
+                <div *ngIf="questions != null">
+                    <div class="row" *ngFor="let q of questions">
+                        <div class=" col-sm-8 ">
+                            <mat-list-item>{{q.text}}</mat-list-item>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <mat-radio-group aria-label="Select an option">
+                                <mat-radio-button class="mr-4" (change)="radioChange($event)" value={{q.id}}+1>1
+                                </mat-radio-button>
+                                <mat-radio-button class="mr-4" (change)="radioChange($event)" value={{q.id}}+2>2
+                                </mat-radio-button>
+                                <mat-radio-button class="mr-4" (change)="radioChange($event)" value={{q.id}}+3>3
+                                </mat-radio-button>
+                                <mat-radio-button class="mr-4" (change)="radioChange($event)" value={{q.id}}+4>4
+                                </mat-radio-button>
+                                <mat-radio-button class="mr-4" (change)="radioChange($event)" value={{q.id}}+5>5
+                                </mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+            </mat-list>
+        </div>
+    </mat-card>
+</div>

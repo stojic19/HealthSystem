@@ -59,6 +59,10 @@ import { RoomScheduleComponent } from './room-schedule/room-schedule.component';
 import { ConfirmDialogComponent } from './room-schedule/confirm-dialog/confirm-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DetailsDialogComponent } from './room-schedule/details-dialog/details-dialog.component';
+import { RenovationFormComponent } from './renovation-form/renovation-form.component';
+import { RenovationTypeComponent } from './renovation-form/renovation-type/renovation-type.component';
+import { FirstRoomComponent } from './renovation-form/first-room/first-room.component';
+import { SurroundingRoomComponent } from './renovation-form/surrounding-room/surrounding-room.component';
 
 @NgModule({
   declarations: [
@@ -104,6 +108,10 @@ import { DetailsDialogComponent } from './room-schedule/details-dialog/details-d
     RoomScheduleComponent,
     ConfirmDialogComponent,
     DetailsDialogComponent,
+    RenovationFormComponent,
+    RenovationTypeComponent,
+    FirstRoomComponent,
+    SurroundingRoomComponent,
   ],
   imports: [
     BrowserModule,

@@ -75,15 +75,14 @@ namespace HospitalApi.Controllers
        /* [HttpPost]
         public IEnumerable<TimePeriodDTO> GetAvailableTerms(AvailableTermDTO availableTermsDTO)
         {
-            var transferingEquipmentService = new TransferingEquipmentService(_uow);
-            var dateService = new AvailableTermsService(_uow);
+            var availableTermsService = new AvailableTermsService(_uow);
             var timePeriod = new TimePeriod()
             {
                 StartTime = availableTermsDTO.StartDate,
                 EndTime = availableTermsDTO.EndDate
             };
             
-            var terms = transferingEquipmentService.GetAvailableTerms(timePeriod, availableTermsDTO.RoomId, availableTermsDTO.Duration);
+            var terms = availableTermsService.GetAvailableTerms(timePeriod, availableTermsDTO.InitialRoomId, availableTermsDTO.DestinationRoomId, availableTermsDTO.Duration);
             var availableTerms = new List<TimePeriodDTO>();
             foreach (TimePeriod term in terms)
             {

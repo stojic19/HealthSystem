@@ -24,13 +24,6 @@ namespace HospitalApi.Controllers
             this._uow = uow;
         }
 
-        [HttpGet]
-        public IEnumerable<Room> GetRoomsByLocation([FromQuery(Name = "floorNumber")] int floorNumber, [FromQuery(Name = "buildingName")] string buildingName)
-        {
-            var roomRepo = _uow.GetRepository<IRoomReadRepository>();
-            return roomRepo.GetAll().Where(x => x.FloorNumber == floorNumber && x.BuildingName == buildingName);
-        }
-
         [HttpPost]
         public IEnumerable<Room> AddRooms(IEnumerable<Room> rooms)
         {
@@ -49,12 +42,14 @@ namespace HospitalApi.Controllers
         [HttpGet]
         public IActionResult FindByNameAndBuildingName([FromQuery(Name = "name")] string name, [FromQuery(Name = "buildingName")] string buildingName)
         {
-            var roomRepo = _uow.GetRepository<IRoomReadRepository>();
+            
             if (name == null || buildingName == null)
             {
 
                 return BadRequest();
             }
+
+            var roomRepo = _uow.GetRepository<IRoomReadRepository>();
             return Ok(roomRepo.GetAll().Where(room => room.Name.ToLower().Contains(name.ToLower()) && room.BuildingName.Contains(buildingName)));
         }
 

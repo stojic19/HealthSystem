@@ -35,6 +35,10 @@ namespace HospitalApi
         {
             services.AddCors(options => options.AddPolicy("MyCorsImplementationPolicy", builder => builder.WithOrigins("*")));
 
+            services.AddControllers().AddNewtonsoftJson(options =>
+               options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
+
             services.AddControllers().AddJsonOptions(opt =>
             {
                 opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());

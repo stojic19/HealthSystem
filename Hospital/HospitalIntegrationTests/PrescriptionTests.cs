@@ -112,6 +112,7 @@ namespace HospitalIntegrationTests
             UoW.GetRepository<IRoomWriteRepository>().Delete(room);
             UoW.GetRepository<ISpecializationWriteRepository>().Delete(specialization);
             UoW.GetRepository<IMedicationWriteRepository>().Delete(medication);
+            presc.ShouldNotBeNull();
             presc.MedicationId.ShouldBe(medication.Id);
             result.ShouldBe(typeof(OkObjectResult));
         }

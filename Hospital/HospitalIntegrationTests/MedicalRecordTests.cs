@@ -1,30 +1,28 @@
-﻿using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using Hospital.MedicalRecords.Model;
-using Hospital.MedicalRecords.Repository;
+﻿using Hospital.MedicalRecords.Model;
 using Hospital.SharedModel.Model;
+using HospitalIntegrationTests.Base;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
+using Hospital.MedicalRecords.Repository;
 using Hospital.SharedModel.Repository;
 using HospitalApi.DTOs;
-using HospitalIntegrationTests.Base;
 using Shouldly;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace HospitalIntegrationTests
 {
-    public class RegistrationTests : BaseTest
+    public class MedicalRecordTests : BaseTest
     {
-        private ITestOutputHelper _itoh;
-
-        public RegistrationTests(BaseFixture fixture, ITestOutputHelper itoh) : base(fixture)
+        public MedicalRecordTests(BaseFixture fixture) : base(fixture)
         {
-            _itoh = itoh;
         }
 
-
         [Fact]
-        public async Task Register_should_return_200()
+        public async Task Get_patient_with_medical_record_should_return_200()
         {
             ClearUserWithUserName("testUserName");
 
@@ -39,37 +37,30 @@ namespace HospitalIntegrationTests
                     UserName = "testDoctor"
                 };
             }
-
-            var medRec = new NewMedicalRecordDTO()
+            var medRec = new MedicalRecord()
             {
                 DoctorId = doctor.Id
             };
 
-            var newPatient = new NewPatientDTO()
+            var patient = new Patient()
             {
                 UserName = "testUserName",
-                Password = "Test Passw0rd",
-                Email = "testemail@gmail.com",
                 CityId = 1,
                 MedicalRecord = medRec
             };
-
-            var content = GetContent(newPatient);
-
-            var response = await Client.PostAsync(BaseUrl + "api/Registration/Register", content);
+            UoW.GetRepository<IPatientWriteRepository>().Add(patient);
+            
+            var response = await Client.GetAsync(BaseUrl + "api/MedicalRecord/GetPatientWithRecord");
 
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
-
-            //var responseContent = await response.Content.ReadAsStringAsync();
-
-            var foundRegisteredUser = UoW.GetRepository<IPatientReadRepository>()
-                .GetAll().FirstOrDefault(x => x.UserName.ToUpper().Equals(newPatient.UserName.ToUpper()));
-
-            // brisi medrec i korisnika
-
-
-            foundRegisteredUser.ShouldNotBeNull();
-            foundRegisteredUser.UserName.ShouldBe("testUserName");
+            var foundPatient = UoW.GetRepository<IPatientReadRepository>()
+                .GetAll().FirstOrDefault(x => x.UserName.ToUpper().Equals(patient.UserName.ToUpper()));
+            var foundMedicalRecord =
+                UoW.GetRepository<IMedicalRecordReadRepository>().GetById(foundPatient.MedicalRecordId);
+            foundPatient.ShouldNotBeNull();
+            foundPatient.UserName.ShouldBe("testUserName");
+            foundPatient.MedicalRecord.ShouldNotBeNull();
+            foundMedicalRecord.Id.ShouldBe(foundPatient.MedicalRecordId);
 
         }
 
@@ -182,3 +173,4 @@ namespace HospitalIntegrationTests
         }
     }
 }
+

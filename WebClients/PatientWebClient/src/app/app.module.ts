@@ -16,6 +16,7 @@ import { FeedbacksPageComponent } from './components/feedbacks-page/feedbacks-pa
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MainComponent } from './components/main/main.component';
 import { RegistrationComponent } from './components/registration/registration.component';
+import { PatientMedicalRecordComponent } from './components/patient-medical-record/patient-medical-record.component';
 import { AppointmentsPageComponent } from './components/appointments-page/appointments-page.component';
 import { SurveyPageComponent } from './components/survey-page/survey-page.component';
 import { SurveySectionComponent } from './components/survey-section/survey-section.component';
@@ -31,6 +32,7 @@ import { SurveySectionComponent } from './components/survey-section/survey-secti
     FeedbacksPageComponent,
     MainComponent,
     RegistrationComponent,
+    PatientMedicalRecordComponent,
     AppointmentsPageComponent,
     SurveyPageComponent,
     SurveySectionComponent,

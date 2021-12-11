@@ -67,8 +67,8 @@
 <div class="modal" id="exampleModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Transfer request sent!</h5>
+      <div class="modal-header" style="border-bottom: 0 none">
+        <h1 mat-dialog-title>Transfer request sent!</h1>
         <button
           type="button"
           class="btn-close"
@@ -76,7 +76,7 @@
           aria-label="Close"
         ></button>
       </div>
-      <div class="modal-body">
+      <div mat-dialog-content class="modal-body">
         <p>
           Equipment transfer event for moving
           <b style="text-transform: uppercase">
@@ -87,10 +87,14 @@
           has been successfuly recorded.
         </p>
       </div>
-      <div class="modal-footer">
+      <div
+        mat-dialog-actions
+        class="justify-content-center align-items-center modal-footer"
+        style="border-top: 0 none"
+      >
         <button
-          type="button"
-          class="btn btn-primary"
+          mat-raised-button
+          color="accent"
           data-bs-dismiss="modal"
           (click)="goBack()"
         >

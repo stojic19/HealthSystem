@@ -55,6 +55,10 @@ import { SurveySectionObserveComponent } from './components/survey-section-obser
 import { SurveysObserveComponent } from './components/surveys-observe/surveys-observe.component';
 import { MaterialModule } from './material/material.module';
 import { MedicineSpecificationListComponent } from './medicine-specification-requests/medicine-specification-list/medicine-specification-list.component';
+import { RoomScheduleComponent } from './room-schedule/room-schedule.component';
+import { ConfirmDialogComponent } from './room-schedule/confirm-dialog/confirm-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { DetailsDialogComponent } from './room-schedule/details-dialog/details-dialog.component';
 
 @NgModule({
   declarations: [
@@ -97,6 +101,9 @@ import { MedicineSpecificationListComponent } from './medicine-specification-req
     SurveySectionObserveComponent,
     SurveysObserveComponent,
     MedicineSpecificationListComponent,
+    RoomScheduleComponent,
+    ConfirmDialogComponent,
+    DetailsDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -117,6 +124,7 @@ import { MedicineSpecificationListComponent } from './medicine-specification-req
     MatOptionModule,
     MatSelectModule,
     MaterialModule,
+    MatDialogModule,
   ],
   providers: [HttpClientModule],
   bootstrap: [AppComponent],

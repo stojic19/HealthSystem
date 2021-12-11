@@ -138,7 +138,7 @@ export class EquipmentFormComponent implements OnInit {
     let request: EquipmentTransferEvent = {
       startDate: this.selectedTerm.startDate,
       endDate: this.selectedTerm.endDate,
-      initalRoomId: this.selectedItem.roomId,
+      initialRoomId: this.selectedItem.roomId,
       destinationRoomId: this.destinationRoom.id,
       inventoryItemId: this.selectedItem.inventoryItemId,
       quantity: this.enteredAmount,

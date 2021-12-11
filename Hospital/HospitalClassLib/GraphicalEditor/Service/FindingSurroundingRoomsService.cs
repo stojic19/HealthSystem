@@ -47,22 +47,22 @@ namespace Hospital.GraphicalEditor.Service
                 return false;
             else if (firstRoom.BuildingName.Equals("Building 1"))
             {
-                if (firstPosition.DimensionY + firstPosition.Height == secondPosition.DimensionY)
+                if (firstPosition.DimensionY + firstPosition.Height == secondPosition.DimensionY && firstPosition.DimensionX == secondPosition.DimensionX)
                 {
                     return true;
                 }
-                else if (firstPosition.DimensionY - firstPosition.Height == secondPosition.DimensionY)
+                else if (firstPosition.DimensionY - firstPosition.Height == secondPosition.DimensionY && firstPosition.DimensionX == secondPosition.DimensionX)
                 {
                     return true;
                 }
             }
             else if (firstRoom.BuildingName.Equals("Building 2"))
             {
-                if (firstPosition.DimensionX + firstPosition.Width == secondPosition.DimensionX)
+                if (firstPosition.DimensionX + firstPosition.Width == secondPosition.DimensionX && firstPosition.DimensionY == secondPosition.DimensionY)
                 {
                     return true;
                 }
-                else if (firstPosition.DimensionX - firstPosition.Width == secondPosition.DimensionX)
+                else if (firstPosition.DimensionX - firstPosition.Width == secondPosition.DimensionX && firstPosition.DimensionY == secondPosition.DimensionY)
                 {
                     return true;
                 }

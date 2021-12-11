@@ -3,15 +3,17 @@ using System;
 using Hospital.Database.EfStructures;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Hospital.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211208214210_SurveyMigration")]
+    partial class SurveyMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -384,14 +386,11 @@ namespace Hospital.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("FirstRoomDescription")
-                        .HasColumnType("text");
+                    b.Property<bool>("IsCanceled")
+                        .HasColumnType("boolean");
 
-                    b.Property<string>("FirstRoomName")
-                        .HasColumnType("text");
-
-                    b.Property<int>("FirstRoomType")
-                        .HasColumnType("integer");
+                    b.Property<bool>("IsDone")
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("IsMerge")
                         .HasColumnType("boolean");
@@ -400,15 +399,6 @@ namespace Hospital.Migrations
                         .HasColumnType("integer");
 
                     b.Property<int?>("RoomId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("SecondRoomDescription")
-                        .HasColumnType("text");
-
-                    b.Property<string>("SecondRoomName")
-                        .HasColumnType("text");
-
-                    b.Property<int>("SecondRoomType")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("StartDate")

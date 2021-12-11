@@ -11,6 +11,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './components/login/login.component';
+import { PatientMedicalRecordComponent } from './components/patient-medical-record/patient-medical-record.component';
 import { AppointmentsPageComponent } from './components/appointments-page/appointments-page.component';
 import { SurveyPageComponent } from './components/survey-page/survey-page.component';
 
@@ -28,7 +29,10 @@ const routes: Routes = [
         component: FeedbacksPageComponent,
       },
       {
-        path:'appointments',
+        path: 'record',
+        component: PatientMedicalRecordComponent,
+      },
+        {path:'appointments',
         component: AppointmentsPageComponent
       },
       {

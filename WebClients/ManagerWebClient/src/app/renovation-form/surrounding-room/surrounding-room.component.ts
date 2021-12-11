@@ -10,28 +10,27 @@ import { RoomRenovationService } from 'src/app/services/room-renovation.service'
 })
 export class SurroundingRoomComponent implements OnInit {
 
-  @Input() public firstRoom : Room
+  @Input() public firstRoom: Room
   isLoading = true;
   rooms: Room[]
   selectedRoom = new Room();
   @Output()
-  chosenRoom = new EventEmitter<Room>();
+  chosenSurroundingRoom = new EventEmitter<Room>();
 
   constructor(public service: RoomRenovationService) { }
 
   ngOnInit(): void {
-    console.log(this.firstRoom.id)
     this.service
-    .getSurroundingRooms(this.firstRoom.id)
-    .toPromise()
-    .then((res) => {
-      this.isLoading = false;
-      this.rooms = res as Room[];
-    });
+      .getSurroundingRooms(this.firstRoom.id)
+      .toPromise()
+      .then((res) => {
+        this.isLoading = false;
+        this.rooms = res as Room[];
+      });
   }
 
   selectRoom(room: Room) {
-    this.chosenRoom.emit(room);
+    this.chosenSurroundingRoom.emit(room);
     this.selectedRoom = room;
   }
 

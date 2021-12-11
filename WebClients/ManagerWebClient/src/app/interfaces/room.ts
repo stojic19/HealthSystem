@@ -8,5 +8,6 @@ export class Room {
     buildingName! : string;
     doctors! : [];
     roomInventories! : [];
-    scheduledEvents! : []
+    scheduledEvents! : [];
+    roomType: number;
 }

@@ -18,7 +18,7 @@ export class RenovationTypeComponent implements OnInit {
     this.type.emit(this.renovationType);
   }
 
-  choseRenovationType(typeRenovation: string){
+  choseRenovationType(typeRenovation: string) {
     this.type.emit(typeRenovation);
   }
 

@@ -9,7 +9,7 @@ import { RoomsService } from 'src/app/services/rooms.service';
 })
 export class FirstRoomComponent implements OnInit {
 
-  @Input() 
+  @Input()
   public type = ""
   isLoading = true;
   public searchRoomName = '';
@@ -22,12 +22,12 @@ export class FirstRoomComponent implements OnInit {
 
   ngOnInit(): void {
     this.roomService
-    .getAllRooms()
-    .toPromise()
-    .then((res) => {
-      this.isLoading = false;
-      this.rooms = res as Room[];
-    });
+      .getAllRooms()
+      .toPromise()
+      .then((res) => {
+        this.isLoading = false;
+        this.rooms = res as Room[];
+      });
   }
 
   searchRoomsByName() {
@@ -37,15 +37,15 @@ export class FirstRoomComponent implements OnInit {
       .then((res) => {
         this.rooms = res as Room[];
       });
-    
-    if (this.searchRoomName == ''){
+
+    if (this.searchRoomName == '') {
       this.roomService
-      .getAllRooms()
-      .toPromise()
-      .then((res) => {
-        this.isLoading = false;
-        this.rooms = res as Room[];
-      });
+        .getAllRooms()
+        .toPromise()
+        .then((res) => {
+          this.isLoading = false;
+          this.rooms = res as Room[];
+        });
 
     }
   }

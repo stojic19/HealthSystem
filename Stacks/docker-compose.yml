@@ -17,7 +17,10 @@ services:
     environment:
       HOSPITAL_DB_PATH: "host=database;port=5432;database=HOSPITAL;username=postgres;password=postgres"
     volumes:
-      - web-sql:/app/sql
+      - type: volume
+        source: web-sql
+        target: /app/sql
+      
 
 
   database:
@@ -30,14 +33,18 @@ services:
       POSTGRES_USER: "postgres"
       POSTGRES_DB: "HOSPITAL"
     volumes:
-      - database-data:/var/lib/postgresql/data
-      - web-sql:/docker-entrypoint-initdb.d/
+      - type: volume
+        source: database-data
+        target: /var/lib/postgresql/data
+      - type: volume
+        source: web-sql
+        target: /docker-entrypoint-initdb.d/
+
     ports:
       - 5432:5432
 
 volumes:
   database-data:
-    name: f2-database
   web-sql:
 
 networks:

@@ -5,6 +5,7 @@ using Integration.Database.Infrastructure;
 using Integration.Partnership.Service;
 using Integration.Shared.Repository.Base;
 using Integration.Shared.Repository.Implementation;
+using Integration.Shared.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -13,6 +14,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using IntegrationAPI.HttpRequestSenders;
 using IntegrationAPI.HttpRequestSenders.Implementation;
@@ -24,7 +26,15 @@ namespace IntegrationAPI
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            string sourceFolder = Path.Combine(Directory.GetCurrentDirectory(), "MedicineReports");
+            string targetZip = Path.Combine(Directory.GetCurrentDirectory(), "Archive", DateTime.Now.Ticks + ".zip");
+
+            FileZipService fileZipService = new FileZipService();
+            fileZipService.FileZip(sourceFolder, targetZip);
         }
+
+        
 
         public IConfiguration Configuration { get; }
         private Server server;

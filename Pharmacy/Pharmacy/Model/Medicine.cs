@@ -15,6 +15,7 @@ namespace Pharmacy.Model
         public string Precautions { get; set; }
         public string MedicinePotentialDangers { get; set; }
         public List<Substance> Substances { get; set; }
+        public IEnumerable<TenderOffer> TenderOffers { get; set; }
         public string Type { get; set; }
         public int Quantity { get; set; }
     }

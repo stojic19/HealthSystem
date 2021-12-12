@@ -34,12 +34,14 @@ import { RecommendedAppointmentComponent } from './components/recommended-appoin
     FeedbacksPageComponent,
     MainComponent,
     RegistrationComponent,
+    LoginComponent,
     PatientMedicalRecordComponent,
     AppointmentsPageComponent,
-    SurveySectionComponent,
-    RecommendedAppointmentComponent
+    SurveyPageComponent,
+    SurveySectionComponent
   ],
   imports: [
+    BrowserModule,
     AppRoutingModule,
     NgbModule,
     BrowserAnimationsModule,

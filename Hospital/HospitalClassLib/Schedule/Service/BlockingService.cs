@@ -45,7 +45,7 @@ namespace Hospital.Schedule.Service
         }
         private int calculateInLastMonth(List<ScheduledEvent> canceledEvents)
         {
-            return canceledEvents.Count(e => e.CancelationDate > DateTime.Now.AddDays(-30));
+            return canceledEvents.Count(e => e.CancellationDate > DateTime.Now.AddDays(-30));
         }
     }
 }

@@ -19,9 +19,10 @@ RUN dotnet restore "${PROJECT}/${PROJECT}.csproj" && \
 # RUN dotnet publish "${PROJECT}/${PROJECT}.csproj" -c Release -o /app/publish 
 
 FROM build as sqlgen
+WORKDIR /HospitalClassLib
 RUN dotnet tool install -g dotnet-ef --version 5.0.11 && \
-    dotnet build "HospitalClassLib/Hospital.csproj" -c Release \
-    dotnet-ef migrations script -p "HospitalClassLib/Hospital.csproj" -o /app/sql/init.sql
+    dotnet-ef migrations script -p "Hospital.csproj" -o /app/sql/init.sql
+WORKDIR /src
 
 FROM build AS publish
 ENV PROJECT=HospitalApi

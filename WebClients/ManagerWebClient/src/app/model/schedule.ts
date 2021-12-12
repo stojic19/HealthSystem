@@ -19,6 +19,4 @@ export class Schedule {
   doctor: Doctor;
   roomId: number;
   room: Room;
-  // answeredSurveyId: number
-  // answeredSurvey: AnsweredSurvey
 }

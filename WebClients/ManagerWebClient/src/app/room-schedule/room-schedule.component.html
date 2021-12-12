@@ -61,7 +61,8 @@
             </td>
           </tr>
           <tr *ngFor="let event of scheduledEvents">
-            <td>{{ event.scheduledEventType }}</td>
+            <td *ngIf="event.scheduledEventType == 0">Appointment</td>
+            <td *ngIf="event.scheduledEventType == 1">Operation</td>
             <td>{{ event.startDate | date: "dd.MM.yyyy HH:mm" }}</td>
             <td>{{ event.endDate | date: "dd.MM.yyyy HH:mm" }}</td>
             <td class="pt-1">

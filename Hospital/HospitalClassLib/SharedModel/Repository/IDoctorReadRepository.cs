@@ -7,6 +7,8 @@ namespace Hospital.SharedModel.Repository
     public interface IDoctorReadRepository : IReadBaseRepository<int, Doctor>
     {
         public IEnumerable<Doctor> GetNonOverloadedDoctors();
+        public IEnumerable<Doctor> GetDoctorsBySpecialization(int? specializationId);
+        public IEnumerable<Doctor> GetAllDoctorsWithSpecialization();
     }
 
 }

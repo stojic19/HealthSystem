@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace IntegrationAPI.DTO.MedicineProcurement
 {
-    public class MedicineProcurementHospitalResponseDTO
+    public class MedicineProcurementHospitalResponseDto
     {
         public string Answer { get; set; }
     }

@@ -21,7 +21,7 @@ namespace HospitalApi.Controllers
             _medicationInventoryMasterService = new MedicationInventoryMasterService(unitOfWork);
         }
         [HttpPost]
-        public IActionResult AddMedicineQuantity(AddMedicationRequestDTO medicationRequestDTO)
+        public IActionResult AddMedicineQuantity(AddMedicationRequestDto medicationRequestDTO)
         {
             if (medicationRequestDTO.Quantity <= 0)
             {
@@ -32,7 +32,7 @@ namespace HospitalApi.Controllers
                 return BadRequest("Invalid medicine name.");
             }
             _medicationInventoryMasterService.AddMedicineToInventory(medicationRequestDTO.MedicineName, medicationRequestDTO.Quantity);
-            AddMedicationResponseDTO responseDTO = new AddMedicationResponseDTO() { Answer = "Succesfully added medicine." };
+            AddMedicationResponseDto responseDTO = new AddMedicationResponseDto() { Answer = "Succesfully added medicine." };
             return Ok(responseDTO);
         }
     }

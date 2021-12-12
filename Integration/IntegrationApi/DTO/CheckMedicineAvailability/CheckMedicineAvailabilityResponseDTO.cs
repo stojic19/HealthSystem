@@ -1,6 +1,6 @@
 ﻿namespace IntegrationAPI.DTO
 {
-    public class CheckMedicineAvailabilityResponseDTO
+    public class CheckMedicineAvailabilityResponseDto
     {
         public bool Answer{ get; set; }
     }

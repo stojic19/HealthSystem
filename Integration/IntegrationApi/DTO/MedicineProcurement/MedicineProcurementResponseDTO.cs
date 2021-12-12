@@ -1,6 +1,6 @@
 ﻿namespace IntegrationAPI.DTO
 {
-    public class MedicineProcurementResponseDTO
+    public class MedicineProcurementResponseDto
     {
         public bool Answer{ get; set; }
         public string ExceptionMessage { get; set; }

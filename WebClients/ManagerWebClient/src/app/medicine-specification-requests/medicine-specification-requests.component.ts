@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MedicineSpecificationRequestsService } from 'src/app/services/medicine-specification-requests.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-medicine-specification-requests',
@@ -8,7 +9,7 @@ import { MedicineSpecificationRequestsService } from 'src/app/services/medicine-
 })
 export class MedicineSpecificationRequestsComponent implements OnInit {
 
-  constructor(private _medicineRequestsService: MedicineSpecificationRequestsService) { }
+  constructor(private _medicineRequestsService: MedicineSpecificationRequestsService, private toastr: ToastrService) { }
   medicineName: any;
   Pharmacy: any;
   PharmacyList: any[] = [];
@@ -24,7 +25,7 @@ export class MedicineSpecificationRequestsComponent implements OnInit {
   SendRequest(){
     if(this.Pharmacy == null || this.medicineName === "" || this.medicineName == null)
     {
-      alert("Enter valid pharmacy and medicine name!")
+      this.toastr.error("Enter valid pharmacy and medicine name!", "Error!");
       return;
     }
     var request = 
@@ -32,9 +33,9 @@ export class MedicineSpecificationRequestsComponent implements OnInit {
       medicineName: this.medicineName,
       pharmacyId: this.Pharmacy.id
     }
-    this._medicineRequestsService.sendRequest(request).subscribe(data =>
+    this._medicineRequestsService.sendRequest(request).subscribe(res =>
       {
-        alert(data);
-      });
+        this.toastr.success(res.toString());
+      },(error) => this.toastr.error(error.error));
   }
 }

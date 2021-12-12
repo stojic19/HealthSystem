@@ -33,13 +33,10 @@
   </ItemGroup>
 
   <ItemGroup>
-<<<<<<< feature/integration-grpc-communication-for-checking-and-medicine-procurement
-	  <Protobuf Include="Protos\medicineInventoryModel.proto" GrpcServices="Client" />
-	  <Protobuf Include="Protos\medicineInventoryService.proto" GrpcServices="Service" />
-=======
+    <Protobuf Include="Protos\medicineInventoryModel.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos\medicineInventoryService.proto" GrpcServices="Service" />
     <Folder Include="Prescriptions\Http\" />
     <Folder Include="Prescriptions\Sftp\" />
->>>>>>> development
   </ItemGroup>
 
 </Project>

@@ -34,6 +34,7 @@
   <ItemGroup>
     <Protobuf Include="Protos\medicineInventoryModel.proto" GrpcServices="Server" />
     <Protobuf Include="Protos\medicineInventoryService.proto" GrpcServices="Service" />
+    <Folder Include="Prescriptions\" />
   </ItemGroup>
 
 

@@ -18,11 +18,11 @@ RUN dotnet restore "${PROJECT}/${PROJECT}.csproj" && \
 # ENV PROJECT=HospitalApi
 # RUN dotnet publish "${PROJECT}/${PROJECT}.csproj" -c Release -o /app/publish 
 
-FROM build as sqlgen
-WORKDIR /HospitalClassLib
-RUN dotnet tool install -g dotnet-ef --version 5.0.11 && \
-    dotnet-ef migrations script -p "Hospital.csproj" -o /app/sql/init.sql
-WORKDIR /src
+# FROM build as sqlgen
+# WORKDIR /HospitalClassLib
+# RUN dotnet tool install -g dotnet-ef --version 5.0.11 && \
+#     dotnet-ef migrations script -p "Hospital.csproj" -o /app/sql/init.sql
+# WORKDIR /src
 
 FROM build AS publish
 ENV PROJECT=HospitalApi
@@ -34,7 +34,7 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
 WORKDIR /app/publish
-VOLUME /app/sql
+# VOLUME /app/sql
 ENTRYPOINT ["dotnet", "HospitalApi.dll"]
 
 

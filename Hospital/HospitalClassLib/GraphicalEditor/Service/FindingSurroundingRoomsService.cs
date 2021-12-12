@@ -1,6 +1,7 @@
 ﻿using Hospital.GraphicalEditor.Model;
 using Hospital.GraphicalEditor.Repository;
 using Hospital.RoomsAndEquipment.Model;
+using Hospital.RoomsAndEquipment.Repository;
 using Hospital.SharedModel.Repository.Base;
 using System;
 using System.Collections.Generic;
@@ -20,13 +21,15 @@ namespace Hospital.GraphicalEditor.Service
 
         public IEnumerable<Room> GetSurroundingRooms(RoomPosition roomPosition)
         {
+            var roomRepo = uow.GetRepository<IRoomReadRepository>();
             var repo = uow.GetRepository<IRoomPositionReadRepository>();
             List<Room> foundRooms = new List<Room>();
             foreach (RoomPosition position in repo.GetAll().ToList())
             {
                 if (AreNeighbors(roomPosition, position))
                 {
-                    foundRooms.Add(position.Room);
+                    var room = roomRepo.GetById(position.RoomId);
+                    foundRooms.Add(room);
                 }
             }
             return foundRooms;
@@ -34,28 +37,32 @@ namespace Hospital.GraphicalEditor.Service
 
         public bool AreNeighbors(RoomPosition firstPosition, RoomPosition secondPosition)
         {
-            if (!firstPosition.Room.BuildingName.Equals(secondPosition.Room.BuildingName))
+            var roomRepo = uow.GetRepository<IRoomReadRepository>();
+            var firstRoom = roomRepo.GetById(firstPosition.RoomId);
+            var secondRoom = roomRepo.GetById(secondPosition.RoomId);
+
+            if (!firstRoom.BuildingName.Equals(secondRoom.BuildingName))
                 return false;
-            else if (firstPosition.Room.FloorNumber != secondPosition.Room.FloorNumber)
+            else if (firstRoom.FloorNumber != secondRoom.FloorNumber)
                 return false;
-            else if (firstPosition.Room.BuildingName.Equals("Building 1"))
+            else if (firstRoom.BuildingName.Equals("Building 1"))
             {
-                if (firstPosition.DimensionY + firstPosition.Height == secondPosition.DimensionY)
+                if (firstPosition.DimensionY + firstPosition.Height == secondPosition.DimensionY && firstPosition.DimensionX == secondPosition.DimensionX)
                 {
                     return true;
                 }
-                else if (firstPosition.DimensionY - firstPosition.Height == secondPosition.DimensionY)
+                else if (firstPosition.DimensionY - firstPosition.Height == secondPosition.DimensionY && firstPosition.DimensionX == secondPosition.DimensionX)
                 {
                     return true;
                 }
             }
-            else if (firstPosition.Room.BuildingName.Equals("Building 2"))
+            else if (firstRoom.BuildingName.Equals("Building 2"))
             {
-                if (firstPosition.DimensionX + firstPosition.Width == secondPosition.DimensionX)
+                if (firstPosition.DimensionX + firstPosition.Width == secondPosition.DimensionX && firstPosition.DimensionY == secondPosition.DimensionY)
                 {
                     return true;
                 }
-                else if (firstPosition.DimensionX - firstPosition.Width == secondPosition.DimensionX)
+                else if (firstPosition.DimensionX - firstPosition.Width == secondPosition.DimensionX && firstPosition.DimensionY == secondPosition.DimensionY)
                 {
                     return true;
                 }

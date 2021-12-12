@@ -55,10 +55,15 @@ import { SurveySectionObserveComponent } from './components/survey-section-obser
 import { SurveysObserveComponent } from './components/surveys-observe/surveys-observe.component';
 import { MaterialModule } from './material/material.module';
 import { MedicineSpecificationListComponent } from './medicine-specification-requests/medicine-specification-list/medicine-specification-list.component';
+import { RenovationFormComponent } from './renovation-form/renovation-form.component';
+import { RenovationTypeComponent } from './renovation-form/renovation-type/renovation-type.component';
+import { FirstRoomComponent } from './renovation-form/first-room/first-room.component';
+import { SurroundingRoomComponent } from './renovation-form/surrounding-room/surrounding-room.component';
 import { RoomScheduleComponent } from './room-schedule/room-schedule.component';
 import { ConfirmDialogComponent } from './room-schedule/confirm-dialog/confirm-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DetailsDialogComponent } from './room-schedule/details-dialog/details-dialog.component';
+
 
 @NgModule({
   declarations: [
@@ -101,9 +106,14 @@ import { DetailsDialogComponent } from './room-schedule/details-dialog/details-d
     SurveySectionObserveComponent,
     SurveysObserveComponent,
     MedicineSpecificationListComponent,
+    RenovationFormComponent,
+    RenovationTypeComponent,
+    FirstRoomComponent,
+    SurroundingRoomComponent,
     RoomScheduleComponent,
     ConfirmDialogComponent,
     DetailsDialogComponent,
+
   ],
   imports: [
     BrowserModule,

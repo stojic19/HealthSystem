@@ -64,7 +64,8 @@ namespace PharmacyApi.Controllers
                 StreetName = PharmacyDetails.StreetName,
                 StreetNumber = PharmacyDetails.StreetNumber,
                 CountryName = PharmacyDetails.CountryName,
-                PostalCode = PharmacyDetails.PostalCode
+                PostalCode = PharmacyDetails.PostalCode,
+                GrpcSupported = true
             };
         }
     }

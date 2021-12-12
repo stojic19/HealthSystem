@@ -2,11 +2,12 @@
 
 namespace IntegrationAPI.DTO
 {
-    public class CheckMedicineAvailabilityRequestDTO
+    public class CreateMedicineRequestForPharmacyDto
     {
-        public Guid ApiKey { get; set; }
+        public int PharmacyId { get; set; }
         public String MedicineName { get; set; }
         public String ManufacturerName { get; set; }
         public int Quantity { get; set; }
+
     }
 }

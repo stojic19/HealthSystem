@@ -3,15 +3,17 @@ using System;
 using Hospital.Database.EfStructures;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Hospital.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211208213831_MedicationInventoryAdded")]
+    partial class MedicationInventoryAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -404,14 +406,11 @@ namespace Hospital.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("FirstRoomDescription")
-                        .HasColumnType("text");
+                    b.Property<bool>("IsCanceled")
+                        .HasColumnType("boolean");
 
-                    b.Property<string>("FirstRoomName")
-                        .HasColumnType("text");
-
-                    b.Property<int>("FirstRoomType")
-                        .HasColumnType("integer");
+                    b.Property<bool>("IsDone")
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("IsMerge")
                         .HasColumnType("boolean");
@@ -420,15 +419,6 @@ namespace Hospital.Migrations
                         .HasColumnType("integer");
 
                     b.Property<int?>("RoomId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("SecondRoomDescription")
-                        .HasColumnType("text");
-
-                    b.Property<string>("SecondRoomName")
-                        .HasColumnType("text");
-
-                    b.Property<int>("SecondRoomType")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("StartDate")
@@ -484,17 +474,12 @@ namespace Hospital.Migrations
                     b.Property<int>("PatientId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("ScheduledEventId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("SurveyId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PatientId");
-
-                    b.HasIndex("ScheduledEventId");
 
                     b.HasIndex("SurveyId");
 
@@ -591,6 +576,9 @@ namespace Hospital.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<int>("AnsweredSurveyId")
+                        .HasColumnType("integer");
+
                     b.Property<int?>("DoctorId")
                         .HasColumnType("integer");
 
@@ -619,6 +607,8 @@ namespace Hospital.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AnsweredSurveyId");
 
                     b.HasIndex("DoctorId");
 
@@ -1172,12 +1162,6 @@ namespace Hospital.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Hospital.Schedule.Model.ScheduledEvent", "ScheduledEvent")
-                        .WithMany()
-                        .HasForeignKey("ScheduledEventId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Hospital.Schedule.Model.Survey", "Survey")
                         .WithMany("AnsweredSurveys")
                         .HasForeignKey("SurveyId")
@@ -1185,8 +1169,6 @@ namespace Hospital.Migrations
                         .IsRequired();
 
                     b.Navigation("Patient");
-
-                    b.Navigation("ScheduledEvent");
 
                     b.Navigation("Survey");
                 });
@@ -1226,6 +1208,12 @@ namespace Hospital.Migrations
 
             modelBuilder.Entity("Hospital.Schedule.Model.ScheduledEvent", b =>
                 {
+                    b.HasOne("Hospital.Schedule.Model.AnsweredSurvey", "AnsweredSurvey")
+                        .WithMany()
+                        .HasForeignKey("AnsweredSurveyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Hospital.SharedModel.Model.Doctor", "Doctor")
                         .WithMany("ScheduledEvents")
                         .HasForeignKey("DoctorId");
@@ -1241,6 +1229,8 @@ namespace Hospital.Migrations
                     b.HasOne("Hospital.RoomsAndEquipment.Model.Room", "Room")
                         .WithMany("ScheduledEvents")
                         .HasForeignKey("RoomId");
+
+                    b.Navigation("AnsweredSurvey");
 
                     b.Navigation("Doctor");
 

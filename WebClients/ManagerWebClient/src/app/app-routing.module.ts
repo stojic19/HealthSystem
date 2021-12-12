@@ -25,6 +25,7 @@ import { SurveySectionObserveComponent } from './components/survey-section-obser
 import { RatingDecimalComponent } from './components/rating-decimal/rating-decimal.component';
 import { MedicineSpecificationListComponent } from './medicine-specification-requests/medicine-specification-list/medicine-specification-list.component';
 import { RoomScheduleComponent } from './room-schedule/room-schedule.component';
+import { MaliciousPatientsComponent } from './components/malicious-patients/malicious-patients.component';
 
 const routes: Routes = [
   { path: 'overview', component: HospitalOverviewComponent },
@@ -62,6 +63,7 @@ const routes: Routes = [
   { path: 'moveEquipment/:id', component: EquipmentFormComponent },
   { path: 'surveys', component: SurveysObserveComponent },
   { path: 'schedule/:id', component: RoomScheduleComponent },
+  { path: 'blocking', component: MaliciousPatientsComponent},
 ];
 
 @NgModule({
@@ -79,4 +81,5 @@ export const routingComponents = [
   SurveysObserveComponent,
   SurveySectionObserveComponent,
   RatingDecimalComponent,
+  MaliciousPatientsComponent
 ];

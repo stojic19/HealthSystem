@@ -59,6 +59,7 @@ import { RoomScheduleComponent } from './room-schedule/room-schedule.component';
 import { ConfirmDialogComponent } from './room-schedule/confirm-dialog/confirm-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DetailsDialogComponent } from './room-schedule/details-dialog/details-dialog.component';
+import { MaliciousPatientsComponent } from './components/malicious-patients/malicious-patients.component';
 
 @NgModule({
   declarations: [
@@ -104,6 +105,7 @@ import { DetailsDialogComponent } from './room-schedule/details-dialog/details-d
     RoomScheduleComponent,
     ConfirmDialogComponent,
     DetailsDialogComponent,
+    MaliciousPatientsComponent,
   ],
   imports: [
     BrowserModule,

@@ -16,6 +16,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 
 namespace IntegrationAPI
@@ -25,7 +26,15 @@ namespace IntegrationAPI
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            string sourceFolder = Path.Combine(Directory.GetCurrentDirectory(), "MedicineReports");
+            string targetZip = Path.Combine(Directory.GetCurrentDirectory(), "Archive", DateTime.Now.Ticks + ".zip");
+
+            //FileZipService fileZipService = new FileZipService();
+            //fileZipService.FileZip(sourceFolder, targetZip);
         }
+
+        
 
         public IConfiguration Configuration { get; }
         private Server server;

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace HospitalApi.DTOs
 {
-    public class AddMedicationRequestDTO
+    public class AddMedicationRequestDto
     {
         public string MedicineName { get; set; }
         public int Quantity { get; set; }

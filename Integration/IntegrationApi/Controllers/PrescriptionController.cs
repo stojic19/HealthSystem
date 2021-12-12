@@ -65,7 +65,7 @@ namespace IntegrationAPI.Controllers
 
         private bool CheckMedicineInPharmacy(PrescriptionDTO dto, Pharmacy pharmacy)
         {
-            CreateMedicineRequestForPharmacyDTO medicineDto = new CreateMedicineRequestForPharmacyDTO()
+            CreateMedicineRequestForPharmacyDto medicineDto = new CreateMedicineRequestForPharmacyDto()
             {
                 PharmacyId = pharmacy.Id,
                 MedicineName = dto.MedicineName,
@@ -87,8 +87,8 @@ namespace IntegrationAPI.Controllers
                     return false;
                 }
 
-                CheckMedicineAvailabilityResponseDTO responseDTO =
-                    JsonConvert.DeserializeObject<CheckMedicineAvailabilityResponseDTO>(content);
+                CheckMedicineAvailabilityResponseDto responseDTO =
+                    JsonConvert.DeserializeObject<CheckMedicineAvailabilityResponseDto>(content);
                 if (responseDTO.Answer)
                 {
                     return true;

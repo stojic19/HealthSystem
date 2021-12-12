@@ -24,8 +24,10 @@ import { SurveysObserveComponent } from './components/surveys-observe/surveys-ob
 import { SurveySectionObserveComponent } from './components/survey-section-observe/survey-section-observe.component';
 import { RatingDecimalComponent } from './components/rating-decimal/rating-decimal.component';
 import { MedicineSpecificationListComponent } from './medicine-specification-requests/medicine-specification-list/medicine-specification-list.component';
+import { RenovationFormComponent } from './renovation-form/renovation-form.component';
 import { RoomScheduleComponent } from './room-schedule/room-schedule.component';
 import { MaliciousPatientsComponent } from './components/malicious-patients/malicious-patients.component';
+
 
 const routes: Routes = [
   { path: 'overview', component: HospitalOverviewComponent },
@@ -61,7 +63,8 @@ const routes: Routes = [
   },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'moveEquipment/:id', component: EquipmentFormComponent },
-  { path: 'surveys', component: SurveysObserveComponent },
+  { path: 'surveys', component: SurveysObserveComponent},
+  { path: 'roomRenovation', component: RenovationFormComponent},
   { path: 'schedule/:id', component: RoomScheduleComponent },
   { path: 'blocking', component: MaliciousPatientsComponent},
 ];

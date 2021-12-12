@@ -46,8 +46,9 @@ namespace IntegrationAPI.Controllers
                 BaseUrl = pharmacyDto.BaseUrl,
                 StreetName = pharmacyDto.StreetName,
                 StreetNumber = pharmacyDto.StreetNumber,
-                City = new City { PostalCode = pharmacyDto.PostalCode, Name = pharmacyDto.CityName, Country = new Country {Name = pharmacyDto.CountryName}},//TODO:POSTAL CODE
-                ApiKey = pharmacyDto.ApiKey
+                City = new City { PostalCode = pharmacyDto.PostalCode, Name = pharmacyDto.CityName, Country = new Country { Name = pharmacyDto.CountryName } },//TODO:POSTAL CODE
+                ApiKey = pharmacyDto.ApiKey,
+                GrpcSupported = pharmacyDto.GrpcSupported
             };
             _pharmacyMasterService.SavePharmacy(newPaPharmacy);
             return Ok();

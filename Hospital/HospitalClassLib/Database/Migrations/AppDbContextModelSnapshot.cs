@@ -226,6 +226,26 @@ namespace Hospital.Migrations
                     b.ToTable("MedicationIngredients");
                 });
 
+            modelBuilder.Entity("Hospital.MedicalRecords.Model.MedicationInventory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("MedicationId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MedicationId");
+
+                    b.ToTable("MedicationInventory");
+                });
+
             modelBuilder.Entity("Hospital.MedicalRecords.Model.Prescription", b =>
                 {
                     b.Property<int>("Id")
@@ -464,12 +484,17 @@ namespace Hospital.Migrations
                     b.Property<int>("PatientId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("ScheduledEventId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("SurveyId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PatientId");
+
+                    b.HasIndex("ScheduledEventId");
 
                     b.HasIndex("SurveyId");
 
@@ -566,9 +591,6 @@ namespace Hospital.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int>("AnsweredSurveyId")
-                        .HasColumnType("integer");
-
                     b.Property<int?>("DoctorId")
                         .HasColumnType("integer");
 
@@ -597,8 +619,6 @@ namespace Hospital.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AnsweredSurveyId");
 
                     b.HasIndex("DoctorId");
 
@@ -1038,6 +1058,17 @@ namespace Hospital.Migrations
                     b.Navigation("Medication");
                 });
 
+            modelBuilder.Entity("Hospital.MedicalRecords.Model.MedicationInventory", b =>
+                {
+                    b.HasOne("Hospital.MedicalRecords.Model.Medication", "Medication")
+                        .WithMany()
+                        .HasForeignKey("MedicationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Medication");
+                });
+
             modelBuilder.Entity("Hospital.MedicalRecords.Model.Prescription", b =>
                 {
                     b.HasOne("Hospital.MedicalRecords.Model.MedicalRecord", null)
@@ -1141,6 +1172,12 @@ namespace Hospital.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Hospital.Schedule.Model.ScheduledEvent", "ScheduledEvent")
+                        .WithMany()
+                        .HasForeignKey("ScheduledEventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Hospital.Schedule.Model.Survey", "Survey")
                         .WithMany("AnsweredSurveys")
                         .HasForeignKey("SurveyId")
@@ -1148,6 +1185,8 @@ namespace Hospital.Migrations
                         .IsRequired();
 
                     b.Navigation("Patient");
+
+                    b.Navigation("ScheduledEvent");
 
                     b.Navigation("Survey");
                 });
@@ -1187,12 +1226,6 @@ namespace Hospital.Migrations
 
             modelBuilder.Entity("Hospital.Schedule.Model.ScheduledEvent", b =>
                 {
-                    b.HasOne("Hospital.Schedule.Model.AnsweredSurvey", "AnsweredSurvey")
-                        .WithMany()
-                        .HasForeignKey("AnsweredSurveyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Hospital.SharedModel.Model.Doctor", "Doctor")
                         .WithMany("ScheduledEvents")
                         .HasForeignKey("DoctorId");
@@ -1208,8 +1241,6 @@ namespace Hospital.Migrations
                     b.HasOne("Hospital.RoomsAndEquipment.Model.Room", "Room")
                         .WithMany("ScheduledEvents")
                         .HasForeignKey("RoomId");
-
-                    b.Navigation("AnsweredSurvey");
 
                     b.Navigation("Doctor");
 

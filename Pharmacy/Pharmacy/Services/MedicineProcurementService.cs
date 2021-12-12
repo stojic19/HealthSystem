@@ -21,7 +21,7 @@ namespace Pharmacy.Services
 
         public bool IsMedicineAvailable(string medicineName, string manufacturerName, int quantity)
         {
-            Medicine medicine = _uow.GetRepository<IMedicineReadRepository>().GetMedicineByNameAndManufacturerName(medicineName, manufacturerName);
+            Medicine medicine = _uow.GetRepository<IMedicineReadRepository>().GetMedicineByName(medicineName);
 
             if (medicine == null)
             {

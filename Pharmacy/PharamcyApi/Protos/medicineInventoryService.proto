@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+option csharp_namespace = "PharmacyApi.Protos";
+import "Protos/medicineInventoryModel.proto";
+
+service MedicineInventoryService {
+	rpc CheckMedicineAvailability (CheckMedicineAvailabilityRequestModel) returns (CheckMedicineAvailabilityResponseModel);
+	rpc EmergencyMedicineProcurement (MedicineProcurementRequestModel) returns (MedicineProcurementResponseModel);
+}

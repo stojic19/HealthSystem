@@ -60,6 +60,8 @@ import { ConfirmDialogComponent } from './room-schedule/confirm-dialog/confirm-d
 import { MatDialogModule } from '@angular/material/dialog';
 import { DetailsDialogComponent } from './room-schedule/details-dialog/details-dialog.component';
 
+import { ToastrModule } from 'ngx-toastr';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -125,6 +127,8 @@ import { DetailsDialogComponent } from './room-schedule/details-dialog/details-d
     MatSelectModule,
     MaterialModule,
     MatDialogModule,
+    ToastrModule.forRoot({timeOut: 3000,
+      positionClass: 'toast-top-right'}),
   ],
   providers: [HttpClientModule],
   bootstrap: [AppComponent],

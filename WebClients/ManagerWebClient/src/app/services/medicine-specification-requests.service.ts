@@ -6,7 +6,7 @@ import { Observable, throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class MedicineSpecificationRequestsService {
-  private _APIUrl = 'http://localhost:5000/api';
+  private _APIUrl = 'http://localhost:44302/api';
   constructor(private _httpClient: HttpClient) { }
   
   getPharmacies(): Observable<any[]>

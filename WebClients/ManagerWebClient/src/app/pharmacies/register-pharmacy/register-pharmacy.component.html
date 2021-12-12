@@ -32,6 +32,13 @@
           <label for="baseUrl" class="form-label">Base URL</label>
           <input [(ngModel)]="baseUrl" type="text" class="form-control" id="baseUrl" placeholder="Base url" required>
         </div>
+        <div class="mb-3">
+          <input class="form-check-input m-2" type="checkbox"
+          id="grpcSupported" [checked]="grpcSupported" (change)="grpcSupported = !grpcSupported"/>
+          <label class="form-check-label m-2" for="grpcSupported">
+            Grpc supported
+          </label>
+        </div>
         <button (click)="registerPharmacy()" class="btn btn-primary">
           <strong>Register</strong>
       </button>

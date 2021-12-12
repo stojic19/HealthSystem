@@ -89,7 +89,7 @@ namespace IntegrationAPI.Controllers
 
                 CheckMedicineAvailabilityResponseDTO responseDTO =
                     JsonConvert.DeserializeObject<CheckMedicineAvailabilityResponseDTO>(content);
-                if (responseDTO.answer)
+                if (responseDTO.Answer)
                 {
                     return true;
                 }

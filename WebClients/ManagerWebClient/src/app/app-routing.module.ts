@@ -24,6 +24,9 @@ import { SurveysObserveComponent } from './components/surveys-observe/surveys-ob
 import { SurveySectionObserveComponent } from './components/survey-section-observe/survey-section-observe.component';
 import { RatingDecimalComponent } from './components/rating-decimal/rating-decimal.component';
 import { MedicineSpecificationListComponent } from './medicine-specification-requests/medicine-specification-list/medicine-specification-list.component';
+import { RenovationFormComponent } from './renovation-form/renovation-form.component';
+import { RoomScheduleComponent } from './room-schedule/room-schedule.component';
+
 
 const routes: Routes = [
   { path: 'overview', component: HospitalOverviewComponent },
@@ -33,7 +36,10 @@ const routes: Routes = [
   { path: 'roomInventory/:id', component: RoomInventoryComponent },
   { path: 'hospitalEquipment', component: HospitalEquipmentComponent },
   { path: 'firstBuilding/:roomName/:floor', component: FirstBuildingComponent },
-  { path: 'secondBuilding/:roomName/:floor', component: SecondBuildingComponent },
+  {
+    path: 'secondBuilding/:roomName/:floor',
+    component: SecondBuildingComponent,
+  },
   { path: 'complaints', component: ComplaintsListComponent },
   { path: 'complaints/:id', component: ComplaintDetailsComponent },
   { path: 'complaint-add', component: AddComplaintComponent },
@@ -42,12 +48,24 @@ const routes: Routes = [
   { path: 'benefit-list', component: BenefitListComponent },
   { path: 'benefit/:id', component: BenefitDetailsComponent },
   { path: 'home', component: HomePageComponent },
-  { path: 'medication-consumption-report', component: MedicationReportsComponent},
-  { path: 'medicine-specification-requests', component: MedicineSpecificationListComponent},
-  { path: 'new-medicine-specification-request', component: MedicineSpecificationRequestsComponent},
-  { path: '', redirectTo: 'home', pathMatch: 'full'},
+  {
+    path: 'medication-consumption-report',
+    component: MedicationReportsComponent,
+  },
+  {
+    path: 'medicine-specification-requests',
+    component: MedicineSpecificationListComponent,
+  },
+  {
+    path: 'new-medicine-specification-request',
+    component: MedicineSpecificationRequestsComponent,
+  },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'moveEquipment/:id', component: EquipmentFormComponent },
   { path: 'surveys', component: SurveysObserveComponent},
+  { path: 'roomRenovation', component: RenovationFormComponent},
+  { path: 'schedule/:id', component: RoomScheduleComponent },
+
 ];
 
 @NgModule({
@@ -55,4 +73,4 @@ const routes: Routes = [
   exports: [RouterModule],
 })
 export class AppRoutingModule { }
-export const routingComponents = [HospitalOverviewComponent, FirstBuildingComponent, FeedbacksManagerComponent, SecondBuildingComponent, RoomInventoryComponent, HospitalEquipmentComponent,SurveysObserveComponent,SurveySectionObserveComponent,RatingDecimalComponent];
+export const routingComponents = [HospitalOverviewComponent, FirstBuildingComponent, FeedbacksManagerComponent, SecondBuildingComponent, RoomInventoryComponent, HospitalEquipmentComponent,SurveysObserveComponent,SurveySectionObserveComponent,RatingDecimalComponent, RenovationFormComponent];

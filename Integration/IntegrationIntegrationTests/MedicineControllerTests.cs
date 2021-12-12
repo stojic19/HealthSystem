@@ -24,7 +24,7 @@ namespace IntegrationIntegrationTests
         [Fact]
         public async Task Check_medicine_availability_incorrect_pharmacyid_should_return_bad_request()
         {
-            CreateMedicineRequestForPharmacyDTO newRequest = GetRequestWithIncorrectPharmacyId();
+            CreateMedicineRequestForPharmacyDto newRequest = GetRequestWithIncorrectPharmacyId();
 
             var content = GetContent(newRequest);
 
@@ -35,7 +35,7 @@ namespace IntegrationIntegrationTests
         [Fact]
         public async Task Check_medicine_availability_incorrect_quantity_should_return_bad_request()
         {
-            CreateMedicineRequestForPharmacyDTO newRequest = GetRequestWithIncorrectQuantity();
+            CreateMedicineRequestForPharmacyDto newRequest = GetRequestWithIncorrectQuantity();
 
             var content = GetContent(newRequest);
 
@@ -46,7 +46,7 @@ namespace IntegrationIntegrationTests
         [Fact]
         public async Task Check_medicine_availability_no_answer_should_return_bad_request()
         {
-            CreateMedicineRequestForPharmacyDTO newRequest = GetRequestWithCorrectData();
+            CreateMedicineRequestForPharmacyDto newRequest = GetRequestWithCorrectData();
 
             var content = GetContent(newRequest);
 
@@ -68,7 +68,7 @@ namespace IntegrationIntegrationTests
         [Fact]
         public async Task Urgent_rocurement_of_medicine_incorrect_quantity_should_return_bad_request()
         {
-            CreateMedicineRequestForPharmacyDTO newRequest = GetRequestWithIncorrectQuantity();
+            CreateMedicineRequestForPharmacyDto newRequest = GetRequestWithIncorrectQuantity();
 
             var content = GetContent(newRequest);
 
@@ -79,7 +79,7 @@ namespace IntegrationIntegrationTests
         [Fact]
         public async Task Urgent_rocurement_of_medicine_no_answer_should_return_bad_request()
         {
-            CreateMedicineRequestForPharmacyDTO newRequest = GetRequestWithCorrectData();
+            CreateMedicineRequestForPharmacyDto newRequest = GetRequestWithCorrectData();
 
             var content = GetContent(newRequest);
 
@@ -87,9 +87,9 @@ namespace IntegrationIntegrationTests
 
             response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
         }
-        private CreateMedicineRequestForPharmacyDTO GetRequestWithIncorrectPharmacyId()
+        private CreateMedicineRequestForPharmacyDto GetRequestWithIncorrectPharmacyId()
         {
-            return new CreateMedicineRequestForPharmacyDTO()
+            return new CreateMedicineRequestForPharmacyDto()
             {
                 PharmacyId = -1,
                 ManufacturerName = "Hemofarm",
@@ -97,9 +97,9 @@ namespace IntegrationIntegrationTests
                 Quantity = 10
             };
         }
-        private CreateMedicineRequestForPharmacyDTO GetRequestWithIncorrectQuantity()
+        private CreateMedicineRequestForPharmacyDto GetRequestWithIncorrectQuantity()
         {
-            return new CreateMedicineRequestForPharmacyDTO()
+            return new CreateMedicineRequestForPharmacyDto()
             {
                 PharmacyId = 1,
                 ManufacturerName = "Hemofarm",
@@ -107,9 +107,9 @@ namespace IntegrationIntegrationTests
                 Quantity = -1
             };
         }
-        private CreateMedicineRequestForPharmacyDTO GetRequestWithCorrectData()
+        private CreateMedicineRequestForPharmacyDto GetRequestWithCorrectData()
         {
-            return new CreateMedicineRequestForPharmacyDTO()
+            return new CreateMedicineRequestForPharmacyDto()
             {
                 PharmacyId = 1,
                 ManufacturerName = "Hemofarm",

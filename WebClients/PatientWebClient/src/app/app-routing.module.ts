@@ -10,8 +10,15 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+<<<<<<< HEAD
 import { BasicAppointmentComponent } from './components/basic-appointment/basic-appointment.component';
 import { MedicalRecordComponent } from './components/medical-record/medical-record.component';
+=======
+import { LoginComponent } from './components/login/login.component';
+import { PatientMedicalRecordComponent } from './components/patient-medical-record/patient-medical-record.component';
+import { AppointmentsPageComponent } from './components/appointments-page/appointments-page.component';
+import { SurveyPageComponent } from './components/survey-page/survey-page.component';
+>>>>>>> development
 
 const routes: Routes = [
   {
@@ -27,8 +34,15 @@ const routes: Routes = [
         component: FeedbacksPageComponent,
       },
       {
-        path: 'appointments',
-        component: BasicAppointmentComponent,
+        path: 'record',
+        component: PatientMedicalRecordComponent,
+      },
+        {path:'appointments',
+        component: AppointmentsPageComponent
+      },
+      {
+        path:'surveys',
+        component: SurveyPageComponent
       },
       {
         path: 'medicalRecord',
@@ -37,6 +51,7 @@ const routes: Routes = [
     ],
   },
   { path: 'registration', component: RegistrationComponent },
+  { path: 'login', component: LoginComponent },
 ];
 
 @NgModule({
@@ -49,6 +64,6 @@ const routes: Routes = [
     HttpClientModule,
   ],
   exports: [RouterModule, MaterialModule, FormsModule],
-  entryComponents: [FeedbackComponent],
+  entryComponents: [FeedbackComponent, AppointmentsPageComponent, SurveyPageComponent],
 })
 export class AppRoutingModule {}

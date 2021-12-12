@@ -78,7 +78,7 @@ namespace IntegrationAPI.Adapters.PDF.Implementation
             _currentY += 50;
             for (int i = 0; i < dto.MedicineConsumptions.Count; i++)
             {
-                MedicineConsumptionDTO medicineConsumption = dto.MedicineConsumptions[i];
+                MedicationExpenditureDTO medicationExpenditure = dto.MedicineConsumptions[i];
                 _currentY += 32;
                 if (_currentY >= 650)
                 {
@@ -94,8 +94,8 @@ namespace IntegrationAPI.Adapters.PDF.Implementation
                 Row2 row = table.Rows.Add(30);
                 row.CellDefault.Align = TextAlign.Center;
                 row.CellDefault.VAlign = VAlign.Center;
-                row.Cells.Add(medicineConsumption.MedicineName);
-                row.Cells.Add(Convert.ToString(medicineConsumption.Amount));
+                row.Cells.Add(medicationExpenditure.MedicineName);
+                row.Cells.Add(Convert.ToString(medicationExpenditure.Amount));
             }
             _lastPage.Elements.Add(table);
             if (_document.Pages.Count > 1) _currentY = table.Height;

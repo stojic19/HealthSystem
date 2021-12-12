@@ -2,7 +2,7 @@
 
 namespace IntegrationAPI.DTO
 {
-    public class MedicineConsumptionDTO
+    public class MedicationExpenditureDTO
     {
         [Required(ErrorMessage = "Medicine name is necessary!")]
         public string MedicineName { get; set; }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Pharmacy.Repositories;
 using Pharmacy.Repositories.Base;
 using PharmacyApi.ConfigurationMappers;
+using PharmacyApi.DTO;
 
 namespace PharmacyApi.Controllers.Base
 {
@@ -13,8 +14,14 @@ namespace PharmacyApi.Controllers.Base
     {
         protected readonly IUnitOfWork UoW;
         protected readonly PharmacyDetails PharmacyDetails;
+        protected SftpCredentialsDTO _sftpCredentials = new SftpCredentialsDTO
+        {
+            Host = "192.168.0.22",
+            Password = "password",
+            Username = "tester"
+        };
 
-        protected BasePharmacyController(IUnitOfWork uow, PharmacyDetails details)
+    protected BasePharmacyController(IUnitOfWork uow, PharmacyDetails details)
         {
             UoW = uow;
             PharmacyDetails = details;

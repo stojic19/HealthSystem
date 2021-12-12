@@ -10,5 +10,7 @@ namespace Hospital.GraphicalEditor.Repository
 {
     public interface IRoomPositionReadRepository : IReadBaseRepository<int, RoomPosition>
     {
+        public RoomPosition GetByRoom(int? roomId);
     }
+    
 }

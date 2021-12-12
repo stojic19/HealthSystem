@@ -12,7 +12,7 @@ namespace IntegrationAPI.DTO
         public DateTime endDate { get; set; }
         [Required(ErrorMessage = "Date on which this report is created is necessary!")]
         public DateTime createdDate { get; set; }
-        [Required(ErrorMessage = "List of consumed medicine is necessary!")]
-        public List<MedicineConsumptionDTO> MedicineConsumptions { get; set; }
+        [Required(ErrorMessage = "List of medications is necessary!")]
+        public List<MedicationExpenditureDTO> MedicationExpenditureDTO { get; set; }
     }
 }

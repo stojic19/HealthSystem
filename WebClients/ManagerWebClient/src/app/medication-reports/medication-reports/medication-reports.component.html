@@ -23,7 +23,7 @@
                     <th>Amount spent</th>
                 </thead>
                 <tbody>
-                    <tr *ngFor='let consumption of report.medicineConsumptions'>
+                    <tr *ngFor='let consumption of report.medicationExpenditureDTO'>
                         <td>{{consumption.medicineName}}</td>
                         <td>{{consumption.amount}}</td>
                     </tr>

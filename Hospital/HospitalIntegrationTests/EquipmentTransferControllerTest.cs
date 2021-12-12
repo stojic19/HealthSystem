@@ -2,6 +2,7 @@
 using Hospital.RoomsAndEquipment.Repository;
 using Hospital.SharedModel.Model.Enumerations;
 using HospitalIntegrationTests.Base;
+using Newtonsoft.Json;
 using Shouldly;
 using System;
 using System.Linq;
@@ -130,7 +131,7 @@ namespace HospitalIntegrationTests
             var room = UoW.GetRepository<IRoomReadRepository>()
                 .GetAll()
                 .FirstOrDefault(x => x.Name == name);
-
+            /*
             if (room == null)
             {
                 room = new Room()
@@ -146,7 +147,7 @@ namespace HospitalIntegrationTests
 
                 UoW.GetRepository<IRoomWriteRepository>().Add(room);
             }
-
+            */
             return room;
         }
 

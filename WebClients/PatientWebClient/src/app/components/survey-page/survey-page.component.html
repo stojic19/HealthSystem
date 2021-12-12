@@ -1,0 +1,18 @@
+<div *ngIf ="survey!=null" >
+    <div class="col-md-10 mx-auto ">
+        <div class="p-3 mb-2 bg-gradient-light red lighten-3 bg-info">
+            <h2 class="fw-bold text-center mt-5 ">Patient Satisfaction Survey</h2>
+            <h5 class=" text-center mt-5 ">{{scheduledEvent.startDate | date }}
+                {{scheduledEvent.startDate |date:'shortTime' }} - {{scheduledEvent.endDate |date:'shortTime'}}</h5>
+        </div>
+    </div>
+
+    <app-survey [section]='survey.doctorSection' (newItemEvent)="addQuestion($event)"></app-survey>
+    <app-survey [section]='survey.medicalStaffSection' (newItemEvent)="addQuestion($event)"></app-survey>
+    <app-survey [section]='survey.hospitalSection' (newItemEvent)="addQuestion($event)"></app-survey>
+    <div class="row d-flex flex-row-reverse mt-5">
+        <div class="col-sm-4 ">
+            <button mat-raised-button color="accent" class="btn w-50 btn-lg" (click)="saveSurvey()">Submit</button>
+        </div>
+    </div>
+</div>

@@ -5,6 +5,7 @@ using HospitalApi.DTOs;
 using System;
 using Hospital.MedicalRecords.Model;
 using Hospital.SharedModel.Model;
+using Hospital.RoomsAndEquipment.Model;
 
 namespace HospitalApi.AutoMapperProfiles
 {
@@ -18,12 +19,18 @@ namespace HospitalApi.AutoMapperProfiles
             CreateMap<Survey, SurveyStatisticDTO>();
 
             CreateMap<CityDTO, City>();
-
             CreateMap<DoctorDTO, Doctor>();
             CreateMap<MedicationIngredientDTO, MedicationIngredient>();
             CreateMap<NewAllergyDTO, Allergy>();
             CreateMap<NewMedicalRecordDTO, MedicalRecord>();
             CreateMap<NewPatientDTO, Patient>();
+            CreateMap<MedicationIngredient, MedicationIngredientDTO>();
+            CreateMap<City, CityDTO>();
+            CreateMap<Allergy, AllergyDTO>();
+            CreateMap<Doctor, DoctorDTO>();
+            CreateMap<MedicalRecord, MedicalRecordDTO>();
+            CreateMap<Patient, PatientDTO>();
+            CreateMap<EquipmentTransferEventDto, EquipmentTransferEvent>();
         }
     }
 }

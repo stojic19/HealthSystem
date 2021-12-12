@@ -1,0 +1,21 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.frame {
+  width: 500px;
+}
+
+h6 {
+  text-align: center;
+}
+
+.frame {
+  justify-content: center;
+  align-items: center;
+}
+.mat-radio-button ~ .mat-radio-button {
+  margin-left: 16px;
+}

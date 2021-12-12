@@ -21,6 +21,7 @@ import { PatientMedicalRecordComponent } from './components/patient-medical-reco
 import { AppointmentsPageComponent } from './components/appointments-page/appointments-page.component';
 import { SurveyPageComponent } from './components/survey-page/survey-page.component';
 import { SurveySectionComponent } from './components/survey-section/survey-section.component';
+import { RecommendedAppointmentComponent } from './components/recommended-appointment/recommended-appointment.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { SurveySectionComponent } from './components/survey-section/survey-secti
     PatientMedicalRecordComponent,
     AppointmentsPageComponent,
     SurveySectionComponent,
+    RecommendedAppointmentComponent
   ],
   imports: [
     AppRoutingModule,

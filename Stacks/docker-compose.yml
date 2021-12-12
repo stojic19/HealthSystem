@@ -1,0 +1,52 @@
+version: '3.4'
+
+services:
+
+
+  hospitalapi:
+    networks:
+      - database
+    build:
+      dockerfile: Stacks/Build/Hospital/Dockerfile
+      context: ../
+    ports:  
+      - "8088:80"
+    restart: on-failure
+    depends_on:
+      - database
+    environment:
+      HOSPITAL_DB_PATH: "host=database;port=5432;database=HOSPITAL;username=postgres;password=postgres"
+    volumes:
+      - web-sql:/app/sql
+
+
+  database:
+    networks:
+      - database
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_USER: "postgres"
+      POSTGRES_DB: "HOSPITAL"
+    volumes:
+      - database-data:/var/lib/postgresql/data
+      - web-sql:/docker-entrypoint-initdb.d/
+    ports:
+      - 5432:5432
+
+volumes:
+  database-data:
+    name: f2-database
+  web-sql:
+
+networks:
+  public:
+    name: public
+    driver: bridge
+  application:
+    name: application
+    driver: bridge
+  database:
+    name: database
+    driver: bridge

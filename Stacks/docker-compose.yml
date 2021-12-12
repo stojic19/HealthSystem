@@ -15,7 +15,7 @@ services:
     depends_on:
       - database
     environment:
-      HOSPITAL_DB_PATH: "host=database;port=5454;database=HOSPITAL;username=postgres;password=postgres"
+      HOSPITAL_DB_PATH: "host=database;port=5432;database=HOSPITAL;username=postgres;password=postgres"
     # volumes:
     #   - type: volume
     #     source: web-sql

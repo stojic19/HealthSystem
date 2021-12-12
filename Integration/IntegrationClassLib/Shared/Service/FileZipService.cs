@@ -14,14 +14,18 @@ namespace Integration.Shared.Service
 
         public void FileZip(string sourceFolder, string targetZip)
         {
-            ZipFile.CreateFromDirectory(sourceFolder, targetZip);
-
-            System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(sourceFolder);
-
-            foreach (System.IO.FileInfo file in di.GetFiles())
+            try
             {
-                file.Delete();
-            }
+                ZipFile.CreateFromDirectory(sourceFolder, targetZip);
+
+                System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(sourceFolder);
+
+                foreach (System.IO.FileInfo file in di.GetFiles())
+                {
+                    file.Delete();
+                }
+            }catch{}
+
         }
     }
 }

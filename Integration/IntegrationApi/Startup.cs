@@ -23,11 +23,11 @@ namespace IntegrationAPI
         {
             Configuration = configuration;
 
-            string rootFolder = Directory.GetCurrentDirectory();
-            string sourceFolder = Path.Combine(Directory.GetCurrentDirectory(), "Files");
+            string sourceFolder = Path.Combine(Directory.GetCurrentDirectory(), "MedicineReports");
             string targetZip = Path.Combine(Directory.GetCurrentDirectory(), "Archive", DateTime.Now.Ticks + ".zip");
 
-            //FileZip(sourceFolder, targetZip);
+            //FileZipService fileZipService = new FileZipService();
+            //fileZipService.FileZip(sourceFolder, targetZip);
         }
 
         

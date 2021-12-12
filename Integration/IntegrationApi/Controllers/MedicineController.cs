@@ -63,7 +63,7 @@ namespace IntegrationAPI.Controllers
             }
         }
 
-        private IRestResponse SendMedicineRequestToPharmacy(CheckMedicineAvailabilityRequestDto medicineRequestDTO, Pharmacy pharmacy)
+        private static IRestResponse SendMedicineRequestToPharmacy(CheckMedicineAvailabilityRequestDto medicineRequestDTO, Pharmacy pharmacy)
         {
             RestClient client = new RestClient();
             string targetUrl = pharmacy.BaseUrl + "/api/MedicineProcurement/check";
@@ -136,7 +136,7 @@ namespace IntegrationAPI.Controllers
             }
         }
 
-        private IRestResponse SendUrgentProcurementRequestToPharmacy(MedicineProcurementRequestDto medicineRequestDTO, Pharmacy pharmacy)
+        private static IRestResponse SendUrgentProcurementRequestToPharmacy(MedicineProcurementRequestDto medicineRequestDTO, Pharmacy pharmacy)
         {
             RestClient client = new RestClient();
             string targetUrl = pharmacy.BaseUrl + "/api/MedicineProcurement/execute";

@@ -4,6 +4,7 @@ using Integration.Database.Infrastructure;
 using Integration.Partnership.Service;
 using Integration.Shared.Repository.Base;
 using Integration.Shared.Repository.Implementation;
+using Integration.Shared.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -26,8 +27,8 @@ namespace IntegrationAPI
             string sourceFolder = Path.Combine(Directory.GetCurrentDirectory(), "MedicineReports");
             string targetZip = Path.Combine(Directory.GetCurrentDirectory(), "Archive", DateTime.Now.Ticks + ".zip");
 
-            //FileZipService fileZipService = new FileZipService();
-            //fileZipService.FileZip(sourceFolder, targetZip);
+            FileZipService fileZipService = new FileZipService();
+            fileZipService.FileZip(sourceFolder, targetZip);
         }
 
         

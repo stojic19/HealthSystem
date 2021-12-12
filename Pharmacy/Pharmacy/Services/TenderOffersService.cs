@@ -44,5 +44,28 @@ namespace Pharmacy.Services
 
         }
 
+        public void ConfirmTenderOffer(Guid hospitalApiKey, int tenderOfferId)
+        {
+            TenderOffer tenderOffer = _uow.GetRepository<ITenderOfferReadRepository>().GetById(tenderOfferId);
+            if (tenderOffer == null) throw new TenderNotFoundException();
+            if (tenderOffer.IsConfirmed) throw new TenderAlreadyEnabledException();
+
+
+            Hospital hospital = _uow.GetRepository<IHospitalReadRepository>()
+                .GetAll()
+                .FirstOrDefault(x => x.ApiKey == hospitalApiKey);
+            if (hospital.Id != tenderOffer.HospitalId) throw new UnauthorizedAccessException();
+
+            Medicine medicine = _uow.GetRepository<IMedicineReadRepository>().GetById(tenderOffer.MedicineId);
+            if (tenderOffer.Quantity > medicine.Quantity) throw  new MedicineUnavailableException();
+
+            medicine.Quantity -= tenderOffer.Quantity;
+            tenderOffer.IsConfirmed = true;
+
+            _uow.GetRepository<IMedicineWriteRepository>().Update(medicine);
+            _uow.GetRepository<ITenderOfferWriteRepository>().Update(tenderOffer);
+
+        }
+
     }
 }

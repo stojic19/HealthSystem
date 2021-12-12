@@ -22,7 +22,7 @@ namespace PharmacyApi.Controllers
             _tenderOffersService = new TenderOffersService(uow);
         }
 
-        [HttpPost]
+        [HttpPost, ActionName("Create")]
         public IActionResult Create(TenderOfferDTO tenderOfferDTO)
         {
             if (!IsApiKeyValid(tenderOfferDTO.ApiKey))
@@ -31,16 +31,28 @@ namespace PharmacyApi.Controllers
             {
                 _tenderOffersService.CreateTenderOffer(tenderOfferDTO.ApiKey, tenderOfferDTO.MedicineName, tenderOfferDTO.Quantity, tenderOfferDTO.CreationTime);
             }
-            catch (MedicineFromManufacturerNotFoundException exception)
-            {
-                return NotFound(exception.Message);
-            }
-            catch (MedicineUnavailableException exception)
-            {
-                return NotFound(exception.Message);
-            }
+            catch (MedicineFromManufacturerNotFoundException exception){return NotFound(exception.Message);}
+            catch (MedicineUnavailableException exception) {return NotFound(exception.Message);}
 
             return Ok("Tender offer succesfully created!");
+        }
+
+        [HttpPost, ActionName("Confirm")]
+        public IActionResult Confirm(Guid hospitalApiKey, int tenderOfferId)
+        {
+            if (!IsApiKeyValid(hospitalApiKey))
+                return BadRequest(ModelState);
+
+            try
+            {
+                _tenderOffersService.ConfirmTenderOffer(hospitalApiKey, tenderOfferId);
+            }
+            catch (TenderNotFoundException exception) { return NotFound(exception.Message); }
+            catch (MedicineUnavailableException exception) { return NotFound(exception.Message); }
+            catch( UnauthorizedAccessException exception) { return Unauthorized(exception.Message); }
+            catch( TenderAlreadyEnabledException exception) { return BadRequest(exception.Message); }
+
+            return Ok("Tender offer succesfully confirmed!");
         }
 
 

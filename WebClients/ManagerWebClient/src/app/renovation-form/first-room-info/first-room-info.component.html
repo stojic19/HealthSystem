@@ -1,0 +1,73 @@
+<div class="d-flex justify-content-center">
+    <h6 class="text-muted subtitle">Step 4: Enter information for the <span *ngIf = "type=='split'">first</span> room</h6>
+</div>
+
+  <div class="row d-flex justify-content-center" style="height: 100%">
+    <div class="d-flex justify-content-center">
+    </div>
+    <div class="col-11">
+      <div
+        style="height: 280px; overflow: auto"
+        class="d-flex justify-content-center mt-5"
+      >
+        <table class="table-responsive renovationForm">
+          <tr>
+            <td class="label">
+              Room name: <span style="color: red">*</span>
+            </td>
+            <td>
+              <input
+                [(ngModel)]="enteredRoomName"
+                class="form-control text-start"
+                type="text"
+                name="name"
+                (input)="emitRoomName()"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td class="label">
+              Room description: <span style="color: red">*</span>
+            </td>
+            <td>
+              <input
+                [(ngModel)]="enteredRoomDescription"
+                class="form-control text-start"
+                type="text"
+                name="description"
+                (input)="emitRoomDescription()"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td class="label">
+              Room type: <span style="color: red">*</span>
+            </td>
+            <td>
+                <select name="roomType" id="room"
+                [(ngModel)]="enteredRoomType"
+                class="form-control text-start"
+                name="type"
+                (change)="emitRoomType()"
+                >
+                    <option value="AppointmentRoom" selected="selected">Appointment room</option>
+                    <option value="OperationRoom">Operation room</option>
+                    <option value="Storage">Storage</option>
+                    <option value="Bedroom">Bedroom</option>
+                    <option value="Office">Office</option>
+                  </select> 
+            </td>
+          </tr>
+          <tr *ngIf="!isEnteredDataCorrect()">
+            <td colspan="2" style="text-align: center">
+              <p style="color: red">
+                {{ errorMessage }}
+              </p>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+

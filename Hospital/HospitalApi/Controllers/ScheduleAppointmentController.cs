@@ -28,7 +28,6 @@ namespace HospitalApi.Controllers
         [HttpPost]
         public IActionResult ScheduleAppointment(ScheduleAppointmentDTO scheduleAppointmentDTO)
         {
-            // TODO: assign first available room to this appointment
             var appointmentToAdd = _mapper.Map<ScheduledEvent>(scheduleAppointmentDTO);
             var scheduledEventWriteRepo = _uow.GetRepository<IScheduledEventWriteRepository>();
             var addedAppointment = scheduledEventWriteRepo.Add(appointmentToAdd);

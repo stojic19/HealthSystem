@@ -4,6 +4,7 @@ using HospitalApi.DTOs;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using Hospital.Schedule.Service.Interfaces;
 
 namespace HospitalApi.Controllers
 {

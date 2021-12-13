@@ -64,6 +64,10 @@ import { ConfirmDialogComponent } from './room-schedule/confirm-dialog/confirm-d
 import { MatDialogModule } from '@angular/material/dialog';
 import { DetailsDialogComponent } from './room-schedule/details-dialog/details-dialog.component';
 import { ToastrModule } from 'ngx-toastr';
+import { TimeInfoComponent } from './renovation-form/time-info/time-info.component';
+import { FirstRoomInfoComponent } from './renovation-form/first-room-info/first-room-info.component';
+import { SecondRoomInfoComponent } from './renovation-form/second-room-info/second-room-info.component';
+import { AvailableTermsComponent } from './renovation-form/available-terms/available-terms.component';
 
 @NgModule({
   declarations: [
@@ -113,6 +117,10 @@ import { ToastrModule } from 'ngx-toastr';
     RoomScheduleComponent,
     ConfirmDialogComponent,
     DetailsDialogComponent,
+    TimeInfoComponent,
+    FirstRoomInfoComponent,
+    SecondRoomInfoComponent,
+    AvailableTermsComponent,
 
   ],
   imports: [

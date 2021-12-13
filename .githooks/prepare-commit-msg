@@ -26,7 +26,7 @@ then
 
         exit 1
     
-    elif [[ $CURRBRANCH == "nuget/integration" || $CURRBRANCH == "nuget/hospital" ]];
+    elif [[ $CURRBRANCH == "nuget/integration" || $CURRBRANCH == "nuget/hospital" || $CURRBRANCH == "nuget/pharmacy" ]];
     then
         echo ""
         echo -e "\tYou merged into $CURRBRANCH"
@@ -46,14 +46,22 @@ then
             echo ""
             LATESTGITTAG="$(git describe --match "v*-beta" --abbrev=0)"
             echo -e "\tLast version : $LATESTGITTAG"
-		else
+		elif [[ $CURRBRANCH == "nuget/hospital" ]];
+        then
             echo -e "\tWe use <breaking>.<feature>.<bugfix>-snapshot notation"
             echo ""
 			echo -e "\tUse 'git tag -a v<new-version>-snapshot' to add a new version"
 			echo -e "\tExample: git tag v1.5.3-snapshot"
             LATESTGITTAG="$(git describe --match "v*-snapshot" --abbrev=0)"
             echo -e "\tLast version : $LATESTGITTAG"
-		fi
+		else 
+            echo -e "\tWe use <breaking>.<feature>.<bugfix>-alpha notation"
+            echo ""
+			echo -e "\tUse 'git tag -a v<new-version>-alpha' to add a new version"
+			echo -e "\tExample: git tag v1.5.3-alpha"
+            LATESTGITTAG="$(git describe --match "v*-alpha" --abbrev=0)"
+            echo -e "\tLast version : $LATESTGITTAG"
+        fi
         echo ""
 
         exit 0
@@ -66,7 +74,7 @@ then
 elif [[ $CURRBRANCH =~ "bugfix/" ]];
 then 
     OUTPUT="fix: $FILE_CONTENT"
-elif [[ $CURRBRANCH == "nuget/integration" || $CURRBRANCH == "nuget/hospital" ]];
+elif [[ $CURRBRANCH == "nuget/integration" || $CURRBRANCH == "nuget/hospital" || $CURRBRANCH == "nuget/pharmacy" ]];
 then
 	OUTPUT="$FILE_CONTENT"
 elif [[ $CURRBRANCH == "" ]];

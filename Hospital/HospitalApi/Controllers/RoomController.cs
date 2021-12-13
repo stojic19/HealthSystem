@@ -1,6 +1,7 @@
 ﻿using Hospital.MedicalRecords.Model;
 using Hospital.RoomsAndEquipment.Model;
 using Hospital.RoomsAndEquipment.Repository;
+using Hospital.RoomsAndEquipment.Service;
 using Hospital.Schedule.Model;
 using Hospital.Schedule.Repository;
 using Hospital.SharedModel.Model;
@@ -56,6 +57,8 @@ namespace HospitalApi.Controllers
         [HttpGet]
         public IEnumerable<Room> GetAllRooms()
         {
+            var renovationService = new RenovatingRoomsService(_uow);
+            renovationService.StartRoomRenovations();
             var roomRepo = _uow.GetRepository<IRoomReadRepository>();
             return roomRepo.GetAll();
         }

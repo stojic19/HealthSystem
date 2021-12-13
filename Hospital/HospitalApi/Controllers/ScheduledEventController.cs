@@ -1,45 +1,45 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System;
 using AutoMapper;
-using Hospital.Schedule.Repository;
-using Hospital.SharedModel.Model.Wrappers;
-using Hospital.SharedModel.Repository.Base;
+using HospitalApi.DTOs;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace HospitalApi.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [EnableCors("MyCorsImplementationPolicy")]
     public class ScheduledEventController : ControllerBase
     {
-        private readonly IUnitOfWork _uow;
+        private readonly IScheduledEventService _eventsService;
         private readonly IMapper _mapper;
 
-        public ScheduledEventController(IUnitOfWork uow, IMapper mapper)
+        public ScheduledEventController( IScheduledEventService eventsService, IMapper mapper)
         {
-            _uow = uow;
-            _mapper = mapper;
+            this._eventsService = eventsService;
+            this._mapper = mapper;
+        }
+
+        [HttpGet("{userId}")]
+        public IActionResult GetFinishedUserEvents(int userId)
+        {
+            List<ScheduledEventsDTO> scheduledEventsDTOs = new List<ScheduledEventsDTO>();
+            foreach (var e in _eventsService.getFinishedUserEvents(userId))
+            {
+                ScheduledEventsDTO dto = _mapper.Map<ScheduledEventsDTO>(e);
+                scheduledEventsDTOs.Add(dto);
+            }
+
+            return Ok(scheduledEventsDTOs);
         }
 
         [HttpGet]
         public IActionResult GetAvailableAppointments([FromQuery(Name = "doctorId")] int doctorId, string preferredDate)
         {
-            try
-            {
-
-                var preferredDateTime = DateTime.Parse(preferredDate);
-
-                var eventsRepo = _uow.GetRepository<IScheduledEventReadRepository>();
-                var scheduledEvents = eventsRepo.GetAvailableAppointments(doctorId, preferredDateTime);
-                return Ok(scheduledEvents);
-            }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error!Failed loading appointments!");
-            }
+            var preferredDateTime = DateTime.Parse(preferredDate);
+            var scheduledEvents = _eventsService.GetAvailableAppointments(doctorId, preferredDateTime);
+            return Ok(scheduledEvents);
         }
     }
 }

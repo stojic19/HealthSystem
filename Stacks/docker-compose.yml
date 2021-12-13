@@ -2,9 +2,25 @@ version: '3.4'
 
 services:
 
+  gateway:
+    build:
+      context: ../
+      dockerfile: Stacks/Build/Gateway/Dockerfile
+      target: gatewayWithFront
+      args:
+        - HOSPITAL_API_URL=http://127.0.0.1:8080/hospitalapi/
+    restart: on-failure
+    networks:
+      - public
+      - application
+    ports:
+      - 8080:8080
+    depends_on:
+      - hospitalapi
 
   hospitalapi:
     networks:
+      - application
       - database
     build:
       dockerfile: Stacks/Build/Hospital/Dockerfile

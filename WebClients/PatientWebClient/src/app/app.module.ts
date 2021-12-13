@@ -16,11 +16,13 @@ import { FeedbacksPageComponent } from './components/feedbacks-page/feedbacks-pa
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MainComponent } from './components/main/main.component';
 import { RegistrationComponent } from './components/registration/registration.component';
-import { PatientMedicalRecordComponent } from './components/patient-medical-record/patient-medical-record.component';
-import { LoginComponent } from './components/login/login.component';
+import { BasicAppointmentComponent } from './components/basic-appointment/basic-appointment.component';
+import { MedicalRecordComponent } from './components/medical-record/medical-record.component';
 import { AppointmentsPageComponent } from './components/appointments-page/appointments-page.component';
-import { SurveyPageComponent } from './components/survey-page/survey-page.component';
+import { PatientMedicalRecordComponent } from './components/patient-medical-record/patient-medical-record.component';
 import { SurveySectionComponent } from './components/survey-section/survey-section.component';
+import { LoginComponent } from './components/login/login.component';
+import { SurveyPageComponent } from './components/survey-page/survey-page.component';
 
 @NgModule({
   declarations: [
@@ -33,8 +35,10 @@ import { SurveySectionComponent } from './components/survey-section/survey-secti
     FeedbacksPageComponent,
     MainComponent,
     RegistrationComponent,
-    PatientMedicalRecordComponent,
+    BasicAppointmentComponent,
+    MedicalRecordComponent,
     LoginComponent,
+    PatientMedicalRecordComponent,
     AppointmentsPageComponent,
     SurveyPageComponent,
     SurveySectionComponent,

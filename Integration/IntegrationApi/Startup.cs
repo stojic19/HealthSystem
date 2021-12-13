@@ -14,6 +14,8 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using IntegrationAPI.HttpRequestSenders;
+using IntegrationAPI.HttpRequestSenders.Implementation;
 
 namespace IntegrationAPI
 {
@@ -56,6 +58,7 @@ namespace IntegrationAPI
 
             });
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
+            builder.RegisterType<HttpRequestSender>().As<IHttpRequestSender>();
             builder.Populate(services);
             var container = builder.Build();
             return new AutofacServiceProvider(container);

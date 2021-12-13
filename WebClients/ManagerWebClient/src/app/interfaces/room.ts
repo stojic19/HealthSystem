@@ -14,8 +14,8 @@ export class Room {
   height!: number;
   floorNumber!: number;
   buildingName!: string;
-  roomType: RoomType;
   doctors!: [];
   roomInventories!: [];
   scheduledEvents!: [];
+  roomType: number;
 }

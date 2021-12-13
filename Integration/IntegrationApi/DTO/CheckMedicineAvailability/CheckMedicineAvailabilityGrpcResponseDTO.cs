@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace IntegrationAPI.DTO
 {
-    public class CheckMedicineAvailabilityGrpcResponseDTO
+    public class CheckMedicineAvailabilityGrpcResponseDto
     {
         public bool ConnectionSuccesfull { get; set; }
         public string ExceptionMessage { get; set; }
-        public CheckMedicineAvailabilityResponseDTO Response { get; set; }
+        public CheckMedicineAvailabilityResponseDto Response { get; set; }
     }
 }

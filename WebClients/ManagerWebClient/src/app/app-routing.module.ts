@@ -40,7 +40,6 @@ const routes: Routes = [
     path: 'secondBuilding/:roomName/:floor',
     component: SecondBuildingComponent,
   },
-  { path: 'moveEquipment/:id', component: EquipmentFormComponent },
   { path: 'complaints', component: ComplaintsListComponent },
   { path: 'complaints/:id', component: ComplaintDetailsComponent },
   { path: 'complaint-add', component: AddComplaintComponent },
@@ -63,18 +62,25 @@ const routes: Routes = [
   },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'moveEquipment/:id', component: EquipmentFormComponent },
-
   { path: 'surveys', component: SurveysObserveComponent },
+  { path: 'roomRenovation', component: RenovationFormComponent },
   { path: 'schedule/:id', component: RoomScheduleComponent },
-
-  { path: 'roomRenovation', component: RenovationFormComponent},
-  
-
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes), CommonModule, MaterialModule],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
-export const routingComponents = [HospitalOverviewComponent, FirstBuildingComponent, FeedbacksManagerComponent, SecondBuildingComponent, RoomInventoryComponent, HospitalEquipmentComponent,SurveysObserveComponent,SurveySectionObserveComponent,RatingDecimalComponent, RenovationFormComponent];
+export class AppRoutingModule {}
+export const routingComponents = [
+  HospitalOverviewComponent,
+  FirstBuildingComponent,
+  FeedbacksManagerComponent,
+  SecondBuildingComponent,
+  RoomInventoryComponent,
+  HospitalEquipmentComponent,
+  SurveysObserveComponent,
+  SurveySectionObserveComponent,
+  RatingDecimalComponent,
+  RenovationFormComponent,
+];

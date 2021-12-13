@@ -5,6 +5,7 @@ using HospitalApi.DTOs;
 using System;
 using Hospital.MedicalRecords.Model;
 using Hospital.SharedModel.Model;
+using Hospital.RoomsAndEquipment.Model;
 
 namespace HospitalApi.AutoMapperProfiles
 {
@@ -23,13 +24,23 @@ namespace HospitalApi.AutoMapperProfiles
             CreateMap<NewAllergyDTO, Allergy>();
             CreateMap<NewMedicalRecordDTO, MedicalRecord>();
             CreateMap<NewPatientDTO, Patient>();
+
+            CreateMap<ScheduleAppointmentDTO, ScheduledEvent>()
+                .ForMember(toSchedule => toSchedule.EndDate, opt => opt.MapFrom(src => src.StartDate.AddHours(1)))
+                .ForMember(toSchedule => toSchedule.IsCanceled, opt => opt.MapFrom(src => false))
+                .ForMember(toSchedule => toSchedule.IsDone, opt => opt.MapFrom(src => false))
+                .ForMember(toSchedule => toSchedule.ScheduledEventType,
+                    opt => opt.MapFrom(src => ScheduledEventType.Appointment)).ReverseMap();
+                    
+            CreateMap<Doctor, SpecializedDoctorDTO>();
             CreateMap<MedicationIngredient, MedicationIngredientDTO>();
             CreateMap<City, CityDTO>();
             CreateMap<Allergy, AllergyDTO>();
             CreateMap<Doctor, DoctorDTO>();
             CreateMap<MedicalRecord, MedicalRecordDTO>();
             CreateMap<Patient, PatientDTO>();
-
+            CreateMap<EquipmentTransferEventDto, EquipmentTransferEvent>();
+            CreateMap<RoomRenovationEventDto, RoomRenovationEvent>();
         }
     }
 }

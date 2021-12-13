@@ -14,6 +14,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { PatientMedicalRecordComponent } from './components/patient-medical-record/patient-medical-record.component';
 import { LoginComponent } from './components/login/login.component';
 import { AppointmentsPageComponent } from './components/appointments-page/appointments-page.component';
+import { BasicAppointmentComponent } from './components/basic-appointment/basic-appointment.component';
+import { MedicalRecordComponent } from './components/medical-record/medical-record.component';
 
 const routes: Routes = [
   {
@@ -32,14 +34,15 @@ const routes: Routes = [
         path: 'record',
         component: PatientMedicalRecordComponent,
       },
+      { path: 'appointments', component: AppointmentsPageComponent },
       {
-        path:'appointments',
-        component: AppointmentsPageComponent
+        path: 'surveys',
+        component: SurveyPageComponent,
       },
       {
-        path:'surveys',
-        component: SurveyPageComponent
-      }
+        path: 'medicalRecord',
+        component: MedicalRecordComponent,
+      },
     ],
   },
   { path: 'registration', component: RegistrationComponent },
@@ -56,6 +59,10 @@ const routes: Routes = [
     HttpClientModule,
   ],
   exports: [RouterModule, MaterialModule, FormsModule],
-  entryComponents: [FeedbackComponent, AppointmentsPageComponent, SurveyPageComponent],
+  entryComponents: [
+    FeedbackComponent,
+    AppointmentsPageComponent,
+    SurveyPageComponent,
+  ],
 })
 export class AppRoutingModule {}

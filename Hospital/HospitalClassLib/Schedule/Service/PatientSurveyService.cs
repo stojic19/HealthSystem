@@ -9,7 +9,7 @@ namespace Hospital.Schedule.Service
 {
     public class PatientSurveyService : IPatientSurveyService
     {
-        private IUnitOfWork UoW;
+        private readonly IUnitOfWork UoW;
 
         public PatientSurveyService(IUnitOfWork UoW)
         {

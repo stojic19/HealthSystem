@@ -55,14 +55,14 @@ import { MedicationReportsComponent } from './medication-reports/medication-repo
 import { BenefitListComponent } from './benefits/benefit-list/benefit-list.component';
 import { BenefitDetailsComponent } from './benefits/benefit-details/benefit-details.component';
 import { MedicineSpecificationListComponent } from './medicine-specification-requests/medicine-specification-list/medicine-specification-list.component';
-import { RoomScheduleComponent } from './room-schedule/room-schedule.component';
-import { ConfirmDialogComponent } from './room-schedule/confirm-dialog/confirm-dialog.component';
-import { MatDialogModule } from '@angular/material/dialog';
-import { DetailsDialogComponent } from './room-schedule/details-dialog/details-dialog.component';
 import { RenovationFormComponent } from './renovation-form/renovation-form.component';
 import { RenovationTypeComponent } from './renovation-form/renovation-type/renovation-type.component';
 import { FirstRoomComponent } from './renovation-form/first-room/first-room.component';
 import { SurroundingRoomComponent } from './renovation-form/surrounding-room/surrounding-room.component';
+import { RoomScheduleComponent } from './room-schedule/room-schedule.component';
+import { ConfirmDialogComponent } from './room-schedule/confirm-dialog/confirm-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { DetailsDialogComponent } from './room-schedule/details-dialog/details-dialog.component';
 
 @NgModule({
   declarations: [
@@ -105,13 +105,13 @@ import { SurroundingRoomComponent } from './renovation-form/surrounding-room/sur
     SurveySectionObserveComponent,
     SurveysObserveComponent,
     MedicineSpecificationListComponent,
-    RoomScheduleComponent,
-    ConfirmDialogComponent,
-    DetailsDialogComponent,
     RenovationFormComponent,
     RenovationTypeComponent,
     FirstRoomComponent,
     SurroundingRoomComponent,
+    RoomScheduleComponent,
+    ConfirmDialogComponent,
+    DetailsDialogComponent,
   ],
   imports: [
     BrowserModule,

@@ -36,5 +36,10 @@ namespace Hospital.SharedModel.Repository.Implementation
 
             return retVal.Select(id => doctors.FirstOrDefault(d => d.Id == id)).AsEnumerable();
         }
+
+        public IEnumerable<Doctor> GetSpecializedDoctors(int specializationId)
+        {
+            return _context.Set<Doctor>().Where(d => d.SpecializationId == specializationId);
+        }
     }
 }

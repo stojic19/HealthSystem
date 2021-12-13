@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+using System.Linq;
+using AutoMapper;
 using Hospital.MedicalRecords.Repository;
 using Hospital.SharedModel.Repository.Base;
 using HospitalApi.DTOs;
@@ -24,7 +25,8 @@ namespace HospitalApi.Controllers
         public IActionResult GetPatientWithRecord()
         {
             var patientRepo = _uow.GetRepository<IPatientReadRepository>();
-            var patient = patientRepo.GetPatient(2);
+            var loggedInPatient = patientRepo.GetAll().First();
+            var patient = patientRepo.GetPatient(loggedInPatient.Id);
             var medicalRecordRepo = _uow.GetRepository<IMedicalRecordReadRepository>();
             var medicalRecord = medicalRecordRepo.GetMedicalRecord(patient.MedicalRecordId);
             patient.MedicalRecord = medicalRecord;

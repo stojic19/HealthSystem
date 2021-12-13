@@ -5,12 +5,11 @@ import { RoomsService } from 'src/app/services/rooms.service';
 @Component({
   selector: 'app-first-room',
   templateUrl: './first-room.component.html',
-  styleUrls: ['./first-room.component.css']
+  styleUrls: ['./first-room.component.css'],
 })
 export class FirstRoomComponent implements OnInit {
-
-  @Input() 
-  public type = ""
+  @Input()
+  public type = '';
   isLoading = true;
   public searchRoomName = '';
   rooms: Room[];
@@ -18,16 +17,16 @@ export class FirstRoomComponent implements OnInit {
   @Output()
   chosenRoom = new EventEmitter<Room>();
 
-  constructor(public roomService: RoomsService) { }
+  constructor(public roomService: RoomsService) {}
 
   ngOnInit(): void {
     this.roomService
-    .getAllRooms()
-    .toPromise()
-    .then((res) => {
-      this.isLoading = false;
-      this.rooms = res as Room[];
-    });
+      .getAllRooms()
+      .toPromise()
+      .then((res) => {
+        this.isLoading = false;
+        this.rooms = res as Room[];
+      });
   }
 
   searchRoomsByName() {
@@ -37,16 +36,15 @@ export class FirstRoomComponent implements OnInit {
       .then((res) => {
         this.rooms = res as Room[];
       });
-    
-    if (this.searchRoomName == ''){
-      this.roomService
-      .getAllRooms()
-      .toPromise()
-      .then((res) => {
-        this.isLoading = false;
-        this.rooms = res as Room[];
-      });
 
+    if (this.searchRoomName == '') {
+      this.roomService
+        .getAllRooms()
+        .toPromise()
+        .then((res) => {
+          this.isLoading = false;
+          this.rooms = res as Room[];
+        });
     }
   }
 
@@ -54,5 +52,4 @@ export class FirstRoomComponent implements OnInit {
     this.chosenRoom.emit(room);
     this.selectedRoom = room;
   }
-
 }

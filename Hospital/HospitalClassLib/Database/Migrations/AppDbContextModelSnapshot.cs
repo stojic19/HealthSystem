@@ -591,7 +591,10 @@ namespace Hospital.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int?>("DoctorId")
+                    b.Property<DateTime>("CancellationDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("DoctorId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("EndDate")
@@ -606,7 +609,7 @@ namespace Hospital.Migrations
                     b.Property<int?>("MedicalRecordId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("PatientId")
+                    b.Property<int>("PatientId")
                         .HasColumnType("integer");
 
                     b.Property<int?>("RoomId")
@@ -1228,7 +1231,9 @@ namespace Hospital.Migrations
                 {
                     b.HasOne("Hospital.SharedModel.Model.Doctor", "Doctor")
                         .WithMany("ScheduledEvents")
-                        .HasForeignKey("DoctorId");
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Hospital.MedicalRecords.Model.MedicalRecord", null)
                         .WithMany("ScheduledEvents")
@@ -1236,7 +1241,9 @@ namespace Hospital.Migrations
 
                     b.HasOne("Hospital.MedicalRecords.Model.Patient", "Patient")
                         .WithMany()
-                        .HasForeignKey("PatientId");
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Hospital.RoomsAndEquipment.Model.Room", "Room")
                         .WithMany("ScheduledEvents")

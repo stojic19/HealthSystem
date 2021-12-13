@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace IntegrationAPI.DTO
 {
-    public class MedicineProcurementGrpcResponseDTO
+    public class MedicineProcurementGrpcResponseDto
     {
         public bool ConnectionSuccesfull { get; set; }
 
-        public MedicineProcurementResponseDTO Response { get; set; }
+        public MedicineProcurementResponseDto Response { get; set; }
     }
 }

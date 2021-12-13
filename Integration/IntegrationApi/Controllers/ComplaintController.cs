@@ -72,7 +72,7 @@ namespace IntegrationAPI.Controllers
         }
         private IRestResponse SendComplaintToPharmacy(string baseUrl, ComplaintDTO complaintDTO)
         {
-            RestClient client = new RestSharp.RestClient();
+            RestClient client = new RestClient();
             RestRequest request = new RestRequest(baseUrl + "/api/Complaint/CreateComplaint");
             request.AddJsonBody(complaintDTO);
             IRestResponse response = client.Post(request);

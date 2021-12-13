@@ -16,10 +16,11 @@ namespace IntegrationAPI.Controllers.Base
         protected readonly HospitalDTO _hospitalInfo;
         protected BaseIntegrationController(IUnitOfWork uow)
         {
+            var ipAdr = "192.168.0.22";
             _unitOfWork = uow;
             _sftpCredentials = new SftpCredentialsDTO
             {
-                Host = "192.168.0.13",
+                Host = ipAdr,
                 Password = "password",
                 Username = "tester"
             };

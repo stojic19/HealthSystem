@@ -12,4 +12,10 @@ export class ChosenDoctorService {
   getAllNonLoaded(): Observable<IChosenDoctor[]> {
     return this._http.get<IChosenDoctor[]>('/api/Doctor');
   }
+
+  getAllWithSpeciality(specId: number): Observable<IChosenDoctor[]> {
+    return this._http.get<IChosenDoctor[]>(
+      '/api/Doctor/GetDoctorsWithSpecialization?specializationId=' + specId
+    );
+  }
 }

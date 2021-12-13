@@ -2,7 +2,7 @@
 
 namespace IntegrationAPI.DTO
 {
-    public class CreateMedicineRequestForPharmacyDTO
+    public class CreateMedicineRequestForPharmacyDto
     {
         public int PharmacyId { get; set; }
         public String MedicineName { get; set; }

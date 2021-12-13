@@ -67,7 +67,7 @@ namespace HospitalApi.Controllers
 
             return roomInventory != null && roomInventory.Amount > equipmentTransferEvent.Quantity;
         }
-
+        [HttpGet]
         public IEnumerable<TimePeriodDTO> GetAvailableTerms(AvailableTermDTO availableTermsDTO)
         {
             var availableTermsService = new AvailableTermsService(_uow);

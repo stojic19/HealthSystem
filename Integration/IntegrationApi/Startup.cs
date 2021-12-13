@@ -27,11 +27,18 @@ namespace IntegrationAPI
         {
             Configuration = configuration;
 
-            string sourceFolder = Path.Combine(Directory.GetCurrentDirectory(), "MedicineReports");
-            string targetZip = Path.Combine(Directory.GetCurrentDirectory(), "Archive", DateTime.Now.Ticks + ".zip");
-
             FileZipService fileZipService = new FileZipService();
-            fileZipService.FileZip(sourceFolder, targetZip);
+            string sourceFolderReports = Path.Combine(Directory.GetCurrentDirectory(), "MedicineReports");
+            string targetZipReports = Path.Combine(Directory.GetCurrentDirectory(), "Archive", DateTime.Now.Ticks + ".zip");
+            fileZipService.FileZip(sourceFolderReports, targetZipReports);
+
+            string sourceFolderPrescriptionsHttp = Path.Combine(Directory.GetCurrentDirectory(), "Prescriptions" + Path.DirectorySeparatorChar + "Http");
+            string targetZipPrescriptionsHttp = Path.Combine(Directory.GetCurrentDirectory(), "Archive", DateTime.Now.Ticks + ".zip");
+            fileZipService.FileZip(sourceFolderPrescriptionsHttp, targetZipPrescriptionsHttp);
+
+            string sourceFolderPrescriptionsSftp = Path.Combine(Directory.GetCurrentDirectory(), "Prescriptions" + Path.DirectorySeparatorChar + "Sftp");
+            string targetZipPrescriptionsSftp = Path.Combine(Directory.GetCurrentDirectory(), "Archive", DateTime.Now.Ticks + ".zip");
+            fileZipService.FileZip(sourceFolderPrescriptionsSftp, targetZipPrescriptionsSftp);
         }
 
         

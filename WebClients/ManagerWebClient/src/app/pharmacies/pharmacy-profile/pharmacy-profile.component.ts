@@ -59,18 +59,34 @@ export class PharmacyProfileComponent implements OnInit {
   }
 
   makeRequest(){
-    var updatedPharmacy = {
-      Id : this.id,
-      PharmacyName: this.pharmacy.name,
-      CityName: this.pharmacy.city.name,
-      PostalCode: this.pharmacy.city.postalCode,
-      StreetName: this.pharmacy.streetName,
-      StreetNumber: this.pharmacy.streetNumber,
-      CountryName: this.pharmacy.city.country.name,
-      Description: this.pharmacy.description,
-      ImageName: this.imageFile.name
+    if(this.imageFile != null){
+      let updatedPharmacy = {
+        Id : this.id,
+        PharmacyName: this.pharmacy.name,
+        CityName: this.pharmacy.city.name,
+        PostalCode: this.pharmacy.city.postalCode,
+        StreetName: this.pharmacy.streetName,
+        StreetNumber: this.pharmacy.streetNumber,
+        CountryName: this.pharmacy.city.country.name,
+        Description: this.pharmacy.description,
+        ImageName: this.imageFile.name
+      }
+      return updatedPharmacy;
     }
-    return updatedPharmacy;
+    else{
+      let updatedPharmacy = {
+        Id : this.id,
+        PharmacyName: this.pharmacy.name,
+        CityName: this.pharmacy.city.name,
+        PostalCode: this.pharmacy.city.postalCode,
+        StreetName: this.pharmacy.streetName,
+        StreetNumber: this.pharmacy.streetNumber,
+        CountryName: this.pharmacy.city.country.name,
+        Description: this.pharmacy.description,
+        ImageName: this.pharmacy.imageName
+      }
+      return updatedPharmacy;
+    }
   }
 
   imageReq(){

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ceTe.DynamicPDF;
 using ceTe.DynamicPDF.PageElements;
+using ceTe.DynamicPDF.PageElements.BarCoding;
 using IntegrationAPI.DTO;
 using Path = System.IO.Path;
 
@@ -78,7 +79,7 @@ namespace IntegrationAPI.Adapters.PDF.Implementation
             _currentY += 50;
             for (int i = 0; i < dto.MedicineConsumptions.Count; i++)
             {
-                MedicineConsumptionDTO medicineConsumption = dto.MedicineConsumptions[i];
+                MedicationExpenditureDTO medicationExpenditure = dto.MedicineConsumptions[i];
                 _currentY += 32;
                 if (_currentY >= 650)
                 {
@@ -94,8 +95,8 @@ namespace IntegrationAPI.Adapters.PDF.Implementation
                 Row2 row = table.Rows.Add(30);
                 row.CellDefault.Align = TextAlign.Center;
                 row.CellDefault.VAlign = VAlign.Center;
-                row.Cells.Add(medicineConsumption.MedicineName);
-                row.Cells.Add(Convert.ToString(medicineConsumption.Amount));
+                row.Cells.Add(medicationExpenditure.MedicineName);
+                row.Cells.Add(Convert.ToString(medicationExpenditure.Amount));
             }
             _lastPage.Elements.Add(table);
             if (_document.Pages.Count > 1) _currentY = table.Height;
@@ -106,11 +107,75 @@ namespace IntegrationAPI.Adapters.PDF.Implementation
             return fileName;
         }
 
+        public string MakePrescriptionPdf(PrescriptionDTO dto, string requestType)
+        {
+            MakeTitle("Prescription");
+            WriteLine(0, 60, "Patient first name: "
+                             + dto.PatientFirstName);
+            WriteLine(0, 20, "Patient last name: "
+                             + dto.PatientLastName);
+            WriteLine(0, 20, "Medicine name: "
+                             + dto.MedicineName);
+            WriteLine(0, 20, "Consumption, from "
+                             + dto.StartDate.ToShortDateString()
+                             + " to " + dto.EndDate.ToShortDateString());
+            WriteLine(0, 20, "Issued: "
+                             + dto.IssuedDate.ToShortDateString());
+
+            WriteLine(0, 40, "Hospital info");
+            HospitalDTO hospitalDto = new HospitalDTO()
+            {
+                Name = "Nasa bolnica",
+                StreetName = "Vojvode Stepe",
+                StreetNumber = "14",
+                CityName = "Novi Sad"
+            };
+            WriteLine(0, 20, "Hospital name: "
+                             + hospitalDto.Name);
+            WriteLine(0, 20, "Address: " + hospitalDto.StreetName + " " + hospitalDto.StreetNumber + ", " + hospitalDto.CityName);
+
+            string fileName = "";
+            switch (requestType)
+            {
+                case "http":
+                    AddQrCodePrescription(dto, hospitalDto, 400, 30);
+                    fileName = "Prescription-http-" + dto.IssuedDate.Ticks.ToString() + ".pdf";
+                    SaveDocument("Prescriptions" + Path.DirectorySeparatorChar + "Http" + Path.DirectorySeparatorChar + fileName);
+                    break;
+                case "sftp":
+                    fileName = "Prescription-sftp-" + dto.IssuedDate.Ticks.ToString() + ".pdf";
+                    SaveDocument("Prescriptions" + Path.DirectorySeparatorChar + "Sftp" + Path.DirectorySeparatorChar + fileName);
+                    break;
+            }
+
+            return fileName;
+        }
+
         public void MakeTitle(string text)
         {
             Label naslov = new Label(text, _currentY, 0, 512, 16, Font.HelveticaBold, 16, TextAlign.Center, RgbColor.Black);
             _lastPage.Elements.Add(naslov);
         }
 
+        private void AddQrCodePrescription(PrescriptionDTO prescDto, HospitalDTO hospDto, float xMargin, float yMargin)
+        {
+            string text = MakePrescriptionTextForQr(prescDto, hospDto);
+            QrCode qrCode = new QrCode(text, xMargin, _currentY + yMargin);
+            _currentY = _currentY + yMargin;
+            _lastPage.Elements.Add(qrCode);
+        }
+
+        private string MakePrescriptionTextForQr(PrescriptionDTO prescDto, HospitalDTO hospDto)
+        {
+            string text = "";
+            text += prescDto.PatientFirstName + ";";
+            text += prescDto.PatientLastName + ";";
+            text += prescDto.StartDate.ToShortDateString() + ";";
+            text += prescDto.EndDate.ToShortDateString() + ";";
+            text += prescDto.IssuedDate.ToShortDateString() + ";";
+            text += hospDto.Name + ";";
+            text += hospDto.StreetName + " " + hospDto.StreetNumber + ", " + hospDto.CityName + ";";
+            return text;
+        }
     }
 }

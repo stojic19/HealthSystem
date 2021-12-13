@@ -205,6 +205,9 @@ namespace Integration.Migrations
 
                     b.Property<string>("ImageName")
                         .HasColumnType("text");
+                        
+                    b.Property<bool>("GrpcSupported")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");

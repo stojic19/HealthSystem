@@ -1,0 +1,102 @@
+.roomTable {
+    width: 100%;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+  
+  .roomTable thead {
+    border-bottom: 1px solid rgba(82, 81, 81, 0.096);
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+  
+  .roomTable tr {
+    color: #495057;
+    text-transform: uppercase;
+    text-align: center;
+  }
+  
+  .table-hover tbody tr:hover td,
+  .table-hover tbody tr:hover th {
+    background-color: #e2eafc;
+  }
+  
+  .form-control {
+    width: 250px;
+    float: right;
+    margin-right: 3rem;
+    height: 35px;
+    font-size: 14px;
+    border-radius: 15px;
+  }
+  
+  .subtitle {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }
+  
+  @media (max-width: 800px) {
+    .form-control {
+      width: 150px;
+      margin-right: 1rem;
+    }
+  
+    .roomTable thead,
+    th {
+      display: none;
+    }
+  
+    .roomTable,
+    .roomTable tbody,
+    .roomTable tr,
+    .roomTable td {
+      text-indent: 0px;
+      display: block;
+      width: 100%;
+    }
+    .roomTable tr {
+      margin-bottom: 20px;
+    }
+    .roomTable td {
+      border-bottom: 1px solid rgba(82, 81, 81, 0.096);
+      text-indent: 0px;
+      text-align: right;
+      padding-left: 50%;
+      position: relative;
+    }
+    .roomTable td::before {
+      text-indent: 0px;
+      content: attr(data-label);
+      position: absolute;
+      left: 0;
+      width: 50%;
+      text-transform: uppercase;
+      font-weight: bold;
+      text-align: left;
+    }
+  
+    .roomTable td:last-child {
+      border-bottom: none;
+    }
+  }
+  
+  #table::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  #table::-webkit-scrollbar-track {
+    background-color: #ebebeb;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+  }
+  
+  #table::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: #6d6d6d;
+  }
+  
+  .selected {
+    background-color: #e2eafc;
+  }

@@ -56,6 +56,15 @@ import { SurveysObserveComponent } from './components/surveys-observe/surveys-ob
 import { MaterialModule } from './material/material.module';
 import { MedicineSpecificationListComponent } from './medicine-specification-requests/medicine-specification-list/medicine-specification-list.component';
 import { PharmacyProfileComponent } from './pharmacies/pharmacy-profile/pharmacy-profile.component';
+import { RenovationFormComponent } from './renovation-form/renovation-form.component';
+import { RenovationTypeComponent } from './renovation-form/renovation-type/renovation-type.component';
+import { FirstRoomComponent } from './renovation-form/first-room/first-room.component';
+import { SurroundingRoomComponent } from './renovation-form/surrounding-room/surrounding-room.component';
+import { RoomScheduleComponent } from './room-schedule/room-schedule.component';
+import { ConfirmDialogComponent } from './room-schedule/confirm-dialog/confirm-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { DetailsDialogComponent } from './room-schedule/details-dialog/details-dialog.component';
+
 
 @NgModule({
   declarations: [
@@ -99,6 +108,14 @@ import { PharmacyProfileComponent } from './pharmacies/pharmacy-profile/pharmacy
     SurveysObserveComponent,
     MedicineSpecificationListComponent,
     PharmacyProfileComponent,
+    RenovationFormComponent,
+    RenovationTypeComponent,
+    FirstRoomComponent,
+    SurroundingRoomComponent,
+    RoomScheduleComponent,
+    ConfirmDialogComponent,
+    DetailsDialogComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -119,6 +136,7 @@ import { PharmacyProfileComponent } from './pharmacies/pharmacy-profile/pharmacy
     MatOptionModule,
     MatSelectModule,
     MaterialModule,
+    MatDialogModule,
   ],
   providers: [HttpClientModule],
   bootstrap: [AppComponent],

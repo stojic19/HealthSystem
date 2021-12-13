@@ -42,8 +42,10 @@ namespace IntegrationAPI.Controllers
             pharmacy.StreetName = updatePharmacyDTO.StreetName;
             pharmacy.StreetNumber = updatePharmacyDTO.StreetNumber;
             pharmacy.City = new City { PostalCode = updatePharmacyDTO.PostalCode, Name = updatePharmacyDTO.CityName, Country = new Country { Name = updatePharmacyDTO.CountryName } };
-            //pharmacy.description = updatePharmacyDTO.Description;
-            //pharmacy.ImageName = updatePharmacyDTO.ImageName;
+            pharmacy.Description = updatePharmacyDTO.Description;
+            pharmacy.ImageName = updatePharmacyDTO.ImageName;
+            //_pharmacyMasterService.UpdatePharmacy(pharmacy);
+
             return Ok();
         }
 

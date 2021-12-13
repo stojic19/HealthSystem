@@ -10,7 +10,7 @@ namespace IntegrationAPI.DTO
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public DateTime CreatedDate { get; set; }
-        public List<MedicineConsumptionDTO> MedicineConsumptions { get; set; }
+        public List<MedicationExpenditureDTO> MedicineConsumptions { get; set; }
         public string HospitalName { get; set; }
     }
 }

@@ -21,6 +21,7 @@ namespace Hospital.Database.EfStructures
         public DbSet<InventoryItem> InventoryItems { get; set; }
         public DbSet<MedicalRecord> MedicalRecords { get; set; }
         public DbSet<Medication> Medications { get; set; }
+        public DbSet<MedicationInventory> MedicationInventory { get; set; }
         public DbSet<MedicationIngredient> MedicationIngredients { get; set; }
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Prescription> Prescriptions { get; set; }

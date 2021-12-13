@@ -36,6 +36,8 @@ import { SurveySectionComponent } from './components/survey-section/survey-secti
     PatientMedicalRecordComponent,
     AppointmentsPageComponent,
     SurveySectionComponent,
+    LoginComponent,
+    SurveyPageComponent
   ],
   imports: [
     AppRoutingModule,

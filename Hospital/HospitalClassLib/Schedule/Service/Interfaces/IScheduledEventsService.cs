@@ -8,5 +8,6 @@ namespace Hospital.Schedule.Service.ServiceInterface
         public List<ScheduledEvent> getFinishedUserEvents(int userId);
 
         public int getNumberOfFinishedEvents(int userId);
+        void updateFinishedUserEvents();
     }
 }

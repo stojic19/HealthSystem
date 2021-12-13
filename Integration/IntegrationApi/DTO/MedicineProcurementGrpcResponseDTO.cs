@@ -9,6 +9,6 @@ namespace IntegrationAPI.DTO
     {
         public bool ConnectionSuccesfull { get; set; }
 
-        public MedicineProcurementResponseDTO Response { get; set; }
+        public MedicineProcurementResponseDto Response { get; set; }
     }
 }

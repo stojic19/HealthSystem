@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { EquipmentTransferEventDTO } from '../model/equipment-transfer-event';
+import { RoomRenovationEvent } from '../model/room-renovation-event';
 
 @Injectable({
   providedIn: 'root',
@@ -49,6 +50,12 @@ export class RoomScheduleService {
         '/api/EquipmentTransferEvent/CancelEquipmentTransferEvent',
         transfer
       )
+      .subscribe();
+  }
+
+  cancelRenovationEvent(renovation: RoomRenovationEvent) {
+    return this.http
+      .post('/api/RoomRenovation/CancelRenovation', renovation)
       .subscribe();
   }
 }

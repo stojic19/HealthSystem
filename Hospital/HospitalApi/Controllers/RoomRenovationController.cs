@@ -1,7 +1,9 @@
-﻿using Hospital.GraphicalEditor.Repository;
+﻿using AutoMapper;
+using Hospital.GraphicalEditor.Repository;
 using Hospital.GraphicalEditor.Service;
 using Hospital.RoomsAndEquipment.Model;
 using Hospital.RoomsAndEquipment.Repository;
+using Hospital.RoomsAndEquipment.Service;
 using Hospital.Schedule.Service;
 using Hospital.SharedModel.Model.Wrappers;
 using Hospital.SharedModel.Repository.Base;
@@ -20,10 +22,12 @@ namespace HospitalApi.Controllers
     public class RoomRenovationController : ControllerBase
     {
         private readonly IUnitOfWork _uow;
+        private readonly IMapper _mapper;
 
-        public RoomRenovationController(IUnitOfWork uow)
+        public RoomRenovationController(IUnitOfWork uow, IMapper mapper)
         {
             _uow = uow;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -100,6 +104,27 @@ namespace HospitalApi.Controllers
             return roomRenovationRepo.GetAll()
                 .Where(renovation => renovation.RoomId == roomId ||
                                      renovation.MergeRoomId == roomId);
+        }
+
+        [HttpPost]
+        public IActionResult CancelRenovation(RoomRenovationEventDto roomRenovationDTO)
+        {
+            try
+            {
+                if (roomRenovationDTO == null)
+                {
+                    return BadRequest("Incorrect format sent! Please try again.");
+                }
+
+                var cancellingEventsService = new CancellingEventsService(_uow);
+                cancellingEventsService.CancelRoomRenovationEvent(_mapper.Map<RoomRenovationEvent>(roomRenovationDTO));
+
+                return Ok("Your renovation event has been canceled.");
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error cancelling renovation event.");
+            }
         }
 
     }

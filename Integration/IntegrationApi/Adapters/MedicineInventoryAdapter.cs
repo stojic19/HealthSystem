@@ -5,18 +5,18 @@ namespace IntegrationAPI.Adapters
 {
     public class MedicineInventoryAdapter
     {
-        public static CheckMedicineAvailabilityRequestDTO CreateMedicineRequestToMedicineInformationRequest(CreateMedicineRequestForPharmacyDTO createMedicineRequestDTO, Pharmacy pharmacy)
+        public static CheckMedicineAvailabilityRequestDto CreateMedicineRequestToMedicineInformationRequest(CreateMedicineRequestForPharmacyDto createMedicineRequestDTO, Pharmacy pharmacy)
         {
-            CheckMedicineAvailabilityRequestDTO medicineRequestDTO = new CheckMedicineAvailabilityRequestDTO();
+            CheckMedicineAvailabilityRequestDto medicineRequestDTO = new CheckMedicineAvailabilityRequestDto();
             medicineRequestDTO.ApiKey = pharmacy.ApiKey;
             medicineRequestDTO.MedicineName = createMedicineRequestDTO.MedicineName;
             medicineRequestDTO.ManufacturerName = createMedicineRequestDTO.ManufacturerName;
             medicineRequestDTO.Quantity = createMedicineRequestDTO.Quantity;
             return medicineRequestDTO;
         }
-        public static MedicineProcurementRequestDTO CreateMedicineRequestToEmergencyProcurementRequest(CreateMedicineRequestForPharmacyDTO createMedicineRequestDTO, Pharmacy pharmacy)
+        public static MedicineProcurementRequestDto CreateMedicineRequestToEmergencyProcurementRequest(CreateMedicineRequestForPharmacyDto createMedicineRequestDTO, Pharmacy pharmacy)
         {
-            MedicineProcurementRequestDTO medicineRequestDTO = new MedicineProcurementRequestDTO();
+            MedicineProcurementRequestDto medicineRequestDTO = new MedicineProcurementRequestDto();
             medicineRequestDTO.ApiKey = pharmacy.ApiKey;
             medicineRequestDTO.MedicineName = createMedicineRequestDTO.MedicineName;
             medicineRequestDTO.ManufacturerName = createMedicineRequestDTO.ManufacturerName;

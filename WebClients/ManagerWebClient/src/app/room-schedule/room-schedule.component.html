@@ -1,0 +1,90 @@
+<div class="row mb-3 mt-1 d-flex justify-content-center">
+  <div style="width: 80%; margin: auto">
+    <h4 class="mb-4 title" style="text-align: center">
+      R O O M <span class="ms-4">S C H E D U L E</span>
+    </h4>
+  </div>
+
+  <div class="col-8">
+    <div
+      style="height: 515px; overflow: auto"
+      id="table"
+      class="table-responsive custom-table-responsive"
+    >
+      <table
+        *ngIf="!isLoading"
+        class="
+          table table-hover
+          justify-content-center
+          equipmentTable equipmentTable
+        "
+      >
+        <thead>
+          <tr>
+            <th class="col-md-4">Type</th>
+            <th class="col-md-4">Start</th>
+            <th class="col-md-4">End</th>
+            <th class="col-md-4">Options</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let event of equipmentTransferEvents">
+            <td>Equipment Transfer</td>
+            <td>{{ event.startDate | date: "dd.MM.yyyy HH:mm" }}</td>
+            <td>{{ event.endDate | date: "dd.MM.yyyy HH:mm" }}</td>
+            <td class="pt-1">
+              <div class="buttonWrapper">
+                <button
+                  *ngIf="checkIfEventIsTomorrow(event)"
+                  class="btn btn-danger cancelButton"
+                  (click)="confirmTransferCancelDialog(event)"
+                >
+                  Cancel
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr *ngFor="let event of renovationEvents">
+            <td>Renovation</td>
+            <td>{{ event.startDate | date: "dd.MM.yyyy HH:mm" }}</td>
+            <td>{{ event.endDate | date: "dd.MM.yyyy HH:mm" }}</td>
+            <td class="pt-1">
+              <div class="buttonWrapper">
+                <button
+                  *ngIf="checkIfEventIsTomorrow(event)"
+                  class="btn btn-danger cancelButton"
+                  (click)="confirmRenovationCancelDialog(event)"
+                >
+                  Cancel
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr *ngFor="let event of scheduledEvents">
+            <td *ngIf="event.scheduledEventType == 0">Appointment</td>
+            <td *ngIf="event.scheduledEventType == 1">Operation</td>
+            <td>{{ event.startDate | date: "dd.MM.yyyy HH:mm" }}</td>
+            <td>{{ event.endDate | date: "dd.MM.yyyy HH:mm" }}</td>
+            <td class="pt-1">
+              <div class="buttonWrapper">
+                <button
+                  class="btn btn-secondary cancelButton"
+                  (click)="openDialog(event)"
+                >
+                  Details
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <mat-card
+        *ngIf="isLoading"
+        style="display: flex; justify-content: center; align-items: center"
+      >
+        <mat-progress-spinner color="primary" mode="indeterminate">
+        </mat-progress-spinner>
+      </mat-card>
+    </div>
+  </div>
+</div>

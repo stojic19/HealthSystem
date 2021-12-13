@@ -8,7 +8,7 @@ services:
       dockerfile: Stacks/Build/Gateway/Dockerfile
       target: gatewayWithFront
       args:
-        - HOSPITAL_API_URL=http://127.0.0.1:8080/hospitalapi/
+        - HOSPITAL_API_URL=http://127.0.0.1:80/hospitalapi/
     restart: on-failure
     networks:
       - public

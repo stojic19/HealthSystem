@@ -35,6 +35,7 @@ WORKDIR /app
 COPY --from=publish /app .
 WORKDIR /app/publish
 # VOLUME /app/sql
+CMD ASPNETCORE_URLS=http://*:$PORT dotnet HospitalApi.dll
 ENTRYPOINT ["dotnet", "HospitalApi.dll"]
 
 

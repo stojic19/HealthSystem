@@ -203,11 +203,14 @@ namespace Hospital.RoomsAndEquipment.Service
         {
 
             var roomInventoryRepo = uow.GetRepository<IRoomInventoryWriteRepository>();
+            var inventoryRepo = uow.GetRepository<IRoomInventoryReadRepository>();
+            var firstRoomInventory = inventoryRepo.GetByRoom(firstRoom.Id);
+            var secondRoomInventory = inventoryRepo.GetByRoom(secondRoom.Id);
 
-            foreach (RoomInventory item in secondRoom.RoomInventories)
+            foreach (RoomInventory item in secondRoomInventory.ToList())
             {
                 bool found = false;
-                foreach (RoomInventory ritem in firstRoom.RoomInventories)
+                foreach (RoomInventory ritem in firstRoomInventory.ToList())
                 {
                     if (ritem.InventoryItemId == item.InventoryItemId)
                     {

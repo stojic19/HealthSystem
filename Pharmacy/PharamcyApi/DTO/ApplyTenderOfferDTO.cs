@@ -7,7 +7,7 @@ namespace PharmacyApi.DTO
 {
     public class ApplyTenderOfferDTO
     {
-        
+        public int TenderOfferId { get; set; }
         public string MedicineName { get; set; }
         public int Quantity { get; set; }
         public DateTime CreationTime { get; set; }

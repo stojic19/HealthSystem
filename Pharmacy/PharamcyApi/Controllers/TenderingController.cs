@@ -90,6 +90,7 @@ namespace PharmacyApi.Controllers
             TenderOffer tenderOffer = _uow.GetRepository<ITenderOfferReadRepository>().GetById(tenderOfferId);
             
             ApplyTenderOfferDTO applyTenderOfferDTO = new ApplyTenderOfferDTO() {
+                TenderOfferId = tenderOfferId,
                 MedicineName = tenderOffer.Medicine.Name,
                 Quantity = tenderOffer.Quantity,
                 CreationTime = DateTime.Now,

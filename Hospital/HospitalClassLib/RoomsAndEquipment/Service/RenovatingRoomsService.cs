@@ -25,6 +25,7 @@ namespace Hospital.RoomsAndEquipment.Service
         public void StartRoomRenovations()
         {
             var repo = uow.GetRepository<IRoomRenovationEventReadRepository>();
+            var writeRepo = uow.GetRepository<IRoomRenovationEventWriteRepository>();
             foreach (RoomRenovationEvent roomRenovationEvent in repo.GetAll().ToList())
             {
                 if (DateTime.Compare(roomRenovationEvent.EndDate, DateTime.Now) <= 0)
@@ -33,16 +34,17 @@ namespace Hospital.RoomsAndEquipment.Service
                         MergeRooms(roomRenovationEvent);
                     else
                         SplitRoom(roomRenovationEvent);
+                    writeRepo.Delete(roomRenovationEvent);
                 }
             }
         }
 
         public void SplitRoom(RoomRenovationEvent roomRenovationEvent)
         {
-            Room selectedRoom = roomRenovationEvent.Room;
+            var roomRepo = uow.GetRepository<IRoomReadRepository>();
+            Room selectedRoom = roomRepo.GetById((int)roomRenovationEvent.RoomId) ;
             double width;
             double height;
-            // kreiranje nove sobe
             if (selectedRoom.BuildingName == "Building 1")
             {
                 width = selectedRoom.Width;
@@ -73,7 +75,6 @@ namespace Hospital.RoomsAndEquipment.Service
             selectedRoom.Description = roomRenovationEvent.SecondRoomDescription;
             selectedRoom.RoomType = roomRenovationEvent.SecondRoomType;
             roomWriteRepo.Update(selectedRoom);
-            // kreiranje novih pozicija
             GetNewPositionsWhenSplitting(selectedRoom, newRoom);
         }
 
@@ -115,14 +116,14 @@ namespace Hospital.RoomsAndEquipment.Service
 
         public void MergeRooms(RoomRenovationEvent roomRenovationEvent)
         {
-            Room firstRoom = roomRenovationEvent.Room;
-            Room secondRoom = roomRenovationEvent.MergeRoom;
+            var roomRepo = uow.GetRepository<IRoomReadRepository>();
+            Room firstRoom = roomRepo.GetById((int)roomRenovationEvent.RoomId);
+            Room secondRoom = roomRepo.GetById((int)roomRenovationEvent.MergeRoomId);
 
             TransferInventory(firstRoom, secondRoom);
 
             GetNewPositionWhenMerging(firstRoom, secondRoom);
 
-            //update nove sobe
             var roomWriteRepo = uow.GetRepository<IRoomWriteRepository>();
             if (firstRoom.BuildingName == "Building 1")
             {
@@ -137,7 +138,6 @@ namespace Hospital.RoomsAndEquipment.Service
             firstRoom.Description = roomRenovationEvent.FirstRoomDescription;
             firstRoom.RoomType = roomRenovationEvent.FirstRoomType;
             roomWriteRepo.Update(firstRoom);
-            //brisanje stare
             roomWriteRepo.Delete(secondRoom);
         }
 
@@ -194,9 +194,7 @@ namespace Hospital.RoomsAndEquipment.Service
                         RoomId = firstRoomPosition.RoomId
                     };
             }
-            // upis nove pozicije
             roomPositionsWriteRepo.Add(newPosition);
-            //brisanje starih pozicija
             roomPositionsWriteRepo.Delete(firstRoomPosition);
             roomPositionsWriteRepo.Delete(secondRoomPosition);
         }

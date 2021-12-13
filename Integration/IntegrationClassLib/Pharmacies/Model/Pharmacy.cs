@@ -22,6 +22,10 @@ namespace Integration.Pharmacies.Model
         public string BaseUrl { get; set; }
 
         public bool GrpcSupported { get; set; }
+        
+        public string Description { get; set; }
+
+        public string ImageName { get; set; }
 
         public bool isEqual(Pharmacy pharmacy)
         {

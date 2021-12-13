@@ -33,8 +33,12 @@ const routes: Routes = [
         path: 'record',
         component: PatientMedicalRecordComponent,
       },
-        {path:'appointments',
+        /*{path:'appointments',
         component: AppointmentsPageComponent
+      },*/
+      {
+        path: 'recommendedAppointments',
+        component: RecommendedAppointmentComponent
       },
       {
         path:'surveys',
@@ -44,7 +48,7 @@ const routes: Routes = [
   },
   { path: 'registration', component: RegistrationComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'recommendedAppointment', component: RecommendedAppointmentComponent}
+  
 ];
 
 @NgModule({

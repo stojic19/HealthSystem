@@ -3,6 +3,7 @@ using Hospital.Schedule.Model;
 using Hospital.Schedule.Model.Wrappers;
 using Hospital.SharedModel.Repository;
 using Hospital.SharedModel.Repository.Base;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace Hospital.Schedule.Service
         public IEnumerable<AvailableAppointment> GetAvailableAppointmentsForDoctorAndDateRange(int doctorId, DateTime startDate, DateTime endDate)
         {
             var allAppointments = new List<DateTime>();
-            for (var date = startDate; date < endDate; date = date.AddHours(1))
+            for (var date = startDate; date <= endDate; date = date.AddHours(1))
             {
                 if (date.Hour is > StartHour and < EndHour)
                 {
@@ -36,7 +37,7 @@ namespace Hospital.Schedule.Service
             var scheduledEvents = _context.Set<ScheduledEvent>().AsEnumerable();
             var scheduledAppointments = (from appointment in allAppointments
                                          from scheduledEvent in scheduledEvents
-                                         where (scheduledEvent.DoctorId == doctorId && DateTime.Compare(scheduledEvent.StartDate, appointment) == 0)
+                                         where (scheduledEvent.DoctorId == doctorId && scheduledEvent.IsCanceled!=true && DateTime.Compare(scheduledEvent.StartDate, appointment) == 0)
                                          select appointment);
             var dateTimes = allAppointments.Except(scheduledAppointments);
             return AvailableAppointments(dateTimes, doctorId);
@@ -47,7 +48,7 @@ namespace Hospital.Schedule.Service
             return allAppointments.Select(sa => new AvailableAppointment
             {
                 Doctor = _uow.GetRepository<IDoctorReadRepository>()
-                                                .GetById(doctorId),
+                                                .GetAll().Include(x => x.Specialization).First(x=>x.Id==doctorId),
                 StartDate = sa
             }).ToList();
         }
@@ -55,7 +56,7 @@ namespace Hospital.Schedule.Service
         public IEnumerable<AvailableAppointment> GetAvailableAppointmentsForDoctorPriority(int doctorId, DateTime startDate, DateTime endDate)
         {
             var allAppointments = new List<DateTime>();
-            for (var date = startDate.AddDays(-5); date < endDate.AddDays(5); date = date.AddHours(1))
+            for (var date = startDate.AddDays(-5); date <= endDate.AddDays(5); date = date.AddHours(1))
             {
                 if (date.Hour is > StartHour and < EndHour)
                 {
@@ -65,7 +66,7 @@ namespace Hospital.Schedule.Service
             var scheduledEvents = _context.Set<ScheduledEvent>().AsEnumerable();
             var scheduledAppointments = (from appointment in allAppointments
                                          from scheduledEvent in scheduledEvents
-                                         where (scheduledEvent.Doctor.Id == doctorId && DateTime.Compare(scheduledEvent.StartDate, appointment) == 0)
+                                         where (scheduledEvent.Doctor.Id == doctorId && scheduledEvent.IsCanceled != true && DateTime.Compare(scheduledEvent.StartDate, appointment) == 0)
                                          select appointment);
             var dateTimes = allAppointments.Except(scheduledAppointments);
             return AvailableAppointments(dateTimes, doctorId);

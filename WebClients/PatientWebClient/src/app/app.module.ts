@@ -38,7 +38,8 @@ import { RecommendedAppointmentComponent } from './components/recommended-appoin
     PatientMedicalRecordComponent,
     AppointmentsPageComponent,
     SurveyPageComponent,
-    SurveySectionComponent
+    SurveySectionComponent,
+    RecommendedAppointmentComponent
   ],
   imports: [
     BrowserModule,

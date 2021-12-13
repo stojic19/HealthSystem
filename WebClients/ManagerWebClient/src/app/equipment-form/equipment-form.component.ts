@@ -6,6 +6,7 @@ import { AvailableTermsRequest } from '../model/available-terms-request';
 import { EquipmentTransferEvent } from '../model/equipment-transfer-event';
 import { RoomInventory } from '../model/room-inventory.model';
 import { TimePeriod } from '../model/time-period';
+import { TimePeriodView } from '../model/time-period-view';
 import { RoomInventoriesService } from '../services/room-inventories.service';
 
 @Component({
@@ -27,6 +28,7 @@ export class EquipmentFormComponent implements OnInit {
   endDate: Date;
 
   availableTerms: TimePeriod[];
+  availableTermsView: TimePeriodView[];
   terms: TimePeriod[];
   selectedTerm: TimePeriod;
 
@@ -116,15 +118,27 @@ export class EquipmentFormComponent implements OnInit {
       roomId: this.destinationRoom.id,
     };
 
-    this.roomInventoryService.getAvailableTerms(request);
-    this.availableTerms = this.roomInventoryService.availableTerms;
+    this.roomInventoryService
+      .getAvailableTerms(request)
+      .toPromise()
+      .then((result) => {
+        this.availableTermsView = result as TimePeriodView[];
+        this.availableTerms = [];
+        for (let term of this.availableTermsView) {
+          var newTerm: TimePeriod = {
+            startDate: new Date(term.startDate),
+            endDate: new Date(term.endDate),
+          };
+          this.availableTerms.push(newTerm);
+        }
+      });
   }
 
   createTransferRequest() {
     let request: EquipmentTransferEvent = {
       startDate: this.selectedTerm.startDate,
       endDate: this.selectedTerm.endDate,
-      initalRoomId: this.selectedItem.roomId,
+      initialRoomId: this.selectedItem.roomId,
       destinationRoomId: this.destinationRoom.id,
       inventoryItemId: this.selectedItem.inventoryItemId,
       quantity: this.enteredAmount,

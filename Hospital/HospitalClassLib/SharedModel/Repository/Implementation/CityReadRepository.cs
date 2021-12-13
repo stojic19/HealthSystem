@@ -3,9 +3,8 @@ using Hospital.SharedModel.Repository.Base;
 using Hospital.SharedModel.Model;
 using System.Collections.Generic;
 using System.Linq;
-using Hospital.SharedModel.Repository;
 
-namespace Hospital.Shared_model.Repository.Implementation
+namespace Hospital.SharedModel.Repository.Implementation
 {
     public class CityReadRepository : ReadBaseRepository<int, City>, ICityReadRepository
     {

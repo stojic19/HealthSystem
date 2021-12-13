@@ -50,6 +50,20 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MedicineSpecificationRequestsComponent } from './medicine-specification-requests/medicine-specification-requests.component';
+import { RatingDecimalComponent } from './components/rating-decimal/rating-decimal.component';
+import { SurveySectionObserveComponent } from './components/survey-section-observe/survey-section-observe.component';
+import { SurveysObserveComponent } from './components/surveys-observe/surveys-observe.component';
+import { MaterialModule } from './material/material.module';
+import { MedicineSpecificationListComponent } from './medicine-specification-requests/medicine-specification-list/medicine-specification-list.component';
+import { RenovationFormComponent } from './renovation-form/renovation-form.component';
+import { RenovationTypeComponent } from './renovation-form/renovation-type/renovation-type.component';
+import { FirstRoomComponent } from './renovation-form/first-room/first-room.component';
+import { SurroundingRoomComponent } from './renovation-form/surrounding-room/surrounding-room.component';
+import { RoomScheduleComponent } from './room-schedule/room-schedule.component';
+import { ConfirmDialogComponent } from './room-schedule/confirm-dialog/confirm-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { DetailsDialogComponent } from './room-schedule/details-dialog/details-dialog.component';
+
 
 @NgModule({
   declarations: [
@@ -85,9 +99,21 @@ import { MedicineSpecificationRequestsComponent } from './medicine-specification
     RegisterPharmacyComponent,
     PharmaciesListComponent,
     MedicationReportsComponent,
-    BenefitListComponent, 
+    BenefitListComponent,
     BenefitDetailsComponent,
-    MedicineSpecificationRequestsComponent
+    MedicineSpecificationRequestsComponent,
+    RatingDecimalComponent,
+    SurveySectionObserveComponent,
+    SurveysObserveComponent,
+    MedicineSpecificationListComponent,
+    RenovationFormComponent,
+    RenovationTypeComponent,
+    FirstRoomComponent,
+    SurroundingRoomComponent,
+    RoomScheduleComponent,
+    ConfirmDialogComponent,
+    DetailsDialogComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -104,9 +130,11 @@ import { MedicineSpecificationRequestsComponent } from './medicine-specification
     MatInputModule,
     MatCardModule,
     MatProgressSpinnerModule,
-    MatCheckboxModule, 
-    MatOptionModule, 
-    MatSelectModule
+    MatCheckboxModule,
+    MatOptionModule,
+    MatSelectModule,
+    MaterialModule,
+    MatDialogModule,
   ],
   providers: [HttpClientModule],
   bootstrap: [AppComponent],

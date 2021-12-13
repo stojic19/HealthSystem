@@ -1,12 +1,15 @@
-﻿using Hospital.MedicalRecords.Model;
+﻿using Hospital.GraphicalEditor.Model;
+using Hospital.MedicalRecords.Model;
 using Hospital.RoomsAndEquipment.Model;
 using Hospital.Schedule.Model;
 using Hospital.SharedModel.Model;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hospital.Database.EfStructures
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
         public DbSet<Allergy> Allergies { get; set; }
         public DbSet<City> Cities { get; set; }
@@ -18,6 +21,7 @@ namespace Hospital.Database.EfStructures
         public DbSet<InventoryItem> InventoryItems { get; set; }
         public DbSet<MedicalRecord> MedicalRecords { get; set; }
         public DbSet<Medication> Medications { get; set; }
+        public DbSet<MedicationInventory> MedicationInventory { get; set; }
         public DbSet<MedicationIngredient> MedicationIngredients { get; set; }
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Prescription> Prescriptions { get; set; }
@@ -29,7 +33,12 @@ namespace Hospital.Database.EfStructures
         public DbSet<Specialization> Specializations { get; set; }
         public DbSet<Staff> Staffs { get; set; }
         public DbSet<Survey> Surveys { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<AnsweredQuestion> AnsweredQuestions { get; set; }
+        public DbSet<AnsweredSurvey> AnsweredSurveys { get; set; }
+        public DbSet<EquipmentTransferEvent> EquipmentTransferEvents { get; set; }
+        public DbSet<MedicationExpenditureLog> MedicationExpenditureLogs { get; set; }
+        public DbSet<RoomPosition> RoomPositions { get; set; }
+        public DbSet<RoomRenovationEvent> RoomRenovationEvents { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {

@@ -27,7 +27,7 @@ export class MedicationReportsComponent implements OnInit {
     var endDate = new Date(end.value);
     var userTimezoneOffset = startDate.getTimezoneOffset() * 60000;
     endDate = new Date(endDate.getTime() - userTimezoneOffset);
-    var timeRange = {startDate: startDate, endDate: endDate};
+    var timeRange = {startTime: startDate, endTime: endDate};
     this._MedicationReportService.getReport(timeRange).subscribe(data => {
       this.report = data
       console.log(this.report);
@@ -40,7 +40,7 @@ export class MedicationReportsComponent implements OnInit {
       startDate: this.report.startDate,
       endDate: this.report.endDate,
       createdDate: this.report.createdDate,
-      medicineConsumptions: this.report.medicineConsumptions
+      medicationExpenditureDTO: this.report.medicationExpenditureDTO
     }
     this._MedicationReportService.sendReport(report).subscribe(data => {
       this.report = null;

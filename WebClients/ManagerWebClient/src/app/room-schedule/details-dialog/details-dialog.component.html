@@ -1,0 +1,33 @@
+<h1 mat-dialog-title class="title" *ngIf="eventType == 0">
+  Appointment details
+</h1>
+<h1 mat-dialog-title class="title" *ngIf="eventType == 1">Operation details</h1>
+
+<div
+  mat-dialog-content
+  class="justify-content-center align-items-center content"
+>
+  <p>
+    START:
+    <b> {{ startDate | date: "dd.MM.yyyy HH:mm" }}</b
+    ><br />
+    END:
+    <b>{{ endDate | date: "dd.MM.yyyy HH:mm" }}</b
+    ><br />
+    ROOM:
+    <b>{{ roomName }} , {{ buildingName }}</b>
+    <br />
+    PATIENT:
+    <b>{{ patientFirstName }} {{ patientLastName }}</b>
+    <br />
+    DOCTOR:
+    <b>{{ doctorFirstName }} {{ doctorLastName }}</b>
+  </p>
+</div>
+<div
+  mat-dialog-actions
+  class="justify-content-center align-items-center"
+  style="border-top: 0 none"
+>
+  <button mat-raised-button color="accent" (click)="onConfirm()">OK</button>
+</div>

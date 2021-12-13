@@ -3,6 +3,9 @@ using Hospital.Schedule.Model;
 using Hospital.SharedModel.Model.Enumerations;
 using HospitalApi.DTOs;
 using System;
+using Hospital.MedicalRecords.Model;
+using Hospital.SharedModel.Model;
+using Hospital.RoomsAndEquipment.Model;
 
 namespace HospitalApi.AutoMapperProfiles
 {
@@ -13,6 +16,22 @@ namespace HospitalApi.AutoMapperProfiles
             CreateMap<NewFeedbackDTO, Feedback>()
                   .ForMember(dto => dto.CreatedDate, opt => opt.MapFrom(src => DateTime.Now))
                   .ForMember(dto => dto.FeedbackStatus, opt => opt.MapFrom(src => FeedbackStatus.Pending));
+            CreateMap<Survey, SurveyStatisticDTO>();
+
+            CreateMap<CityDTO, City>();
+            CreateMap<DoctorDTO, Doctor>();
+            CreateMap<MedicationIngredientDTO, MedicationIngredient>();
+            CreateMap<NewAllergyDTO, Allergy>();
+            CreateMap<NewMedicalRecordDTO, MedicalRecord>();
+            CreateMap<NewPatientDTO, Patient>();
+            CreateMap<MedicationIngredient, MedicationIngredientDTO>();
+            CreateMap<City, CityDTO>();
+            CreateMap<Allergy, AllergyDTO>();
+            CreateMap<Doctor, DoctorDTO>();
+            CreateMap<MedicalRecord, MedicalRecordDTO>();
+            CreateMap<Patient, PatientDTO>();
+            CreateMap<EquipmentTransferEventDto, EquipmentTransferEvent>();
+            CreateMap<RoomRenovationEventDto, RoomRenovationEvent>();
         }
     }
 }

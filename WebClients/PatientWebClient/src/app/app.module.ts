@@ -13,7 +13,14 @@ import { FeedbackComponent } from './components/feedback/feedback.component';
 import { PatientFeedbackComponent } from './components/patient-feedback/patient-feedback.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FeedbacksPageComponent } from './components/feedbacks-page/feedbacks-page.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MainComponent } from './components/main/main.component';
+import { RegistrationComponent } from './components/registration/registration.component';
+import { LoginComponent } from './components/login/login.component';
+import { PatientMedicalRecordComponent } from './components/patient-medical-record/patient-medical-record.component';
+import { AppointmentsPageComponent } from './components/appointments-page/appointments-page.component';
+import { SurveyPageComponent } from './components/survey-page/survey-page.component';
+import { SurveySectionComponent } from './components/survey-section/survey-section.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +31,13 @@ import { FormsModule } from '@angular/forms';
     FeedbackComponent,
     PatientFeedbackComponent,
     FeedbacksPageComponent,
+    MainComponent,
+    RegistrationComponent,
+    LoginComponent,
+    PatientMedicalRecordComponent,
+    AppointmentsPageComponent,
+    SurveyPageComponent,
+    SurveySectionComponent
   ],
   imports: [
     BrowserModule,
@@ -33,9 +47,11 @@ import { FormsModule } from '@angular/forms';
     MaterialModule,
     CommonModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
   ],
   providers: [HttpClientModule],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

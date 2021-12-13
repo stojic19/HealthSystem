@@ -1,6 +1,8 @@
-﻿using Hospital.RoomsAndEquipment.Model;
+﻿using AutoMapper;
+using Hospital.RoomsAndEquipment.Model;
 using Hospital.RoomsAndEquipment.Repository;
 using Hospital.RoomsAndEquipment.Service;
+using Hospital.Schedule.Service;
 using Hospital.SharedModel.Model.Wrappers;
 using Hospital.SharedModel.Repository.Base;
 using HospitalApi.DTOs;
@@ -9,23 +11,26 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HospitalApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     [EnableCors("MyCorsImplementationPolicy")]
 
     public class EquipmentTransferEventController : ControllerBase
     {
         private readonly IUnitOfWork _uow;
+        private readonly IMapper _mapper;
 
-        public EquipmentTransferEventController(IUnitOfWork uow)
+        public EquipmentTransferEventController(IUnitOfWork uow, IMapper mapper)
         {
             _uow = uow;
+            _mapper = mapper;
         }
 
-        [HttpPost("addEvent")]
+        [HttpPost]
         public IActionResult AddNewEquipmentTransferEvent(EquipmentTransferEvent equipmentTransferEvent)
         {
             try
@@ -35,7 +40,7 @@ namespace HospitalApi.Controllers
                     return BadRequest("Incorrect format sent! Please try again.");
                 }
 
-                if (!IsEnteredAmountIsCorrect(equipmentTransferEvent))
+                if (!IsEnteredAmountCorrect(equipmentTransferEvent))
                 {
                     return BadRequest("Incorrect amount entered. Please Try Again!");
                 }
@@ -56,27 +61,71 @@ namespace HospitalApi.Controllers
             }
         }
 
-        private bool IsEnteredAmountIsCorrect(EquipmentTransferEvent equipmentTransferEvent)
+        private bool IsEnteredAmountCorrect(EquipmentTransferEvent equipmentTransferEvent)
         {
             var roomInventory = _uow.GetRepository<IRoomInventoryReadRepository>()
-                .GetByRoomAndInventoryItem(equipmentTransferEvent.InitalRoomId, equipmentTransferEvent.InventoryItemId);
+                .GetByRoomAndInventoryItem(equipmentTransferEvent.InitialRoomId, equipmentTransferEvent.InventoryItemId);
 
-            if (roomInventory.Amount < equipmentTransferEvent.Quantity)
-                return false;
-
-            return true;
+            return roomInventory != null && roomInventory.Amount > equipmentTransferEvent.Quantity;
         }
 
         [HttpPost]
-        public IEnumerable<TimePeriod> GetAvailableTerms(AvailableTermDTO availableTermsDTO)
+        public IEnumerable<TimePeriodDTO> GetAvailableTerms(AvailableTermDTO availableTermsDTO)
         {
-            var transferingEquipmentService = new TransferingEquipmentService(_uow);
+            var availableTermsService = new AvailableTermsService(_uow);
             var timePeriod = new TimePeriod()
             {
                 StartTime = availableTermsDTO.StartDate,
                 EndTime = availableTermsDTO.EndDate
             };
-            return transferingEquipmentService.GetAvailableTerms(timePeriod, availableTermsDTO.RoomId, availableTermsDTO.Duration);
+
+            var terms = availableTermsService.GetAvailableTerms(timePeriod, availableTermsDTO.InitialRoomId, availableTermsDTO.DestinationRoomId, availableTermsDTO.Duration);
+            var availableTerms = new List<TimePeriodDTO>();
+            foreach (TimePeriod term in terms)
+            {
+                string start = term.StartTime.ToString("g");
+                string end = term.EndTime.ToString("g");
+                TimePeriodDTO dto = new TimePeriodDTO()
+                {
+                    StartDate = start,
+                    EndDate = end
+                };
+                availableTerms.Add(dto);
+            }
+
+            return availableTerms;
         }
+
+        [HttpGet]
+        public IEnumerable<EquipmentTransferEvent> GetTransferEventsByRoom(int roomId)
+        {
+            var transferEventRepo = _uow.GetRepository<IEquipmentTransferEventReadRepository>();
+
+            return transferEventRepo.GetAll()
+                .Where(transfer => transfer.DestinationRoomId == roomId ||
+                                    transfer.InitialRoomId == roomId);
+        }
+
+        [HttpPost]
+        public IActionResult CancelEquipmentTransferEvent(EquipmentTransferEventDto transferEventDTO)
+        {
+            try
+            {
+                if (transferEventDTO == null)
+                {
+                    return BadRequest("Incorrect format sent! Please try again.");
+                }
+
+                var cancellingEventsService = new CancellingEventsService(_uow);
+                cancellingEventsService.CancelEquipmentTransferEvent(_mapper.Map<EquipmentTransferEvent>(transferEventDTO));
+
+                return Ok("Your transfer event has been canceled.");
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error cancelling transfer event.");
+            }
+        }
+
     }
 }

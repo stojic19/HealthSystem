@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+option csharp_namespace = "IntegrationAPI.Protos";
+
+message CheckMedicineAvailabilityRequestModel {
+	string apiKey = 1;
+	string medicineName = 2;
+	string manufacturerName = 3;
+	int64 quantity = 4;
+}
+
+message CheckMedicineAvailabilityResponseModel {
+	bool answer = 1;
+	string exceptionMessage = 2;
+}
+
+message MedicineProcurementRequestModel {
+	string apiKey = 1;
+	string medicineName = 2;
+	string manufacturerName = 3;
+	int64 quantity = 4;
+}
+
+message MedicineProcurementResponseModel {
+	bool answer = 1;
+	string exceptionMessage = 2;
+}

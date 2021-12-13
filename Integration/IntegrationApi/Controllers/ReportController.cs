@@ -12,61 +12,57 @@ using RestSharp;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using IntegrationAPI.Adapters.PDF;
+using IntegrationAPI.Adapters.PDF.Implementation;
+using IntegrationAPI.Controllers.Base;
+using IntegrationAPI.HttpRequestSenders;
 
 namespace IntegrationAPI.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class ReportController : ControllerBase
+    public class ReportController : BaseIntegrationController
     {
         private readonly PharmacyMasterService _pharmacyMasterService;
-        private readonly MedicineConsumptionMasterService _medicineConsumptionMasterService;
-        public ReportController(IUnitOfWork unitOfWork)
+        private readonly string _hospitalBaseUrl;
+        private readonly IHttpRequestSender _httpRequestSender;
+        public ReportController(IUnitOfWork unitOfWork, IHttpRequestSender httpRequestSender) : base(unitOfWork)
         {
             _pharmacyMasterService = new PharmacyMasterService(unitOfWork);
-            _medicineConsumptionMasterService = new MedicineConsumptionMasterService(unitOfWork);
+            _hospitalBaseUrl = "https://localhost:44303/";
+            _httpRequestSender = httpRequestSender;
         }
 
         [HttpPost]
-        public MedicineConsumptionReportDTO CreateConsumptionReport(TimeRange timeRange)
+        public MedicineConsumptionReportDTO CreateConsumptionReport(TimePeriodDTO timeRange)
         {
-            var report = _medicineConsumptionMasterService.CreateConsumptionReportInTimeRange(timeRange);
-            report.MedicineConsumptions = report.MedicineConsumptions.OrderByDescending(medicine => medicine.Amount);
-            var reportDto = new MedicineConsumptionReportDTO
-            {
-                createdDate = report.createdDate,
-                startDate = report.startDate,
-                endDate = report.endDate,
-                MedicineConsumptions = new List<MedicineConsumptionDTO>()
-            };
-            foreach (MedicineConsumption medicineConsumption in report.MedicineConsumptions)
-            {
-                reportDto.MedicineConsumptions.Add(new MedicineConsumptionDTO
-                {
-                    MedicineName = medicineConsumption.Medicine.Name,
-                    Amount = medicineConsumption.Amount
-                });
-            }
-            return reportDto;
+            string targetUrl = _hospitalBaseUrl + "api/MedicationExpenditureReport/GetMedicationExpenditureReport";
+            var response = _httpRequestSender.Post(targetUrl, timeRange);
+            if (response.StatusCode != HttpStatusCode.OK) return null;
+            var report = JsonConvert.DeserializeObject<MedicineConsumptionReportDTO>(response.Content);
+            report.MedicationExpenditureDTO = report.MedicationExpenditureDTO.OrderByDescending(medicine => medicine.Amount).ToList();
+            return report;
         }
         [HttpPost]
         [Produces("application/json")]
         public IActionResult SendConsumptionReport(MedicineConsumptionReportDTO report)
         {
-            SftpCredentialsDTO sftpCredentials = getSftpCredentials();
+            if (report.MedicationExpenditureDTO.Count < 1) return BadRequest("Report is empty!");
+            string fileName;
             try
             {
-                SaveMedicineReportToSftpServer(report, sftpCredentials);
+                fileName = SaveMedicineReportToSftpServer(report, _sftpCredentials);
             }
             catch
             {
                 return BadRequest("Failed to contact sftp server");
             }
-            SendToPharmacies(report, sftpCredentials);
+            SendToPharmacies(report, fileName);
             return Ok("Report sent to pharmacies");
         }
 
-        private void SendToPharmacies(MedicineConsumptionReportDTO report, SftpCredentialsDTO sftpCredentials)
+        private void SendToPharmacies(MedicineConsumptionReportDTO report, string fileName)
         {
             var pharmacies = _pharmacyMasterService.GetPharmacies();
             foreach (Pharmacy pharmacy in pharmacies)
@@ -77,36 +73,27 @@ namespace IntegrationAPI.Controllers
                 request.AddJsonBody(new ReportDTO
                 {
                     ApiKey = pharmacy.ApiKey,
-                    FileName = "Report-" + report.createdDate.Ticks.ToString() + ".txt",
-                    Host = sftpCredentials.Host
+                    FileName = fileName,
+                    Host = _sftpCredentials.Host
                 });
                 client.PostAsync<IActionResult>(request);
             }
         }
-
-        private SftpCredentialsDTO getSftpCredentials()
+        private string SaveMedicineReportToSftpServer(MedicineConsumptionReportDTO report, SftpCredentialsDTO credentials)
         {
-            return new SftpCredentialsDTO
+            IPDFAdapter adapter = new DynamicPDFAdapter();
+            MedicineConsumptionReportToPdfDTO medicineConsumptionReportToPdfDto = new MedicineConsumptionReportToPdfDTO
             {
-                Host = "192.168.0.13",
-                Password = "password",
-                Username = "tester"
+                StartDate = report.startDate,
+                EndDate = report.endDate,
+                CreatedDate = report.createdDate,
+                MedicineConsumptions = report.MedicationExpenditureDTO,
+                HospitalName = _hospitalInfo.Name
             };
-        }
-
-        private void SaveMedicineReportToSftpServer(MedicineConsumptionReportDTO report, SftpCredentialsDTO credentials)
-        {
-            string path = "MedicineReports" + Path.DirectorySeparatorChar + "Report-" +
-                          report.createdDate.Ticks.ToString() + ".txt";
-            SaveFile(report, path);
-            SaveToSftp(path, credentials);
-        }
-        private void SaveFile(MedicineConsumptionReportDTO consumptionReport, string path)
-        {
-            StreamWriter fileSaveStream = new StreamWriter(path);
-            string jsonString = JsonConvert.SerializeObject(consumptionReport);
-            fileSaveStream.Write(jsonString);
-            fileSaveStream.Close();
+            string fileName = adapter.MakeMedicineConsumptionReportPdf(medicineConsumptionReportToPdfDto);
+            string dest = "MedicineReports" + Path.DirectorySeparatorChar + fileName;
+            SaveToSftp(dest, credentials);
+            return fileName;
         }
         private void SaveToSftp(string path, SftpCredentialsDTO credentials)
         {

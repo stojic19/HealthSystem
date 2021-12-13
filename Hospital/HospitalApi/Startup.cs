@@ -12,6 +12,14 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Text.Json.Serialization;
+using Hospital.Database.EfStructures;
+using Hospital.SharedModel.Model;
+using HospitalApi.HttpRequestSenders;
+using HospitalApi.HttpRequestSenders.Implementation;
+using Microsoft.AspNetCore.Identity;
+using Hospital.Schedule.Service.ServiceInterface;
+using Hospital.Schedule.Service;
 
 namespace HospitalApi
 {
@@ -29,7 +37,18 @@ namespace HospitalApi
         {
             services.AddCors(options => options.AddPolicy("MyCorsImplementationPolicy", builder => builder.WithOrigins("*")));
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+               options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
+
+            services.AddControllers().AddJsonOptions(opt =>
+            {
+                opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
+
+            services.AddControllers().AddNewtonsoftJson(options =>
+                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+             );
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -39,6 +58,21 @@ namespace HospitalApi
             });
             var builder = new ContainerBuilder();
             builder.RegisterModule(new DbModule());
+
+            services.AddIdentity<User, IdentityRole<int>>(options =>
+                {
+                    options.SignIn.RequireConfirmedAccount = true;
+                    options.Password.RequireDigit = true;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequiredLength = 6;
+                    options.SignIn.RequireConfirmedAccount = true;
+                })
+                .AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+
+            services.AddScoped<IPatientSurveyService, PatientSurveyService>();
+            services.AddScoped<IScheduledEventsService, ScheduledEventsService>();
+            services.AddScoped<ISurveyService, SurveyService>();
+            
 
             builder.RegisterModule(new RepositoryModule()
             {
@@ -50,8 +84,10 @@ namespace HospitalApi
                 Namespace = "Repository"
 
 
-            }); 
+            });
+            
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
+            builder.RegisterType<HttpRequestSender>().As<IHttpRequestSender>();
             builder.Populate(services);
             var container = builder.Build();
             return new AutofacServiceProvider(container);

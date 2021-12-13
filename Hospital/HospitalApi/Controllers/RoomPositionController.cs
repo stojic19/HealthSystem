@@ -1,5 +1,6 @@
 ﻿using Hospital.GraphicalEditor.Model;
 using Hospital.GraphicalEditor.Repository;
+using Hospital.RoomsAndEquipment.Service;
 using Hospital.SharedModel.Repository.Base;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

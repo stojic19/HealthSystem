@@ -8,6 +8,6 @@ namespace Hospital.Schedule.Repository
 {
     public interface IScheduledEventReadRepository : IReadBaseRepository<int, ScheduledEvent>
     {
-        public IEnumerable<DateTime> GetAvailableAppointments(int doctorId, TimePeriod preferredTimePeriod);
+        public IEnumerable<DateTime> GetAvailableAppointments(int doctorId, DateTime preferredDate);
     }
 }

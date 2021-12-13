@@ -25,18 +25,15 @@ namespace HospitalApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAvailableAppointments([FromQuery(Name = "doctorId")] int doctorId, string startDate, string endDate)
+        public IActionResult GetAvailableAppointments([FromQuery(Name = "doctorId")] int doctorId, string preferredDate)
         {
             try
             {
-                var dateRange = new TimePeriod()
-                {
-                    StartTime = DateTime.Parse(startDate),
-                    EndTime = DateTime.Parse(endDate)
-                };
+
+                var preferredDateTime = DateTime.Parse(preferredDate);
 
                 var eventsRepo = _uow.GetRepository<IScheduledEventReadRepository>();
-                var scheduledEvents = eventsRepo.GetAvailableAppointments(doctorId, dateRange);
+                var scheduledEvents = eventsRepo.GetAvailableAppointments(doctorId, preferredDateTime);
                 return Ok(scheduledEvents);
             }
             catch (Exception)

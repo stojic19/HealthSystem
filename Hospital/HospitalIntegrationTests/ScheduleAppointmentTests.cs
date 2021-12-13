@@ -38,29 +38,29 @@ namespace HospitalIntegrationTests
             doctors.First().SpecializationId.ShouldBe(doctor.Specialization.Id);
         }
 
-        [Fact]
-        public async Task Should_return_available_appointments()
-        {
-            // arrange
-            var dateRange = new TimePeriod()
-            {
-                StartTime = new DateTime(2021, 12, 9, 08, 00, 00),
-                EndTime = new DateTime(2021, 12, 10, 18, 00, 00)
-            };
-            var doctor = InsertDoctors();
+        //[Fact]
+        //public async Task Should_return_available_appointments()
+        //{
+        //    // arrange
+        //    var dateRange = new TimePeriod()
+        //    {
+        //        StartTime = new DateTime(2021, 12, 9, 08, 00, 00),
+        //        EndTime = new DateTime(2021, 12, 10, 18, 00, 00)
+        //    };
+        //    var doctor = InsertDoctors();
 
-            // act
-            var response = await Client.GetAsync(BaseUrl + "api/ScheduledEvent/GetAvailableAppointments?specializationId=" + doctor.Specialization.Id +
-                                                 "&startDate=" + dateRange.StartTime.ToString() + "&endDate=" + dateRange.EndTime.ToString());
-            var responseContent = await response.Content.ReadAsStringAsync();
-            var availableAppointments = JsonConvert.DeserializeObject<IEnumerable<DateTime>>(responseContent).ToList();
+        //    // act
+        //    var response = await Client.GetAsync(BaseUrl + "api/ScheduledEvent/GetAvailableAppointments?specializationId=" + doctor.Specialization.Id +
+        //                                         "&startDate=" + dateRange.StartTime.ToString() + "&endDate=" + dateRange.EndTime.ToString());
+        //    var responseContent = await response.Content.ReadAsStringAsync();
+        //    var availableAppointments = JsonConvert.DeserializeObject<IEnumerable<DateTime>>(responseContent).ToList();
 
-            // assert 
-            response.StatusCode.ShouldBe(HttpStatusCode.OK);
-            response.Content.ShouldNotBeNull();
-            availableAppointments.Count.ShouldNotBe(0);
-            availableAppointments.Count.ShouldBe(21);
-        }
+        //    // assert 
+        //    response.StatusCode.ShouldBe(HttpStatusCode.OK);
+        //    response.Content.ShouldNotBeNull();
+        //    availableAppointments.Count.ShouldNotBe(0);
+        //    availableAppointments.Count.ShouldBe(21);
+        //}
 
         [Fact]
         public async Task Schedule_appointment_should_return_200_OK()

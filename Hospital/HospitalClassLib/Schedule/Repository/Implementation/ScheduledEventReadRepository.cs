@@ -18,10 +18,10 @@ namespace Hospital.Schedule.Repository.Implementation
             _context = context;
         }
 
-        public IEnumerable<DateTime> GetAvailableAppointments(int doctorId, TimePeriod preferredTimePeriod)
+        public IEnumerable<DateTime> GetAvailableAppointments(int doctorId, DateTime preferredDate)
         {
             var allAppointments = new List<DateTime>();
-            for (var date = preferredTimePeriod.StartTime; date < preferredTimePeriod.EndTime; date = date.AddHours(1))
+            for (var date = preferredDate; date < preferredDate.AddHours(19); date = date.AddHours(1))
             {
                 if (date.Hour is > StartHour and < EndHour)
                 {

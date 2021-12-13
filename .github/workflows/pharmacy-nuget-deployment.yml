@@ -1,19 +1,19 @@
-name: Automated deployment of hospital nuget
+name: Automated deployment of pharmacy nuget
 
 on:
   push:
     branches: 
+      - '!nuget/hospital'
       - '!nuget/integration'
-      - '!nuget/pharmacy'
       - '!feature/**'
       - '!bugfix/**'
       - '!master'
       - '!development'
     tags:
-      - 'v**-snapshot'
+      - 'v**-alpha'
 
 env:
-  HOSPITAL-DLL-PATH : 'Hospital/HospitalClassLib/Hospital.csproj'
+  PHARMACY-DLL-PATH : 'Pharmacy/Pharmacy/Pharmacy.csproj'
   OUTPUT-DLL-DIR : '${{ github.workspace }}\output'
   NUGET-SOURCE-URL : 'https://api.nuget.org/v3/index.json'
 
@@ -34,7 +34,7 @@ jobs:
 
       - name : Restore and build packages
         id : build-results
-        run : dotnet build ${{ env.HOSPITAL-DLL-PATH }} --configuration Release
+        run : dotnet build ${{ env.PHARMACY-DLL-PATH }} --configuration Release
 
       - name : Determining the version
         id : get_version
@@ -46,7 +46,7 @@ jobs:
           echo ${{ steps.get_version.outputs.version-without-v }}
       
       - name : Packaging the dll
-        run: dotnet pack ${{ env.HOSPITAL-DLL-PATH }} --no-restore --no-build --configuration Release  -p:PackageVersion=${{steps.get_version.outputs.version-without-v}} --output ${{ env.OUTPUT-DLL-DIR }}
+        run: dotnet pack ${{ env.PHARMACY-DLL-PATH }} --no-restore --no-build --configuration Release  -p:PackageVersion=${{steps.get_version.outputs.version-without-v}} --output ${{ env.OUTPUT-DLL-DIR }}
 
       - name : Pushing to nuget repository
         run: dotnet nuget push ${{ env.OUTPUT-DLL-DIR }}/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s ${{ env.NUGET-SOURCE-URL }}

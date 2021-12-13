@@ -8,20 +8,14 @@ services:
       dockerfile: Stacks/Build/Gateway/Dockerfile
       target: gatewayWithFront
       args:
-        - HOSPITAL_API_URL=http://127.0.0.1:80/hospitalapi/
+        - HOSPITAL_API_URL=hospitalapi:80
     restart: on-failure
-    networks:
-      - public
-      - application
     ports:
       - 8080:8080
     depends_on:
       - hospitalapi
 
   hospitalapi:
-    networks:
-      - application
-      - database
     build:
       dockerfile: Stacks/Build/Hospital/Dockerfile
       context: ../
@@ -40,8 +34,6 @@ services:
 
 
   database:
-    networks:
-      - database
     image: postgres:13
     restart: always
     environment:
@@ -63,14 +55,3 @@ services:
 volumes:
   database-data:
   # web-sql:
-
-networks:
-  public:
-    name: public
-    driver: bridge
-  application:
-    name: application
-    driver: bridge
-  database:
-    name: database
-    driver: bridge

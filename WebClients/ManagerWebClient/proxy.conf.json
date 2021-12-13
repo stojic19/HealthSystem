@@ -1,6 +1,6 @@
 {
     "/api/*": {
-      "target": "https://localhost:44303/",
+      "target": "/manager/",
       "secure": false,
       "changeOrigin": true
     }

@@ -1,0 +1,43 @@
+<div class="container mb-3">
+    <div class="text-center">
+        <img [src]="imageSrc" class="text-center mb-3" style="height: 200px; width:200px" alt="...">
+    </div>
+    <div class="media-body ml-4">
+        <input type="file" (change)="onFileChange($event)" class="form-control">
+    </div>
+</div>
+<div class="container mb-3">
+  <div class="form-group mb-3">
+    <label class="form-label">Pharmacy Name:</label>
+    <input type="text" class="form-control mb-1" [(ngModel)]="pharmacy.name">
+  </div>
+  <div class="form-group mb-3">
+    <label class="form-label">Street Number:</label>
+    <input type="text" class="form-control"[(ngModel)]="pharmacy.streetNumber">
+  </div>
+  <div class="form-group mb-3">
+    <label class="form-label">Street Name:</label>
+    <input type="text" class="form-control mb-1" [(ngModel)]="pharmacy.streetName">
+  </div>
+  <div class="form-group mb-3">
+    <label class="form-label">City Name:</label>
+    <input type="text" class="form-control" [(ngModel)]="pharmacy.city.name">
+  </div>
+    <div class="form-group mb-3">
+      <label class="form-label">Postal Code:</label>
+      <input type="text" class="form-control" [(ngModel)]="pharmacy.city.postalCode">
+    </div>
+    <div class="form-group mb-3">
+      <label class="form-label">Country:</label>
+      <input type="text" class="form-control" [(ngModel)]="pharmacy.city.country.name">
+    </div>
+    <div class="form-group mb-3">
+      <label class="form-label">Description:</label>
+      <textarea type="text" class="form-control" [(ngModel)]="pharmacy.description" rows="5"></textarea>
+    </div>
+    <div class="form-group">
+      <button (click)="UpdatePharmacy()" class="btn btn-primary">
+        <strong>Update</strong>
+      </button>
+    </div>
+</div>

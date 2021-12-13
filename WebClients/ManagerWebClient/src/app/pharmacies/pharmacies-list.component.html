@@ -23,7 +23,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor='let pharmacy of pharmacies'>
+                <tr *ngFor='let pharmacy of pharmacies' (dblclick)="doubleClickFunction(pharmacy.id)">
                     <td>{{pharmacy.id}}</td>
                     <td>{{pharmacy.name}}</td>
                     <td>{{pharmacy.streetName}} {{pharmacy.streetNumber}}, {{pharmacy.city.name}}</td>

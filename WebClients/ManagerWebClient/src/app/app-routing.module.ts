@@ -24,6 +24,7 @@ import { SurveysObserveComponent } from './components/surveys-observe/surveys-ob
 import { SurveySectionObserveComponent } from './components/survey-section-observe/survey-section-observe.component';
 import { RatingDecimalComponent } from './components/rating-decimal/rating-decimal.component';
 import { MedicineSpecificationListComponent } from './medicine-specification-requests/medicine-specification-list/medicine-specification-list.component';
+import { PharmacyProfileComponent } from './pharmacies/pharmacy-profile/pharmacy-profile.component';
 import { RenovationFormComponent } from './renovation-form/renovation-form.component';
 import { RoomScheduleComponent } from './room-schedule/room-schedule.component';
 
@@ -45,6 +46,7 @@ const routes: Routes = [
   { path: 'complaint-add', component: AddComplaintComponent },
   { path: 'pharmacy-register', component: RegisterPharmacyComponent },
   { path: 'pharmacy-list', component: PharmaciesListComponent },
+  { path: 'pharmacy-profile/:id', component: PharmacyProfileComponent },
   { path: 'benefit-list', component: BenefitListComponent },
   { path: 'benefit/:id', component: BenefitDetailsComponent },
   { path: 'home', component: HomePageComponent },

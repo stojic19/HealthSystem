@@ -47,8 +47,7 @@ namespace Pharmacy.Services
         public void ConfirmTenderOffer(Guid hospitalApiKey, int tenderOfferId)
         {
             TenderOffer tenderOffer = _uow.GetRepository<ITenderOfferReadRepository>().GetById(tenderOfferId);
-            if (tenderOffer == null) throw new TenderNotFoundException();
-            if (tenderOffer.IsConfirmed) throw new TenderAlreadyEnabledException();
+            CheckTender(tenderOffer);
 
 
             Hospital hospital = _uow.GetRepository<IHospitalReadRepository>()
@@ -65,6 +64,22 @@ namespace Pharmacy.Services
             _uow.GetRepository<IMedicineWriteRepository>().Update(medicine);
             _uow.GetRepository<ITenderOfferWriteRepository>().Update(tenderOffer);
 
+        }
+
+        public double GetTenderPrice(int tenderOfferId)
+        {
+            TenderOffer tenderOffer = _uow.GetRepository<ITenderOfferReadRepository>().GetById(tenderOfferId);
+            CheckTender(tenderOffer);
+
+            if(tenderOffer.Medicine.Quantity < tenderOffer.Quantity) throw new MedicineUnavailableException();
+
+            return tenderOffer.Medicine.Price * tenderOffer.Quantity;
+        }
+
+        private static void CheckTender(TenderOffer tenderOffer)
+        {
+            if (tenderOffer == null) throw new TenderNotFoundException();
+            if (tenderOffer.IsConfirmed) throw new TenderAlreadyEnabledException();
         }
 
     }

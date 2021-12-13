@@ -44,7 +44,7 @@ namespace IntegrationAPI.Controllers
             pharmacy.City = new City { PostalCode = updatePharmacyDTO.PostalCode, Name = updatePharmacyDTO.CityName, Country = new Country { Name = updatePharmacyDTO.CountryName } };
             pharmacy.Description = updatePharmacyDTO.Description;
             pharmacy.ImageName = updatePharmacyDTO.ImageName;
-            //_pharmacyMasterService.UpdatePharmacy(pharmacy);
+            _pharmacyMasterService.UpdatePharmacy(pharmacy);
 
             return Ok();
         }

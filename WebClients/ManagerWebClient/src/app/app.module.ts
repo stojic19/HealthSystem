@@ -33,7 +33,6 @@ import { MoveInfoComponent } from './equipment-form/move-info/move-info.componen
 import { FreeTermsComponent } from './equipment-form/free-terms/free-terms.component';
 import { SearchBarComponent } from './first-building/search-bar/search-bar.component';
 
-import { QuestionObserveComponent } from './components/question-observe/question-observe.component';
 import { RatingDecimalComponent } from './components/rating-decimal/rating-decimal.component';
 
 import { RoomInventoryComponent } from './room-inventory/room-inventory.component';
@@ -63,6 +62,7 @@ import { RoomScheduleComponent } from './room-schedule/room-schedule.component';
 import { ConfirmDialogComponent } from './room-schedule/confirm-dialog/confirm-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DetailsDialogComponent } from './room-schedule/details-dialog/details-dialog.component';
+import { AvailableTermsComponent } from './renovation-form/available-terms/available-terms.component';
 
 @NgModule({
   declarations: [

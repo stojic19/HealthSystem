@@ -12,11 +12,10 @@ namespace HospitalUnitTests
     {
         public RegistrationTests(BaseFixture fixture) : base(fixture)
         {
-
         }
 
         [Fact]
-        public void should_return_doctors_with_ids_2_and_3()
+        public void Should_return_doctors_with_ids_2_and_3()
         {
             ClearDbContext();
             Context.Doctors.Add(new Doctor()
@@ -67,13 +66,9 @@ namespace HospitalUnitTests
                 Id = 7,
                 DoctorId = 3
             });
-
-
-
             Context.SaveChanges();
 
-
-            var doctors = UoW.GetRepository<IDoctorReadRepository>().GetNonOverloadedDoctors();
+            var doctors = UoW.GetRepository<IDoctorReadRepository>().GetNonOverloadedDoctors().ToList();
 
             doctors.ShouldNotBeNull();
             doctors.Count().ShouldBe(2);

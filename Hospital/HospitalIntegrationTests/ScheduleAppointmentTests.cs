@@ -45,17 +45,14 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Should_return_available_appointments()
         {
-            // arrange
             var preferredDate = new DateTime(2021, 12, 18);
             var doctor = InsertDoctors();
-
-            // act
+            
             var response = await Client.GetAsync(BaseUrl + "api/ScheduledEvent/GetAvailableAppointments?specializationId=" + doctor.Specialization.Id +
                                                  "&preferredDate=" + preferredDate.ToString());
             var responseContent = await response.Content.ReadAsStringAsync();
             var availableAppointments = JsonConvert.DeserializeObject<IEnumerable<DateTime>>(responseContent).ToList();
-
-            // assert 
+            
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
             response.Content.ShouldNotBeNull();
             availableAppointments.Count.ShouldNotBe(0);

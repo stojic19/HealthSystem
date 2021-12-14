@@ -37,7 +37,7 @@ namespace Hospital.Schedule.Service
         public IEnumerable<DateTime> GetAvailableAppointments(int doctorId, DateTime preferredDate)
         {
             var availableTerms = new List<DateTime>();
-            for (var date = preferredDate.AddHours(StartHour); date < preferredDate.AddHours(EndHour); date = date.AddHours(1))
+            for (var date = preferredDate.AddHours(StartHour); date < preferredDate.AddHours(EndHour); date = date.AddMinutes(30))
             {
                 if(UoW.GetRepository<IScheduledEventReadRepository>().IsDoctorAvailableInTerm(doctorId, date))
                         availableTerms.Add(date);

@@ -59,7 +59,7 @@ namespace HospitalIntegrationTests
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
             response.Content.ShouldNotBeNull();
             availableAppointments.Count.ShouldNotBe(0);
-            availableAppointments.Count.ShouldBe(8);
+            availableAppointments.Count.ShouldBe(16);
         }
 
         [Fact]

@@ -37,13 +37,13 @@ namespace HospitalUnitTests
                 new ScheduledEvent()
                 {
                     StartDate = new DateTime(2022, 12, 10, 7, 00, 00),
-                    EndDate = new DateTime(2022, 12, 10, 8, 00, 00),
+                    EndDate = new DateTime(2022, 12, 10, 7, 30, 00),
                     DoctorId = 1,
                 });            
             
             Context.SaveChanges();
 
-            var preferredDate = new DateTime(2021, 12, 10, 10, 00, 00);
+            var preferredDate = new DateTime(2021, 12, 10);
 
             var doctor = UoW.GetRepository<IDoctorReadRepository>().GetAll().Include(d => d.Specialization)
                 .FirstOrDefault(s => s.Specialization.Name.ToLower().Equals("general practice"));
@@ -73,7 +73,7 @@ namespace HospitalUnitTests
                 new ScheduledEvent()
                 {
                     StartDate = new DateTime(2022, 12, 10, 7, 00, 00),
-                    EndDate = new DateTime(2022, 12, 10, 8, 00, 00),
+                    EndDate = new DateTime(2022, 12, 10, 7, 30, 00),
                     DoctorId = 1,
                     IsCanceled = false
                 });
@@ -100,7 +100,7 @@ namespace HospitalUnitTests
                 new ScheduledEvent()
                 {
                     StartDate = new DateTime(2022, 12, 9, 13, 00, 00),
-                    EndDate = new DateTime(2022, 12, 9, 14, 00, 00),
+                    EndDate = new DateTime(2022, 12, 9, 13, 30, 00),
                     Doctor = new Doctor()
                     {
                         Id = 1,
@@ -112,7 +112,7 @@ namespace HospitalUnitTests
                 new ScheduledEvent()
                 {
                     StartDate = new DateTime(2022, 12, 10, 15, 00, 00),
-                    EndDate = new DateTime(2022, 12, 10, 16, 00, 00),
+                    EndDate = new DateTime(2022, 12, 10, 15, 30, 00),
                     Doctor = new Doctor()
                     {
                         Id = 2,
@@ -128,7 +128,7 @@ namespace HospitalUnitTests
 
             Context.SaveChanges();
 
-            var preferredDate = new DateTime(2021, 12, 9, 08, 00, 00);
+            var preferredDate = new DateTime(2021, 12, 9);
 
             var doctor = UoW.GetRepository<IDoctorReadRepository>().GetAll().Include(d => d.Specialization)
                 .FirstOrDefault(s => s.Specialization.Name.ToLower().Equals("general practice"));
@@ -137,7 +137,7 @@ namespace HospitalUnitTests
             var scheduledEvents = service.GetAvailableAppointments(doctor.Id, preferredDate);
 
             scheduledEvents.ShouldNotBeNull();
-            scheduledEvents.Count().ShouldBe(8);
+            scheduledEvents.Count().ShouldBe(16);
         }
 
 
@@ -161,14 +161,27 @@ namespace HospitalUnitTests
                 new ScheduledEvent()
                 {
                     StartDate = new DateTime(2022, 12, 10, 7, 00, 00),
+                    EndDate = new DateTime(2022, 12, 10, 7, 30, 00),
+                    DoctorId = 1
+                });
+            Context.ScheduledEvents.Add(
+                new ScheduledEvent()
+                {
+                    StartDate = new DateTime(2022, 12, 10, 7, 30, 00),
                     EndDate = new DateTime(2022, 12, 10, 8, 00, 00),
                     DoctorId = 1
                 });
-
             Context.ScheduledEvents.Add(
                 new ScheduledEvent()
                 {
                     StartDate = new DateTime(2022, 12, 10, 8, 00, 00),
+                    EndDate = new DateTime(2022, 12, 10, 8, 30, 00),
+                    DoctorId = 1
+                });
+            Context.ScheduledEvents.Add(
+                new ScheduledEvent()
+                {
+                    StartDate = new DateTime(2022, 12, 10, 8, 30, 00),
                     EndDate = new DateTime(2022, 12, 10, 9, 00, 00),
                     DoctorId = 1
                 });
@@ -176,6 +189,13 @@ namespace HospitalUnitTests
                 new ScheduledEvent()
                 {
                     StartDate = new DateTime(2022, 12, 10, 9, 00, 00),
+                    EndDate = new DateTime(2022, 12, 10, 9, 30, 00),
+                    DoctorId = 1
+                });
+            Context.ScheduledEvents.Add(
+                new ScheduledEvent()
+                {
+                    StartDate = new DateTime(2022, 12, 10, 9, 30, 00),
                     EndDate = new DateTime(2022, 12, 10, 10, 00, 00),
                     DoctorId = 1
                 });
@@ -183,6 +203,13 @@ namespace HospitalUnitTests
                 new ScheduledEvent()
                 {
                     StartDate = new DateTime(2022, 12, 10, 10, 00, 00),
+                    EndDate = new DateTime(2022, 12, 10, 10, 30, 00),
+                    DoctorId = 1
+                });
+            Context.ScheduledEvents.Add(
+                new ScheduledEvent()
+                {
+                    StartDate = new DateTime(2022, 12, 10, 10, 30, 00),
                     EndDate = new DateTime(2022, 12, 10, 11, 00, 00),
                     DoctorId = 1
                 });
@@ -190,6 +217,13 @@ namespace HospitalUnitTests
                 new ScheduledEvent()
                 {
                     StartDate = new DateTime(2022, 12, 10, 11, 00, 00),
+                    EndDate = new DateTime(2022, 12, 10, 11, 30, 00),
+                    DoctorId = 1
+                });
+            Context.ScheduledEvents.Add(
+                new ScheduledEvent()
+                {
+                    StartDate = new DateTime(2022, 12, 10, 11, 30, 00),
                     EndDate = new DateTime(2022, 12, 10, 12, 00, 00),
                     DoctorId = 1
                 });
@@ -197,6 +231,13 @@ namespace HospitalUnitTests
                 new ScheduledEvent()
                 {
                     StartDate = new DateTime(2022, 12, 10, 12, 00, 00),
+                    EndDate = new DateTime(2022, 12, 10, 12, 30, 00),
+                    DoctorId = 1
+                });
+            Context.ScheduledEvents.Add(
+                new ScheduledEvent()
+                {
+                    StartDate = new DateTime(2022, 12, 10, 12, 30, 00),
                     EndDate = new DateTime(2022, 12, 10, 13, 00, 00),
                     DoctorId = 1
                 });
@@ -204,6 +245,13 @@ namespace HospitalUnitTests
                 new ScheduledEvent()
                 {
                     StartDate = new DateTime(2022, 12, 10, 13, 00, 00),
+                    EndDate = new DateTime(2022, 12, 10, 13, 30, 00),
+                    DoctorId = 1
+                });
+            Context.ScheduledEvents.Add(
+                new ScheduledEvent()
+                {
+                    StartDate = new DateTime(2022, 12, 10, 13, 30, 00),
                     EndDate = new DateTime(2022, 12, 10, 14, 00, 00),
                     DoctorId = 1
                 });
@@ -211,11 +259,17 @@ namespace HospitalUnitTests
                 new ScheduledEvent()
                 {
                     StartDate = new DateTime(2022, 12, 10, 14, 00, 00),
-                    EndDate = new DateTime(2022, 12, 10, 15, 00, 00),
+                    EndDate = new DateTime(2022, 12, 10, 14, 30, 00),
                     DoctorId = 1
                 });
 
-
+            Context.ScheduledEvents.Add(
+                new ScheduledEvent()
+                {
+                    StartDate = new DateTime(2022, 12, 10, 14, 30, 00),
+                    EndDate = new DateTime(2022, 12, 10, 15, 00, 00),
+                    DoctorId = 1
+                });
             Context.SaveChanges();
 
             var preferredDate = new DateTime(2022, 12, 10);

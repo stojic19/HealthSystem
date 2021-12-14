@@ -1,6 +1,6 @@
 {
     "/api/*": {
-      "target": "/manager/",
+      "target": "http://localhost:8080/manager",
       "secure": false,
       "changeOrigin": true
     }

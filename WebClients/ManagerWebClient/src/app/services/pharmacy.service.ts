@@ -2,12 +2,13 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { IMedicineResponse } from "../interfaces/medicineResponse";
+import { environment } from "src/environments/environment";
 
 
 @Injectable()
 export class PharmacyService{
 
-    private _APIUrl = 'https://localhost:44302/api';  //uneti url za http get zahtev!
+    private _APIUrl = `${environment.baseUrl}`;  //uneti url za http get zahtev!
     
     constructor(private _httpClient: HttpClient) {}
 

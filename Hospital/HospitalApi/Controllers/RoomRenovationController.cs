@@ -34,12 +34,20 @@ namespace HospitalApi.Controllers
         public IActionResult GetSurroundingRoomsForRoom([FromQuery(Name = "roomId")] int roomId)
         {
             var surroundingRoomsService = new FindingSurroundingRoomsService(_uow);
-            var roomPosition = _uow.GetRepository<IRoomPositionReadRepository>().GetByRoom(roomId);
+           
             if (roomId <= 0)
             {
-
                 return BadRequest();
             }
+
+            var room = _uow.GetRepository<IRoomReadRepository>().GetById(roomId);
+
+            if (room == null) {
+                return BadRequest();
+            }
+
+            var roomPosition = _uow.GetRepository<IRoomPositionReadRepository>().GetByRoom(roomId);
+
             return Ok(surroundingRoomsService.GetSurroundingRooms(roomPosition));
         }
 

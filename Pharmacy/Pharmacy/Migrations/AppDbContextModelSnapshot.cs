@@ -211,6 +211,9 @@ namespace Pharmacy.Migrations
                     b.Property<string>("Precautions")
                         .HasColumnType("text");
 
+                    b.Property<double>("Price")
+                        .HasColumnType("double precision");
+
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
 
@@ -297,6 +300,37 @@ namespace Pharmacy.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Substances");
+                });
+
+            modelBuilder.Entity("Pharmacy.Model.TenderOffer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("HospitalId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsConfirmed")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("MedicineId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HospitalId");
+
+                    b.HasIndex("MedicineId");
+
+                    b.ToTable("TenderOffer");
                 });
 
             modelBuilder.Entity("MedicineSubstance", b =>
@@ -399,6 +433,25 @@ namespace Pharmacy.Migrations
                     b.Navigation("Hospital");
                 });
 
+            modelBuilder.Entity("Pharmacy.Model.TenderOffer", b =>
+                {
+                    b.HasOne("Pharmacy.Model.Hospital", "Hospital")
+                        .WithMany("TenderOffers")
+                        .HasForeignKey("HospitalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Pharmacy.Model.Medicine", "Medicine")
+                        .WithMany("TenderOffers")
+                        .HasForeignKey("MedicineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Hospital");
+
+                    b.Navigation("Medicine");
+                });
+
             modelBuilder.Entity("Pharmacy.Model.Country", b =>
                 {
                     b.Navigation("Cities");
@@ -407,6 +460,13 @@ namespace Pharmacy.Migrations
             modelBuilder.Entity("Pharmacy.Model.Hospital", b =>
                 {
                     b.Navigation("Complaints");
+
+                    b.Navigation("TenderOffers");
+                });
+
+            modelBuilder.Entity("Pharmacy.Model.Medicine", b =>
+                {
+                    b.Navigation("TenderOffers");
                 });
 #pragma warning restore 612, 618
         }

@@ -5,6 +5,9 @@ import { ISurvey } from 'src/app/interfaces/isurvey';
 import { IScheduledEvent } from 'src/app/interfaces/scheduled-event';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { IAnsweredSurvey } from 'src/app/interfaces/answered-survey';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { IAppointment } from 'src/app/interfaces/appointment';
+import { AppointmentService } from 'src/app/services/AppointmentService/appointment.service';
 
 
 
@@ -17,12 +20,14 @@ export class SurveyPageComponent implements OnInit {
 
   survey!: ISurvey;
   numberOfSurveys!: number;
-  scheduledEvent!: IScheduledEvent;
+  scheduledEvent!: IAppointment;
   answeredQuestions!: IAnsweredQuestion[];
   totalQuestions!: number;
   answeredSurvey!: IAnsweredSurvey;
+  appointmentId: any;
 
-  constructor(private snackBar: MatSnackBar, private surveyService: SurveyService) {
+  constructor(private snackBar: MatSnackBar,private appointmentService:AppointmentService, private surveyService: SurveyService, private route: ActivatedRoute,
+    private _router: Router) {
     this.answeredQuestions = [];
 
   }
@@ -52,6 +57,8 @@ export class SurveyPageComponent implements OnInit {
         verticalPosition: 'bottom'
 
       });
+      this._router.navigate(['/record']);
+      
     } else {
       this.snackBar.open("You need to answer all questions. ", '', {
         duration: 3000,
@@ -62,13 +69,12 @@ export class SurveyPageComponent implements OnInit {
   }
   ngOnInit(): void {
 
-    this.scheduledEvent = {
-      id: 2,
-      isDone: true,
-      startDate: new Date('October 17, 2021 15:30:00'),
-      endDate: new Date('October 17, 2021 16:24:00')
-
-    }
+    this.appointmentId = this.route.snapshot.paramMap.get('appointmentId');
+    console.log(this.appointmentId);
+      
+    this.appointmentService.getAppointment(this.appointmentId).subscribe((res:IAppointment)=>{
+      this.scheduledEvent = res;
+    })
 
     this.surveyService.getSurvey().subscribe((res: ISurvey) => {
       this.survey = res;

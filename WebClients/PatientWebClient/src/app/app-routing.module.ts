@@ -36,7 +36,7 @@ const routes: Routes = [
         component: AppointmentsPageComponent
       },
       {
-        path:'surveys',
+        path:'survey/:appointmentId',
         component: SurveyPageComponent
       }
     ],

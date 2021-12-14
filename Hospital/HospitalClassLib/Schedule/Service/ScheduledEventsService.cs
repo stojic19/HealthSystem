@@ -1,8 +1,8 @@
 ﻿using Hospital.Schedule.Model;
+using Hospital.Schedule.Model.Wrappers;
 using Hospital.Schedule.Repository;
 using Hospital.Schedule.Service.ServiceInterface;
 using Hospital.SharedModel.Repository.Base;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,31 +15,69 @@ namespace Hospital.Schedule.Service
         {
             this.UoW = UoW;
         }
+
+        public List<ScheduledEvent> getCanceledUserEvents(int userId)
+        {
+            return UoW.GetRepository<IScheduledEventReadRepository>().GetCanceledUserEvents(userId);
+        }
+
         public List<ScheduledEvent> getFinishedUserEvents(int userId)
         {
-            return UoW.GetRepository<IScheduledEventReadRepository>().GetAll()
-                        .Where(x => x.IsDone && x.Patient.Id == userId)
-                        .ToList();
+
+            return UoW.GetRepository<IScheduledEventReadRepository>().GetFinishedUserEvents(userId);
+           
+
+        }
+        public List<EventForSurvey> getEventsForSurvey(int userId)
+        {
+
+            var events = UoW.GetRepository<IScheduledEventReadRepository>().GetFinishedUserEvents(userId);
+            var ansveredSurveyRepo = UoW.GetRepository<IAnsweredSurveyReadRepository>();
+            List<EventForSurvey> eventsForSurveys = new List<EventForSurvey>();
+            foreach (ScheduledEvent scheduledEvent in events)
+            {
+                var survey = ansveredSurveyRepo.GetAll().Where(x => x.ScheduledEventId == scheduledEvent.Id).FirstOrDefault();
+
+                EventForSurvey eventForSurvey = new EventForSurvey();
+                eventForSurvey.scheduledEvent = scheduledEvent;
+                if (survey == null) { 
+
+                eventForSurvey.answeredSurveyId = -1;
+                }
+                else
+                {
+                    eventForSurvey.answeredSurveyId = survey.Id;
+                }
+                eventsForSurveys.Add(eventForSurvey);
+            }
+            return eventsForSurveys;
+
         }
 
         public int getNumberOfFinishedEvents(int userId)
         {
-            var count = UoW.GetRepository<IScheduledEventReadRepository>().GetAll()
-                        .Where(x => x.IsDone && x.Patient.Id == userId)
-                        .GroupBy(t => t.Patient)
-                        .Select(g => g.Count());
+            return UoW.GetRepository<IScheduledEventReadRepository>().GetNumberOfFinishedEvents(userId);
+        }
 
-            return count.FirstOrDefault();
+        public ScheduledEvent GetScheduledEvent(int eventId)
+        {
+            return UoW.GetRepository<IScheduledEventReadRepository>().GetScheduledEvent(eventId);
+        }
+
+        public List<ScheduledEvent> getUpcomingUserEvents(int userId)
+        {
+            return UoW.GetRepository<IScheduledEventReadRepository>().GetUpcomingUserEvents(userId);
         }
 
         public void updateFinishedUserEvents()
         {
-      
-             UoW.GetRepository<IScheduledEventReadRepository>().GetAll()
-                         .Where(x => x.IsDone==false &&  DateTime.Compare(x.EndDate,DateTime.Now) < 0)
-                         .ToList()
-                         .ForEach(one => one.IsDone = true);
+            var finishedUserEvents = UoW.GetRepository<IScheduledEventReadRepository>().UpdateFinishedUserEvents();
 
+            if (finishedUserEvents.Count != 0)
+            {
+                finishedUserEvents.ForEach(one => one.IsDone = true);
+                UoW.SaveChanges();
+            }
         }
     }
 }

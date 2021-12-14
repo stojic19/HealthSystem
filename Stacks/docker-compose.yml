@@ -6,7 +6,7 @@ services:
     build:
       context: ../
       dockerfile: Stacks/Build/Gateway/Dockerfile
-      target: gatewayWithFront
+      target: gateway
       args:
         - HOSPITAL_API_URL=hospitalapi:80
     restart: on-failure
@@ -31,6 +31,22 @@ services:
     #     source: web-sql
     #     target: /app/sql
       
+
+  patient-ui:
+    build:
+      context: ../
+      dockerfile: Stacks/Build/PatientUi/Dockerfile
+    ports:
+      - "8081:8081"
+    container_name: patient-ui
+
+  manager-ui:
+    build:
+      context: ../
+      dockerfile: Stacks/Build/ManagerUi/Dockerfile
+    ports:
+      - "8082:8082"
+    container_name: manager-ui
 
 
   database:

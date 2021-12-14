@@ -1,11 +1,12 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from "src/environments/environment";
 
 
 @Injectable()
 export class ComplaintsService{
-    private _APIUrl = 'http://localhost:5000/api';  //uneti url za http get zahtev!
+    private _APIUrl = `${environment.baseUrl}`;  //uneti url za http get zahtev!
     
     constructor(private _httpClient: HttpClient) {}
 

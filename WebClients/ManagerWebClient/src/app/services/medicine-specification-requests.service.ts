@@ -1,12 +1,13 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
+import { environment } from "src/environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class MedicineSpecificationRequestsService {
-  private _APIUrl = 'https://localhost:44302/api';
+  private _APIUrl = `${environment.baseUrl}`;
   constructor(private _httpClient: HttpClient) { }
   
   getPharmacies(): Observable<any[]>

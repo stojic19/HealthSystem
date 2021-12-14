@@ -2,47 +2,29 @@
   <mat-stepper [linear]="true" orientation="horizontal" #stepper>
     <mat-step [stepControl]="firstFormGroup">
       <form [formGroup]="firstFormGroup">
-        <ng-template matStepLabel>Choose a time period</ng-template>
+        <ng-template matStepLabel>Choose a date</ng-template>
         <mat-form-field appearance="fill" class="example-form-field">
-          <mat-label>Enter a date range</mat-label>
-          <mat-date-range-input [rangePicker]="rangePicker">
-            <input
-              matStartDate
-              placeholder="Start date"
-              #dateRangeStart
-              formControlName="start"
-              required
-            />
-            <input
-              matEndDate
-              placeholder="End date"
-              #dateRangeEnd
-              formControlName="end"
-              (dateChange)="dateRangeChange(dateRangeStart, dateRangeEnd)"
-            />
-          </mat-date-range-input>
+          <mat-label>Enter a date</mat-label>
+          <input
+            matInput
+            #dateStart
+            [matDatepicker]="picker"
+            [min]="minDate"
+            formControlName="start"
+            (dateChange)="dateChange(dateStart)"
+          />
           <mat-datepicker-toggle
             matSuffix
-            [for]="rangePicker"
+            [for]="picker"
           ></mat-datepicker-toggle>
-          <mat-date-range-picker #rangePicker>
-            <mat-date-range-picker-actions>
-              <button mat-button matDateRangePickerCancel>Cancel</button>
-              <button mat-raised-button color="primary" matDateRangePickerApply>
-                Apply
-              </button>
-            </mat-date-range-picker-actions>
-          </mat-date-range-picker>
+          <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
         <div>
           <button mat-button matStepperNext>Next</button>
         </div>
       </form>
     </mat-step>
-    <mat-step
-      [stepControl]="secondFormGroup"
-      label="Choose doctor's speciality"
-    >
+    <mat-step [stepControl]="secondFormGroup" label="Choose doctor's specialty">
       <form [formGroup]="secondFormGroup">
         <mat-form-field appearance="fill">
           <mat-label>Specialities</mat-label>

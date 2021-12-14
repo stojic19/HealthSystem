@@ -17,8 +17,7 @@ import { Router } from '@angular/router';
   providers: [DatePipe],
 })
 export class BasicAppointmentComponent implements OnInit {
-  startDate!: string;
-  endDate!: string;
+  preferredDate!: string;
   doctors!: IChosenDoctor[];
   newAppointment!: INewAppointment;
   specializations!: ISpecialization[];
@@ -27,6 +26,7 @@ export class BasicAppointmentComponent implements OnInit {
   secondFormGroup!: FormGroup;
   thirdFormGroup!: FormGroup;
   fourthFormGroup!: FormGroup;
+  minDate!: Date;
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -38,14 +38,12 @@ export class BasicAppointmentComponent implements OnInit {
     private router: Router
   ) {
     this.newAppointment = {} as INewAppointment;
+    this.minDate = new Date();
   }
 
   ngOnInit(): void {
     this.firstFormGroup = this._formBuilder.group({
       start: ['', Validators.required],
-    });
-    this.firstFormGroup = this._formBuilder.group({
-      end: ['', Validators.required],
     });
     this.secondFormGroup = this._formBuilder.group({
       secondCtrl: ['', Validators.required],
@@ -68,46 +66,46 @@ export class BasicAppointmentComponent implements OnInit {
     });
   }
 
-  dateRangeChange(
-    dateRangeStart: HTMLInputElement,
-    dateRangeEnd: HTMLInputElement
-  ) {
-    this.startDate = dateRangeStart.value;
-    this.endDate = dateRangeEnd.value;
+  dateChange(dateStart: HTMLInputElement) {
+    this.preferredDate = dateStart.value;
   }
 
   getTerms(event: any) {
     this.appointmentService
-      .getAvailableTerms(event.value, this.startDate, this.endDate)
+      .getAvailableTerms(event.value, this.preferredDate)
       .subscribe((res) => {
-        console.log(res);
         res.forEach((date) => {
           const formDat = this.datePipe.transform(
             date.toString(),
             'MMM dd, yyyy HH:mm'
           );
           this.availableTerms.push(formDat);
-          console.log(this.availableTerms);
         });
       });
     this.newAppointment.doctorId = event.value;
   }
 
   termPicked(term: any) {
-    console.log(term.value);
     const date = new Date(Date.parse(term.value));
-    this.newAppointment.startDate = date;
-    console.log(date);
+    const dateFormated = this.datePipe.transform(date, 'yyyy-MM-ddTHH:mm:ssZ');
+    this.newAppointment.startDate = dateFormated;
   }
 
   schedule() {
-    this.newAppointment.patientId = 6;
+    this.newAppointment.patientId = 2;
+    console.log(this.newAppointment.startDate);
     this.appointmentService.scheduleAppointment(this.newAppointment).subscribe(
       (res) => {
-        this.router.navigate(['/medicalRecord']);
+        this.router.navigate(['/record']);
         this._snackBar.open('Appointment successfully scheduled!', 'Dismiss');
       },
-      (err) => {}
+      (err) => {
+        this.router.navigate(['/appointments']);
+        this._snackBar.open(
+          'Appointment could not be scheduled! Please try again.',
+          'Dismiss'
+        );
+      }
     );
   }
 }

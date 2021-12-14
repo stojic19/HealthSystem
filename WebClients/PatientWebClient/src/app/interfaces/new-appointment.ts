@@ -1,5 +1,5 @@
 export interface INewAppointment {
-  startDate: Date;
+  startDate: any;
   doctorId: number;
   patientId: number;
 }

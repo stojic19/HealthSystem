@@ -24,7 +24,8 @@ namespace Hospital.Schedule.Repository.Implementation
 
         public bool IsDoctorAvailableInTerm(int doctorId, DateTime date)
         {
-            return GetDoctorsScheduledEvents(doctorId).All(scheduled => DateTime.Compare(scheduled.StartDate, date) != 0);
+            var scheduledEvents = GetDoctorsScheduledEvents(doctorId);
+            return scheduledEvents.Where(s => DateTime.Compare(s.StartDate, date) == 0).All(s => s.IsCanceled);
         }
     }
 }

@@ -11,16 +11,13 @@ export class AppointmentService {
 
   getAvailableTerms(
     doctorId: number,
-    startDate: string,
-    endDate: string
+    preferredDate: string
   ): Observable<String[]> {
     return this._http.get<String[]>(
       '/api/ScheduledEvent/GetAvailableAppointments?doctorId=' +
         doctorId +
-        '&startDate=' +
-        startDate +
-        '&endDate=' +
-        endDate
+        '&preferredDate=' +
+        preferredDate
     );
   }
 

@@ -131,7 +131,7 @@ namespace HospitalIntegrationTests
             var room = UoW.GetRepository<IRoomReadRepository>()
                 .GetAll()
                 .FirstOrDefault(x => x.Name == name);
-            /*
+         
             if (room == null)
             {
                 room = new Room()
@@ -147,7 +147,7 @@ namespace HospitalIntegrationTests
 
                 UoW.GetRepository<IRoomWriteRepository>().Add(room);
             }
-            */
+
             return room;
         }
 

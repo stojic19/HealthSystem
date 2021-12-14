@@ -38,7 +38,7 @@ namespace HospitalApi.Controllers
                 {
                     return BadRequest("Incorrect format sent! Please try again.");
                 }
-
+                
                 if (!IsEnteredAmountCorrect(equipmentTransferEvent))
                 {
                     return BadRequest("Incorrect amount entered. Please Try Again!");
@@ -68,6 +68,7 @@ namespace HospitalApi.Controllers
             return roomInventory != null && roomInventory.Amount > equipmentTransferEvent.Quantity;
         }
 
+        [HttpPost]
         public IEnumerable<TimePeriodDTO> GetAvailableTerms(AvailableTermDTO availableTermsDTO)
         {
             var availableTermsService = new AvailableTermsService(_uow);

@@ -18,6 +18,7 @@ namespace HospitalUnitTests
         [Fact]
         public void should_return_doctors_with_ids_2_and_3()
         {
+            ClearDbContext();
             Context.Doctors.Add(new Doctor()
             {
                 Id = 1

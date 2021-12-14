@@ -12,7 +12,7 @@ namespace Hospital.Schedule.Service
     {
         private readonly IUnitOfWork UoW;
         private const int StartHour = 7;
-        private const int EndHour = 19;
+        private const int EndHour = 15;
         public ScheduledEventService(IUnitOfWork UoW)
         {
             this.UoW = UoW;

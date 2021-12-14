@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Hospital.Schedule.Model;
 using Hospital.Schedule.Repository;
+using Hospital.SharedModel.Repository;
 using Hospital.SharedModel.Repository.Base;
 using HospitalApi.DTOs;
 
@@ -29,6 +30,8 @@ namespace HospitalApi.Controllers
         public IActionResult ScheduleAppointment(ScheduleAppointmentDTO scheduleAppointmentDTO)
         {
             var appointmentToAdd = _mapper.Map<ScheduledEvent>(scheduleAppointmentDTO);
+            appointmentToAdd.RoomId =
+                _uow.GetRepository<IDoctorReadRepository>().GetById(scheduleAppointmentDTO.DoctorId).RoomId;
             var scheduledEventWriteRepo = _uow.GetRepository<IScheduledEventWriteRepository>();
             var addedAppointment = scheduledEventWriteRepo.Add(appointmentToAdd);
 

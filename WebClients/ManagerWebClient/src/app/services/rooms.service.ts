@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Room } from '../interfaces/room';
+import { RenovationTermsRequest } from '../model/renovation-terms-request.model';
 
 @Injectable({
   providedIn: 'root',
@@ -41,4 +42,5 @@ export class RoomsService {
   getAllRooms() {
     return this.http.get(`${environment.baseUrl}` + 'api/Room/GetAllRooms');
   }
+
 }

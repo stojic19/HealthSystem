@@ -38,6 +38,7 @@ namespace IntegrationAPI.Controllers.Medicine
             {
                 retVal.Add(new MedicineSpecificationFrontDTO
                 {
+                    Id = medicineSpecificationFile.Id,
                     MedicineName = medicineSpecificationFile.MedicineName,
                     PharmacyName = medicineSpecificationFile.Pharmacy.Name,
                     FileName = medicineSpecificationFile.FileName,
@@ -49,12 +50,14 @@ namespace IntegrationAPI.Controllers.Medicine
         }
 
         [HttpPost, Produces("application/pdf")]
-        public IActionResult GetSpecificationPdf([FromQuery(Name = "fileName")] string fileName)
+        public IActionResult GetSpecificationPdf([FromQuery(Name = "fileId")] int id)
         {
+            var specificationFile = _unitOfWork.GetRepository<IMedicineSpecificationFileReadRepository>().GetById(id);
+            if (specificationFile == null) return NotFound("Invalid id");
             try
             {
-                var stream = new FileStream("MedicineSpecifications" + Path.DirectorySeparatorChar + fileName, FileMode.Open);
-                return File(stream, "application/pdf", fileName);
+                var stream = new FileStream("MedicineSpecifications" + Path.DirectorySeparatorChar + specificationFile.FileName, FileMode.Open);
+                return File(stream, "application/pdf", specificationFile.FileName);
             }
             catch
             {

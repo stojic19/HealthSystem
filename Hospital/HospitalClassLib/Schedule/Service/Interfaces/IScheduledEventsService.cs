@@ -1,5 +1,6 @@
 ﻿using Hospital.Schedule.Model;
 using Hospital.Schedule.Model.Wrappers;
+using System;
 using System.Collections.Generic;
 
 namespace Hospital.Schedule.Service.ServiceInterface
@@ -13,5 +14,6 @@ namespace Hospital.Schedule.Service.ServiceInterface
         void updateFinishedUserEvents();
         ScheduledEvent GetScheduledEvent(int eventId);
         public List<EventForSurvey> getEventsForSurvey(int userId);
+        String CancelScheduledEvent(int eventId);
     }
 }

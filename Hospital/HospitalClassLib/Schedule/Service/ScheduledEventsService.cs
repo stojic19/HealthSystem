@@ -3,6 +3,7 @@ using Hospital.Schedule.Model.Wrappers;
 using Hospital.Schedule.Repository;
 using Hospital.Schedule.Service.ServiceInterface;
 using Hospital.SharedModel.Repository.Base;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -78,6 +79,30 @@ namespace Hospital.Schedule.Service
                 finishedUserEvents.ForEach(one => one.IsDone = true);
                 UoW.SaveChanges();
             }
+        }
+
+        public String CancelScheduledEvent(int eventId)
+        {
+            var scheduled =  UoW.GetRepository<IScheduledEventReadRepository>().GetById(eventId);
+            String message = "";
+            if (scheduled.IsCanceled == false && scheduled.IsDone == false)
+            {
+                DateTime calculated = scheduled.StartDate.AddDays(-2);
+
+                if (DateTime.Compare(DateTime.Now, calculated) <= 0)
+                {
+                    scheduled.IsCanceled = true;
+                    UoW.SaveChanges();
+                    message = "This Appointment has been canceled.";
+                }
+
+            }
+            else
+            {
+
+                message = "This Appointment cannot be canceled";
+            }
+            return message;
         }
     }
 }

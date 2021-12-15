@@ -49,6 +49,15 @@ namespace HospitalApi.Controllers
             return Ok(eventsDTOs);
         }
 
+        [HttpPut("{eventId}")]
+        public IActionResult CancelScheduledEvent(int eventId)
+        {
+            var response = _eventsService.CancelScheduledEvent(eventId);
+
+
+            return Ok(response);
+        }
+
         [HttpGet("{userId}")]
         public IActionResult GetCanceledUserEvents(int userId)
         {

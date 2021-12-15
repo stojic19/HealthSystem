@@ -26,4 +26,8 @@ export class MedicalRecordService {
   getCanceledAppointments(): any {
     return this._http.get<IAppointment[]>('/api/ScheduledEvents/GetCanceledUserEvents/'+1);
   }
+  
+  cancelAppointments(eventId:any): any {
+    return this._http.put<IAppointment[]>('/api/ScheduledEvents/CancelScheduledEvent/'+eventId, []);
+  }
 }

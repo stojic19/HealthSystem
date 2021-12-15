@@ -26,6 +26,7 @@ import { RatingDecimalComponent } from './components/rating-decimal/rating-decim
 import { MedicineSpecificationListComponent } from './medicine-specification-requests/medicine-specification-list/medicine-specification-list.component';
 import { RoomScheduleComponent } from './room-schedule/room-schedule.component';
 import { RenovationFormComponent } from './renovation-form/renovation-form.component';
+import { MaliciousPatientsComponent } from './components/malicious-patients/malicious-patients.component';
 
 const routes: Routes = [
   { path: 'overview', component: HospitalOverviewComponent },
@@ -65,6 +66,7 @@ const routes: Routes = [
   { path: 'surveys', component: SurveysObserveComponent },
   { path: 'roomRenovation', component: RenovationFormComponent },
   { path: 'schedule/:id', component: RoomScheduleComponent },
+  { path: 'blocking', component: MaliciousPatientsComponent},
 ];
 
 @NgModule({
@@ -83,4 +85,5 @@ export const routingComponents = [
   SurveySectionObserveComponent,
   RatingDecimalComponent,
   RenovationFormComponent,
+  MaliciousPatientsComponent
 ];

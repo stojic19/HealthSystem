@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Hospital.Schedule.Model;
 using Hospital.SharedModel.Model.Wrappers;
@@ -10,5 +10,6 @@ namespace Hospital.Schedule.Repository
     {
         public IEnumerable<ScheduledEvent> GetDoctorsScheduledEvents(int doctorId);
         bool IsDoctorAvailableInTerm(int doctorId, DateTime date);
+        List<ScheduledEvent> GetNumberOfCanceledEventsForPatient(int id);
     }
 }

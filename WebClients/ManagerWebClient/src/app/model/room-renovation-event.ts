@@ -9,6 +9,4 @@ export interface RoomRenovationEvent {
   isMerge: boolean;
   mergeRoomId: number;
   mergeRoom: Room;
-  isCanceled: boolean;
-  isDone: boolean;
 }

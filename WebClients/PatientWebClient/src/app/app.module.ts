@@ -33,11 +33,14 @@ import { SurveySectionComponent } from './components/survey-section/survey-secti
     FeedbacksPageComponent,
     MainComponent,
     RegistrationComponent,
+    LoginComponent,
     PatientMedicalRecordComponent,
     AppointmentsPageComponent,
-    SurveySectionComponent,
+    SurveyPageComponent,
+    SurveySectionComponent
   ],
   imports: [
+    BrowserModule,
     AppRoutingModule,
     NgbModule,
     BrowserAnimationsModule,

@@ -19,13 +19,9 @@ namespace HospitalIntegrationTests
 {
     public class RegistrationTests : BaseTest
     {
-        private ITestOutputHelper _itoh;
-
-        public RegistrationTests(BaseFixture fixture, ITestOutputHelper itoh) : base(fixture)
+        public RegistrationTests(BaseFixture fixture) : base(fixture)
         {
-            _itoh = itoh;
         }
-
 
         [Fact]
         public async Task Register_should_return_200()
@@ -43,7 +39,7 @@ namespace HospitalIntegrationTests
             var foundRegisteredUser = UoW.GetRepository<IPatientReadRepository>()
                 .GetAll().FirstOrDefault(x => x.UserName.ToUpper().Equals(newPatient.UserName.ToUpper()));
 
-            ClearUser();
+            ClearAllTestData();
 
             foundRegisteredUser.ShouldNotBeNull();
             foundRegisteredUser.UserName.ShouldBe("testUserName");
@@ -54,24 +50,70 @@ namespace HospitalIntegrationTests
             var user = UoW.GetRepository<IPatientReadRepository>()
                 .GetAll().ToList()
                 .FirstOrDefault(x => x.UserName == "testUserName");
-
-
-            if (user != null)
+            if (user == null) return;
             {
                 var medicalRecord = UoW.GetRepository<IMedicalRecordReadRepository>()
                     .GetAll()
-                    .FirstOrDefault(x => x.Patient.UserName == user.UserName);
+                    .FirstOrDefault(x => x.Id == user.MedicalRecordId);
 
-                UoW.GetRepository<IPatientWriteRepository>().Delete(user);
+                if (medicalRecord != null) UoW.GetRepository<IMedicalRecordWriteRepository>().Delete(medicalRecord);
+            }
+        }
+
+        private void ClearAllTestData()
+        {
+            var user = UoW.GetRepository<IPatientReadRepository>()
+                .GetAll().ToList()
+                .FirstOrDefault(x => x.UserName == "testUserName");
+
+            if (user == null) return;
+            {
+                var medicalRecord = UoW.GetRepository<IMedicalRecordReadRepository>()
+                    .GetAll().Include(mr => mr.Doctor)
+                    .FirstOrDefault(x => x.Id == user.MedicalRecordId);
+
+                UoW.GetRepository<IMedicalRecordWriteRepository>().Delete(medicalRecord);
+            }
+
+            var doctor = UoW.GetRepository<IDoctorReadRepository>()
+                .GetAll().ToList()
+                .FirstOrDefault(x => x.UserName == "Test doctor");
+
+            if (doctor != null)
+            {
+                UoW.GetRepository<IDoctorWriteRepository>().Delete(doctor);
+            }
+
+            var city = UoW.GetRepository<ICityReadRepository>()
+                .GetAll().ToList()
+                .FirstOrDefault(x => x.Name == "Test city");
+
+            if (city != null)
+            {
+                UoW.GetRepository<ICityWriteRepository>().Delete(city);
+            }
+
+            var country = UoW.GetRepository<ICountryReadRepository>()
+                .GetAll().ToList()
+                .FirstOrDefault(x => x.Name == "Test country");
+
+            if (country != null)
+            {
+                UoW.GetRepository<ICountryWriteRepository>().Delete(country);
+            }
+
+            var room = UoW.GetRepository<IRoomReadRepository>()
+                .GetAll().ToList()
+                .FirstOrDefault(x => x.Name == "test room");
+
+            if (room != null)
+            {
+                UoW.GetRepository<IRoomWriteRepository>().Delete(room);
             }
         }
 
         private NewPatientDTO InsertPatient()
         {
-            //var user = UoW.GetRepository<IPatientReadRepository>()
-            //    .GetAll().Include(p => p.MedicalRecord).ThenInclude(mr => mr.Doctor)
-            //    .FirstOrDefault(x => x.UserName == "testUserName");
-
             {
                 var city = UoW.GetRepository<ICityReadRepository>()
                     .GetAll()
@@ -96,7 +138,6 @@ namespace HospitalIntegrationTests
                     {
                         CountryId = country.Id,
                         Name = "Test city",
-                        PostalCode = 10
                     };
                     UoW.GetRepository<ICityWriteRepository>().Add(city);
                 }
@@ -135,7 +176,7 @@ namespace HospitalIntegrationTests
 
                     doctor = new Doctor()
                     {
-                        UserName = "testDoctor",
+                        UserName = "Test doctor",
                         CityId = city.Id,
                         RoomId = room.Id,
                         SpecializationId = specialization.Id
@@ -146,7 +187,7 @@ namespace HospitalIntegrationTests
                 return new NewPatientDTO()
                 {
                     UserName = "testUserName",
-                    Email = "testttemail@gmail.com",
+                    Email = "test1email@gmail.com",
                     Password = "Test Passw0rd",
                     CityId = city.Id,
                     MedicalRecord = new NewMedicalRecordDTO()

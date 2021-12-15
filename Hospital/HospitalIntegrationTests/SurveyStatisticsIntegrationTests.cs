@@ -243,12 +243,13 @@ namespace HospitalIntegrationTests
                     {
                         answeredSurvey = new AnsweredSurvey()
                         {
-                            AnsweredDate = date,
+                            AnsweredDate = date.AddDays(3),
                             PatientId = patient.Id,
                             ScheduledEvent = scheduledEvent,
                             Survey = survey
                         };
                         UoW.GetRepository<IScheduledEventWriteRepository>().Add(scheduledEvent);
+                        UoW.GetRepository<IAnsweredSurveyWriteRepository>().Add(answeredSurvey);
 
                         var answeredQuestion1 = UoW.GetRepository<IAnsweredQuestionReadRepository>().GetAll()
                         .FirstOrDefault(x => x.AnsweredSurveyId == answeredSurvey.Id && x.QuestionId == question1.Id);
@@ -290,7 +291,7 @@ namespace HospitalIntegrationTests
                             UoW.GetRepository<IAnsweredQuestionWriteRepository>().Add(answeredQuestion3);
                         }
 
-                        UoW.GetRepository<IAnsweredSurveyWriteRepository>().Add(answeredSurvey);
+                        
                     }
                     
 

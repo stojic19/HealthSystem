@@ -3,10 +3,14 @@ using System.Net;
 using System.Threading.Tasks;
 using Hospital.MedicalRecords.Model;
 using Hospital.MedicalRecords.Repository;
+using Hospital.RoomsAndEquipment.Model;
+using Hospital.RoomsAndEquipment.Repository;
 using Hospital.SharedModel.Model;
+using Hospital.SharedModel.Model.Enumerations;
 using Hospital.SharedModel.Repository;
 using HospitalApi.DTOs;
 using HospitalIntegrationTests.Base;
+using Microsoft.EntityFrameworkCore;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
@@ -26,33 +30,9 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Register_should_return_200()
         {
-            ClearUserWithUserName("testUserName");
+            ClearUser();
 
-            var doctor = UoW.GetRepository<IDoctorReadRepository>()
-                .GetAll()
-                .FirstOrDefault();
-
-            if (doctor == null)
-            {
-                doctor = new Doctor()
-                {
-                    UserName = "testDoctor"
-                };
-            }
-
-            var medRec = new NewMedicalRecordDTO()
-            {
-                DoctorId = doctor.Id
-            };
-
-            var newPatient = new NewPatientDTO()
-            {
-                UserName = "testUserName",
-                Password = "Test Passw0rd",
-                Email = "testemail@gmail.com",
-                CityId = 1,
-                MedicalRecord = medRec
-            };
+            var newPatient = InsertPatient();
 
             var content = GetContent(newPatient);
 
@@ -60,20 +40,16 @@ namespace HospitalIntegrationTests
 
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-            //var responseContent = await response.Content.ReadAsStringAsync();
-
             var foundRegisteredUser = UoW.GetRepository<IPatientReadRepository>()
                 .GetAll().FirstOrDefault(x => x.UserName.ToUpper().Equals(newPatient.UserName.ToUpper()));
 
-            // brisi medrec i korisnika
-
+            ClearUser();
 
             foundRegisteredUser.ShouldNotBeNull();
             foundRegisteredUser.UserName.ShouldBe("testUserName");
-
         }
 
-        private void ClearUserWithUserName(string testusername)
+        private void ClearUser()
         {
             var user = UoW.GetRepository<IPatientReadRepository>()
                 .GetAll().ToList()
@@ -88,17 +64,14 @@ namespace HospitalIntegrationTests
 
                 UoW.GetRepository<IPatientWriteRepository>().Delete(user);
             }
-
         }
 
-
-        private Patient InsertUser(string testUserName)
+        private NewPatientDTO InsertPatient()
         {
-            var user = UoW.GetRepository<IPatientReadRepository>()
-                .GetAll()
-                .FirstOrDefault(x => x.UserName == testUserName);
+            //var user = UoW.GetRepository<IPatientReadRepository>()
+            //    .GetAll().Include(p => p.MedicalRecord).ThenInclude(mr => mr.Doctor)
+            //    .FirstOrDefault(x => x.UserName == "testUserName");
 
-            if (user == null)
             {
                 var city = UoW.GetRepository<ICityReadRepository>()
                     .GetAll()
@@ -128,57 +101,60 @@ namespace HospitalIntegrationTests
                     UoW.GetRepository<ICityWriteRepository>().Add(city);
                 }
 
-                ;
+                var doctor = UoW
+                    .GetRepository<IDoctorReadRepository>().GetAll().Include(d => d.Specialization).Include(d => d.Room)
+                    .FirstOrDefault(d => d.Specialization.Name.ToLower().Equals("general practice"));
 
-                var medicalRecord = UoW.GetRepository<IMedicalRecordReadRepository>()
-                    .GetAll()
-                    .FirstOrDefault(x => x.Id == user.MedicalRecordId);
-
-                if (medicalRecord == null)
+                if (doctor == null)
                 {
-                    var doctor = UoW.GetRepository<IDoctorReadRepository>()
+                    var specialization = UoW.GetRepository<ISpecializationReadRepository>()
                         .GetAll()
-                        .FirstOrDefault();
-
-                    if (doctor == null)
+                        .FirstOrDefault(x => x.Name.ToLower().Equals("general practice"));
+                    if (specialization == null)
                     {
-                        var specialization = UoW.GetRepository<ISpecializationReadRepository>()
-                            .GetAll()
-                            .FirstOrDefault(x => x.Name.ToUpper() == "GP");
-
-                        if (specialization == null)
+                        specialization = new Specialization()
                         {
-                            specialization = new Specialization()
-                            {
-                                Name = "GP"
-                            };
-                        }
-
-                        doctor = new Doctor()
-                        {
-                            UserName = "testDoctor",
-                            SpecializationId = specialization.Id
+                            Name = "General Practice"
                         };
+                        UoW.GetRepository<ISpecializationWriteRepository>().Add(specialization);
                     }
 
-                    medicalRecord = new MedicalRecord()
+                    var room = UoW.GetRepository<IRoomReadRepository>()
+                        .GetAll()
+                        .FirstOrDefault(x => x.RoomType == RoomType.AppointmentRoom);
+                    if (room == null)
                     {
-                        DoctorId = doctor.Id
+                        room = new Room()
+                        {
+                            Name = "test room",
+                            RoomType = RoomType.AppointmentRoom
+                        };
+                        UoW.GetRepository<IRoomWriteRepository>().Add(room);
+                    }
+
+
+                    doctor = new Doctor()
+                    {
+                        UserName = "testDoctor",
+                        CityId = city.Id,
+                        RoomId = room.Id,
+                        SpecializationId = specialization.Id
                     };
+                    UoW.GetRepository<IDoctorWriteRepository>().Add(doctor);
                 }
 
-                user = new Patient()
+                return new NewPatientDTO()
                 {
                     UserName = "testUserName",
-                    PasswordHash = "Test Passw0rd",
+                    Email = "testttemail@gmail.com",
+                    Password = "Test Passw0rd",
                     CityId = city.Id,
-                    MedicalRecordId = medicalRecord.Id
+                    MedicalRecord = new NewMedicalRecordDTO()
+                    {
+                        DoctorId = doctor.Id
+                    }
                 };
-
             }
-
-            return new Patient();
-
         }
     }
 }

@@ -33,6 +33,7 @@ namespace HospitalApi.AutoMapperProfiles
             CreateMap<MedicalRecord, MedicalRecordDTO>();
             CreateMap<Patient, PatientDTO>();
             CreateMap<EquipmentTransferEventDto, EquipmentTransferEvent>();
+            CreateMap<Patient, UserForBlockingDTO>();
             CreateMap<RoomRenovationEventDto, RoomRenovationEvent>();
         }
     }

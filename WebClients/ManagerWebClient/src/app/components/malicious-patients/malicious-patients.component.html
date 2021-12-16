@@ -1,0 +1,41 @@
+<div class="container"
+style="border-radius: 5rem; background-color: rgb(182, 209, 226);margin-top: 4rem;margin-bottom: 3rem;">
+<div class='container' style="background-color: whitesmoke; border-radius: 5rem;">
+    <section class="section-padding pb-0" id="reviews">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="text-center mb-lg-2 mb-2">Malicious patients</h2>
+                    <div >
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                              <th scope="col">Username</th>
+                              <th scope="col">Name </th>
+                              <th scope="col">Last name</th>
+                              <th scope="col">Email</th>
+                              <th scope="col">Block</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor='let patient of maliciousPatients'>
+                              <td>{{patient.userName}}</td>
+                              <td>{{ patient.firstName}}</td>
+                              <td>{{ patient.lastName }}</td>
+                              <td>{{ patient.email }}</td>
+                              <td><button type="button" (click)="blockPatient(patient)"
+                                style="width: 100px; align-self: center;"
+                                class="btn btn-danger">Block</button></td>
+                            </tr>
+                            </tbody>
+                          </table>
+                        
+                        
+                    </div>
+                </div>
+                <br><br>
+            </div>
+        </div>
+    </section>
+</div>
+</div> 

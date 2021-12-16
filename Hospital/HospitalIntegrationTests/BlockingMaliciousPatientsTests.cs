@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using Hospital.MedicalRecords.Model;
 using Hospital.RoomsAndEquipment.Model;
@@ -15,6 +14,7 @@ using Hospital.SharedModel.Model;
 using Hospital.SharedModel.Model.Enumerations;
 using Hospital.SharedModel.Repository;
 using HospitalApi.DTOs;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Shouldly;
 using Xunit;
@@ -26,7 +26,6 @@ namespace HospitalIntegrationTests
         public BlockingMaliciousPatientsTests(BaseFixture fixture) : base(fixture)
         {
         }
-
         [Fact]
         public async Task Patient_should_be_blocked_request()
         {
@@ -49,6 +48,7 @@ namespace HospitalIntegrationTests
             {
                 p.IsBlocked.ShouldBe(true);
             }
+            ClearDatabase();
         }
 
         [Fact]
@@ -57,17 +57,18 @@ namespace HospitalIntegrationTests
             ArrangeDataForGetMaliciousTrue();
             var patientRepo = UoW.GetRepository<IPatientReadRepository>();
             var isMalicious = false;
-            var patient = patientRepo.GetAll().FirstOrDefault(x => x.UserName == "testUsername2");
+            var patient = patientRepo.GetAll().FirstOrDefault(x => x.UserName == "testUsername");
             var response = await Client.GetAsync(BaseUrl + "api/BlockPatient/GetMaliciousPatients");
             var responseContent = await response.Content.ReadAsStringAsync();
             var responsePatients = JsonConvert.DeserializeObject<List<Patient>>(responseContent);
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
             response.Content.ShouldNotBe(null);
-            foreach (var p in responsePatients.Where(p => p.UserName.Equals("testUsername2")))
+            foreach (var p in responsePatients.Where(p => p.UserName.Equals("testUsername")))
             {
                 isMalicious = true;
             }
             isMalicious.ShouldBe(true);
+            ClearDatabase();
         }
 
         [Fact]
@@ -76,17 +77,18 @@ namespace HospitalIntegrationTests
             ArrangeDataForGetMaliciousFalse();
             var patientRepo = UoW.GetRepository<IPatientReadRepository>();
             var isMalicious = false;
-            var patient = patientRepo.GetAll().FirstOrDefault(x => x.UserName == "testUsername3");
+            var patient = patientRepo.GetAll().FirstOrDefault(x => x.UserName == "testUsername");
             var response = await Client.GetAsync(BaseUrl + "api/BlockPatient/GetMaliciousPatients");
             var responseContent = await response.Content.ReadAsStringAsync();
             var responsePatients = JsonConvert.DeserializeObject<List<Patient>>(responseContent);
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
             response.Content.ShouldNotBe(null);
-            foreach (var p in responsePatients.Where(p => p.UserName.Equals("testUsername3")))
+            foreach (var p in responsePatients.Where(p => p.UserName.Equals("testUsername")))
             {
                 isMalicious = true;
             }
             isMalicious.ShouldBe(false);
+            ClearDatabase();
         }
 
         private void ArrangeDataForGetMaliciousTrue()
@@ -176,7 +178,7 @@ namespace HospitalIntegrationTests
             }
 
             var patient = UoW.GetRepository<IPatientReadRepository>().GetAll()
-                .FirstOrDefault(x => x.UserName == "testUsername2");
+                .FirstOrDefault(x => x.UserName == "testUsername");
 
             if (patient == null)
             {
@@ -197,7 +199,7 @@ namespace HospitalIntegrationTests
                     DateOfBirth = DateTime.Now,
                     Gender = Gender.Female,
                     Street = "TesPatientStreet",
-                    UserName = "testUsername2",
+                    UserName = "testUsername",
                     Email = "testPatient@gmail.com",
                     EmailConfirmed = true,
                     PhoneNumber = "testPatientPhoneNumber",
@@ -360,7 +362,7 @@ namespace HospitalIntegrationTests
             }
 
             var patient = UoW.GetRepository<IPatientReadRepository>().GetAll()
-                .FirstOrDefault(x => x.UserName == "testUsername3");
+                .FirstOrDefault(x => x.UserName == "testUsername");
 
             if (patient == null)
             {
@@ -381,7 +383,7 @@ namespace HospitalIntegrationTests
                     DateOfBirth = DateTime.Now,
                     Gender = Gender.Female,
                     Street = "TesPatientStreet",
-                    UserName = "testUsername3",
+                    UserName = "testUsername",
                     Email = "testPatient@gmail.com",
                     EmailConfirmed = true,
                     PhoneNumber = "testPatientPhoneNumber",
@@ -585,7 +587,58 @@ namespace HospitalIntegrationTests
 
             
         }
-        
-        
+
+        private void ClearDatabase()
+        {
+            var patient = UoW.GetRepository<IPatientReadRepository>().GetAll()
+               .FirstOrDefault(x => x.UserName == "testUsername");
+            if (patient == null) return;
+
+            {
+                var medicalRecord = UoW.GetRepository<IMedicalRecordReadRepository>()
+                    .GetAll().Include(mr => mr.Doctor)
+                    .FirstOrDefault(x => x.Id == patient.MedicalRecordId);
+
+                UoW.GetRepository<IMedicalRecordWriteRepository>().Delete(medicalRecord);
+            }
+            var doctor = UoW.GetRepository<IDoctorReadRepository>().GetAll()
+                .FirstOrDefault(x => x.UserName == "testDoctorUsername");
+            if (doctor != null)
+            {
+                UoW.GetRepository<IDoctorWriteRepository>().Delete(doctor);
+            }
+            var specialization = UoW.GetRepository<ISpecializationReadRepository>().GetAll()
+                .FirstOrDefault(x => x.Name == "TestSpecialization");
+            if (specialization != null)
+            {
+                UoW.GetRepository<ISpecializationWriteRepository>().Delete(specialization);
+            }
+            var city = UoW.GetRepository<ICityReadRepository>()
+                .GetAll().ToList()
+                .FirstOrDefault(x => x.Name == "TestCity");
+
+            if (city != null)
+            {
+                UoW.GetRepository<ICityWriteRepository>().Delete(city);
+            }
+
+            var country = UoW.GetRepository<ICountryReadRepository>()
+                .GetAll().ToList()
+                .FirstOrDefault(x => x.Name == "TestCountry");
+
+            if (country != null)
+            {
+                UoW.GetRepository<ICountryWriteRepository>().Delete(country);
+            }
+
+            var room = UoW.GetRepository<IRoomReadRepository>()
+                    .GetAll().ToList()
+                    .FirstOrDefault(x => x.Name == "TestRoom");
+
+            if (room != null)
+            {
+                UoW.GetRepository<IRoomWriteRepository>().Delete(room);
+            }
+        }
     }
 }

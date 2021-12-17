@@ -38,8 +38,35 @@
               <td data-label="Building" *ngIf="selectedItem.roomId != room.id">
                 {{ room.buildingName }}
               </td>
-              <td data-label="Type" *ngIf="selectedItem.roomId != room.id">
-                {{ room.roomType }}
+              <td
+                data-label="Type"
+                *ngIf="selectedItem.roomId != room.id && room.roomType == 0"
+              >
+                Appointment Room
+              </td>
+              <td
+                data-label="Type"
+                *ngIf="selectedItem.roomId != room.id && room.roomType == 1"
+              >
+                Operation Room
+              </td>
+              <td
+                data-label="Type"
+                *ngIf="selectedItem.roomId != room.id && room.roomType == 2"
+              >
+                Storage
+              </td>
+              <td
+                data-label="Type"
+                *ngIf="selectedItem.roomId != room.id && room.roomType == 3"
+              >
+                Patient bedroom
+              </td>
+              <td
+                data-label="Type"
+                *ngIf="selectedItem.roomId != room.id && room.roomType == 4"
+              >
+                Office
               </td>
             </tr>
           </tbody>

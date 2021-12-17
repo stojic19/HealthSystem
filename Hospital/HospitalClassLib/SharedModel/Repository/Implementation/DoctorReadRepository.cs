@@ -47,5 +47,10 @@ namespace Hospital.SharedModel.Repository.Implementation
         {
             return GetAll().Include(x => x.Specialization);
         }
+        
+        public IEnumerable<Doctor> GetSpecializedDoctors(int specializationId)
+        {
+            return _context.Set<Doctor>().Where(d => d.SpecializationId == specializationId);
+        }
     }
 }

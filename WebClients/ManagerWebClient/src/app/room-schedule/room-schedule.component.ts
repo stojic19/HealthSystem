@@ -82,7 +82,7 @@ export class RoomScheduleComponent implements OnInit {
     const message = 'Are you sure you want to cancel selected transfer?';
 
     const dialogData = new ConfirmDialogModel(
-      'Confirm Cancelling Transfer Event',
+      'Confirm cancelling Transfer Event',
       message
     );
 
@@ -93,22 +93,22 @@ export class RoomScheduleComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((dialogResult) => {
       this.transferCancelResult = dialogResult;
-      console.log(this.transferCancelResult);
 
       if (this.transferCancelResult) {
-        console.log('tu sam');
         this.roomScheduleService.cancelEquipmentTransferEvent(transfer);
       }
 
-      window.location.reload();
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
     });
   }
 
-  confirmRenovationCancelDialog(): void {
+  confirmRenovationCancelDialog(renovation: RoomRenovationEvent): void {
     const message = 'Are you sure you want to cancel selected renovation?';
 
     const dialogData = new ConfirmDialogModel(
-      'Confirm Cancelling room renovation',
+      'Confirm cancelling room renovation',
       message
     );
 
@@ -119,6 +119,14 @@ export class RoomScheduleComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((dialogResult) => {
       this.renovationCancelResult = dialogResult;
+
+      if (this.renovationCancelResult) {
+        this.roomScheduleService.cancelRenovationEvent(renovation);
+      }
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
     });
   }
 
@@ -152,7 +160,7 @@ export class RoomScheduleComponent implements OnInit {
     });
   }
 
-  checkIfEventIsTomorrow(event: EquipmentTransferEvent) {
+  checkIfEventIsTomorrow(event: any) {
     const today = new Date();
     const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);

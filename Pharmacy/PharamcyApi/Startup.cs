@@ -115,7 +115,7 @@ namespace PharmacyApi
             server = new Server
             {
                 Services = { MedicineInventoryService.BindService(new MedicineInventoryServiceImpl(unitOfWork))},
-                Ports = { new ServerPort("127.0.0.1", 5000, ServerCredentials.Insecure) }
+                Ports = { new ServerPort("127.0.0.1", 7000, ServerCredentials.Insecure) }
             };
             server.Start();
 

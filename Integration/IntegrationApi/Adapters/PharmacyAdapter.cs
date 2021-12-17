@@ -1,5 +1,6 @@
 ﻿using Integration.Pharmacies.Model;
 using IntegrationAPI.DTO;
+using IntegrationAPI.DTO.Pharmacies;
 
 namespace IntegrationAPI.Adapters
 {

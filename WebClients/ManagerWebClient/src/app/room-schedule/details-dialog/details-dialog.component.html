@@ -1,4 +1,7 @@
-<h1 mat-dialog-title class="title">{{ eventType }} details</h1>
+<h1 mat-dialog-title class="title" *ngIf="eventType == 0">
+  Appointment details
+</h1>
+<h1 mat-dialog-title class="title" *ngIf="eventType == 1">Operation details</h1>
 
 <div
   mat-dialog-content

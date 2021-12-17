@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using Hospital.GraphicalEditor.Model;
+using Hospital.GraphicalEditor.Repository;
 using Hospital.RoomsAndEquipment.Model;
 using Hospital.RoomsAndEquipment.Repository;
 using Hospital.SharedModel.Model.Enumerations;
 using HospitalApi.DTOs;
 using HospitalIntegrationTests.Base;
+using Microsoft.EntityFrameworkCore;
 using Shouldly;
 using System;
 using System.Collections.Generic;
@@ -57,6 +60,89 @@ namespace HospitalIntegrationTests
             canceledRequest.ShouldBeNull();
         }
 
+        [Fact]
+        public async Task Renovation_should_be_canceled()
+        {
+            var room = InsertRoom("AR-1");
+            var roomPosition = InsertRoomPosition("AR-1");
+            var roomRenovation = InsertRoomRenovationEvent(new DateTime(2025, 11, 22, 0, 0, 0), new DateTime(2025, 11, 25, 0, 0, 0), room.Id, false);
+
+            var content = GetContent(new RoomRenovationEventDto()
+            {
+                Id = roomRenovation.Id,
+                StartDate = roomRenovation.StartDate,
+                EndDate = roomRenovation.EndDate,
+                RoomId = roomRenovation.RoomId,
+                IsMerge = roomRenovation.IsMerge,
+                MergeRoomId = roomRenovation.MergeRoomId
+            });
+
+            var response = await Client.PostAsync(BaseUrl + "api/RoomRenovation/CancelRenovation", content);
+
+            response.StatusCode.ShouldBe(HttpStatusCode.OK);
+            response.ShouldNotBeNull();
+
+            var canceledRequest = UoW.GetRepository<IRoomRenovationEventReadRepository>()
+                .GetAll()
+                .FirstOrDefault(x => x.StartDate == roomRenovation.StartDate &&
+                                     x.EndDate == roomRenovation.EndDate &&
+                                     x.RoomId == roomRenovation.RoomId &&
+                                     x.IsMerge == roomRenovation.IsMerge);
+
+            canceledRequest.ShouldBeNull();
+        }
+
+        private RoomPosition InsertRoomPosition(string roomName)
+        {
+            var roomPosition = UoW.GetRepository<IRoomPositionReadRepository>()
+                .GetAll().Include(x => x.Room)
+                .FirstOrDefault(x => x.Room.Name == roomName);
+
+            if (roomPosition == null)
+            {
+                roomPosition = new RoomPosition()
+                {
+                    Room = InsertRoom(roomName),
+                    DimensionX = 0,
+                    DimensionY = 0,
+                    Width = 150,
+                    Height = 122
+                };
+
+                UoW.GetRepository<IRoomPositionWriteRepository>().Add(roomPosition);
+            }
+
+            return roomPosition;
+        }
+
+        public RoomRenovationEvent InsertRoomRenovationEvent(DateTime startDate, DateTime endDate, int roomId, bool isMerge)
+        {
+            var renovation = UoW.GetRepository<IRoomRenovationEventReadRepository>()
+                .GetAll()
+                .FirstOrDefault(x => x.StartDate == startDate &&
+                                     x.EndDate == endDate &&
+                                     x.RoomId == roomId && 
+                                     x.IsMerge == isMerge);
+
+            if (renovation == null)
+            {
+                renovation = new RoomRenovationEvent()
+                {
+                    StartDate = startDate,
+                    EndDate = endDate,
+                    RoomId = roomId,
+                    IsMerge = isMerge,
+                    FirstRoomName = "Test renovation room name",
+                    FirstRoomDescription = "Test renovation room description",
+                    FirstRoomType = RoomType.AppointmentRoom
+                };
+
+                UoW.GetRepository<IRoomRenovationEventWriteRepository>().Add(renovation);
+            }
+
+            return renovation;
+        }
+
         private InventoryItem InsertInventoryItem(string name)
         {
             var inventoryItem = UoW.GetRepository<IInventoryItemReadRepository>()
@@ -88,7 +174,7 @@ namespace HospitalIntegrationTests
                 room = new Room()
                 {
                     Name = name,
-                    Description = "Room for storage",
+                    Description = "Test room",
                     Width = 7,
                     Height = 8.5,
                     FloorNumber = 1,

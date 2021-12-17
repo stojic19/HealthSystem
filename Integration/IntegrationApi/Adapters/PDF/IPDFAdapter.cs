@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using IntegrationAPI.DTO;
+using IntegrationAPI.DTO.MedicineConsumption;
+using IntegrationAPI.DTO.Prescription;
 
 namespace IntegrationAPI.Adapters.PDF
 {

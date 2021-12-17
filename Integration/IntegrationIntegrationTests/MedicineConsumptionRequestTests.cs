@@ -1,5 +1,3 @@
-using Integration.Shared.Model;
-using IntegrationAPI.DTO;
 using IntegrationIntegrationTests.Base;
 using Newtonsoft.Json;
 using Shouldly;
@@ -7,7 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
-using IntegrationAPI.Controllers;
+using IntegrationAPI.Controllers.Medicine;
+using IntegrationAPI.DTO.MedicineConsumption;
+using IntegrationAPI.DTO.Shared;
 using IntegrationAPI.HttpRequestSenders;
 using Moq;
 using RestSharp;
@@ -21,7 +21,7 @@ namespace IntegrationIntegrationTests
         {
         }
         [Fact]
-        public async Task Create_consumption_report_test()
+        public void Create_consumption_report_test()
         {
             string hospitalBaseUrl = "https://localhost:44303/";
             TimePeriodDTO timePeriodDto = new TimePeriodDTO

@@ -61,22 +61,6 @@ export class PatientMedicalRecordComponent implements OnInit {
      var str = id.toString();
      this._router.navigate(['/survey',str]);
   }
-  //Uradi da vraca bolji response
-  cancelAppointment(id:any){
-    
-    console.log(id);
-    this._service.cancelAppointments(id).subscribe({
-      next: (response : String) => {
-      this.message = response;
-    }});
-    
-  var message = this.message.toString();
-  this.snackBar.open(message, '', {
-    duration: 3000,
-    verticalPosition: 'bottom'
-
-  });
-
-  }
+ 
 }
 

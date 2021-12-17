@@ -10,10 +10,10 @@ namespace Hospital.Schedule.Repository.Implementation
 {
     public class ScheduledEventReadRepository : ReadBaseRepository<int, ScheduledEvent>, IScheduledEventReadRepository
     {
-        private readonly AppDbContext _context;
+     
         public ScheduledEventReadRepository(AppDbContext context) : base(context)
         {
-            _context = context;
+        
         }
 
         public List<ScheduledEvent> GetCanceledUserEvents(int userId)

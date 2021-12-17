@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
-using Hospital.Schedule.Model.Wrappers;
 using Hospital.Schedule.Service.ServiceInterface;
 using HospitalApi.DTOs;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace HospitalApi.Controllers
@@ -26,7 +24,7 @@ namespace HospitalApi.Controllers
         [HttpGet("{userId}")]
         public IActionResult GetFinishedUserEvents(int userId)
         {
-            var eventsDTOs = _eventsService.getFinishedUserEvents(userId).Select(e =>
+            var eventsDTOs = _eventsService.GetFinishedUserEvents(userId).Select(e =>
               _mapper.Map<ScheduledEventsDTO>(e)).ToList();
 
             return Ok(eventsDTOs);
@@ -34,7 +32,7 @@ namespace HospitalApi.Controllers
         [HttpGet("{userId}")]
         public IActionResult GetEventsForSurvey(int userId)
         {
-            var eventsForSurveyDTOs = _eventsService.getEventsForSurvey(userId).Select(e =>
+            var eventsForSurveyDTOs = _eventsService.GetEventsForSurvey(userId).Select(e =>
               _mapper.Map<EventsForSurveyDTO>(e)).ToList();
 
             return Ok(eventsForSurveyDTOs);
@@ -44,24 +42,14 @@ namespace HospitalApi.Controllers
         public IActionResult GetScheduledEvent(int eventId)
         {
             var eventsDTOs = _mapper.Map<ScheduledEventsDTO>(_eventsService.GetScheduledEvent(eventId));
-             
 
             return Ok(eventsDTOs);
-        }
-
-        [HttpPut("{eventId}")]
-        public IActionResult CancelScheduledEvent(int eventId)
-        {
-            var response = _eventsService.CancelScheduledEvent(eventId);
-
-
-            return Ok(response);
         }
 
         [HttpGet("{userId}")]
         public IActionResult GetCanceledUserEvents(int userId)
         {
-            var eventsDTOs = _eventsService.getCanceledUserEvents(userId).Select(e =>
+            var eventsDTOs = _eventsService.GetCanceledUserEvents(userId).Select(e =>
               _mapper.Map<ScheduledEventsDTO>(e)).ToList();
 
             return Ok(eventsDTOs);
@@ -70,7 +58,7 @@ namespace HospitalApi.Controllers
         [HttpGet("{userId}")]
         public IActionResult GetUpcomingUserEvents(int userId)
         {
-            var eventsDTOs = _eventsService.getUpcomingUserEvents(userId).Select(e =>
+            var eventsDTOs = _eventsService.GetUpcomingUserEvents(userId).Select(e =>
                 _mapper.Map<ScheduledEventsDTO>(e)).ToList();
 
             return Ok(eventsDTOs);

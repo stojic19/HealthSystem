@@ -7,13 +7,12 @@ namespace Hospital.Schedule.Service.ServiceInterface
 {
     public interface IScheduledEventsService
     {
-        public List<ScheduledEvent> getFinishedUserEvents(int userId);
-        public List<ScheduledEvent> getCanceledUserEvents(int userId);
-        public List<ScheduledEvent> getUpcomingUserEvents(int userId);
-        public int getNumberOfFinishedEvents(int userId);
-        void updateFinishedUserEvents();
+        public List<ScheduledEvent> GetFinishedUserEvents(int userId);
+        public List<ScheduledEvent> GetCanceledUserEvents(int userId);
+        public List<ScheduledEvent> GetUpcomingUserEvents(int userId);
+        public int GetNumberOfFinishedEvents(int userId);
+        void UpdateFinishedUserEvents();
         ScheduledEvent GetScheduledEvent(int eventId);
-        public List<EventForSurvey> getEventsForSurvey(int userId);
-        String CancelScheduledEvent(int eventId);
+        public List<EventForSurvey> GetEventsForSurvey(int userId);
     }
 }

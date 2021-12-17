@@ -32,9 +32,6 @@ const routes: Routes = [
         path: 'record',
         component: PatientMedicalRecordComponent,
       },
-        {path:'appointments',
-        component: AppointmentsPageComponent
-      },
       {
         path:'survey/:appointmentId',
         component: SurveyPageComponent
@@ -55,6 +52,10 @@ const routes: Routes = [
     HttpClientModule,
   ],
   exports: [RouterModule, MaterialModule, FormsModule],
-  entryComponents: [FeedbackComponent, AppointmentsPageComponent, SurveyPageComponent],
+  entryComponents: [
+    FeedbackComponent,
+    AppointmentsPageComponent,
+    SurveyPageComponent,
+  ],
 })
 export class AppRoutingModule {}

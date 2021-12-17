@@ -30,7 +30,10 @@ namespace HospitalIntegrationTests.Base
 
         public StringContent GetContent(object content)
         {
-            return new StringContent(JsonConvert.SerializeObject(content), Encoding.UTF8, "application/json");
+            return new StringContent(JsonConvert.SerializeObject(content, settings: new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            }), Encoding.UTF8, "application/json");
         }
     }
 }

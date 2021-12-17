@@ -6,6 +6,7 @@ using Hospital.SharedModel.Repository.Base;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,7 +30,7 @@ namespace Hospital.Schedule.Service
             var allAppointments = new List<DateTime>();
             for (var date = startDate; date <= endDate; date = date.AddHours(1))
             {
-                if (date.Hour is > StartHour and < EndHour)
+                if (date.Hour is >= StartHour and < EndHour)
                 {
                     allAppointments.Add(date);
                 }
@@ -58,7 +59,7 @@ namespace Hospital.Schedule.Service
             var allAppointments = new List<DateTime>();
             for (var date = startDate.AddDays(-5); date <= endDate.AddDays(5); date = date.AddHours(1))
             {
-                if (date.Hour is > StartHour and < EndHour)
+                if (date.Hour is >= StartHour and < EndHour)
                 {
                     allAppointments.Add(date);
                 }
@@ -66,7 +67,7 @@ namespace Hospital.Schedule.Service
             var scheduledEvents = _context.Set<ScheduledEvent>().AsEnumerable();
             var scheduledAppointments = (from appointment in allAppointments
                                          from scheduledEvent in scheduledEvents
-                                         where (scheduledEvent.Doctor.Id == doctorId && scheduledEvent.IsCanceled != true && DateTime.Compare(scheduledEvent.StartDate, appointment) == 0)
+                                         where (scheduledEvent.DoctorId == doctorId && scheduledEvent.IsCanceled != true && DateTime.Compare(scheduledEvent.StartDate, appointment) == 0)
                                          select appointment);
             var dateTimes = allAppointments.Except(scheduledAppointments);
             return AvailableAppointments(dateTimes, doctorId);
@@ -78,15 +79,13 @@ namespace Hospital.Schedule.Service
             var doctorRepo = _uow.GetRepository<IDoctorReadRepository>();
             var firstDoctor = doctorRepo.GetById(doctorId);
             var specializationId = firstDoctor.SpecializationId;
-            var doctorsWithSpecialization = doctorRepo.GetDoctorsBySpecialization(specializationId).ToList();
-            foreach (var doctor in doctorsWithSpecialization)
+            foreach (var doctor in doctorRepo.GetDoctorsBySpecialization(specializationId).ToList())
             {
-                foreach (var appointment in GetAvailableAppointmentsForDoctorAndDateRange(doctor.Id, startDate, endDate).ToList())
+                foreach (var appointment in GetAvailableAppointmentsForDoctorAndDateRange(doctor.Id, startDate, endDate))
                 {
                     availableAppointments.Add(appointment);
                 }
             }
-
             return availableAppointments;
         }
     }

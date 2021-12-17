@@ -67,7 +67,7 @@ namespace HospitalUnitTests
         }
 
         [Fact]
-        public void Should_be_three_available_appointments()
+        public void Should_be_four_available_appointments()
         {
             ClearDbContext();
             Context.Specializations.Add(new Specialization
@@ -103,7 +103,7 @@ namespace HospitalUnitTests
             var service = new RecommendedAppointmentService(UoW, Context);
             var appointments = service.GetAvailableAppointmentsForDoctorAndDateRange(1, new DateTime(2023, 12, 16, 13, 0, 0), new DateTime(2023, 12, 16, 17, 0, 0)).ToList();
 
-            appointments.Count().ShouldBe(3);
+            appointments.Count().ShouldBe(4);
 
         }
 
@@ -175,25 +175,104 @@ namespace HospitalUnitTests
             });
             Context.ScheduledEvents.Add(new ScheduledEvent
             {
-                StartDate = new DateTime(2023, 12, 16, 13, 00, 00),
-                EndDate = new DateTime(2023, 12, 16, 14, 00, 00),
+                StartDate = new DateTime(2021, 12, 23, 7, 00, 00),
+                EndDate = new DateTime(2021, 12, 23,8, 00, 00),
                 DoctorId = 1
 
             });
 
             Context.ScheduledEvents.Add(new ScheduledEvent
             {
-                StartDate = new DateTime(2023, 12, 16, 15, 00, 00),
-                EndDate = new DateTime(2023, 12, 16, 16, 00, 00),
+                StartDate = new DateTime(2021, 12, 23, 8, 00, 00),
+                EndDate = new DateTime(2021, 12, 23, 9, 00, 00),
+                DoctorId = 1
+
+            });
+            Context.ScheduledEvents.Add(new ScheduledEvent
+            {
+                StartDate = new DateTime(2021, 12, 23, 9, 00, 00),
+                EndDate = new DateTime(2021, 12, 23, 10, 00, 00),
                 DoctorId = 1
 
             });
 
+            Context.ScheduledEvents.Add(new ScheduledEvent
+            {
+                StartDate = new DateTime(2021, 12, 23, 10, 00, 00),
+                EndDate = new DateTime(2021, 12, 23, 11, 00, 00),
+                DoctorId = 1
+
+            });
+
+            Context.ScheduledEvents.Add(new ScheduledEvent
+            {
+                StartDate = new DateTime(2021, 12, 23, 11, 00, 00),
+                EndDate = new DateTime(2021, 12, 23, 12, 00, 00),
+                DoctorId = 1
+
+            });
+            Context.ScheduledEvents.Add(new ScheduledEvent
+            {
+                StartDate = new DateTime(2021, 12, 23, 12, 00, 00),
+                EndDate = new DateTime(2021, 12, 23, 13, 00, 00),
+                DoctorId = 1
+
+            });
+
+            Context.ScheduledEvents.Add(new ScheduledEvent
+            {
+                StartDate = new DateTime(2021, 12, 23, 13, 00, 00),
+                EndDate = new DateTime(2021, 12, 23, 14, 00, 00),
+                DoctorId = 1
+
+            });
+
+            Context.ScheduledEvents.Add(new ScheduledEvent
+            {
+                StartDate = new DateTime(2021, 12, 23, 14, 00, 00),
+                EndDate = new DateTime(2021, 12, 23, 15, 00, 00),
+                DoctorId = 1
+
+            });
+            Context.ScheduledEvents.Add(new ScheduledEvent
+            {
+                StartDate = new DateTime(2021, 12, 23, 15, 00, 00),
+                EndDate = new DateTime(2021, 12, 23, 16, 00, 00),
+                DoctorId = 1
+
+            });
+
+            Context.ScheduledEvents.Add(new ScheduledEvent
+            {
+                StartDate = new DateTime(2021, 12, 23, 16, 00, 00),
+                EndDate = new DateTime(2021, 12, 23, 17, 00, 00),
+                DoctorId = 1
+
+            });
+
+            Context.ScheduledEvents.Add(new ScheduledEvent
+            {
+                StartDate = new DateTime(2021, 12, 23, 17, 00, 00),
+                EndDate = new DateTime(2021, 12, 23, 18, 00, 00),
+                DoctorId = 1
+
+            });
+            Context.ScheduledEvents.Add(new ScheduledEvent
+            {
+                StartDate = new DateTime(2021, 12, 23, 18, 00, 00),
+                EndDate = new DateTime(2021, 12, 23, 19, 00, 00),
+                DoctorId = 1
+
+            });
+
+
+
+
             Context.SaveChanges();
             var service = new RecommendedAppointmentService(UoW, Context);
-            var appointments = service.GetAvailableAppointmentsForDoctorPriority(1, new DateTime(2023, 12, 16, 13, 0, 0), new DateTime(2023, 12, 16, 17, 0, 0)).ToList();
+            var appointments = service.GetAvailableAppointmentsForDoctorPriority(1, new DateTime(2021, 12, 23, 0, 0, 0), new DateTime(2021, 12, 24, 0, 0, 0)).ToList();
 
-            appointments[0].StartDate.Date.ShouldBeLessThan(new DateTime(2023, 12, 16));
+            appointments[0].StartDate.Date.ShouldBeLessThan(new DateTime(2021, 12, 23));
 
         }
 
@@ -224,24 +303,100 @@ namespace HospitalUnitTests
             });
             Context.ScheduledEvents.Add(new ScheduledEvent
             {
-                StartDate = new DateTime(2023, 12, 16, 13, 00, 00),
-                EndDate = new DateTime(2023, 12, 16, 14, 00, 00),
+                StartDate = new DateTime(2021, 12, 23, 7, 00, 00),
+                EndDate = new DateTime(2021, 12, 23, 8, 00, 00),
                 DoctorId = 1
 
             });
 
             Context.ScheduledEvents.Add(new ScheduledEvent
             {
-                StartDate = new DateTime(2023, 12, 16, 14, 00, 00),
-                EndDate = new DateTime(2023, 12, 16, 15, 00, 00),
+                StartDate = new DateTime(2021, 12, 23, 8, 00, 00),
+                EndDate = new DateTime(2021, 12, 23, 9, 00, 00),
+                DoctorId = 1
+
+            });
+            Context.ScheduledEvents.Add(new ScheduledEvent
+            {
+                StartDate = new DateTime(2021, 12, 23, 9, 00, 00),
+                EndDate = new DateTime(2021, 12, 23, 10, 00, 00),
+                DoctorId = 1
+
+            });
+
+            Context.ScheduledEvents.Add(new ScheduledEvent
+            {
+                StartDate = new DateTime(2021, 12, 23, 10, 00, 00),
+                EndDate = new DateTime(2021, 12, 23, 11, 00, 00),
+                DoctorId = 1
+
+            });
+
+            Context.ScheduledEvents.Add(new ScheduledEvent
+            {
+                StartDate = new DateTime(2021, 12, 23, 11, 00, 00),
+                EndDate = new DateTime(2021, 12, 23, 12, 00, 00),
+                DoctorId = 1
+
+            });
+            Context.ScheduledEvents.Add(new ScheduledEvent
+            {
+                StartDate = new DateTime(2021, 12, 23, 12, 00, 00),
+                EndDate = new DateTime(2021, 12, 23, 13, 00, 00),
+                DoctorId = 1
+
+            });
+
+            Context.ScheduledEvents.Add(new ScheduledEvent
+            {
+                StartDate = new DateTime(2021, 12, 23, 13, 00, 00),
+                EndDate = new DateTime(2021, 12, 23, 14, 00, 00),
+                DoctorId = 1
+
+            });
+
+            Context.ScheduledEvents.Add(new ScheduledEvent
+            {
+                StartDate = new DateTime(2021, 12, 23, 14, 00, 00),
+                EndDate = new DateTime(2021, 12, 23, 15, 00, 00),
+                DoctorId = 1
+
+            });
+            Context.ScheduledEvents.Add(new ScheduledEvent
+            {
+                StartDate = new DateTime(2021, 12, 23, 15, 00, 00),
+                EndDate = new DateTime(2021, 12, 23, 16, 00, 00),
+                DoctorId = 1
+
+            });
+
+            Context.ScheduledEvents.Add(new ScheduledEvent
+            {
+                StartDate = new DateTime(2021, 12, 23, 16, 00, 00),
+                EndDate = new DateTime(2021, 12, 23, 17, 00, 00),
+                DoctorId = 1
+
+            });
+
+            Context.ScheduledEvents.Add(new ScheduledEvent
+            {
+                StartDate = new DateTime(2021, 12, 23, 17, 00, 00),
+                EndDate = new DateTime(2021, 12, 23, 18, 00, 00),
+                DoctorId = 1
+
+            });
+            Context.ScheduledEvents.Add(new ScheduledEvent
+            {
+                StartDate = new DateTime(2021, 12, 23, 18, 00, 00),
+                EndDate = new DateTime(2021, 12, 23, 19, 00, 00),
                 DoctorId = 1
 
             });
 
             Context.SaveChanges();
             var service = new RecommendedAppointmentService(UoW, Context);
-            var appointments = service.GetAvailableAppointmentsForDatePriority(1, new DateTime(2023, 12, 16, 13, 0, 0),
-                new DateTime(2023, 12, 16, 15, 0, 0)).ToList();
+            var appointments = service.GetAvailableAppointmentsForDatePriority(1, new DateTime(2021, 12, 23, 0, 0, 0),
+                new DateTime(2021, 12, 24, 0, 0, 0)).ToList();
 
             appointments[0].Doctor.Id.ShouldBe(2);
 

@@ -24,6 +24,8 @@ namespace HospitalApi.AutoMapperProfiles
             CreateMap<NewAllergyDTO, Allergy>();
             CreateMap<NewMedicalRecordDTO, MedicalRecord>();
             CreateMap<NewPatientDTO, Patient>();
+
+            CreateMap<Doctor, SpecializedDoctorDTO>();
             CreateMap<MedicationIngredient, MedicationIngredientDTO>();
             CreateMap<City, CityDTO>();
             CreateMap<Allergy, AllergyDTO>();
@@ -31,6 +33,7 @@ namespace HospitalApi.AutoMapperProfiles
             CreateMap<MedicalRecord, MedicalRecordDTO>();
             CreateMap<Patient, PatientDTO>();
             CreateMap<EquipmentTransferEventDto, EquipmentTransferEvent>();
+            CreateMap<Patient, UserForBlockingDTO>();
             CreateMap<RoomRenovationEventDto, RoomRenovationEvent>();
         }
     }

@@ -1,11 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
 using Integration.Shared.Repository.Base;
-using IntegrationAPI.DTO;
+using IntegrationAPI.DTO.Shared;
 
 namespace IntegrationAPI.Controllers.Base
 {
@@ -16,7 +11,7 @@ namespace IntegrationAPI.Controllers.Base
         protected readonly HospitalDTO _hospitalInfo;
         protected BaseIntegrationController(IUnitOfWork uow)
         {
-            var ipAdr = "192.168.0.22";
+            var ipAdr = "192.168.0.13";
             _unitOfWork = uow;
             _sftpCredentials = new SftpCredentialsDTO
             {

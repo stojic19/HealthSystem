@@ -22,7 +22,7 @@ export class AppointmentService {
     );
   }
   getAppointment(eventId:string): any {
-    return this._http.get<IAppointment>('/api/ScheduledEvents/GetScheduledEvent/'+ eventId);
+    return this._http.get<IAppointment>('/api/ScheduledEvent/GetScheduledEvent/'+ eventId);
   }
 
   scheduleAppointment(newAppointment: INewAppointment): Observable<any> {

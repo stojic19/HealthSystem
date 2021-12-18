@@ -1,4 +1,4 @@
-﻿using Hospital.Schedule.Service.ServiceInterface;
+﻿using Hospital.Schedule.Service.Interfaces;
 using Hospital.SharedModel.Repository.Base;
 using Microsoft.Extensions.Hosting;
 using System.Threading;
@@ -9,8 +9,8 @@ namespace Hospital.Schedule.Service
     public class ConsumeScopedServiceHostedService : BackgroundService
     {
         private readonly IUnitOfWork uow;
-        private IScheduledEventsService scheduledEventsService;
-        public ConsumeScopedServiceHostedService(IUnitOfWork unitOfWork, IScheduledEventsService scheduledEventsService)
+        private IScheduledEventService scheduledEventsService;
+        public ConsumeScopedServiceHostedService(IUnitOfWork unitOfWork, IScheduledEventService scheduledEventsService)
         {
             this.uow = unitOfWork;
             this.scheduledEventsService = scheduledEventsService;       

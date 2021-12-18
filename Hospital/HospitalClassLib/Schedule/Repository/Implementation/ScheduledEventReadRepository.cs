@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Hospital.Database.EfStructures;
+﻿using Hospital.Database.EfStructures;
 using Hospital.Schedule.Model;
 using Hospital.SharedModel.Model.Wrappers;
 using Hospital.SharedModel.Repository.Base;

@@ -3,8 +3,8 @@ using AutoMapper;
 using HospitalApi.DTOs;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using Hospital.Schedule.Service.Interfaces;
+using System.Linq;
 
 namespace HospitalApi.Controllers
 {
@@ -25,14 +25,44 @@ namespace HospitalApi.Controllers
         [HttpGet("{userId}")]
         public IActionResult GetFinishedUserEvents(int userId)
         {
-            List<ScheduledEventsDTO> scheduledEventsDTOs = new List<ScheduledEventsDTO>();
-            foreach (var e in _eventsService.getFinishedUserEvents(userId))
-            {
-                ScheduledEventsDTO dto = _mapper.Map<ScheduledEventsDTO>(e);
-                scheduledEventsDTOs.Add(dto);
-            }
+            var eventsDTOs = _eventsService.GetFinishedUserEvents(userId).Select(e =>
+              _mapper.Map<ScheduledEventsDTO>(e)).ToList();
 
-            return Ok(scheduledEventsDTOs);
+            return Ok(eventsDTOs);
+        }
+        [HttpGet("{userId}")]
+        public IActionResult GetEventsForSurvey(int userId)
+        {
+            var eventsForSurveyDTOs = _eventsService.GetEventsForSurvey(userId).Select(e =>
+              _mapper.Map<EventsForSurveyDTO>(e)).ToList();
+
+            return Ok(eventsForSurveyDTOs);
+        }
+
+        [HttpGet("{eventId}")]
+        public IActionResult GetScheduledEvent(int eventId)
+        {
+            var eventsDTOs = _mapper.Map<ScheduledEventsDTO>(_eventsService.GetScheduledEvent(eventId));
+
+            return Ok(eventsDTOs);
+        }
+
+        [HttpGet("{userId}")]
+        public IActionResult GetCanceledUserEvents(int userId)
+        {
+            var eventsDTOs = _eventsService.GetCanceledUserEvents(userId).Select(e =>
+              _mapper.Map<ScheduledEventsDTO>(e)).ToList();
+
+            return Ok(eventsDTOs);
+        }
+
+        [HttpGet("{userId}")]
+        public IActionResult GetUpcomingUserEvents(int userId)
+        {
+            var eventsDTOs = _eventsService.GetUpcomingUserEvents(userId).Select(e =>
+                _mapper.Map<ScheduledEventsDTO>(e)).ToList();
+
+            return Ok(eventsDTOs);
         }
 
         [HttpGet]

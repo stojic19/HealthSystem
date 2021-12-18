@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using Hospital.Schedule.Model;
 using Hospital.SharedModel.Model.Wrappers;
-
 using Hospital.SharedModel.Repository.Base;
-using System.Collections.Generic;
+
 
 namespace Hospital.Schedule.Repository
 {

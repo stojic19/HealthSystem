@@ -31,8 +31,10 @@ export class RecommendedAppointmentComponent implements OnInit {
   availableAppointments : IAvailableAppointment[];
   selectedAppointment! : IAvailableAppointment[];
   newAppointment : IRecommendedAppointment;
+  todayDate:Date = new Date();
 
-  constructor(private doctorService: DoctorService,
+  constructor(private _formBuilder: FormBuilder,
+    private doctorService: DoctorService,
     private datePipe: DatePipe,
     private availableAppointmentService : AvailableAppointmentsService,
     private _snackBar: MatSnackBar,

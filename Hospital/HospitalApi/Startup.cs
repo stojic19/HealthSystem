@@ -76,7 +76,7 @@ namespace HospitalApi
             services.AddScoped<IPatientSurveyService, PatientSurveyService>();
             services.AddScoped<IScheduledEventService, ScheduledEventService>();
             services.AddScoped<ISurveyService, SurveyService>();
-            
+            services.AddHostedService<ConsumeScopedServiceHostedService>();
 
             builder.RegisterModule(new RepositoryModule()
             {

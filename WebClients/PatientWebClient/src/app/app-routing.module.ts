@@ -10,7 +10,6 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { BasicAppointmentComponent } from './components/basic-appointment/basic-appointment.component';
 import { LoginComponent } from './components/login/login.component';
 import { PatientMedicalRecordComponent } from './components/patient-medical-record/patient-medical-record.component';
 import { AppointmentsPageComponent } from './components/appointments-page/appointments-page.component';
@@ -35,10 +34,9 @@ const routes: Routes = [
         component: PatientMedicalRecordComponent,
       },
       {
-        path: 'surveys',
-        component: SurveyPageComponent,
-      },
-      { path: 'appointments', component: AppointmentsPageComponent },
+        path:'survey/:appointmentId',
+        component: SurveyPageComponent
+      }
     ],
   },
   { path: 'registration', component: RegistrationComponent },

@@ -16,8 +16,6 @@ namespace HospitalApi.AutoMapperProfiles
                .ForMember(o => o.AnsweredDate, opt => opt.MapFrom(src => DateTime.Now))
                .ForMember(o => o.AnsweredQuestions, opt => opt.MapFrom(src => src.questions));
 
-
-
         }
 
     }

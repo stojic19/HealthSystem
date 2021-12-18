@@ -21,11 +21,8 @@ using HospitalApi.HttpRequestSenders.Implementation;
 using Microsoft.AspNetCore.Identity;
 using Hospital.Schedule.Service.ServiceInterface;
 using Hospital.Schedule.Service;
-<<<<<<< HEAD
 using Hospital.Schedule.Service.Interfaces;
-=======
 using Microsoft.EntityFrameworkCore;
->>>>>>> c5ec46e (feat: started major refactoring for docker compose)
 
 namespace HospitalApi
 {

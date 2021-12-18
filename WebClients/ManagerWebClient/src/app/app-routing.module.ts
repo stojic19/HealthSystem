@@ -64,19 +64,12 @@ const routes: Routes = [
     path: _isProd? 'manager/new-medicine-specification-request' : 'new-medicine-specification-request',
     component: MedicineSpecificationRequestsComponent,
   },
-<<<<<<< HEAD
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'moveEquipment/:id', component: EquipmentFormComponent },
-  { path: 'surveys', component: SurveysObserveComponent},
-  { path: 'roomRenovation', component: RenovationFormComponent},
-  { path: 'schedule/:id', component: RoomScheduleComponent },
-  { path: 'blocking', component: MaliciousPatientsComponent},
-=======
+  { path: _isProd? 'manager/roomRenovation' : 'roomRenovation', component: RenovationFormComponent},
+  { path: _isProd? 'manager/blocking' : 'blocking', component: MaliciousPatientsComponent},
   { path: _isProd? 'manager' : '', redirectTo: _isProd? 'manager/home' : 'home', pathMatch: 'full' },
   { path: _isProd? 'manager/moveEquipment/:id' : 'moveEquipment/:id', component: EquipmentFormComponent },
   { path: _isProd? 'manager/surveys' : 'surveys', component: SurveysObserveComponent },
   { path: _isProd? 'manager/schedule/:id' : 'schedule/:id', component: RoomScheduleComponent },
->>>>>>> c5ec46e (feat: started major refactoring for docker compose)
 ];
 
 @NgModule({

@@ -38,6 +38,20 @@ namespace HospitalApi.Controllers
         }
 
         [HttpGet]
+        public IActionResult GetAllDoctors()
+        {
+            try
+            {
+                var doctors = _uow.GetRepository<IDoctorReadRepository>().GetAllDoctorsWithSpecialization();
+                return Ok(doctors);
+
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error!Failed loading doctors!");
+            }
+        }
+        [HttpGet]
         public IActionResult GetDoctorsWithSpecialization([FromQuery(Name = "specializationId")] int specializationId)
         {
             //TODO: make a DTO for Specialization

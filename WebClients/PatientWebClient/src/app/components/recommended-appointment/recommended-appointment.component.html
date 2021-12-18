@@ -1,0 +1,79 @@
+<div class="row">
+    <div class="col-sm">
+<div class="container">
+    <mat-card class="frame">
+        <h6>Recommended appointment</h6>
+        <div class="col">
+            <div class="row">
+                <mat-form-field appearance="fill">
+                    <mat-label>Enter a date range</mat-label>
+                    <mat-date-range-input [formGroup]="range" [rangePicker]="picker" [min]="todayDate">
+                      <input matStartDate placeholder="Start date" formControlName="start" placeholder="Start date" #dateRangeStart>
+                      <input matEndDate placeholder="End date" formControlName="end" placeholder="End date" #dateRangeEnd (dateChange)="dateRangeChange(dateRangeStart,dateRangeEnd)" >
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
+            </div>
+        <!--<div class="row">
+                <mat-form-field appearance="fill">
+                <mat-label>Start time</mat-label>
+                <mat-select>
+                   <mat-option *ngFor="let time of times" [value]="time">
+                    {{time}}
+                    </mat-option>
+                </mat-select>
+                </mat-form-field>
+        </div>
+        <div class="row">
+            <mat-form-field appearance="fill">
+            <mat-label>End time</mat-label>
+            <mat-select>
+                <mat-option *ngFor="let time of times" [value]="time">
+                {{time}}
+                </mat-option>
+            </mat-select>
+            </mat-form-field>
+    </div>-->
+    <div class="row">
+        <mat-form-field appearance="fill">
+        <mat-label>Choose doctor</mat-label>
+        <mat-select [(ngModel)]='doctorId' (selectionChange)='selectionChange($event)'>
+            <mat-option *ngFor="let doctor of doctors" #doctorValue  [value]="doctor.id" >
+            dr {{doctor.firstName}} {{doctor.lastName}} - {{doctor.specialization.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    </div>
+    <div class="col">
+        <div class="row">
+            <mat-radio-group aria-label="Select priority" [(ngModel)]='radioButtonSelection' (change)="radioChange($event)">
+                <mat-radio-button value="1" color="primary">Doctor</mat-radio-button>
+                <mat-radio-button value="2" color="primary">Date</mat-radio-button>
+              </mat-radio-group>
+        </div>
+    </div>
+        
+    <div class="row">
+    <button mat-button color="primary" (click)="getAvailableAppointments()" >Find available</button>
+    </div>
+    </div>
+    </mat-card>
+</div>
+</div>
+<div class="col-sm">
+    <div *ngIf = "availableAppointments.length !=0">
+    <mat-selection-list #app class="custom-scroll-bar" [multiple]='false' [(ngModel)]='selectedAppointment' (click)="appointmentPicked(app)">
+        <mat-list-option *ngFor="let appointment of availableAppointments"  [value]="appointment">
+          {{appointment.startDate | date : 'dd.MM.yyyy, HH:mm'}} dr {{appointment.doctor.firstName}} {{appointment.doctor.lastName}}
+        </mat-list-option>
+      </mat-selection-list>
+      
+      <button mat-raised-button (click)="onSubmit()" color="primary" class="icon-display">
+        Schedule
+        </button>
+    </div>
+</div>
+</div>
+
+    

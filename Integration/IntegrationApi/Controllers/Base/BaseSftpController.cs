@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Integration.Shared.Repository.Base;
 using IntegrationAPI.DTO;
+using IntegrationAPI.DTO.Shared;
 
 namespace IntegrationAPI.Controllers.Base
 {

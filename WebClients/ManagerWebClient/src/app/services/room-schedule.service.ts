@@ -12,7 +12,7 @@ export class RoomScheduleService {
 
   getTransferEventsByRoom(roomId: number) {
     return this.http.get(
-      `${environment.baseUrl}` +
+      `${environment.baseHospitalUrl}` +
         'api/EquipmentTransferEvent/GetTransferEventsByRoom',
       {
         params: {
@@ -24,7 +24,7 @@ export class RoomScheduleService {
 
   getRenovationsByRoom(roomId: number) {
     return this.http.get(
-      `${environment.baseUrl}` + 'api/RoomRenovation/GetRenovationsByRoom',
+      `${environment.baseHospitalUrl}` + 'api/RoomRenovation/GetRenovationsByRoom',
       {
         params: {
           roomId: roomId,
@@ -35,7 +35,7 @@ export class RoomScheduleService {
 
   getAppointmentsByRoom(roomId: number) {
     return this.http.get(
-      `${environment.baseUrl}` + 'api/Room/GetScheduledEventsByRoom',
+      `${environment.baseHospitalUrl}` + 'api/Room/GetScheduledEventsByRoom',
       {
         params: {
           roomId: roomId,

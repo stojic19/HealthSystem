@@ -22,5 +22,6 @@ namespace Pharmacy.Model
         public Guid ApiKey { get; set; }
 
         public IEnumerable<Complaint> Complaints { get; set; }
+        public IEnumerable<TenderOffer> TenderOffers { get; set; }
     }
 }

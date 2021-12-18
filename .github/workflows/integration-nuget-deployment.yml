@@ -3,7 +3,8 @@ name: Automated deployment of integration nuget
 on:
   push:
     branches: 
-      - '!integration/hospital'
+      - '!nuget/hospital'
+      - '!nuget/pharmacy'
       - '!feature/**'
       - '!bugfix/**'
       - '!master'

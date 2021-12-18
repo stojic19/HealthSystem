@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Room } from '../interfaces/room';
+import { RenovationTermsRequest } from '../model/renovation-terms-request.model';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,7 @@ export class RoomsService {
 
   getRoomsByNameFirstBuilding(roomName: string) {
     return this.http.get(
-      `${environment.baseUrl}` + 'api/Room/FindByNameAndBuildingName',
+      `${environment.baseHospitalUrl}` + 'api/Room/FindByNameAndBuildingName',
       {
         params: {
           name: roomName,
@@ -23,7 +24,7 @@ export class RoomsService {
 
   getRoomsByNameSecondBuilding(roomName: string) {
     return this.http.get(
-      `${environment.baseUrl}` + 'api/Room/FindByNameAndBuildingName',
+      `${environment.baseHospitalUrl}` + 'api/Room/FindByNameAndBuildingName',
       {
         params: {
           name: roomName,
@@ -39,6 +40,7 @@ export class RoomsService {
   }
 
   getAllRooms() {
-    return this.http.get(`${environment.baseUrl}` + 'api/Room/GetAllRooms');
+    return this.http.get(`${environment.baseHospitalUrl}` + 'api/Room/GetAllRooms');
   }
+
 }

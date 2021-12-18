@@ -3,7 +3,7 @@
         <h2>Medicine Specification List</h2>
     </div>
     
-    <button class="btn btn-primary m-3" routerLink="/new-medicine-specification-request">Get new specification</button>
+    <button class="btn btn-primary m-3" [routerLink]="[isProd ? '/manager/new-medicine-specification-request' : '/new-medicine-specification-request']">Get new specification</button>
 
     <div class="table-responsive">
         <table class="table table-bordered table-striped table-hover">
@@ -15,7 +15,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor='let specification of specifications' (click)="showPDF(specification.fileName)">
+                <tr *ngFor='let specification of specifications' (click)="showPDF(specification.id)">
                     <td>{{specification.medicineName}}</td>
                     <td>{{specification.pharmacyName}}</td>
                     <td>{{specification.receivedDate | date: 'dd-MM-yyyy hh:mm'}}</td>

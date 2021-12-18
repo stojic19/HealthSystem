@@ -17,9 +17,12 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using Integration.Database.EfStructures;
 using IntegrationAPI.HttpRequestSenders;
 using IntegrationAPI.HttpRequestSenders.Implementation;
+using Microsoft.EntityFrameworkCore;
 
 namespace IntegrationAPI
 {
@@ -56,8 +59,20 @@ namespace IntegrationAPI
             });
             services.AddHostedService<BenefitRabbitMqService>();
 
+            services.AddDbContextPool<AppDbContext>(options =>
+            {
+                var connectionString = Environment.GetEnvironmentVariable("INTEGRATION_DB_PATH");
+                options.UseNpgsql(connectionString);
+                using (var context = new AppDbContext((DbContextOptions<AppDbContext>)options.Options))
+                {
+                    if (context.Database.GetPendingMigrations().Any())
+                    {
+                        context.Database.Migrate();
+                    }
+                }
+            });
+
             var builder = new ContainerBuilder();
-            builder.RegisterModule(new DbModule());
             builder.RegisterModule(new RepositoryModule()
             {
 

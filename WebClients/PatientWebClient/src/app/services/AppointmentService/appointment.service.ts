@@ -1,5 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient} from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { IAppointment } from 'src/app/interfaces/appointment';
 import { Observable } from 'rxjs';
 import { INewAppointment } from 'src/app/interfaces/new-appointment';
 
@@ -19,6 +20,9 @@ export class AppointmentService {
         '&preferredDate=' +
         preferredDate
     );
+  }
+  getAppointment(eventId:string): any {
+    return this._http.get<IAppointment>('/api/ScheduledEvent/GetScheduledEvent/'+ eventId);
   }
 
   scheduleAppointment(newAppointment: INewAppointment): Observable<any> {

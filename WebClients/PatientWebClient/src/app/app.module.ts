@@ -39,8 +39,9 @@ import { SurveyPageComponent } from './components/survey-page/survey-page.compon
     LoginComponent,
     PatientMedicalRecordComponent,
     AppointmentsPageComponent,
-    SurveyPageComponent,
     SurveySectionComponent,
+    LoginComponent,
+    SurveyPageComponent,
     RecommendedAppointmentComponent
   ],
   imports: [

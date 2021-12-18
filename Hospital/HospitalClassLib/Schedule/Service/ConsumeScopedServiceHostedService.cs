@@ -23,10 +23,12 @@ namespace Hospital.Schedule.Service
 
         private async Task UpdateFinishedUserEvents(CancellationToken cancellationToken)
         {
+            System.Diagnostics.Debug.WriteLine("whatevers");
             while (!cancellationToken.IsCancellationRequested)
             {
+                
                 scheduledEventsService.UpdateFinishedUserEvents();
-                await Task.Delay(60000, cancellationToken);
+                await Task.Delay(60000);
             }
         }
     }

@@ -1,6 +1,6 @@
 {
     "/api/*": {
-      "target": "/patient/",
+      "target": "/",
       "secure": false,
       "changeOrigin": true
     }

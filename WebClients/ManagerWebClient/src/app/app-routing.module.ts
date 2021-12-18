@@ -28,45 +28,55 @@ import { RenovationFormComponent } from './renovation-form/renovation-form.compo
 import { RoomScheduleComponent } from './room-schedule/room-schedule.component';
 import { MaliciousPatientsComponent } from './components/malicious-patients/malicious-patients.component';
 
+import { environment } from 'src/environments/environment';
+
+const _isProd = environment.production;
 
 const routes: Routes = [
-  { path: 'overview', component: HospitalOverviewComponent },
-  { path: 'feedbacks', component: FeedbacksManagerComponent },
-  { path: 'firstBuilding', component: FirstBuildingComponent },
-  { path: 'secondBuilding', component: SecondBuildingComponent },
-  { path: 'roomInventory/:id', component: RoomInventoryComponent },
-  { path: 'hospitalEquipment', component: HospitalEquipmentComponent },
-  { path: 'firstBuilding/:roomName/:floor', component: FirstBuildingComponent },
+  { path: _isProd? 'manager/overview' : 'overview', component: HospitalOverviewComponent },
+  { path: _isProd? 'manager/feedbacks' : 'feedbacks', component: FeedbacksManagerComponent },
+  { path: _isProd? 'manager/firstBuilding' : 'firstBuilding', component: FirstBuildingComponent },
+  { path: _isProd? 'manager/secondBuilding' : 'secondBuilding', component: SecondBuildingComponent },
+  { path: _isProd? 'manager/roomInventory/:id' : 'roomInventory/:id', component: RoomInventoryComponent },
+  { path: _isProd? 'manager/hospitalEquipment' : 'hospitalEquipment', component: HospitalEquipmentComponent },
+  { path: _isProd? 'manager/firstBuilding/:roomName/:floor' : 'firstBuilding/:roomName/:floor', component: FirstBuildingComponent },
   {
-    path: 'secondBuilding/:roomName/:floor',
+    path: _isProd? 'manager/secondBuilding/:roomName/:floor' : 'secondBuilding/:roomName/:floor',
     component: SecondBuildingComponent,
   },
-  { path: 'complaints', component: ComplaintsListComponent },
-  { path: 'complaints/:id', component: ComplaintDetailsComponent },
-  { path: 'complaint-add', component: AddComplaintComponent },
-  { path: 'pharmacy-register', component: RegisterPharmacyComponent },
-  { path: 'pharmacy-list', component: PharmaciesListComponent },
-  { path: 'benefit-list', component: BenefitListComponent },
-  { path: 'benefit/:id', component: BenefitDetailsComponent },
-  { path: 'home', component: HomePageComponent },
+  { path: _isProd? 'manager/complaints' : 'complaints', component: ComplaintsListComponent },
+  { path: _isProd? 'manager/complaints/:id' : 'complaints/:id', component: ComplaintDetailsComponent },
+  { path: _isProd? 'manager/complaint-add' : 'complaint-add', component: AddComplaintComponent },
+  { path: _isProd? 'manager/pharmacy-register' : 'pharmacy-register', component: RegisterPharmacyComponent },
+  { path: _isProd? 'manager/pharmacy-list' : 'pharmacy-list', component: PharmaciesListComponent },
+  { path: _isProd? 'manager/benefit-list' : 'benefit-list', component: BenefitListComponent },
+  { path: _isProd? 'manager/benefit/:id' : 'benefit/:id', component: BenefitDetailsComponent },
+  { path: _isProd? 'manager/home' : 'home', component: HomePageComponent },
   {
-    path: 'medication-consumption-report',
+    path: _isProd? 'manager/medication-consumption-report' : 'medication-consumption-report',
     component: MedicationReportsComponent,
   },
   {
-    path: 'medicine-specification-requests',
+    path: _isProd? 'manager/medicine-specification-requests' : 'medicine-specification-requests',
     component: MedicineSpecificationListComponent,
   },
   {
-    path: 'new-medicine-specification-request',
+    path: _isProd? 'manager/new-medicine-specification-request' : 'new-medicine-specification-request',
     component: MedicineSpecificationRequestsComponent,
   },
+<<<<<<< HEAD
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'moveEquipment/:id', component: EquipmentFormComponent },
   { path: 'surveys', component: SurveysObserveComponent},
   { path: 'roomRenovation', component: RenovationFormComponent},
   { path: 'schedule/:id', component: RoomScheduleComponent },
   { path: 'blocking', component: MaliciousPatientsComponent},
+=======
+  { path: _isProd? 'manager' : '', redirectTo: _isProd? 'manager/home' : 'home', pathMatch: 'full' },
+  { path: _isProd? 'manager/moveEquipment/:id' : 'moveEquipment/:id', component: EquipmentFormComponent },
+  { path: _isProd? 'manager/surveys' : 'surveys', component: SurveysObserveComponent },
+  { path: _isProd? 'manager/schedule/:id' : 'schedule/:id', component: RoomScheduleComponent },
+>>>>>>> c5ec46e (feat: started major refactoring for docker compose)
 ];
 
 @NgModule({

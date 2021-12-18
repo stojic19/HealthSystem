@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PharmacyService } from 'src/app/services/pharmacy.service';
+import { environment } from 'src/environments/environment';
 import { IMedicineResponse } from '../interfaces/medicineResponse';
 
 @Component({
@@ -16,6 +17,7 @@ export class PharmaciesListComponent implements OnInit {
   nonFilteredPharmacies: any = [];
   confirmed: any = [];
   ordered: any = [];
+  isProd: boolean = environment.production;
 
   constructor(private _pharmacyService: PharmacyService) { }
 

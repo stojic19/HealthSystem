@@ -18,4 +18,10 @@ export class ChosenDoctorService {
       '/api/Doctor/GetDoctorsWithSpecialization?specializationId=' + specId
     );
   }
+
+  getAllWithSpeciality(specId: number): Observable<IChosenDoctor[]> {
+    return this._http.get<IChosenDoctor[]>(
+      '/api/Doctor/GetDoctorsWithSpecialization?specializationId=' + specId
+    );
+  }
 }

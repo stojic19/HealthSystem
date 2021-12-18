@@ -13,6 +13,7 @@ using Hospital.SharedModel.Model.Enumerations;
 using Hospital.SharedModel.Repository;
 using HospitalApi.DTOs;
 using HospitalIntegrationTests.Base;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Shouldly;
 using Xunit;

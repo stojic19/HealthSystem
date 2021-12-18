@@ -26,7 +26,6 @@ namespace HospitalIntegrationTests
         public BlockingMaliciousPatientsTests(BaseFixture fixture) : base(fixture)
         {
         }
-
         [Fact]
         public async Task Patient_should_be_blocked_request()
         {

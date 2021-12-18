@@ -31,6 +31,7 @@ export class RecommendedAppointmentComponent implements OnInit {
   availableAppointments : IAvailableAppointment[];
   selectedAppointment! : IAvailableAppointment[];
   newAppointment : IRecommendedAppointment;
+  firstFormGroup!: FormGroup;
   todayDate:Date = new Date();
 
   constructor(private _formBuilder: FormBuilder,
@@ -47,6 +48,10 @@ export class RecommendedAppointmentComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.range = this._formBuilder.group({
+      start: ['',Validators.required],
+      end: ['', Validators.required]
+    });
     this.doctorService.getAll().subscribe((res) => {
       this.doctors = res;
     });

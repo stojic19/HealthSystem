@@ -75,6 +75,108 @@
            </mat-tab>
         </mat-tab-group>
     </mat-card>
+<br>
+    <mat-card class="bg-light">
+        <mat-card-title>Medical Appointments</mat-card-title>
+       <mat-tab-group>
+           <mat-tab label="Future Appointments">
+            <mat-card class="bg-light col">
+                <div class="row">
+                    <div class="col-2">
+                        <img src="../../../assets/images/appointment.png">
+                    </div>
+                    <div class="col-9">
+                        <table>
+                            <thead>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Doctor</th>
+                                <th>Doctor Specialization</th>
+                                <th>Room</th>
+                                <th>Cancel </th>
+                            </thead>
+                            <tbody *ngFor = "let appointment of futureAppointments">
+                                <tr >
+                                    <td>{{appointment.startDate | date}}</td>
+                                    <td class="col-md-3" >{{appointment.startDate | date:'shortTime' }} - {{appointment.endDate | date:'shortTime'}}</td>
+                                    <td>{{appointment.doctorName}} {{appointment.doctorLastName}}</td>
+                                    <td>{{appointment.specializationName}}</td>
+                                    <td>{{appointment.roomName}}</td>
+                                    <td><button type="button" class="btn btn-warning">Cancel</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </mat-card>
+
+           </mat-tab>
+           <mat-tab label="Finished Appointments">
+            <mat-card class="bg-light col">
+                <div class="row">
+                    <div class="col-2">
+                        <img src="../../../assets/images/timetable.png">
+                    </div>
+                    <div class="col-9">
+                        <table>
+                            <thead>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Doctor</th>
+                                <th>Doctor Specialization</th>
+                                <th>Room</th>
+                                <th>Survey</th>
+                            </thead>
+                            <tbody *ngFor = "let appointmentt of finishedAppointments">
+                                <tr >
+                                    <td>{{appointmentt.scheduledEventsDTO.startDate | date}}</td>
+                                    <td class="col-md-3">{{appointmentt.scheduledEventsDTO.startDate | date:'shortTime' }} - {{appointmentt.scheduledEventsDTO.endDate | date:'shortTime'}}</td>
+                                    <td>{{appointmentt.scheduledEventsDTO.doctorName}} {{appointmentt.scheduledEventsDTO.doctorLastName}}</td>
+                                    <td>{{appointmentt.scheduledEventsDTO.specializationName}}</td>
+                                    <td>{{appointmentt.scheduledEventsDTO.roomName}}</td>
+                                    <td>
+                                        <button type="button" [disabled]='appointmentt.answeredSurveyId>0' class="btn btn-primary" (click)="answerSurvey(this.appointmentt.scheduledEventsDTO.id)" >Survey</button></td>
+                                </tr>
+                            </tbody>
+                            
+                        </table>
+                    </div>
+                </div>
+            </mat-card>
+
+           </mat-tab>
+           <mat-tab label="Canceled Appointments">
+            <mat-card class="bg-light col">
+                <div class="row">
+                    <div class="col-2">
+                        <img src="../../../assets/images/booking-cancel.png">
+                    </div>
+                    <div class="col-9">
+                        <table>
+                            <thead>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Doctor</th>
+                                <th>Doctor Specialization</th>
+                                <th>Room</th>
+                            </thead>
+                            <tbody *ngFor = "let appointment of canceledAppointments">
+                                <tr >
+                                    <td>{{appointment.startDate | date}}</td>
+                                    <td class="col-md-3">{{appointment.startDate | date:'shortTime' }} - {{appointment.endDate | date:'shortTime'}}</td>
+                                    <td>{{appointment.doctorName}} {{appointment.doctorLastName}}</td>
+                                    <td>{{appointment.specializationName}}</td>
+                                    <td>{{appointment.roomName}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </mat-card>
+
+           </mat-tab>
+        </mat-tab-group>
+    </mat-card>
 </div>
 
 

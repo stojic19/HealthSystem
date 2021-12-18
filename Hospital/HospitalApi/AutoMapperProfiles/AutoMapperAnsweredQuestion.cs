@@ -7,8 +7,7 @@ namespace HospitalApi.AutoMapperProfiles
     {
         public AutoMapperAnsweredQuestion()
         {
-            CreateMap<AnsweredQuestion, AnsweredQuestionDTO>();
-            CreateMap<AnsweredQuestionDTO, AnsweredQuestion>();
+            CreateMap<AnsweredQuestion, AnsweredQuestionDTO>().ReverseMap();
         }
     }
 }

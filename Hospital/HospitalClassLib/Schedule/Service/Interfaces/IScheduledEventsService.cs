@@ -1,11 +1,11 @@
-﻿using System;
-using Hospital.Schedule.Model;
-using System.Collections.Generic;
+﻿using Hospital.Schedule.Model;
 using Hospital.Schedule.Model.Wrappers;
+using System;
+using System.Collections.Generic;
 
-namespace Hospital.Schedule.Service.Interfaces
+namespace Hospital.Schedule.Service.ServiceInterface
 {
-    public interface IScheduledEventService
+    public interface IScheduledEventsService
     {
         public List<ScheduledEvent> GetFinishedUserEvents(int userId);
         public List<ScheduledEvent> GetCanceledUserEvents(int userId);
@@ -14,6 +14,5 @@ namespace Hospital.Schedule.Service.Interfaces
         void UpdateFinishedUserEvents();
         ScheduledEvent GetScheduledEvent(int eventId);
         public List<EventForSurvey> GetEventsForSurvey(int userId);
-        public IEnumerable<DateTime> GetAvailableAppointments(int doctorId, DateTime preferredDate);
     }
 }

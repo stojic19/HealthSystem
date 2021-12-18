@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using Shouldly;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -44,6 +45,8 @@ namespace HospitalIntegrationTests
                 JsonConvert.DeserializeObject<IEnumerable<AvailableAppointmentDTO>>(responseContent).ToList();
 
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
+            availableAppointments.Count.ShouldNotBe(0);
+            ClearTestData();
         }
 
         [Fact]
@@ -61,8 +64,10 @@ namespace HospitalIntegrationTests
             var availableAppointments =
                 JsonConvert.DeserializeObject<IEnumerable<AvailableAppointmentDTO>>(responseContent).ToList();
 
+            response.StatusCode.ShouldBe(HttpStatusCode.OK);
             availableAppointments.Count.ShouldNotBe(0);
             availableAppointments.ShouldNotBeNull();
+            ClearTestData();
         }
 
         [Fact]
@@ -70,8 +75,8 @@ namespace HospitalIntegrationTests
         {
 
             var doctor = InsertDoctors();
-            var dateStart = "2/2/2022";
-            var dateEnd = "2/3/2022";
+            var dateStart = "12/14/2021";
+            var dateEnd = "12/15/2022";
             var doctorId = doctor.Id;
             var isDoctorPriority = true;
 
@@ -81,9 +86,11 @@ namespace HospitalIntegrationTests
             var availableAppointments =
                 JsonConvert.DeserializeObject<IEnumerable<AvailableAppointmentDTO>>(responseContent).ToList();
 
+            response.StatusCode.ShouldBe(HttpStatusCode.OK);
             availableAppointments.Count.ShouldNotBe(0);
             availableAppointments.ShouldNotBeNull();
             availableAppointments[0].Doctor.Id.ShouldBe(doctorId);
+            ClearTestData();
         }
 
         [Fact]
@@ -101,9 +108,85 @@ namespace HospitalIntegrationTests
             var availableAppointments =
                 JsonConvert.DeserializeObject<IEnumerable<AvailableAppointmentDTO>>(responseContent).ToList();
 
+            response.StatusCode.ShouldBe(HttpStatusCode.OK);
             availableAppointments.Count.ShouldNotBe(0);
             availableAppointments.ShouldNotBeNull();
             availableAppointments[0].Doctor.Specialization.Id.Equals(doctor.SpecializationId);
+            ClearTestData();
+        }
+
+        private void ClearTestData()
+        {
+
+            var patient = UoW.GetRepository<IPatientReadRepository>()
+                .GetAll().ToList()
+                .FirstOrDefault(x => x.UserName == "testPatient");
+
+            if (patient == null) return;
+            {
+                var medicalRecord = UoW.GetRepository<IMedicalRecordReadRepository>()
+                    .GetAll().Include(mr => mr.Doctor)
+                    .FirstOrDefault(x => x.Id == patient.MedicalRecordId);
+
+                UoW.GetRepository<IMedicalRecordWriteRepository>().Delete(medicalRecord);
+            }
+            var scheduledEvents = UoW.GetRepository<IScheduledEventReadRepository>()
+                .GetAll().ToList()
+                .Where(s => s.Doctor.UserName == "testDoctor1");
+
+            /*if (scheduledEvents == null) return;
+            {
+
+                UoW.GetRepository<IScheduledEventWriteRepository>().DeleteRange(scheduledEvents);
+            }*/
+
+            var room = UoW.GetRepository<IRoomReadRepository>()
+                .GetAll().ToList()
+                .FirstOrDefault(x => x.Name == "Test Room");
+
+            if (room != null)
+            {
+                UoW.GetRepository<IRoomWriteRepository>().Delete(room);
+            }
+
+            var firstDoctor = UoW.GetRepository<IDoctorReadRepository>()
+                .GetAll().ToList()
+                .FirstOrDefault(x => x.UserName == "testDoctor1");
+
+            if (firstDoctor != null)
+            {
+                UoW.GetRepository<IDoctorWriteRepository>().Delete(firstDoctor);
+            }
+
+            var secondDoctor = UoW.GetRepository<IDoctorReadRepository>()
+                .GetAll().ToList()
+                .FirstOrDefault(x => x.UserName == "testDoctor2");
+
+            if (secondDoctor != null)
+            {
+                UoW.GetRepository<IDoctorWriteRepository>().Delete(secondDoctor);
+            }
+
+
+            var city = UoW.GetRepository<ICityReadRepository>()
+                .GetAll().ToList()
+                .FirstOrDefault(x => x.Name == "Test City");
+
+            if (city != null)
+            {
+                UoW.GetRepository<ICityWriteRepository>().Delete(city);
+            }
+
+            var country = UoW.GetRepository<ICountryReadRepository>()
+                .GetAll().ToList()
+                .FirstOrDefault(x => x.Name == "Test Country");
+
+            if (country != null)
+            {
+                UoW.GetRepository<ICountryWriteRepository>().Delete(country);
+            }
+
+           
         }
 
         private Doctor InsertDoctors()
@@ -126,7 +209,7 @@ namespace HospitalIntegrationTests
             {
                 room = new Room()
                 {
-                    Name = "Ord1",
+                    Name = "Test Room",
                     RoomType = RoomType.AppointmentRoom
                 };
                 UoW.GetRepository<IRoomWriteRepository>().Add(room);
@@ -156,8 +239,11 @@ namespace HospitalIntegrationTests
 
             var doctor = UoW
                 .GetRepository<IDoctorReadRepository>()
-                .GetAll().Include(d => d.Specialization).Include(d => d.ScheduledEvents).Include(d => d.Room).FirstOrDefault(x => x.Specialization.Name.ToLower() == "general practice" && x.UserName == "testDoctor1" || x.UserName == "testDoctor2");
+                .GetAll().Include(d => d.Specialization).Include(d => d.ScheduledEvents).Include(d => d.Room).FirstOrDefault(x => x.Specialization.Name.ToLower() == "general practice" && x.UserName == "testDoctor1");
 
+            var doctor2 = UoW
+                .GetRepository<IDoctorReadRepository>()
+                .GetAll().Include(d => d.Specialization).Include(d => d.ScheduledEvents).Include(d => d.Room).FirstOrDefault(x => x.Specialization.Name.ToLower() == "general practice" && x.UserName == "testDoctor2");
             if (doctor == null)
             {
                 var doctor1 = new Doctor()
@@ -167,19 +253,25 @@ namespace HospitalIntegrationTests
                     CityId = city.Id,
                     RoomId = room.Id
                 };
-                var doctor2 = new Doctor()
+                
+                
+                UoW.GetRepository<IDoctorWriteRepository>().Add(doctor1);
+               
+
+                doctor = doctor1;
+
+            }
+
+            if (doctor2 == null)
+            {
+                doctor2 = new Doctor()
                 {
                     UserName = "testDoctor2",
                     SpecializationId = specialization.Id,
                     CityId = city.Id,
                     RoomId = room.Id
                 };
-
-                UoW.GetRepository<IDoctorWriteRepository>().Add(doctor1);
                 UoW.GetRepository<IDoctorWriteRepository>().Add(doctor2);
-
-                doctor = doctor1;
-
             }
 
             if (doctor.Room == null)
@@ -187,7 +279,7 @@ namespace HospitalIntegrationTests
                 doctor.RoomId = room.Id;
             };
 
-            if (doctor.ScheduledEvents != null) return doctor;
+            if (doctor.ScheduledEvents == null) return doctor;
             var scheduledEvent1 = new ScheduledEvent()
             {
                 StartDate = new DateTime(2021, 12, 19, 13, 00, 00),
@@ -207,8 +299,8 @@ namespace HospitalIntegrationTests
 
             UoW.GetRepository<IScheduledEventWriteRepository>().Add(scheduledEvent1);
             UoW.GetRepository<IScheduledEventWriteRepository>().Add(scheduledEvent2);
-            doctor.ScheduledEvents.Append(scheduledEvent1);
-            doctor.ScheduledEvents.Append(scheduledEvent2);
+            doctor.ScheduledEvents.ToList().Add(scheduledEvent1);
+            doctor.ScheduledEvents.ToList().Add(scheduledEvent2);
 
             return doctor;
         }

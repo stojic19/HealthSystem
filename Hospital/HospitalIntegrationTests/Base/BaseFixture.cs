@@ -31,6 +31,10 @@ namespace HospitalIntegrationTests.Base
             {
                 CookieContainer = CookieContainer
             };
+            handler.ServerCertificateCustomValidationCallback = (message, cert, chain, sslPolicyErrors) =>
+            {
+                return true;
+            };
             Client = new HttpClient(handler);
         }
 

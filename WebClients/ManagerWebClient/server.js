@@ -5,7 +5,7 @@ const port = process.env.PORT || 8082;
 const app = express();
 
 // serve static assets normally
-app.use(express.static(__dirname + '/ManagerWebClient'));
+app.use(express.static(__dirname + '/ManagerWebClient/'));
 app.use(morgan('combined'));
 
 // handle every other route with index.html, which will contain

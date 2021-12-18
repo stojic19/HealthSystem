@@ -7,13 +7,13 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class MedicationReportService {
-  private _APIUrl = `${environment.baseUrl}`;
+  private _APIUrl = `${environment.baseHospitalUrl}`;
   constructor(private _httpClient: HttpClient) { }
   getReport(val:any): Observable<object>{
-    return this._httpClient.post<object>(this._APIUrl+'/Report/CreateConsumptionReport',val);
+    return this._httpClient.post<object>(this._APIUrl+'api/Report/CreateConsumptionReport',val);
   }
   sendReport(val:any){
     console.log(val);
-    return this._httpClient.post(this._APIUrl + '/Report/SendConsumptionReport', val);
+    return this._httpClient.post(this._APIUrl + 'api/Report/SendConsumptionReport', val);
   }
 }

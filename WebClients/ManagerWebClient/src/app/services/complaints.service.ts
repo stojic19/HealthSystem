@@ -6,23 +6,23 @@ import { environment } from "src/environments/environment";
 
 @Injectable()
 export class ComplaintsService{
-    private _APIUrl = `${environment.baseUrl}`;  //uneti url za http get zahtev!
+    private _APIUrl = `${environment.baseIntegrationUrl}`;  //uneti url za http get zahtev!
     
     constructor(private _httpClient: HttpClient) {}
 
     getComplaints(): Observable<any[]>{
-        return this._httpClient.get<any[]>(this._APIUrl+"/Complaint/GetComplaints");
+        return this._httpClient.get<any[]>(this._APIUrl+"api/Complaint/GetComplaints");
     }
 
     getComplaintById(id: number): Observable<any[]>{
-        return this._httpClient.get<any[]>(this._APIUrl+`/Complaint/GetComplaintById/${id}`);
+        return this._httpClient.get<any[]>(this._APIUrl+`api/Complaint/GetComplaintById/${id}`);
     }
 
     addComplaint(val:any){
-        return this._httpClient.post(this._APIUrl+'/PharmacyCommunication/PostComplaint',val);
+        return this._httpClient.post(this._APIUrl+'api/PharmacyCommunication/PostComplaint',val);
     }
 
     getPharmacies(): Observable<any[]>{
-        return this._httpClient.get<any[]>(this._APIUrl+'/Pharmacy/GetPharmacies');
+        return this._httpClient.get<any[]>(this._APIUrl+'api/Pharmacy/GetPharmacies');
     }
 }

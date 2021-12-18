@@ -1,5 +1,6 @@
 import { Component, OnInit, } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-hospital-overview',
@@ -13,16 +14,18 @@ export class HospitalOverviewComponent implements OnInit {
   blueColor = '#90caf9';
   darkPinkColor = '#e98a8a';
 
+    isProd: boolean = environment.production;
+
   buildings = ['Building 1', 'Building 2'];
   constructor(private router: Router) { }
 
   ngOnInit(): void { }
 
   showFirstBuilding() {
-    this.router.navigateByUrl("firstBuilding");
+    this.router.navigateByUrl(this.isProd ? "manager/firstBuilding" : 'firstBuilding');
   }
 
   showSecondBuilding() {
-    this.router.navigateByUrl("secondBuilding");
+    this.router.navigateByUrl(this.isProd ? "manager/secondBuilding" : 'secondBuilding');
   }
 }

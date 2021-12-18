@@ -65,11 +65,12 @@ const routes: Routes = [
     path: _isProd? 'manager/new-medicine-specification-request' : 'new-medicine-specification-request',
     component: MedicineSpecificationRequestsComponent,
   },
+  { path: _isProd? 'manager/roomRenovation' : 'roomRenovation', component: RenovationFormComponent},
+  { path: _isProd? 'manager/blocking' : 'blocking', component: MaliciousPatientsComponent},
   { path: _isProd? 'manager' : '', redirectTo: _isProd? 'manager/home' : 'home', pathMatch: 'full' },
   { path: _isProd? 'manager/moveEquipment/:id' : 'moveEquipment/:id', component: EquipmentFormComponent },
   { path: _isProd? 'manager/surveys' : 'surveys', component: SurveysObserveComponent },
   { path: _isProd? 'manager/schedule/:id' : 'schedule/:id', component: RoomScheduleComponent },
-  { path: _isProd? 'manager/blocking' : 'blocking', component: MaliciousPatientsComponent},
 ];
 
 @NgModule({

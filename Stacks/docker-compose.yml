@@ -38,8 +38,10 @@ services:
     restart: on-failure
     depends_on:
       - pharmacydb
+      - rabbitmq
     environment:
       PHARMACY_DB_PATH: "host=pharmacydb;port=5432;database=PHARMACY;username=postgres;password=postgres"
+      RABBITMQ_HOST: "rabbitmq"
 
   integrationapi:
     build:
@@ -52,7 +54,8 @@ services:
       - integrationdb
       - rabbitmq
     environment:
-      PHARMACY_DB_PATH: "host=integrationdb;port=5432;database=INTEGRATION;username=postgres;password=postgres"
+      INTEGRATION_DB_PATH: "host=integrationdb;port=5432;database=INTEGRATION;username=postgres;password=postgres"
+      RABBITMQ_HOST: "rabbitmq"
 
   patient-ui:
     build:
@@ -106,9 +109,3 @@ services:
     ports:
         - 5672:5672
         - 15672:15672
-
-volumes:
-  hospitaldb-data:
-  pharmacydb-data:
-  integrationdb-data:
-  # web-sql:

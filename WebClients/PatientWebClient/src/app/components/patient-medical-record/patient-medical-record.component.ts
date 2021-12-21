@@ -6,61 +6,65 @@ import { IFinishedAppointment } from 'src/app/interfaces/finished-appoinment';
 import { IPatient } from 'src/app/interfaces/patient-interface';
 import { MedicalRecordService } from 'src/app/services/MedicalRecordService/medicalrecord.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { DomSanitizer } from '@angular/platform-browser';
+import { AsyncKeyword } from 'typescript';
 
 @Component({
   selector: 'app-patient-medical-record',
   templateUrl: './patient-medical-record.component.html',
-  styleUrls: ['./patient-medical-record.component.css']
+  styleUrls: ['./patient-medical-record.component.css'],
 })
 export class PatientMedicalRecordComponent implements OnInit {
-
-  patient! : IPatient;
+  patient!: IPatient;
   sub!: Subscription;
-  
-  
-  futureAppointments!:IAppointment[];
-  finishedAppointments!:IFinishedAppointment[];
-  canceledAppointments!:IAppointment[];
-  message!:String;
 
-  constructor(private snackBar: MatSnackBar,private _service: MedicalRecordService ,private _router :Router ,private _activeRoute: ActivatedRoute) {
-    
+  futureAppointments!: IAppointment[];
+  finishedAppointments!: IFinishedAppointment[];
+  canceledAppointments!: IAppointment[];
+  message!: String;
+  imagePath!: any;
+  constructor(
+    private _sanitizer: DomSanitizer,
+    private snackBar: MatSnackBar,
+    private _service: MedicalRecordService,
+    private _router: Router,
+    private _activeRoute: ActivatedRoute
+  ) {
     this.sub = this._service.get().subscribe({
-      next: (patient : IPatient) => {
+      next: (patient: IPatient) => {
         this.patient = patient;
-      }
+        this.imagePath = this._sanitizer.bypassSecurityTrustResourceUrl(
+          patient.photoEncoded
+        );
+      },
     });
-    
-   }
+  }
 
   ngOnInit(): void {
     this.sub = this._service.get().subscribe({
-      next: (patient : IPatient) => {
+      next: (patient: IPatient) => {
         this.patient = patient;
-      }
+      },
     });
     this.sub = this._service.getFutureAppointments().subscribe({
-      next: (futureAppointments:IAppointment[])=>{
+      next: (futureAppointments: IAppointment[]) => {
         this.futureAppointments = futureAppointments;
-      }
+      },
     });
     this.sub = this._service.getfinishedAppointments().subscribe({
-      next: (finishedAppointments:IFinishedAppointment[])=>{
+      next: (finishedAppointments: IFinishedAppointment[]) => {
         this.finishedAppointments = finishedAppointments;
-      }
+      },
     });
     this.sub = this._service.getCanceledAppointments().subscribe({
-      next: (canceledAppointments:IAppointment[])=>{
+      next: (canceledAppointments: IAppointment[]) => {
         this.canceledAppointments = canceledAppointments;
-      }
+      },
     });
-    
   }
-  answerSurvey(id:number){
-     console.log(id);
-     var str = id.toString();
-     this._router.navigate(['/survey',str]);
+  answerSurvey(id: number) {
+    console.log(id);
+    var str = id.toString();
+    this._router.navigate(['/survey', str]);
   }
- 
 }
-

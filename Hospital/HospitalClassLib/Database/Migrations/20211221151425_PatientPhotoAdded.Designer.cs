@@ -3,15 +3,17 @@ using System;
 using Hospital.Database.EfStructures;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Hospital.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211221151425_PatientPhotoAdded")]
+    partial class PatientPhotoAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -189,7 +191,6 @@ namespace Hospital.Migrations
                 });
 
             modelBuilder.Entity("Hospital.MedicalRecords.Model.MedicationExpenditureLog", b =>
-
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -199,19 +200,7 @@ namespace Hospital.Migrations
                     b.Property<int>("AmountSpent")
                         .HasColumnType("integer");
 
-                    b.HasKey("Id");
-
-                    b.ToTable("MedicationIngredients");
-                });
-
-            modelBuilder.Entity("Hospital.MedicalRecords.Model.Prescription", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<DateTime>("EndDate")
+                    b.Property<DateTime>("Date")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("MedicationId")
@@ -503,7 +492,7 @@ namespace Hospital.Migrations
                     b.Property<int>("SurveyId")
                         .HasColumnType("integer");
 
-                    b.HasIndex("SurveyId");
+                    b.HasKey("Id");
 
                     b.HasIndex("PatientId");
 

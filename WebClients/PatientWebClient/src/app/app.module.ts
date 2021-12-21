@@ -42,7 +42,8 @@ import { SurveyPageComponent } from './components/survey-page/survey-page.compon
     SurveySectionComponent,
     RecommendedAppointmentComponent,
     LoginComponent,
-    SurveyPageComponent
+    SurveyPageComponent,
+    RecommendedAppointmentComponent,
   ],
   imports: [
     BrowserModule,

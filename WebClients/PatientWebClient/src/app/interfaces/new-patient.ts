@@ -20,4 +20,5 @@ export interface INewPatient {
   cityId: number; // create city??
   //medicalRecordId: number;
   medicalRecord: IMedicalRecord;
+  photoEncoded: string;
 }

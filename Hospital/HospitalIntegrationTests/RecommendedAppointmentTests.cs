@@ -120,7 +120,7 @@ namespace HospitalIntegrationTests
 
             var patient = UoW.GetRepository<IPatientReadRepository>()
                 .GetAll().ToList()
-                .FirstOrDefault(x => x.UserName == "testPatient");
+                .FirstOrDefault(x => x.UserName == "Test-Patient");
 
             if (patient == null) return;
             {
@@ -132,7 +132,7 @@ namespace HospitalIntegrationTests
             }
             var scheduledEvents = UoW.GetRepository<IScheduledEventReadRepository>()
                 .GetAll().ToList()
-                .Where(s => s.Doctor.UserName == "testDoctor1");
+                .Where(s => s.Doctor.UserName == "TestDoctor1");
 
             /*if (scheduledEvents == null) return;
             {
@@ -142,7 +142,7 @@ namespace HospitalIntegrationTests
 
             var room = UoW.GetRepository<IRoomReadRepository>()
                 .GetAll().ToList()
-                .FirstOrDefault(x => x.Name == "Test Room");
+                .FirstOrDefault(x => x.Name == "Test-Room");
 
             if (room != null)
             {
@@ -151,7 +151,7 @@ namespace HospitalIntegrationTests
 
             var firstDoctor = UoW.GetRepository<IDoctorReadRepository>()
                 .GetAll().ToList()
-                .FirstOrDefault(x => x.UserName == "testDoctor1");
+                .FirstOrDefault(x => x.UserName == "TestDoctor1");
 
             if (firstDoctor != null)
             {
@@ -160,7 +160,7 @@ namespace HospitalIntegrationTests
 
             var secondDoctor = UoW.GetRepository<IDoctorReadRepository>()
                 .GetAll().ToList()
-                .FirstOrDefault(x => x.UserName == "testDoctor2");
+                .FirstOrDefault(x => x.UserName == "TestDoctor2");
 
             if (secondDoctor != null)
             {
@@ -170,7 +170,7 @@ namespace HospitalIntegrationTests
 
             var city = UoW.GetRepository<ICityReadRepository>()
                 .GetAll().ToList()
-                .FirstOrDefault(x => x.Name == "Test City");
+                .FirstOrDefault(x => x.Name == "Test-City");
 
             if (city != null)
             {
@@ -179,7 +179,7 @@ namespace HospitalIntegrationTests
 
             var country = UoW.GetRepository<ICountryReadRepository>()
                 .GetAll().ToList()
-                .FirstOrDefault(x => x.Name == "Test Country");
+                .FirstOrDefault(x => x.Name == "Test-Country");
 
             if (country != null)
             {
@@ -209,7 +209,7 @@ namespace HospitalIntegrationTests
             {
                 room = new Room()
                 {
-                    Name = "Test Room",
+                    Name = "Test-Room",
                     RoomType = RoomType.AppointmentRoom
                 };
                 UoW.GetRepository<IRoomWriteRepository>().Add(room);
@@ -223,7 +223,7 @@ namespace HospitalIntegrationTests
                 {
                     country = new Country()
                     {
-                        Name = "Test Country"
+                        Name = "Test-Country"
                     };
                     UoW.GetRepository<ICountryWriteRepository>().Add(country);
                 }
@@ -231,7 +231,7 @@ namespace HospitalIntegrationTests
                 city = new City()
                 {
                     CountryId = country.Id,
-                    Name = "Test City"
+                    Name = "Test-City"
                 };
                 UoW.GetRepository<ICityWriteRepository>().Add(city);
 
@@ -239,39 +239,30 @@ namespace HospitalIntegrationTests
 
             var doctor = UoW
                 .GetRepository<IDoctorReadRepository>()
-                .GetAll().Include(d => d.Specialization).Include(d => d.ScheduledEvents).Include(d => d.Room).FirstOrDefault(x => x.Specialization.Name.ToLower() == "general practice" && x.UserName == "testDoctor1");
+                .GetAll().Include(d => d.Specialization).Include(d => d.ScheduledEvents).Include(d => d.Room).FirstOrDefault(x => x.Specialization.Name.ToLower() == "general practice" && x.UserName == "TestDoctor1" || x.UserName == "TestDoctor2");
 
-            var doctor2 = UoW
-                .GetRepository<IDoctorReadRepository>()
-                .GetAll().Include(d => d.Specialization).Include(d => d.ScheduledEvents).Include(d => d.Room).FirstOrDefault(x => x.Specialization.Name.ToLower() == "general practice" && x.UserName == "testDoctor2");
             if (doctor == null)
             {
                 var doctor1 = new Doctor()
                 {
-                    UserName = "testDoctor1",
+                    UserName = "TestDoctor1",
                     SpecializationId = specialization.Id,
                     CityId = city.Id,
                     RoomId = room.Id
                 };
-                
-                
+                var doctor2 = new Doctor()
+                {
+                    UserName = "TestDoctor2",
+                    SpecializationId = specialization.Id,
+                    CityId = city.Id,
+                    RoomId = room.Id
+                };
+
                 UoW.GetRepository<IDoctorWriteRepository>().Add(doctor1);
-               
+                UoW.GetRepository<IDoctorWriteRepository>().Add(doctor2);
 
                 doctor = doctor1;
 
-            }
-
-            if (doctor2 == null)
-            {
-                doctor2 = new Doctor()
-                {
-                    UserName = "testDoctor2",
-                    SpecializationId = specialization.Id,
-                    CityId = city.Id,
-                    RoomId = room.Id
-                };
-                UoW.GetRepository<IDoctorWriteRepository>().Add(doctor2);
             }
 
             if (doctor.Room == null)
@@ -279,7 +270,7 @@ namespace HospitalIntegrationTests
                 doctor.RoomId = room.Id;
             };
 
-            if (doctor.ScheduledEvents == null) return doctor;
+            if (doctor.ScheduledEvents != null) return doctor;
             var scheduledEvent1 = new ScheduledEvent()
             {
                 StartDate = new DateTime(2021, 12, 19, 13, 00, 00),
@@ -299,11 +290,12 @@ namespace HospitalIntegrationTests
 
             UoW.GetRepository<IScheduledEventWriteRepository>().Add(scheduledEvent1);
             UoW.GetRepository<IScheduledEventWriteRepository>().Add(scheduledEvent2);
-            doctor.ScheduledEvents.ToList().Add(scheduledEvent1);
-            doctor.ScheduledEvents.ToList().Add(scheduledEvent2);
+            doctor.ScheduledEvents.Append(scheduledEvent1);
+            doctor.ScheduledEvents.Append(scheduledEvent2);
 
             return doctor;
         }
+    
 
         private Patient InsertPatient()
         {
@@ -315,7 +307,7 @@ namespace HospitalIntegrationTests
                 {
                     country = new Country()
                     {
-                        Name = "Test Country"
+                        Name = "Test-Country"
                     };
                     UoW.GetRepository<ICountryWriteRepository>().Add(country);
                 }
@@ -323,7 +315,7 @@ namespace HospitalIntegrationTests
                 city = new City()
                 {
                     CountryId = country.Id,
-                    Name = "Test City"
+                    Name = "Test-City"
                 };
                 UoW.GetRepository<ICityWriteRepository>().Add(city);
 
@@ -345,7 +337,7 @@ namespace HospitalIntegrationTests
                 patient = new Patient()
                 {
                     CityId = city.Id,
-                    UserName = "testPatient",
+                    UserName = "Test-Patient",
                     MedicalRecordId = medicalRecord.Id
                 };
                 UoW.GetRepository<IPatientWriteRepository>().Add(patient);

@@ -1,8 +1,5 @@
 ﻿using Hospital.SharedModel.Model.Enumerations;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HospitalApi.DTOs
 {
@@ -21,5 +18,6 @@ namespace HospitalApi.DTOs
         public string PhoneNumber { get; set; }
         public string UserName { get; set; }
         public MedicalRecordDTO MedicalRecord { get; set; }
+        public string PhotoEncoded { get; set; }
     }
 }

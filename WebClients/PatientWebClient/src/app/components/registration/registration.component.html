@@ -612,6 +612,17 @@
         >
         <mat-error *ngIf="!passMatch">Passwords does not match! </mat-error>
       </mat-form-field>
+      <hr />
+      <div>
+        <mat-label>Upload profile image</mat-label>
+        <br />
+        <input
+          style="margin-top: 20px"
+          type="file"
+          #file
+          (change)="onFileSelected($event)"
+        />
+      </div>
     </div>
     <br /><br />
     <div style="display: flex; justify-content: center">

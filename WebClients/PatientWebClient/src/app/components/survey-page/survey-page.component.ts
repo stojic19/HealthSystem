@@ -22,8 +22,13 @@ export class SurveyPageComponent implements OnInit {
   answeredSurvey!: IAnsweredSurvey;
   appointmentId: any;
 
-  constructor(private snackBar: MatSnackBar,private appointmentService:AppointmentService, private surveyService: SurveyService, private route: ActivatedRoute,
-    private _router: Router) {
+  constructor(
+    private snackBar: MatSnackBar,
+    private appointmentService: AppointmentService,
+    private surveyService: SurveyService,
+    private route: ActivatedRoute,
+    private _router: Router
+  ) {
     this.answeredQuestions = [];
   }
 
@@ -52,7 +57,6 @@ export class SurveyPageComponent implements OnInit {
         verticalPosition: 'bottom',
       });
       this._router.navigate(['/record']);
-      
     } else {
       this.snackBar.open('You need to answer all questions. ', '', {
         duration: 3000,
@@ -61,13 +65,14 @@ export class SurveyPageComponent implements OnInit {
     }
   }
   ngOnInit(): void {
-
     this.appointmentId = this.route.snapshot.paramMap.get('appointmentId');
     console.log(this.appointmentId);
-      
-    this.appointmentService.getAppointment(this.appointmentId).subscribe((res:IAppointment)=>{
-      this.scheduledEvent = res;
-    })
+
+    this.appointmentService
+      .getAppointment(this.appointmentId)
+      .subscribe((res: IAppointment) => {
+        this.scheduledEvent = res;
+      });
 
     this.surveyService.getSurvey().subscribe((res: ISurvey) => {
       this.survey = res;

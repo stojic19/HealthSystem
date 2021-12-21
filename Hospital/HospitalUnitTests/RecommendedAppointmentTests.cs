@@ -62,7 +62,7 @@ namespace HospitalUnitTests
             var service = new RecommendedAppointmentService(UoW, Context);
             var appointments = service.GetAvailableAppointmentsForDoctorAndDateRange(1, new DateTime(2023, 12, 16, 9, 0, 0), new DateTime(2023, 12, 17, 17, 0, 0)).ToList();
 
-            appointments.Count().ShouldNotBe(0);
+            appointments.Count.ShouldNotBe(0);
 
         }
 
@@ -103,7 +103,7 @@ namespace HospitalUnitTests
             var service = new RecommendedAppointmentService(UoW, Context);
             var appointments = service.GetAvailableAppointmentsForDoctorAndDateRange(1, new DateTime(2023, 12, 16, 13, 0, 0), new DateTime(2023, 12, 16, 17, 0, 0)).ToList();
 
-            appointments.Count().ShouldBe(4);
+            appointments.Count.ShouldBe(4);
 
         }
 

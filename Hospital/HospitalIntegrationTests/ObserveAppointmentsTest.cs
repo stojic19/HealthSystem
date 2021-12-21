@@ -27,7 +27,7 @@ namespace HospitalIntegrationTests
         public async Task Finished_events_count_should_not_be_zero()
         {
            var events = AddDataToDatabase(isCanceled: false, isDone: true);
-           var response = await Client.GetAsync(BaseUrl + "a/api/ScheduledEvents/GetFinishedUserEvents/" + events.Patient.Id);
+           var response = await Client.GetAsync(BaseUrl + "api/ScheduledEvent/GetFinishedUserEvents/" + events.PatientId);
            response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
             UoW.GetRepository<IScheduledEventReadRepository>().GetFinishedUserEvents(events.PatientId).Count.ShouldNotBe(0);
@@ -38,7 +38,11 @@ namespace HospitalIntegrationTests
         public async Task Canceled_events_count_should_not_be_zero()
         {
             var events = AddDataToDatabase(isCanceled: true, isDone: false);
+<<<<<<< HEAD
             var response = await Client.GetAsync(BaseUrl + "a/api/ScheduledEvents/GetCanceledUserEvents/" + events.Patient.Id);
+=======
+            var response = await Client.GetAsync(BaseUrl + "api/ScheduledEvent/GetCanceledUserEvents/" + events.Patient.Id);
+>>>>>>> feature/registration-img-upload
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
             UoW.GetRepository<IScheduledEventReadRepository>().GetCanceledUserEvents(events.PatientId).Count.ShouldNotBe(0);
@@ -47,8 +51,13 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Upcoming_events_count_should_not_be_zero()
         {
+<<<<<<< HEAD
             var events = AddDataToDatabase(isCanceled: true, isDone: false);
             var response = await Client.GetAsync(BaseUrl + "a/api/ScheduledEvents/GetUpcomingUserEvents/" + events.Patient.Id);
+=======
+            var events = AddDataToDatabase(isCanceled: false, isDone: false);
+            var response = await Client.GetAsync(BaseUrl + "api/ScheduledEvent/GetUpcomingUserEvents/" + events.Patient.Id);
+>>>>>>> feature/registration-img-upload
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
             UoW.GetRepository<IScheduledEventReadRepository>().GetUpcomingUserEvents(events.PatientId).Count.ShouldNotBe(0);

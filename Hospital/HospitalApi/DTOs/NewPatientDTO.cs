@@ -24,5 +24,6 @@ namespace HospitalApi.DTOs
 
         //public int MedicalRecordId { get; set; }
         public NewMedicalRecordDTO MedicalRecord { get; set; }
+        public string PhotoEncoded { get; set; }
     }
 }

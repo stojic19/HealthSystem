@@ -33,8 +33,8 @@ namespace HospitalUnitTests
             var transferEvent = new EquipmentTransferEvent()
             {
                 Id = 1,
-                StartDate = new DateTime(2021, 12, 22, 12, 0, 0),
-                EndDate = new DateTime(2021, 12, 22, 13, 0, 0),
+                StartDate = new DateTime(2022, 12, 22, 12, 0, 0),
+                EndDate = new DateTime(2022, 12, 22, 13, 0, 0),
                 InitialRoomId = 1,
                 DestinationRoom = new Room()
                 {

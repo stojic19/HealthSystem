@@ -34,6 +34,9 @@ export class RegistrationComponent implements OnInit {
   allergens!: IMedicationIngredient[];
   cities!: ICity[];
   createForm!: FormGroup;
+  formData!: FormData;
+  uploaded: boolean = false;
+  fileToUpload!: File;
   passMatch: boolean = false;
   gender = Object.values(Gender).filter((value) => typeof value === 'string');
   bloodType = Object.values(BloodType).filter(
@@ -83,8 +86,8 @@ export class RegistrationComponent implements OnInit {
       weight: new FormControl(null, [Validators.pattern('^\\d{1,3}$')]),
       jobStatus: new FormControl(null, [Validators.required]),
       bloodType: new FormControl(null, [Validators.required]),
-      drRight: new FormControl(null, [Validators.required]),
-      allergens: new FormControl(null),
+      drRight: new FormControl(), //null, [Validators.required]),
+      allergens: new FormControl(),
       username: new FormControl(null, [
         Validators.required,
         Validators.minLength(6),
@@ -97,6 +100,7 @@ export class RegistrationComponent implements OnInit {
         Validators.required,
         Validators.minLength(8),
       ]),
+      photo: new FormControl(),
     });
 
     this.doctorService.getAllNonLoaded().subscribe((res) => {
@@ -113,22 +117,45 @@ export class RegistrationComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.createPatient();
-    this.registrationService.registerPatient(this.newPatient).subscribe(
-      (res) => {
-        this.router.navigate(['/']);
-        this._snackBar.open(
-          'Your registration request has been sumbitted. Please check your email and confirm your email adress to activate your account.',
-          'Dismiss'
-        );
-      },
-      (err) => {
-        let parts = err.error.split(':');
-        let mess = parts[parts.length - 1];
-        let description = mess.substring(1, mess.length - 4);
-        this._snackBar.open(description, 'Dismiss');
-      }
-    );
+    this.uploadPicture().then((resultt) => {
+      this.createPatient();
+      this.registrationService.registerPatient(this.newPatient).subscribe(
+        (res) => {
+          this.router.navigate(['/']);
+          this._snackBar.open(
+            'Your registration request has been sumbitted. Please check your email and confirm your email adress to activate your account.',
+            'Dismiss'
+          );
+        },
+        (err) => {
+          let parts = err.error.split(':');
+          let mess = parts[parts.length - 1];
+          let description = mess.substring(1, mess.length - 4);
+          this._snackBar.open(description, 'Dismiss');
+        }
+      );
+    });
+  }
+
+  onFileSelected(event: any): void {
+    this.fileToUpload = <File>event.target.files[0];
+    this.uploaded = true;
+  }
+
+  toBase64 = (file: Blob) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+
+  async uploadPicture() {
+    if (this.uploaded) {
+      await this.toBase64(this.fileToUpload).then(
+        (res) => (this.newPatient.photoEncoded = res as string)
+      );
+    }
   }
 
   getDr(event: any) {

@@ -38,8 +38,8 @@ export class FeedbackComponent implements OnInit {
       this.newFeedback.text = this.feedbackText;
       this.newFeedback.isPublishable = this.isPublishable;
       !this.stayAnonymous
-        ? (this.newFeedback.patientId = 1)
-        : (this.newFeedback.patientId = 1);
+        ? (this.newFeedback.patientId = 2)
+        : (this.newFeedback.patientId = 2);
       this._feedbackService.addFeedback(this.newFeedback).subscribe();
       this._snackBar.open(
         'Your feedback has been successfully submitted.',

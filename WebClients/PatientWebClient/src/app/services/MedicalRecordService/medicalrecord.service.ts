@@ -15,16 +15,20 @@ export class MedicalRecordService {
   get(): any {
     return this._http.get<IPatient>('api/MedicalRecord/GetPatientWithRecord');
   }
-  getFutureAppointments(): any {
-    return this._http.get<IAppointment[]>('/api/ScheduledEvent/GetUpcomingUserEvents/'+1);
+  getFutureAppointments(patientId:number): any {
+    console.log(patientId);
+    
+    return this._http.get<IAppointment[]>('/api/ScheduledEvent/GetUpcomingUserEvents/'+patientId);
   }
 
-  getfinishedAppointments(): any {
-    return this._http.get<IFinishedAppointment[]>('/api/ScheduledEvent/GetEventsForSurvey/'+1);
+  getfinishedAppointments(patientId:number): any {
+    console.log(patientId);
+    return this._http.get<IFinishedAppointment[]>('/api/ScheduledEvent/GetEventsForSurvey/'+patientId);
   }
 
-  getCanceledAppointments(): any {
-    return this._http.get<IAppointment[]>('/api/ScheduledEvent/GetCanceledUserEvents/'+1);
+  getCanceledAppointments(patientId:number): any {
+    console.log(patientId);
+    return this._http.get<IAppointment[]>('/api/ScheduledEvent/GetCanceledUserEvents/'+patientId);
   }
 
 }

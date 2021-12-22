@@ -83,10 +83,11 @@ namespace HospitalApi
                 })
                 .AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
+            services.AddHostedService<ConsumeScopedServiceHostedService>();
             services.AddScoped<IPatientSurveyService, PatientSurveyService>();
             services.AddScoped<IScheduledEventService, ScheduledEventService>();
             services.AddScoped<ISurveyService, SurveyService>();
-            services.AddHostedService<ConsumeScopedServiceHostedService>();
+           
 
             var builder = new ContainerBuilder();
 

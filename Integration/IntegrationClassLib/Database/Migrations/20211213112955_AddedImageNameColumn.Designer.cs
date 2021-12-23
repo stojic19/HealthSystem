@@ -3,15 +3,17 @@ using System;
 using Integration.Database.EfStructures;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Integration.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211213112955_AddedImageNameColumn")]
+    partial class AddedImageNameColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -202,9 +204,6 @@ namespace Integration.Migrations
 
                     b.Property<string>("ImageName")
                         .HasColumnType("text");
-                        
-                    b.Property<bool>("GrpcSupported")
-                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -294,60 +293,6 @@ namespace Integration.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Medicines");
-                });
-
-            modelBuilder.Entity("Integration.Tendering.Model.Tender", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<DateTime>("ClosedTime")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("WinningOfferId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("WinningOfferId");
-
-                    b.ToTable("Tenders");
-                });
-
-            modelBuilder.Entity("Integration.Tendering.Model.TenderOffer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<bool>("IsWinning")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("PharmacyId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("TenderId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PharmacyId");
-
-                    b.HasIndex("TenderId");
-
-                    b.ToTable("TenderOffer");
                 });
 
             modelBuilder.Entity("Integration.Partnership.Model.Benefit", b =>
@@ -446,128 +391,6 @@ namespace Integration.Migrations
                     b.Navigation("Country");
                 });
 
-            modelBuilder.Entity("Integration.Tendering.Model.Tender", b =>
-                {
-                    b.HasOne("Integration.Tendering.Model.TenderOffer", "WinningOffer")
-                        .WithMany()
-                        .HasForeignKey("WinningOfferId");
-
-                    b.OwnsOne("Integration.Shared.Model.TimeRange", "ActiveRange", b1 =>
-                        {
-                            b1.Property<int>("TenderId")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("integer")
-                                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                            b1.Property<DateTime>("EndDate")
-                                .HasColumnType("timestamp without time zone");
-
-                            b1.Property<DateTime>("StartDate")
-                                .HasColumnType("timestamp without time zone");
-
-                            b1.HasKey("TenderId");
-
-                            b1.ToTable("Tenders");
-
-                            b1.WithOwner()
-                                .HasForeignKey("TenderId");
-                        });
-
-                    b.OwnsMany("Integration.Tendering.Model.MedicationRequest", "MedicationRequests", b1 =>
-                        {
-                            b1.Property<int>("TenderId")
-                                .HasColumnType("integer");
-
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("integer")
-                                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                            b1.Property<string>("MedicineName")
-                                .HasColumnType("text");
-
-                            b1.Property<int>("Quantity")
-                                .HasColumnType("integer");
-
-                            b1.HasKey("TenderId", "Id");
-
-                            b1.ToTable("Tenders_MedicationRequests");
-
-                            b1.WithOwner()
-                                .HasForeignKey("TenderId");
-                        });
-
-                    b.Navigation("ActiveRange");
-
-                    b.Navigation("MedicationRequests");
-
-                    b.Navigation("WinningOffer");
-                });
-
-            modelBuilder.Entity("Integration.Tendering.Model.TenderOffer", b =>
-                {
-                    b.HasOne("Integration.Pharmacies.Model.Pharmacy", "Pharmacy")
-                        .WithMany()
-                        .HasForeignKey("PharmacyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Integration.Tendering.Model.Tender", null)
-                        .WithMany("TenderOffers")
-                        .HasForeignKey("TenderId");
-
-                    b.OwnsMany("Integration.Tendering.Model.MedicationRequest", "MedicationRequests", b1 =>
-                        {
-                            b1.Property<int>("TenderOfferId")
-                                .HasColumnType("integer");
-
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("integer")
-                                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                            b1.Property<string>("MedicineName")
-                                .HasColumnType("text");
-
-                            b1.Property<int>("Quantity")
-                                .HasColumnType("integer");
-
-                            b1.HasKey("TenderOfferId", "Id");
-
-                            b1.ToTable("TenderOffer_MedicationRequests");
-
-                            b1.WithOwner()
-                                .HasForeignKey("TenderOfferId");
-                        });
-
-                    b.OwnsOne("Integration.Tendering.Model.Money", "Cost", b1 =>
-                        {
-                            b1.Property<int>("TenderOfferId")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("integer")
-                                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                            b1.Property<double>("Amount")
-                                .HasColumnType("double precision");
-
-                            b1.Property<int>("Currency")
-                                .HasColumnType("integer");
-
-                            b1.HasKey("TenderOfferId");
-
-                            b1.ToTable("TenderOffer");
-
-                            b1.WithOwner()
-                                .HasForeignKey("TenderOfferId");
-                        });
-
-                    b.Navigation("Cost");
-
-                    b.Navigation("MedicationRequests");
-
-                    b.Navigation("Pharmacy");
-                });
-
             modelBuilder.Entity("Integration.Pharmacies.Model.Complaint", b =>
                 {
                     b.Navigation("ComplaintResponse");
@@ -576,11 +399,6 @@ namespace Integration.Migrations
             modelBuilder.Entity("Integration.Pharmacies.Model.Pharmacy", b =>
                 {
                     b.Navigation("Complaints");
-                });
-
-            modelBuilder.Entity("Integration.Tendering.Model.Tender", b =>
-                {
-                    b.Navigation("TenderOffers");
                 });
 #pragma warning restore 612, 618
         }

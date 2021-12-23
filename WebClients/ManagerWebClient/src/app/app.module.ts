@@ -55,6 +55,7 @@ import { SurveySectionObserveComponent } from './components/survey-section-obser
 import { SurveysObserveComponent } from './components/surveys-observe/surveys-observe.component';
 import { MaterialModule } from './material/material.module';
 import { MedicineSpecificationListComponent } from './medicine-specification-requests/medicine-specification-list/medicine-specification-list.component';
+import { PharmacyProfileComponent } from './pharmacies/pharmacy-profile/pharmacy-profile.component';
 import { RenovationFormComponent } from './renovation-form/renovation-form.component';
 import { RenovationTypeComponent } from './renovation-form/renovation-type/renovation-type.component';
 import { FirstRoomComponent } from './renovation-form/first-room/first-room.component';
@@ -111,6 +112,7 @@ import { AvailableTermsComponent } from './renovation-form/available-terms/avail
     SurveySectionObserveComponent,
     SurveysObserveComponent,
     MedicineSpecificationListComponent,
+    PharmacyProfileComponent,
     RenovationFormComponent,
     RenovationTypeComponent,
     FirstRoomComponent,

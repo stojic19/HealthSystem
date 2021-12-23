@@ -91,7 +91,7 @@ export class PharmacyProfileComponent implements OnInit {
 
   imageReq(){
     var imageReq = {
-      ImageName: this.pharmacy.imageName
+      PharmacyId: this.pharmacy.id
     }
     return imageReq;
   }

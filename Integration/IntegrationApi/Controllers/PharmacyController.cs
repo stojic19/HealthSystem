@@ -37,19 +37,22 @@ namespace IntegrationAPI.Controllers
         [HttpPost]
         public IActionResult UpdatePharmacy(UpdatePharmacyDTO updatePharmacyDTO)
         {
-            Pharmacy pharmacy = _pharmacyMasterService.GetPharmacyById(updatePharmacyDTO.Id);
-            pharmacy.Name = updatePharmacyDTO.PharmacyName;
-            pharmacy.StreetName = updatePharmacyDTO.StreetName;
-            pharmacy.StreetNumber = updatePharmacyDTO.StreetNumber;
-            pharmacy.City = new City { PostalCode = updatePharmacyDTO.PostalCode, Name = updatePharmacyDTO.CityName, Country = new Country { Name = updatePharmacyDTO.CountryName } };
-            pharmacy.Description = updatePharmacyDTO.Description;
-            pharmacy.ImageName = updatePharmacyDTO.ImageName;
-            _pharmacyMasterService.UpdatePharmacy(pharmacy);
+            if (updatePharmacyDTO.PharmacyName != "")
+            {
+                Pharmacy pharmacy = _pharmacyMasterService.GetPharmacyById(updatePharmacyDTO.Id);
+                pharmacy.Name = updatePharmacyDTO.PharmacyName;
+                pharmacy.StreetName = updatePharmacyDTO.StreetName;
+                pharmacy.StreetNumber = updatePharmacyDTO.StreetNumber;
+                pharmacy.City = new City { PostalCode = updatePharmacyDTO.PostalCode, Name = updatePharmacyDTO.CityName, Country = new Country { Name = updatePharmacyDTO.CountryName } };
+                pharmacy.Description = updatePharmacyDTO.Description;
+                pharmacy.ImageName = updatePharmacyDTO.ImageName;
+                _pharmacyMasterService.UpdatePharmacy(pharmacy);
+            }
 
             return Ok();
         }
 
-        [HttpPost, DisableRequestSizeLimit]
+        [HttpPost]
         public IActionResult UploadImage()
         {
             var file = Request.Form.Files[0];
@@ -64,11 +67,12 @@ namespace IntegrationAPI.Controllers
         }
 
         [HttpPost]
-        public string GetImage(ImageNameDTO imageName)
+        public string GetImage(PharmacyIdDTO pharmacyIdDTO)
         {
             try {
+                Pharmacy pharmacy = _pharmacyMasterService.GetPharmacyById(pharmacyIdDTO.PharmacyId);
                 string pathToFolder = Path.Combine(Directory.GetCurrentDirectory(), "Images");
-                string fullPath = Path.Combine(pathToFolder, imageName.ImageName);
+                string fullPath = Path.Combine(pathToFolder, pharmacy.ImageName);
                 var bytes = System.IO.File.ReadAllBytes(fullPath);
                 string file = Convert.ToBase64String(bytes);
 

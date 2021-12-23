@@ -14,6 +14,7 @@ import { LoginComponent } from './components/login/login.component';
 import { PatientMedicalRecordComponent } from './components/patient-medical-record/patient-medical-record.component';
 import { AppointmentsPageComponent } from './components/appointments-page/appointments-page.component';
 import { SurveyPageComponent } from './components/survey-page/survey-page.component';
+import { RecommendedAppointmentComponent } from './components/recommended-appointment/recommended-appointment.component';
 
 const routes: Routes = [
   {
@@ -32,17 +33,16 @@ const routes: Routes = [
         path: 'record',
         component: PatientMedicalRecordComponent,
       },
-        {path:'appointments',
-        component: AppointmentsPageComponent
-      },
       {
-        path:'surveys',
+        path:'survey/:appointmentId',
         component: SurveyPageComponent
       }
     ],
   },
   { path: 'registration', component: RegistrationComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'recommendedAppointments', component: RecommendedAppointmentComponent}
+  
 ];
 
 @NgModule({
@@ -55,6 +55,10 @@ const routes: Routes = [
     HttpClientModule,
   ],
   exports: [RouterModule, MaterialModule, FormsModule],
-  entryComponents: [FeedbackComponent, AppointmentsPageComponent, SurveyPageComponent],
+  entryComponents: [
+    FeedbackComponent,
+    AppointmentsPageComponent,
+    SurveyPageComponent,
+  ],
 })
 export class AppRoutingModule {}

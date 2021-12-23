@@ -6,6 +6,7 @@ using System;
 using Hospital.MedicalRecords.Model;
 using Hospital.SharedModel.Model;
 using Hospital.RoomsAndEquipment.Model;
+using Hospital.Schedule.Model.Wrappers;
 
 namespace HospitalApi.AutoMapperProfiles
 {
@@ -13,6 +14,13 @@ namespace HospitalApi.AutoMapperProfiles
     {
         public AutoMapperProfile()
         {
+
+            CreateMap<RecommendedAppointmentDTO, ScheduledEvent>()
+                .ForMember(toSchedule => toSchedule.EndDate, opt => opt.MapFrom(src => src.StartDate.AddHours(1)))
+                .ForMember(toSchedule => toSchedule.IsCanceled, opt => opt.MapFrom(src => false))
+                .ForMember(toSchedule => toSchedule.IsDone, opt => opt.MapFrom(src => false))
+                .ForMember(toSchedule => toSchedule.ScheduledEventType,
+                    opt => opt.MapFrom(src => ScheduledEventType.Appointment));
             CreateMap<NewFeedbackDTO, Feedback>()
                   .ForMember(dto => dto.CreatedDate, opt => opt.MapFrom(src => DateTime.Now))
                   .ForMember(dto => dto.FeedbackStatus, opt => opt.MapFrom(src => FeedbackStatus.Pending));
@@ -24,6 +32,8 @@ namespace HospitalApi.AutoMapperProfiles
             CreateMap<NewAllergyDTO, Allergy>();
             CreateMap<NewMedicalRecordDTO, MedicalRecord>();
             CreateMap<NewPatientDTO, Patient>();
+
+            CreateMap<Doctor, SpecializedDoctorDTO>();
             CreateMap<MedicationIngredient, MedicationIngredientDTO>();
             CreateMap<City, CityDTO>();
             CreateMap<Allergy, AllergyDTO>();
@@ -31,6 +41,9 @@ namespace HospitalApi.AutoMapperProfiles
             CreateMap<MedicalRecord, MedicalRecordDTO>();
             CreateMap<Patient, PatientDTO>();
             CreateMap<EquipmentTransferEventDto, EquipmentTransferEvent>();
+            CreateMap<DoctorAppointmentDTO, Doctor>().ReverseMap();
+            CreateMap<AvailableAppointmentDTO, AvailableAppointment>().ReverseMap();
+            CreateMap<Patient, UserForBlockingDTO>();
             CreateMap<RoomRenovationEventDto, RoomRenovationEvent>();
         }
     }

@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using ceTe.DynamicPDF;
 using ceTe.DynamicPDF.PageElements;
 using ceTe.DynamicPDF.PageElements.BarCoding;
-using IntegrationAPI.DTO;
+using IntegrationAPI.DTO.MedicineConsumption;
+using IntegrationAPI.DTO.Prescription;
+using IntegrationAPI.DTO.Shared;
 using Path = System.IO.Path;
 
 namespace IntegrationAPI.Adapters.PDF.Implementation

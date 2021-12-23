@@ -1,0 +1,102 @@
+<div class="containter" style="width: 80%; margin: auto">
+  <mat-stepper [linear]="true" orientation="horizontal" #stepper>
+    <mat-step [stepControl]="firstFormGroup">
+      <form [formGroup]="firstFormGroup">
+        <ng-template matStepLabel>Choose a date</ng-template>
+        <mat-form-field appearance="fill" class="example-form-field">
+          <mat-label>Enter a date</mat-label>
+          <input
+            matInput
+            #dateStart
+            [matDatepicker]="picker"
+            [min]="minDate"
+            formControlName="start"
+            (dateChange)="dateChange(dateStart)"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup" label="Choose doctor's specialty">
+      <form [formGroup]="secondFormGroup">
+        <mat-form-field appearance="fill">
+          <mat-label>Specialities</mat-label>
+          <mat-select formControlName="secondCtrl">
+            <mat-option
+              #matOption1
+              (click)="getDocsForSpec(matOption1)"
+              *ngFor="let s of specializations"
+              value="{{ s.id }}"
+            >
+              {{ s.name }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="thirdFormGroup" label="Pick a doctor">
+      <form [formGroup]="thirdFormGroup">
+        <mat-form-field appearance="fill">
+          <mat-label>Doctors</mat-label>
+          <mat-select formControlName="thirdCtrl">
+            <mat-option
+              #matOption2
+              (click)="getTerms(matOption2)"
+              *ngFor="let dr of doctors"
+              value="{{ dr.id }}"
+            >
+              {{ dr.firstName }} {{ dr.lastName }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step
+      style="width: 500px"
+      [stepControl]="fourthFormGroup"
+      label="Pick a term that works for you"
+    >
+      <form [formGroup]="fourthFormGroup">
+        <mat-form-field appearance="fill" style="width: 300px">
+          <mat-label>Available Appointments</mat-label>
+          <mat-selection-list #matList [multiple]="false">
+            <mat-list-option
+              #matOpr
+              (click)="termPicked(matOpr)"
+              *ngFor="let term of availableTerms"
+              [value]="term"
+            >
+              {{ term }}
+            </mat-list-option>
+          </mat-selection-list>
+          <input
+            matInput
+            placeholder=" "
+            formControlName="fourthCtrl"
+            readonly
+          />
+        </mat-form-field>
+      </form>
+
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button (click)="schedule()">Schedule appointment</button>
+      </div>
+    </mat-step>
+  </mat-stepper>
+</div>

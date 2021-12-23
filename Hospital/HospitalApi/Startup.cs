@@ -20,6 +20,7 @@ using HospitalApi.HttpRequestSenders.Implementation;
 using Microsoft.AspNetCore.Identity;
 using Hospital.Schedule.Service.ServiceInterface;
 using Hospital.Schedule.Service;
+using Hospital.Schedule.Service.Interfaces;
 
 namespace HospitalApi
 {
@@ -69,10 +70,11 @@ namespace HospitalApi
                 })
                 .AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
+            services.AddHostedService<ConsumeScopedServiceHostedService>();
             services.AddScoped<IPatientSurveyService, PatientSurveyService>();
-            services.AddScoped<IScheduledEventsService, ScheduledEventsService>();
+            services.AddScoped<IScheduledEventService, ScheduledEventService>();
             services.AddScoped<ISurveyService, SurveyService>();
-            
+           
 
             builder.RegisterModule(new RepositoryModule()
             {

@@ -195,7 +195,8 @@ namespace PharmacyApi.Controllers
                 MedicinePotentialDangers = medicineDTO.MedicinePotentialDangers,
                 Substances = GenerateObjects(medicineDTO.Substances, UoW.GetRepository<ISubstanceReadRepository>().GetSubstanceByName),
                 Type = medicineDTO.Type,
-                Quantity = medicineDTO.Quantity
+                Quantity = medicineDTO.Quantity,
+                Price = medicineDTO.Price
             };
         }
 
@@ -211,6 +212,7 @@ namespace PharmacyApi.Controllers
             updatedMedicine.Precautions = updateMedicineDTO.Precautions;
             updatedMedicine.MedicinePotentialDangers = updateMedicineDTO.MedicinePotentialDangers;
             updatedMedicine.Quantity = updateMedicineDTO.Quantity;
+            updatedMedicine.Price = updateMedicineDTO.Price;
 
             return updatedMedicine;
         }

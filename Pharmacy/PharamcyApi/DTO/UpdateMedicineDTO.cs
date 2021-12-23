@@ -20,5 +20,7 @@ namespace PharmacyApi.DTO
         public string MedicinePotentialDangers { get; set; }
         [Range(0, int.MaxValue, ErrorMessage = "Only positive number allowed.")]
         public int Quantity { get; set; }
+        [Range(0, int.MaxValue, ErrorMessage = "Only positive number allowed.")]
+        public double Price { get; set; }
     }
 }

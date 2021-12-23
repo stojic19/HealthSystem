@@ -8,11 +8,8 @@ namespace HospitalApi.AutoMapperProfiles
     {
         public AutoMapperSurvey()
         {
-            CreateMap<QuestionDTO, Question>();
-            CreateMap<Question, QuestionDTO>();
-            CreateMap<SurveyDTO, Survey>();
-            CreateMap<Survey, SurveyDTO>();
-
+            CreateMap<QuestionDTO, Question>().ReverseMap();
+            CreateMap<SurveyDTO, Survey>().ReverseMap();
 
         }
     }

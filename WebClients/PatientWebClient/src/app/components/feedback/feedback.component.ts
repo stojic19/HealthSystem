@@ -37,14 +37,14 @@ export class FeedbackComponent implements OnInit {
     if (this.feedbackText && this.feedbackText != '') {
       this.newFeedback.text = this.feedbackText;
       this.newFeedback.isPublishable = this.isPublishable;
-      !this.stayAnonymous
-        ? (this.newFeedback.patientId = 2)
-        : (this.newFeedback.patientId = 2);
-      this._feedbackService.addFeedback(this.newFeedback).subscribe();
-      this._snackBar.open(
-        'Your feedback has been successfully submitted.',
-        'Dismiss'
-      );
+      this.newFeedback.patientId = 2;
+      this._feedbackService.addFeedback(this.newFeedback).subscribe((res) => {
+        console.log('otvorim al malo sutra');
+        this._snackBar.open(
+          'Your feedback has been successfully submitted.',
+          'Dismiss'
+        );
+      });
 
       this.dialogRef.close(true);
     }

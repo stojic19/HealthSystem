@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
@@ -9,59 +7,74 @@ namespace SeleniumTests.Pages
     public class CreateFeedbackPage
     {
         private readonly IWebDriver driver;
-        private readonly string URI;
-        private IWebElement CommentElement => driver.FindElement(By.Id("text_area_id"));
-        private IWebElement IsAnonymousElement => driver.FindElement(By.XPath("//input[@id = 'no_anonymous']"));
-        private IWebElement IsAllowedElement => driver.FindElement(By.XPath(".//div[contains(.,'I don't want my feedback to be published')]/input"));
-        private IWebElement SubmitButtonElement => driver.FindElement(By.Id("submit_button"));
-        private IWebElement AlertElement => driver.FindElement(By.Id("alert"));
+        private readonly string URI = "http://localhost:4200/feedbacks";
+        private IWebElement OpenModalElement => driver.FindElement(By.Id("openModal"));
+        private IWebElement FeedbackTextElement => driver.FindElement(By.Id("text"));
+        private IWebElement StayAnonymousElement => driver.FindElement(By.Id("stayAnonymous"));
+        private IWebElement IsPublishableElement => driver.FindElement(By.Id("isPublishable"));
+        private IWebElement SubmitElement => driver.FindElement(By.Id("submitFeedback"));
+        private IWebElement FormElement => driver.FindElement(By.Id("fbForm"));
 
-        public const string ValidCommentMessage = "You have successfuly left a feedback";
-        public const string InvalidCommentMessage = "Feedback cannot be empty";
-
-        public AddFeedbackPage(IWebDriver driver, string uri)
+        public CreateFeedbackPage(IWebDriver driver)
         {
             this.driver = driver;
-            URI = uri;
-        }
-
-        public void InsertComment(string comment)
-        {
-            CommentElement.SendKeys(comment);
-        }
-
-        public void InsertIsAnonymous(string isAnonymous)
-        {
-            if (isAnonymous.Equals("no"))
-            {
-                IsAnonymousElement.Click();
-            }
-        }
-
-        public void InsertIsAllowed(string isAllowed)
-        {
-            if (isAllowed.Equals("no"))
-            {
-                IsAllowedElement.Click();
-            }
-        }
-
-        public void SubmitForm()
-        {
-            SubmitButtonElement.Click();
-        }
-
-        public string GetDialogMessage()
-        {
-            return AlertElement.Text;
-        }
-
-        public void WaitForFormSubmit()
-        {
-            var wait = new WebDriverWait(driver, new TimeSpan(0, 0, 40));
-            //wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.UrlToBe(URI));
         }
 
         public void Navigate() => driver.Navigate().GoToUrl(URI);
+
+        public void OpenModal() => OpenModalElement.Click();
+
+        public void InsertFeedback(string text) => FeedbackTextElement.SendKeys(text);
+
+
+        public void InsertIsAnonymous(Boolean isAnonymous)
+        {
+            if (isAnonymous)
+            {
+                StayAnonymousElement.Click();
+            }
+        }
+
+        public void InsertIsPublishable(Boolean isPublishable)
+        {
+            if (isPublishable)
+                IsPublishableElement.Click();
+        }
+
+        public void SubmitForm() => SubmitElement.Click();
+
+        public Boolean IsSubmitEnabled() { return SubmitElement.Enabled; }
+
+        public Boolean IsFormElementDisplayed()
+        {
+            try
+            {
+                return FormElement.Displayed;
+            }
+            catch (StaleElementReferenceException)
+            {
+                return false;
+            }
+        }
+
+        public void WaitForDialogOpened()
+        {
+            var wait = new WebDriverWait(driver, new TimeSpan(0, 0, 20));
+            wait.Until(condition =>
+            {
+                try
+                {
+                    return FormElement.Displayed;
+                }
+                catch (StaleElementReferenceException)
+                {
+                    return false;
+                }
+                catch (NoSuchElementException)
+                {
+                    return false;
+                }
+            });
+        }
     }
 }

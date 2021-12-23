@@ -57,25 +57,16 @@ namespace HospitalApi.Controllers
         {
             try
             {
-                if (feedbackDTO == null)
-                {
-                    return BadRequest("Incorrect feedback format sent! Please try again.");
-                }
-
                 var feedbackWriteRepo = _uow.GetRepository<IFeedbackWriteRepository>();
                 Feedback addedFeedback = feedbackWriteRepo.Add(_mapper.Map<Feedback>(feedbackDTO));
+                return Ok(addedFeedback);
 
-                if(addedFeedback == null)
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Could not insert feedback in the database.");
-                }
-
-                return Ok("Your feedback has been submitted.");
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error inserting feedback in the database.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Could not insert feedback in the database.");
             }
+
         }
 
         [HttpPut("publish")]

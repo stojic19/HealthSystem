@@ -957,6 +957,9 @@ namespace Hospital.Migrations
                     b.Property<int>("MedicalRecordId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("PhotoEncoded")
+                        .HasColumnType("text");
+
                     b.HasIndex("MedicalRecordId")
                         .IsUnique();
 

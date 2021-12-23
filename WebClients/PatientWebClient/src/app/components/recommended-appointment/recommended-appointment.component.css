@@ -1,0 +1,43 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.frame {
+  width: 500px;
+}
+
+h6 {
+  text-align: center;
+}
+
+.frame {
+  justify-content: center;
+  align-items: center;
+}
+.mat-radio-button ~ .mat-radio-button {
+  margin-left: 16px;
+}
+
+.mat-selection-list {
+  width: 500px !important;
+  height: 300px !important;
+}
+
+.custom-scroll-bar {
+  height: 70vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.custom-scroll-bar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.custom-scroll-bar::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.26);
+}
+::ng-deep .mat-selection-list {
+  min-width: 100px !important;
+}

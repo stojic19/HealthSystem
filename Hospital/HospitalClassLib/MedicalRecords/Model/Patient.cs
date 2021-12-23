@@ -1,4 +1,5 @@
-﻿using Hospital.SharedModel.Model;
+﻿using System.Buffers.Text;
+using Hospital.SharedModel.Model;
 
 namespace Hospital.MedicalRecords.Model
 {
@@ -7,5 +8,6 @@ namespace Hospital.MedicalRecords.Model
         public int MedicalRecordId { get; set; }
         public MedicalRecord MedicalRecord { get; set; }
         public bool IsBlocked { get; set; }
+        public string PhotoEncoded { get; set; }
     }
 }

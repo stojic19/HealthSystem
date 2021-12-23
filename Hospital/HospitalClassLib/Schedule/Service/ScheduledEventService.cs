@@ -1,9 +1,9 @@
-﻿using System;
 using Hospital.Schedule.Model;
+using Hospital.Schedule.Model.Wrappers;
+using System;
 using Hospital.Schedule.Repository;
 using Hospital.SharedModel.Repository.Base;
 using System.Collections.Generic;
-using System.Linq;
 using Hospital.Schedule.Service.Interfaces;
 
 namespace Hospital.Schedule.Service
@@ -17,21 +17,59 @@ namespace Hospital.Schedule.Service
         {
             this.UoW = UoW;
         }
-        public List<ScheduledEvent> getFinishedUserEvents(int userId)
+
+        public List<ScheduledEvent> GetCanceledUserEvents(int userId)
         {
-            return UoW.GetRepository<IScheduledEventReadRepository>().GetAll()
-                        .Where(x => x.IsDone && x.Patient.Id == userId)
-                        .ToList();
+            return UoW.GetRepository<IScheduledEventReadRepository>().GetCanceledUserEvents(userId);
         }
 
-        public int getNumberOfFinishedEvents(int userId)
+        public List<ScheduledEvent> GetFinishedUserEvents(int userId)
         {
-            var count = UoW.GetRepository<IScheduledEventReadRepository>().GetAll()
-                        .Where(x => x.IsDone && x.Patient.Id == userId)
-                        .GroupBy(t => t.Patient)
-                        .Select(g => g.Count());
 
-            return count.FirstOrDefault();
+            return UoW.GetRepository<IScheduledEventReadRepository>().GetFinishedUserEvents(userId);        
+
+        }
+        public List<EventForSurvey> GetEventsForSurvey(int userId)
+        {
+            var finishedEvents = UoW.GetRepository<IScheduledEventReadRepository>().GetFinishedUserEvents(userId);
+            var ansveredSurveyRepo = UoW.GetRepository<IAnsweredSurveyReadRepository>();
+           
+            List<EventForSurvey> eventsForSurveys = new();
+            finishedEvents.ForEach(e =>
+            {      
+                eventsForSurveys.Add(new EventForSurvey()
+                {
+                    scheduledEvent = e,
+                    answeredSurveyId = ansveredSurveyRepo.GetSurveyId(e.Id)
+                 });
+            });
+          
+            return eventsForSurveys;
+        }
+
+        public int GetNumberOfFinishedEvents(int userId)
+        {
+            return UoW.GetRepository<IScheduledEventReadRepository>().GetNumberOfFinishedEvents(userId);
+        }
+
+        public ScheduledEvent GetScheduledEvent(int eventId)
+        {
+            return UoW.GetRepository<IScheduledEventReadRepository>().GetScheduledEvent(eventId);
+        }
+
+        public List<ScheduledEvent> GetUpcomingUserEvents(int userId)
+        {
+            return UoW.GetRepository<IScheduledEventReadRepository>().GetUpcomingUserEvents(userId);
+        }
+
+        public void UpdateFinishedUserEvents()
+        {
+            var finishedUserEvents = UoW.GetRepository<IScheduledEventReadRepository>().UpdateFinishedUserEvents();
+            if (finishedUserEvents.Count != 0)
+            {
+                finishedUserEvents.ForEach(one => one.IsDone = true);
+                UoW.SaveChanges();
+            }
         }
 
         public IEnumerable<DateTime> GetAvailableAppointments(int doctorId, DateTime preferredDate)

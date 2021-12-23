@@ -20,6 +20,7 @@ import { BasicAppointmentComponent } from './components/basic-appointment/basic-
 import { AppointmentsPageComponent } from './components/appointments-page/appointments-page.component';
 import { PatientMedicalRecordComponent } from './components/patient-medical-record/patient-medical-record.component';
 import { SurveySectionComponent } from './components/survey-section/survey-section.component';
+import { RecommendedAppointmentComponent } from './components/recommended-appointment/recommended-appointment.component';
 import { LoginComponent } from './components/login/login.component';
 import { SurveyPageComponent } from './components/survey-page/survey-page.component';
 
@@ -38,8 +39,10 @@ import { SurveyPageComponent } from './components/survey-page/survey-page.compon
     LoginComponent,
     PatientMedicalRecordComponent,
     AppointmentsPageComponent,
-    SurveyPageComponent,
     SurveySectionComponent,
+    LoginComponent,
+    SurveyPageComponent,
+    RecommendedAppointmentComponent
   ],
   imports: [
     BrowserModule,

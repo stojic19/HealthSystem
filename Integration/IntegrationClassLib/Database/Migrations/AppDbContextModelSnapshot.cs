@@ -197,6 +197,12 @@ namespace Integration.Migrations
                     b.Property<int>("CityId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ImageName")
+                        .HasColumnType("text");
+                        
                     b.Property<bool>("GrpcSupported")
                         .HasColumnType("boolean");
 

@@ -4,6 +4,7 @@ using Hospital.Database.EfStructures;
 using Hospital.MedicalRecords.Model;
 using Hospital.SharedModel.Model;
 using Hospital.SharedModel.Repository.Base;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hospital.SharedModel.Repository.Implementation
 {
@@ -37,6 +38,16 @@ namespace Hospital.SharedModel.Repository.Implementation
             return retVal.Select(id => doctors.FirstOrDefault(d => d.Id == id)).AsEnumerable();
         }
 
+        public IEnumerable<Doctor> GetDoctorsBySpecialization(int? specializationId)
+        {
+            return GetAll().Include(x => x.Specialization).Where(x => x.SpecializationId == specializationId);
+        }
+
+        public IEnumerable<Doctor> GetAllDoctorsWithSpecialization()
+        {
+            return GetAll().Include(x => x.Specialization);
+        }
+        
         public IEnumerable<Doctor> GetSpecializedDoctors(int specializationId)
         {
             return _context.Set<Doctor>().Where(d => d.SpecializationId == specializationId);

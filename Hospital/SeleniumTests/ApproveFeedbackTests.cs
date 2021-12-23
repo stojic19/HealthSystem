@@ -28,7 +28,9 @@ namespace SeleniumTests
         public void ApproveFeedback()
         {
             approveFeedbackPage.Approve();
-            Assert.True(approveFeedbackPage.UnapproveButtonDisplayed()); 
+            Assert.True(approveFeedbackPage.UnapproveButtonDisplayed());
+            Assert.True(approveFeedbackPage.IsSnackbarDisplayed());
+            Assert.Equal(driver.Url, approveFeedbackPage.URI);
         }
         public void Dispose()
         {

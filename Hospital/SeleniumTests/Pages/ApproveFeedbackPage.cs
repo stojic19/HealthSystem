@@ -8,7 +8,7 @@ namespace SeleniumTests.Pages
     public class ApproveFeedbackPage
     {
         private readonly IWebDriver driver;
-        private readonly string URI= "http://localhost:4200/feedbacks";
+        public readonly string URI= "http://localhost:4200/feedbacks";
         private IWebElement ApproveButton => driver.FindElement(By.Name("approve"));
 
         private IWebElement UnapproveButton => driver.FindElement(By.Name("unapprove"));
@@ -30,6 +30,21 @@ namespace SeleniumTests.Pages
         public bool UnapproveButtonDisplayed()
         {
             return UnapproveButton.Displayed;
+        }
+        public bool IsSnackbarDisplayed()
+        {
+            try
+            {
+                return driver.FindElement(By.ClassName("mat-snack-bar-container")).Displayed;
+            }
+            catch (StaleElementReferenceException)
+            {
+                return false;
+            }
+            catch (NoSuchElementException)
+            {
+                return false;
+            }
         }
         public void EnsurePageIsDisplayed()
         {

@@ -1,18 +1,18 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
+using SeleniumTests.Pages;
 using Xunit;
 
 namespace SeleniumTests
 {
     public class CreateFeedbackTests : IDisposable
     {
-        private readonly IWebDriver driver;
-        private readonly Pages.CreateFeedbackPage createFeedbackPage;
-
+        private readonly IWebDriver _driver;
+        private readonly Pages.CreateFeedbackPage _createFeedbackPage;
         public CreateFeedbackTests()
         {
-            ChromeOptions options = new ChromeOptions();
+            var options = new ChromeOptions();
             options.AddArguments("start-maximized");            // open Browser in maximized mode
             options.AddArguments("disable-infobars");           // disabling infobars
             options.AddArguments("--disable-extensions");       // disabling extensions
@@ -20,38 +20,41 @@ namespace SeleniumTests
             options.AddArguments("--disable-dev-shm-usage");    // overcome limited resource problems
             options.AddArguments("--no-sandbox");               // Bypass OS security model
             options.AddArguments("--disable-notifications");    // disable notifications
-            driver = new ChromeDriver(options);
+            _driver = new ChromeDriver(options);
 
-            createFeedbackPage = new Pages.CreateFeedbackPage(driver);
-            createFeedbackPage.Navigate();
+            _createFeedbackPage = new Pages.CreateFeedbackPage(_driver);
+            _createFeedbackPage.Navigate();
         }
         public void Dispose()
         {
-            driver.Quit();
-            driver.Dispose();
+            _driver.Quit();
+            _driver.Dispose();
         }
 
         [Fact]
         public void NewFeedbackCreated()
         {
-            createFeedbackPage.OpenModal();
-            createFeedbackPage.WaitForDialogOpened();
-            createFeedbackPage.InsertFeedback("Best services in town.");
-            createFeedbackPage.InsertIsAnonymous(false);
-            createFeedbackPage.InsertIsPublishable(true);
-            createFeedbackPage.SubmitForm();
-            Assert.False(createFeedbackPage.IsFormElementDisplayed());
-         }
+            _createFeedbackPage.OpenModal();
+            _createFeedbackPage.WaitForDialogOpened();
+            _createFeedbackPage.InsertFeedback("Best services in town.");
+            _createFeedbackPage.InsertIsAnonymous(false);
+            _createFeedbackPage.InsertIsPublishable(true);
+            _createFeedbackPage.SubmitForm();
+            _createFeedbackPage.WaitForFormSubmitted();
+            Assert.True(_createFeedbackPage.IsSnackbarDisplayed());
+            Assert.Equal(_createFeedbackPage.Uri, _driver.Url);
+        }
 
         [Fact]
         public void FeedbackSubmitFailed()
         {
-            createFeedbackPage.OpenModal();
-            createFeedbackPage.WaitForDialogOpened();
-            createFeedbackPage.InsertIsAnonymous(false);
-            createFeedbackPage.InsertIsPublishable(true);
-            createFeedbackPage.SubmitForm();
-            Assert.True(createFeedbackPage.IsFormElementDisplayed());
-         }
+            _createFeedbackPage.OpenModal();
+            _createFeedbackPage.WaitForDialogOpened();
+            _createFeedbackPage.InsertIsAnonymous(false);
+            _createFeedbackPage.InsertIsPublishable(true);
+            _createFeedbackPage.SubmitForm();
+            Assert.False(_createFeedbackPage.IsSnackbarDisplayed());
+            Assert.Equal(_createFeedbackPage.Uri, _driver.Url);
+        }
     }
 }

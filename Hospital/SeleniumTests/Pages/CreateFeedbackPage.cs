@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
@@ -6,28 +7,27 @@ namespace SeleniumTests.Pages
 {
     public class CreateFeedbackPage
     {
-        private readonly IWebDriver driver;
-        private readonly string URI = "http://localhost:4200/feedbacks";
-        private IWebElement OpenModalElement => driver.FindElement(By.Id("openModal"));
-        private IWebElement FeedbackTextElement => driver.FindElement(By.Id("text"));
-        private IWebElement StayAnonymousElement => driver.FindElement(By.Id("stayAnonymous"));
-        private IWebElement IsPublishableElement => driver.FindElement(By.Id("isPublishable"));
-        private IWebElement SubmitElement => driver.FindElement(By.Id("submitFeedback"));
-        private IWebElement FormElement => driver.FindElement(By.Id("fbForm"));
+        private readonly IWebDriver _driver;
+        public readonly string Uri = "http://localhost:4200/feedbacks";
+        private IWebElement OpenModalElement => _driver.FindElement(By.Id("openModal"));
+        private IWebElement FeedbackTextElement => _driver.FindElement(By.Id("text"));
+        private IWebElement StayAnonymousElement => _driver.FindElement(By.Id("stayAnonymous"));
+        private IWebElement IsPublishableElement => _driver.FindElement(By.Id("isPublishable"));
+        private IWebElement SubmitElement => _driver.FindElement(By.Id("submitFeedback"));
 
         public CreateFeedbackPage(IWebDriver driver)
         {
-            this.driver = driver;
+            this._driver = driver;
         }
 
-        public void Navigate() => driver.Navigate().GoToUrl(URI);
+        public void Navigate() => _driver.Navigate().GoToUrl(Uri);
 
         public void OpenModal() => OpenModalElement.Click();
 
         public void InsertFeedback(string text) => FeedbackTextElement.SendKeys(text);
 
 
-        public void InsertIsAnonymous(Boolean isAnonymous)
+        public void InsertIsAnonymous(bool isAnonymous)
         {
             if (isAnonymous)
             {
@@ -35,7 +35,7 @@ namespace SeleniumTests.Pages
             }
         }
 
-        public void InsertIsPublishable(Boolean isPublishable)
+        public void InsertIsPublishable(bool isPublishable)
         {
             if (isPublishable)
                 IsPublishableElement.Click();
@@ -43,15 +43,17 @@ namespace SeleniumTests.Pages
 
         public void SubmitForm() => SubmitElement.Click();
 
-        public Boolean IsSubmitEnabled() { return SubmitElement.Enabled; }
-
-        public Boolean IsFormElementDisplayed()
+        public bool IsSnackbarDisplayed()
         {
             try
             {
-                return FormElement.Displayed;
+                return _driver.FindElement(By.ClassName("mat-snack-bar-container")).Displayed;
             }
             catch (StaleElementReferenceException)
+            {
+                return false;
+            }
+            catch (NoSuchElementException)
             {
                 return false;
             }
@@ -59,22 +61,14 @@ namespace SeleniumTests.Pages
 
         public void WaitForDialogOpened()
         {
-            var wait = new WebDriverWait(driver, new TimeSpan(0, 0, 20));
-            wait.Until(condition =>
-            {
-                try
-                {
-                    return FormElement.Displayed;
-                }
-                catch (StaleElementReferenceException)
-                {
-                    return false;
-                }
-                catch (NoSuchElementException)
-                {
-                    return false;
-                }
-            });
+            var wait = new WebDriverWait(_driver, new TimeSpan(0, 0, 10));
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.Id("fbForm")));
+        }
+
+        public void WaitForFormSubmitted()
+        {
+            var wait = new WebDriverWait(_driver, new TimeSpan(0, 0, 10));
+            wait.Until(condition => IsSnackbarDisplayed());
         }
     }
 }

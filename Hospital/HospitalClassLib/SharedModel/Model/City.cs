@@ -1,20 +1,28 @@
-﻿namespace Hospital.SharedModel.Model
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Hospital.SharedModel.Model
 {
-    public class City 
+    public class City : ValueObject
     {
-        public int Id { get; }
         public string Name { get;}
         public int PostalCode { get;  }
-        public int CountryId { get; }
         public Country Country { get; }
         
-        public City(int id, string name, int postalCode, int countryId, Country country)
+        public City(string name, int postalCode, Country country)
         {
-            Id = id;
+            if (Name is null or "" || Name.Any(char.IsDigit)) throw new Exception();
             Name = name;
             PostalCode = postalCode;
-            CountryId = countryId;
             Country = country;
+        }
+
+        protected override IEnumerable<object> GetEqualityComponents()
+        {
+            yield return Name;
+            yield return PostalCode;
+            yield return Country;
         }
     }
 }

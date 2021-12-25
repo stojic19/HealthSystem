@@ -12,19 +12,13 @@ namespace Hospital.SharedModel.Model
             Name = name;
             Validate();
         }
-
         private void Validate()
         {
-            if (String.IsNullOrWhiteSpace(Name)) {
+            if (string.IsNullOrWhiteSpace(Name) || Name.Any(char.IsDigit))
+            {
                 throw new Exception(); //napraviti exception 
             }
-
-            if (Name.Any(char.IsDigit))
-            {
-                throw new Exception();
-            }
         }
-
         protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return Name;

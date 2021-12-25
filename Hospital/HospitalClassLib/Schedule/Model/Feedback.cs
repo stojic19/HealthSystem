@@ -6,13 +6,13 @@ namespace Hospital.Schedule.Model
 {
     public class Feedback
     {
-        public int Id { get; set; }
-        public Patient Patient { get; set; }
+        public int Id { get; }
+        public Patient Patient { get; }
 
-        public FeedbackStatus FeedbackStatus { get; set; }  
+        public FeedbackStatus FeedbackStatus { get;  }  
 
-        public DateTime CreatedDate { get; set; }
-        public string Text { get; set; }
+        public DateTime CreatedDate { get; }
+        public string Text { get;  }
         public bool IsPublishable { get; set; }
     }
 }

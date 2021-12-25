@@ -1,8 +1,33 @@
-﻿namespace Hospital.SharedModel.Model
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Hospital.SharedModel.Model
 {
-    public class Country
+    public class Country : ValueObject
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get;}
+
+        public Country(string name) {
+            Name = name;
+            Validate();
+        }
+
+        private void Validate()
+        {
+            if (String.IsNullOrWhiteSpace(Name)) {
+                throw new Exception(); //napraviti exception 
+            }
+
+            if (Name.Any(char.IsDigit))
+            {
+                throw new Exception();
+            }
+        }
+
+        protected override IEnumerable<object> GetEqualityComponents()
+        {
+            yield return Name;
+        }
     }
 }

@@ -2,8 +2,9 @@
 {
     public class NewFeedbackDTO
     {
-        public int PatientId { get; set; }
-        public string Text { get; set; }
-        public bool IsPublishable { get; set; }
+        public int PatientId { get; }
+        public string Text { get; }
+        public bool IsPublishable { get; }
+        public bool IsAnonymous { get;  }
     }
 }

@@ -21,9 +21,7 @@ namespace HospitalApi.AutoMapperProfiles
                 .ForMember(toSchedule => toSchedule.IsDone, opt => opt.MapFrom(src => false))
                 .ForMember(toSchedule => toSchedule.ScheduledEventType,
                     opt => opt.MapFrom(src => ScheduledEventType.Appointment));
-            CreateMap<NewFeedbackDTO, Feedback>()
-                  .ForMember(dto => dto.CreatedDate, opt => opt.MapFrom(src => DateTime.Now))
-                  .ForMember(dto => dto.FeedbackStatus, opt => opt.MapFrom(src => FeedbackStatus.Pending));
+            CreateMap<NewFeedbackDTO, Feedback>();
             CreateMap<Survey, SurveyStatisticDTO>();
 
             CreateMap<CityDTO, City>();

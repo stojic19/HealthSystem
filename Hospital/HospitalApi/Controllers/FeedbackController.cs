@@ -63,14 +63,10 @@ namespace HospitalApi.Controllers
                 }
 
                 var feedbackWriteRepo = _uow.GetRepository<IFeedbackWriteRepository>();
-                Feedback addedFeedback = feedbackWriteRepo.Add(_mapper.Map<Feedback>(feedbackDTO));
+                var addedFeedback = feedbackWriteRepo.Add(_mapper.Map<Feedback>(feedbackDTO));
 
-                if(addedFeedback == null)
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Could not insert feedback in the database.");
-                }
-
-                return Ok("Your feedback has been submitted.");
+                return addedFeedback == null ? StatusCode(StatusCodes.Status500InternalServerError, "Could not insert feedback in the database.")
+                    : Ok("Your feedback has been submitted.");
             }
             catch (Exception)
             {
@@ -89,7 +85,7 @@ namespace HospitalApi.Controllers
                 }
 
                 var feedbackWriteRepo = _uow.GetRepository<IFeedbackWriteRepository>();
-                feedback.FeedbackStatus = FeedbackStatus.Approved;
+                feedback.Publish();
                 Feedback approvedFeedback = feedbackWriteRepo.Update(feedback);
 
                 if(approvedFeedback == null)
@@ -123,15 +119,11 @@ namespace HospitalApi.Controllers
                 }
 
                 var feedbackWriteRepo = _uow.GetRepository<IFeedbackWriteRepository>();
-                feedback.FeedbackStatus = FeedbackStatus.Pending;
-                Feedback approvedFeedback = feedbackWriteRepo.Update(feedback);
+                feedback.Unpublish();
+                var approvedFeedback = feedbackWriteRepo.Update(feedback);
 
-                if (approvedFeedback == null)
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Couldn't update feedback!");
-                }
-
-                return Ok(approvedFeedback);
+                return approvedFeedback == null ? StatusCode(StatusCodes.Status500InternalServerError, "Couldn't update feedback!")
+                    : Ok(approvedFeedback);
             }
             catch (Exception)
             {

@@ -12,10 +12,16 @@ namespace Hospital.SharedModel.Model
         
         public City(string name, int postalCode, Country country)
         {
-            if (Name is null or "" || Name.Any(char.IsDigit)) throw new Exception();
             Name = name;
             PostalCode = postalCode;
             Country = country;
+            Validate();
+        }
+
+        private void Validate()
+        {
+            if (Name.Any(char.IsDigit)) throw new Exception();
+            if (string.IsNullOrEmpty(Name)) throw new Exception();
         }
 
         protected override IEnumerable<object> GetEqualityComponents()

@@ -58,9 +58,7 @@ namespace HospitalApi.Controllers
             try
             {
                 if (feedbackDTO == null)
-                {
                     return BadRequest("Incorrect feedback format sent! Please try again.");
-                }
 
                 var feedbackWriteRepo = _uow.GetRepository<IFeedbackWriteRepository>();
                 var addedFeedback = feedbackWriteRepo.Add(_mapper.Map<Feedback>(feedbackDTO));
@@ -80,20 +78,14 @@ namespace HospitalApi.Controllers
             try
             {
                 if(feedback == null)
-                {
                     return BadRequest("Feedback format is wrong!");
-                }
-
+                
                 var feedbackWriteRepo = _uow.GetRepository<IFeedbackWriteRepository>();
                 feedback.Publish();
-                Feedback approvedFeedback = feedbackWriteRepo.Update(feedback);
+                var approvedFeedback = feedbackWriteRepo.Update(feedback);
 
-                if(approvedFeedback == null)
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Couldn't update feedback!");
-                }
-
-                return Ok(approvedFeedback);
+                return approvedFeedback == null ? StatusCode(StatusCodes.Status500InternalServerError, "Couldn't update feedback!")
+                    : Ok(approvedFeedback);
             }
             catch(Exception)
             {
@@ -114,9 +106,8 @@ namespace HospitalApi.Controllers
             try
             {
                 if (feedback == null)
-                {
                     return BadRequest("Feedback format is wrong!");
-                }
+                
 
                 var feedbackWriteRepo = _uow.GetRepository<IFeedbackWriteRepository>();
                 feedback.Unpublish();

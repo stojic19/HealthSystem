@@ -1,17 +1,15 @@
-﻿using Microsoft.Extensions.Options;
+﻿using System;
+using System.Linq;
+using Microsoft.Extensions.Options;
 
 namespace Hospital.SharedModel.Model
 {
     public class Specialization
     {
-        public int Id { get; private set; }
+        public int Id { get; }
         public string Name { get; private set; }
         public string Description { get; private set; }
 
-        public Specialization()
-        {
-            
-        }
         public Specialization(int id, string name, string description)
         {
             Id = id;
@@ -22,7 +20,19 @@ namespace Hospital.SharedModel.Model
 
         private void Validate()
         {
-            throw new System.NotImplementedException();
+            if (string.IsNullOrWhiteSpace(Name) || Name.Any(char.IsDigit))
+            {
+                throw new Exception();
+            }
+        }
+
+        public void ChangeDescription(string newDescription)
+        {
+            Description = newDescription;
+        }
+        public void ChangeName(string newName)
+        {
+            Name = newName;
         }
     }
 }

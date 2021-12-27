@@ -1,18 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Options;
 
 namespace Hospital.SharedModel.Model
 {
-    public class Specialization
+    public class Specialization : ValueObject
     {
-        public int Id { get; }
-        public string Name { get; private set; }
-        public string Description { get; private set; }
+        public string Name { get; }
+        public string Description { get; }
 
-        public Specialization(int id, string name, string description)
+        public Specialization(string name, string description)
         {
-            Id = id;
             Name = name;
             Description = description;
             Validate();
@@ -26,13 +25,10 @@ namespace Hospital.SharedModel.Model
             }
         }
 
-        public void ChangeDescription(string newDescription)
+        protected override IEnumerable<object> GetEqualityComponents()
         {
-            Description = newDescription;
-        }
-        public void ChangeName(string newName)
-        {
-            Name = newName;
+            yield return Name;
+            yield return Description;
         }
     }
 }

@@ -23,6 +23,10 @@ namespace Hospital.SharedModel.Model
     public string StreetNumber { get;  }
     public City City { get; }
 
+    public User()
+    {
+        
+    }
     public User(string firstName, string middleName, string lastName, DateTime dateOfBirth, Gender gender, string street, string streetNumber, City city)
     {
         FirstName = firstName;

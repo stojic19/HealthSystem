@@ -23,8 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Tendering\Model\" />
-    <Folder Include="Tendering\Repository\Implementation\" />
     <Folder Include="Tendering\Service\" />
   </ItemGroup>
 

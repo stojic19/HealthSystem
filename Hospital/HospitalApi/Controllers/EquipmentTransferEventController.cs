@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HospitalApi.Controllers
 {
@@ -29,6 +30,7 @@ namespace HospitalApi.Controllers
             _mapper = mapper;
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpPost]
         public IActionResult AddNewEquipmentTransferEvent(EquipmentTransferEvent equipmentTransferEvent)
         {
@@ -68,6 +70,7 @@ namespace HospitalApi.Controllers
             return roomInventory != null && roomInventory.Amount > equipmentTransferEvent.Quantity;
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpPost]
         public IEnumerable<TimePeriodDTO> GetAvailableTerms(AvailableTermDTO availableTermsDTO)
         {
@@ -95,6 +98,7 @@ namespace HospitalApi.Controllers
             return availableTerms;
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpGet]
         public IEnumerable<EquipmentTransferEvent> GetTransferEventsByRoom(int roomId)
         {
@@ -105,6 +109,7 @@ namespace HospitalApi.Controllers
                                     transfer.InitialRoomId == roomId);
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpPost]
         public IActionResult CancelEquipmentTransferEvent(EquipmentTransferEventDto transferEventDTO)
         {

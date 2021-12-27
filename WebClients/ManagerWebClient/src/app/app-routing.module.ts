@@ -41,35 +41,33 @@ const routes: Routes = [
   { path: 'firstBuilding/:roomName/:floor', component: FirstBuildingComponent , canActivate: [AuthGuard]},
   {
     path: 'secondBuilding/:roomName/:floor',
-    component: SecondBuildingComponent,
+    component: SecondBuildingComponent, canActivate: [AuthGuard]
   },
-  { path: 'complaints', component: ComplaintsListComponent , canActivate: [AuthGuard]},
-  { path: 'complaints/:id', component: ComplaintDetailsComponent , canActivate: [AuthGuard]},
-  { path: 'complaint-add', component: AddComplaintComponent ,  canActivate: [AuthGuard]},
-  { path: 'pharmacy-register', component: RegisterPharmacyComponent , canActivate: [AuthGuard]},
-  { path: 'pharmacy-list', component: PharmaciesListComponent , canActivate: [AuthGuard]},
-  { path: 'benefit-list', component: BenefitListComponent , canActivate: [AuthGuard] },
-  { path: 'benefit/:id', component: BenefitDetailsComponent , canActivate: [AuthGuard]},
-  { path: 'home', component: HomePageComponent , canActivate: [AuthGuard] },
+  { path: 'complaints', component: ComplaintsListComponent },
+  { path: 'complaints/:id', component: ComplaintDetailsComponent },
+  { path: 'complaint-add', component: AddComplaintComponent },
+  { path: 'pharmacy-register', component: RegisterPharmacyComponent },
+  { path: 'pharmacy-list', component: PharmaciesListComponent },
+  { path: 'benefit-list', component: BenefitListComponent},
+  { path: 'benefit/:id', component: BenefitDetailsComponent },
+  { path: 'home', component: HomePageComponent },
   {
     path: 'medication-consumption-report',
-    component: MedicationReportsComponent,
-    canActivate: [AuthGuard]
+    component: MedicationReportsComponent
   },
   {
     path: 'medicine-specification-requests',
-    component: MedicineSpecificationListComponent,
-    canActivate: [AuthGuard]
+    component: MedicineSpecificationListComponent
   },
   {
     path: 'new-medicine-specification-request',
     component: MedicineSpecificationRequestsComponent,
   },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'moveEquipment/:id', component: EquipmentFormComponent },
+  { path: 'moveEquipment/:id', component: EquipmentFormComponent , canActivate: [AuthGuard]},
   { path: 'surveys', component: SurveysObserveComponent,canActivate: [AuthGuard]},
-  { path: 'roomRenovation', component: RenovationFormComponent},
-  { path: 'schedule/:id', component: RoomScheduleComponent },
+  { path: 'roomRenovation', component: RenovationFormComponent, canActivate: [AuthGuard]},
+  { path: 'schedule/:id', component: RoomScheduleComponent, canActivate: [AuthGuard] },
   { path: 'blocking', component: MaliciousPatientsComponent,canActivate: [AuthGuard]},
   { path: 'login', component: LoginComponent},
 ];

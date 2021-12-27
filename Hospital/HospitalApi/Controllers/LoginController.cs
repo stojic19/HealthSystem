@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Hospital.SharedModel.Model;
 using Hospital.SharedModel.Service;
 using HospitalApi.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
 namespace HospitalApi.Controllers
@@ -24,6 +25,7 @@ namespace HospitalApi.Controllers
             _roleManager = roleManager;
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> LogIn([FromBody] LoginDTO user)
         {

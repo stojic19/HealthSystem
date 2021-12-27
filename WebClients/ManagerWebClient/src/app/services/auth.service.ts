@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ILogedManager, LogedManager } from '../interfaces/loged-manager';
+import { Router } from '@angular/router';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -17,7 +18,7 @@ export class AuthService {
   private currentUserSubject: BehaviorSubject<LogedManager>;
   public currentUser: Observable<LogedManager>;
   private user: LogedManager;
-  
+  private router: Router;
   constructor(private http: HttpClient) {
     this.currentUserSubject = new BehaviorSubject<LogedManager>(JSON.parse((localStorage.getItem('currentUser'))!));
     this.currentUser = this.currentUserSubject.asObservable();
@@ -30,8 +31,7 @@ export class AuthService {
           localStorage.setItem('token', response.token);
           localStorage.setItem('currentUser', JSON.stringify(response));
           this.currentUserSubject.next(response);
-          window.location.href = "http://localhost:4200/feedbacks";
-          //this.router.navigate(['/login']);
+          window.location.href = "http://localhost:4200/overview";
         }
         return this.user;
 

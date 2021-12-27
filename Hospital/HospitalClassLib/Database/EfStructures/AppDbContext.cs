@@ -31,7 +31,6 @@ namespace Hospital.Database.EfStructures
         public DbSet<RoomInventory> RoomInventories { get; set; }
         public DbSet<ScheduledEvent> ScheduledEvents { get; set; }
         public DbSet<Specialization> Specializations { get; set; }
-        public DbSet<Staff> Staffs { get; set; }
         public DbSet<Survey> Surveys { get; set; }
         public DbSet<AnsweredQuestion> AnsweredQuestions { get; set; }
         public DbSet<AnsweredSurvey> AnsweredSurveys { get; set; }

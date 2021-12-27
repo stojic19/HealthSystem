@@ -40,7 +40,7 @@ namespace Hospital.SharedModel.Repository.Implementation
 
         public IEnumerable<Doctor> GetDoctorsBySpecialization(int? specializationId)
         {
-            return GetAll().Include(x => x.Specialization).Where(x => x.SpecializationId == specializationId);
+            return GetAll().Include(x => x.Specialization);//.Where(x => x.SpecializationId == specializationId);
         }
 
         public IEnumerable<Doctor> GetAllDoctorsWithSpecialization()
@@ -50,7 +50,7 @@ namespace Hospital.SharedModel.Repository.Implementation
         
         public IEnumerable<Doctor> GetSpecializedDoctors(int specializationId)
         {
-            return _context.Set<Doctor>().Where(d => d.SpecializationId == specializationId);
+            return _context.Set<Doctor>();//.Where(d => d.SpecializationId == specializationId);
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using Hospital.Database.EfStructures;
 using Hospital.MedicalRecords.Model;
+using Hospital.Schedule.Model;
 using Hospital.SharedModel.Repository.Base;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Hospital.MedicalRecords.Repository.Implementation
@@ -12,9 +14,11 @@ namespace Hospital.MedicalRecords.Repository.Implementation
         {
         }
 
-        public Patient GetPatient(int id)
+        public Patient GetPatient()
         {
-            return GetAll().Include(x => x.City).First(x=>x.Id==id);
+            return GetAll().Include(p => p.MedicalRecord).ThenInclude(mr => mr.Doctor)
+                .Include(p => p.MedicalRecord).ThenInclude(mr => mr.Allergies)
+                .ThenInclude(a => a.MedicationIngredient).First();
         }
     }
 }

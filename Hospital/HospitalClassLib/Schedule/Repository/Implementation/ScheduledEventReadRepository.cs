@@ -31,7 +31,7 @@ namespace Hospital.Schedule.Repository.Implementation
 
         public List<ScheduledEvent> GetNumberOfCanceledEventsForPatient(int id)
         {
-            return GetAll().Where(x => x.PatientId == id && x.IsCanceled).ToList();
+            return GetAll().Where(x => x.IsUserCanceled() && x.Patient.Id == id).ToList();
         }
 
         public List<ScheduledEvent> GetCanceledUserEvents(int userId)
@@ -39,7 +39,7 @@ namespace Hospital.Schedule.Repository.Implementation
             return GetAll().Include(x => x.Doctor)
                             .Include(x => x.Room)
                             .Include(x => x.Doctor.Specialization)
-                            .Where(x => x.IsCanceled && !x.IsDone && x.Patient.Id == userId)
+                            .Where(x => x.IsUserCanceled() && x.Patient.Id == userId)
                             .ToList();
         }
 
@@ -72,13 +72,13 @@ namespace Hospital.Schedule.Repository.Implementation
             return GetAll().Include(x => x.Doctor)
                             .Include(x => x.Room)
                             .Include(x => x.Doctor.Specialization)
-                            .Where(x => !x.IsCanceled && !x.IsDone && x.Patient.Id == userId)
+                            .Where(x => x.IsUpcoming() && x.Patient.Id == userId)
                             .ToList();
         }
 
         public List<ScheduledEvent> UpdateFinishedUserEvents()
         {
-            return GetAll().Where(x => !x.IsDone && !x.IsCanceled && DateTime.Compare(x.EndDate, DateTime.Now) < 0).ToList();
+            return GetAll().Where(x => x.ShouldBeDone()).ToList();
         }
     }
 }

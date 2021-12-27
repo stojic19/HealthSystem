@@ -32,6 +32,10 @@ namespace Hospital.Schedule.Model
             IsAnonymous = isAnonymous;
         }
 
+        public Feedback()
+        {
+        }
+
         private void Validate()
         {
             if (string.IsNullOrEmpty(Text) || string.IsNullOrWhiteSpace(Text)) throw new Exception();
@@ -46,6 +50,11 @@ namespace Hospital.Schedule.Model
         public void Unpublish()
         {
             this.FeedbackStatus = FeedbackStatus.NotApproved;
+        }
+
+        public bool IsApproved()
+        {
+            return IsPublishable && FeedbackStatus == FeedbackStatus.Approved;
         }
     }
 }

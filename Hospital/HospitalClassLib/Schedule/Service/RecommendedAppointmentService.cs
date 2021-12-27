@@ -38,7 +38,7 @@ namespace Hospital.Schedule.Service
             var scheduledEvents = _context.Set<ScheduledEvent>().AsEnumerable();
             var scheduledAppointments = (from appointment in allAppointments
                                          from scheduledEvent in scheduledEvents
-                                         where (scheduledEvent.DoctorId == doctorId && scheduledEvent.IsCanceled!=true && DateTime.Compare(scheduledEvent.StartDate, appointment) == 0)
+                                         where (scheduledEvent.DoctorId == doctorId && scheduledEvent.IsCanceled != true && DateTime.Compare(scheduledEvent.StartDate, appointment) == 0)
                                          select appointment);
             var dateTimes = allAppointments.Except(scheduledAppointments);
             return AvailableAppointments(dateTimes, doctorId);
@@ -78,14 +78,14 @@ namespace Hospital.Schedule.Service
             var availableAppointments = new List<AvailableAppointment>();
             var doctorRepo = _uow.GetRepository<IDoctorReadRepository>();
             var firstDoctor = doctorRepo.GetById(doctorId);
-            var specializationId = firstDoctor.SpecializationId;
-            foreach (var doctor in doctorRepo.GetDoctorsBySpecialization(specializationId).ToList())
-            {
-                foreach (var appointment in GetAvailableAppointmentsForDoctorAndDateRange(doctor.Id, startDate, endDate))
-                {
-                    availableAppointments.Add(appointment);
-                }
-            }
+            //var specializationId = firstDoctor.SpecializationId;
+            //foreach (var doctor in doctorRepo.GetDoctorsBySpecialization(specializationId).ToList())
+            //{
+            //    foreach (var appointment in GetAvailableAppointmentsForDoctorAndDateRange(doctor.Id, startDate, endDate))
+            //    {
+            //        availableAppointments.Add(appointment);
+            //    }
+            //}
             return availableAppointments;
         }
     }

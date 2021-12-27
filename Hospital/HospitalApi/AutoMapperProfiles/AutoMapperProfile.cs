@@ -40,7 +40,9 @@ namespace HospitalApi.AutoMapperProfiles
             CreateMap<Patient, PatientDTO>();
             CreateMap<EquipmentTransferEventDto, EquipmentTransferEvent>();
             CreateMap<DoctorAppointmentDTO, Doctor>().ReverseMap();
+
             CreateMap<AvailableAppointmentDTO, AvailableAppointment>().ReverseMap();
+
             CreateMap<Patient, UserForBlockingDTO>();
             CreateMap<RoomRenovationEventDto, RoomRenovationEvent>();
         }

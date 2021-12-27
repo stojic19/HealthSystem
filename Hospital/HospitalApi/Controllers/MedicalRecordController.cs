@@ -5,6 +5,7 @@ using Hospital.SharedModel.Repository.Base;
 using HospitalApi.DTOs;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HospitalApi.Controllers
 {
@@ -25,12 +26,9 @@ namespace HospitalApi.Controllers
         public IActionResult GetPatientWithRecord()
         {
             var patientRepo = _uow.GetRepository<IPatientReadRepository>();
-            var loggedInPatient = patientRepo.GetAll().First();
-            var patient = patientRepo.GetPatient(loggedInPatient.Id);
-            var medicalRecordRepo = _uow.GetRepository<IMedicalRecordReadRepository>();
-            var medicalRecord = medicalRecordRepo.GetMedicalRecord(patient.MedicalRecordId);
-            patient.MedicalRecord = medicalRecord;
-            var patientWithRecord = _mapper.Map<PatientDTO>(patient);
+            var loggedInPatient =
+                patientRepo.GetPatient();
+            var patientWithRecord = _mapper.Map<PatientDTO>(loggedInPatient);
             return Ok(patientWithRecord);
         }
     }

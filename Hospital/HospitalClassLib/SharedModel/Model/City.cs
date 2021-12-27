@@ -18,6 +18,10 @@ namespace Hospital.SharedModel.Model
             Validate();
         }
 
+        public City()
+        {
+        }
+
         private void Validate()
         {
             if (Name.Any(char.IsDigit)) throw new Exception();

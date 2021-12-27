@@ -17,6 +17,10 @@ namespace Hospital.SharedModel.Model
             Validate();
         }
 
+        public Specialization()
+        {
+        }
+
         private void Validate()
         {
             if (string.IsNullOrWhiteSpace(Name) || Name.Any(char.IsDigit))

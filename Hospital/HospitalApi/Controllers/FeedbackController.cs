@@ -49,7 +49,7 @@ namespace HospitalApi.Controllers
         public IEnumerable<Feedback> GetApprovedFeedbacks()
         {
             var feedbackReadRepo = _uow.GetRepository<IFeedbackReadRepository>();
-            return feedbackReadRepo.GetAll().Include(x => x.Patient).Where(x => x.IsPublishable == true && x.FeedbackStatus == FeedbackStatus.Approved);
+            return feedbackReadRepo.GetAll().Include(x => x.Patient).Where(x => x.IsApproved());
         }
 
         [HttpPost]

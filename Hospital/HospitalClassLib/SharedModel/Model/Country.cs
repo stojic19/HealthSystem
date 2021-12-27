@@ -12,6 +12,11 @@ namespace Hospital.SharedModel.Model
             Name = name;
             Validate();
         }
+
+        public Country()
+        {
+        }
+
         private void Validate()
         {
             if (string.IsNullOrWhiteSpace(Name) || Name.Any(char.IsDigit))

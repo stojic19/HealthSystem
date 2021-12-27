@@ -67,7 +67,7 @@ namespace Hospital.Schedule.Service
             var finishedUserEvents = UoW.GetRepository<IScheduledEventReadRepository>().UpdateFinishedUserEvents();
             if (finishedUserEvents.Count != 0)
             {
-                finishedUserEvents.ForEach(one => one.IsDone = true);
+                finishedUserEvents.ForEach(one => one.SetToDone());
                 UoW.SaveChanges();
             }
         }

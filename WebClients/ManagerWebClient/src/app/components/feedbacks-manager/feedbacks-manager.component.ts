@@ -22,9 +22,10 @@ export class FeedbacksManagerComponent implements OnInit {
 
   ngOnInit(): void {
     this.allFeedbacks = [];
-    this.sub = this._feedbackService.getFeedback().subscribe({
-      next:  com => {this.allFeedbacks = com;}
-  })}
+    this.sub = this._feedbackService.getFeedback().subscribe(
+     com => {this.allFeedbacks = com;
+    console.log(com)}
+  )}
 
   approveFeedback(feedback: IFeedback) {
     this._feedbackService.approveFeedback(feedback).subscribe(editedFeedback => {

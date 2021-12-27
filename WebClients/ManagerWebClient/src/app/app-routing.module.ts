@@ -27,35 +27,39 @@ import { MedicineSpecificationListComponent } from './medicine-specification-req
 import { RenovationFormComponent } from './renovation-form/renovation-form.component';
 import { RoomScheduleComponent } from './room-schedule/room-schedule.component';
 import { MaliciousPatientsComponent } from './components/malicious-patients/malicious-patients.component';
+import { LoginComponent } from './components/login/login.component';
+import { AuthGuard } from 'src/app/AuthGuard/AuthGuard';
 
 
 const routes: Routes = [
-  { path: 'overview', component: HospitalOverviewComponent },
-  { path: 'feedbacks', component: FeedbacksManagerComponent },
-  { path: 'firstBuilding', component: FirstBuildingComponent },
-  { path: 'secondBuilding', component: SecondBuildingComponent },
-  { path: 'roomInventory/:id', component: RoomInventoryComponent },
-  { path: 'hospitalEquipment', component: HospitalEquipmentComponent },
-  { path: 'firstBuilding/:roomName/:floor', component: FirstBuildingComponent },
+  { path: 'overview', component: HospitalOverviewComponent ,  canActivate: [AuthGuard]},
+  { path: 'feedbacks', component: FeedbacksManagerComponent, canActivate: [AuthGuard] },
+  { path: 'firstBuilding', component: FirstBuildingComponent ,  canActivate: [AuthGuard] },
+  { path: 'secondBuilding', component: SecondBuildingComponent ,  canActivate: [AuthGuard]},
+  { path: 'roomInventory/:id', component: RoomInventoryComponent ,  canActivate: [AuthGuard]},
+  { path: 'hospitalEquipment', component: HospitalEquipmentComponent,  canActivate: [AuthGuard] },
+  { path: 'firstBuilding/:roomName/:floor', component: FirstBuildingComponent , canActivate: [AuthGuard]},
   {
     path: 'secondBuilding/:roomName/:floor',
     component: SecondBuildingComponent,
   },
-  { path: 'complaints', component: ComplaintsListComponent },
-  { path: 'complaints/:id', component: ComplaintDetailsComponent },
-  { path: 'complaint-add', component: AddComplaintComponent },
-  { path: 'pharmacy-register', component: RegisterPharmacyComponent },
-  { path: 'pharmacy-list', component: PharmaciesListComponent },
-  { path: 'benefit-list', component: BenefitListComponent },
-  { path: 'benefit/:id', component: BenefitDetailsComponent },
-  { path: 'home', component: HomePageComponent },
+  { path: 'complaints', component: ComplaintsListComponent , canActivate: [AuthGuard]},
+  { path: 'complaints/:id', component: ComplaintDetailsComponent , canActivate: [AuthGuard]},
+  { path: 'complaint-add', component: AddComplaintComponent ,  canActivate: [AuthGuard]},
+  { path: 'pharmacy-register', component: RegisterPharmacyComponent , canActivate: [AuthGuard]},
+  { path: 'pharmacy-list', component: PharmaciesListComponent , canActivate: [AuthGuard]},
+  { path: 'benefit-list', component: BenefitListComponent , canActivate: [AuthGuard] },
+  { path: 'benefit/:id', component: BenefitDetailsComponent , canActivate: [AuthGuard]},
+  { path: 'home', component: HomePageComponent , canActivate: [AuthGuard] },
   {
     path: 'medication-consumption-report',
     component: MedicationReportsComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'medicine-specification-requests',
     component: MedicineSpecificationListComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'new-medicine-specification-request',
@@ -63,10 +67,11 @@ const routes: Routes = [
   },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'moveEquipment/:id', component: EquipmentFormComponent },
-  { path: 'surveys', component: SurveysObserveComponent},
+  { path: 'surveys', component: SurveysObserveComponent,canActivate: [AuthGuard]},
   { path: 'roomRenovation', component: RenovationFormComponent},
   { path: 'schedule/:id', component: RoomScheduleComponent },
-  { path: 'blocking', component: MaliciousPatientsComponent},
+  { path: 'blocking', component: MaliciousPatientsComponent,canActivate: [AuthGuard]},
+  { path: 'login', component: LoginComponent},
 ];
 
 @NgModule({

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,11 @@ namespace Integration.Tendering.Model
     {
         public int Id { get; private set; }
         public string Name { get; private set; }
-        public Tender(){}
+
+        public Tender()
+        {
+            tenderOffers = new List<TenderOffer>();
+        }
 
         private List<TenderOffer> tenderOffers;
         public List<TenderOffer> TenderOffers
@@ -31,7 +36,7 @@ namespace Integration.Tendering.Model
         public DateTime CreatedTime { get; private set; }
         public DateTime ClosedTime { get; private set; }
         public TimeRange ActiveRange { get; private set; }
-        public int WinningOfferId { get; private set; }
+        public int? WinningOfferId { get; private set; }
         public TenderOffer WinningOffer { get; private set; }
 
         public Tender(string name, TimeRange activeRange)

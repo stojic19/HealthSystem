@@ -9,7 +9,9 @@ namespace Hospital.MedicalRecords.Model
     {
         public int Id { get; set; }
         public Patient Patient { get; set; }
-        public PatientCharacteristics PatientCharacteristics { get; set; }
+        public Measurements Measurements { get; set; }
+        public BloodType BloodType { get; set; }
+        public JobStatus JobStatus { get; set; }
         public int DoctorId { get; set; }
         public Doctor Doctor { get; set; }
         public IEnumerable<Referral> Referrals { get; set; }

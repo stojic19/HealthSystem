@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Hospital.SharedModel.Model
 {
-    public class Manager : Staff
+    public class Manager : User
     {
     }
 }

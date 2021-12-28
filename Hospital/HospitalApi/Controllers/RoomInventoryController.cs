@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HospitalApi.Controllers
 {
@@ -21,6 +22,7 @@ namespace HospitalApi.Controllers
             _uow = uow;
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpPost]
         public IActionResult AddInventoryItems(IEnumerable<RoomInventory> roomInventory)
         {
@@ -28,6 +30,7 @@ namespace HospitalApi.Controllers
             return Ok(roomInventoryRepo.AddRange(roomInventory));
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpGet]
         public IActionResult GetRoomInventory([FromQuery(Name = "roomId")] int roomId)
         {
@@ -51,6 +54,7 @@ namespace HospitalApi.Controllers
             ).Where(roomInventory => roomInventory.RoomId == roomId));
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpGet]
         public IActionResult GetHospitalInventory()
         {
@@ -79,6 +83,7 @@ namespace HospitalApi.Controllers
             ));
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpGet]
         public IActionResult FindByInventoryItemName([FromQuery(Name = "inventoryItemName")] string inventoryItemName)
         {
@@ -108,6 +113,7 @@ namespace HospitalApi.Controllers
             ).Where(ri => ri.InventoryItem.Name.ToLower().Contains(inventoryItemName.ToLower())));
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpGet]
         public IActionResult GetRoomInventoryById([FromQuery(Name = "id")] int id)
         {
@@ -134,6 +140,7 @@ namespace HospitalApi.Controllers
             ).Where(ri => ri.Id == id));
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpGet]
         public IActionResult GetRoomInventoryAmount(int roomId, int itemId)
         {

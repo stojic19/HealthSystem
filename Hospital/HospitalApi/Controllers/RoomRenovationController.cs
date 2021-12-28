@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HospitalApi.Controllers
 {
@@ -30,6 +31,7 @@ namespace HospitalApi.Controllers
             _mapper = mapper;
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpGet]
         public IEnumerable<RoomRenovationEvent> GetRenovationsByRoom(int roomId)
         {
@@ -62,6 +64,7 @@ namespace HospitalApi.Controllers
             return Ok(surroundingRoomsService.GetSurroundingRooms(roomPosition));
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpPost]
         public IEnumerable<TimePeriodDTO> GetAvailableTerms(AvailableTermDTO availableTermsDTO)
         {
@@ -89,6 +92,7 @@ namespace HospitalApi.Controllers
             return availableTerms;
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpPost]
         public IActionResult AddNewRoomRenovationEvent(RoomRenovationEvent roomRenovationEvent)
         {
@@ -116,6 +120,7 @@ namespace HospitalApi.Controllers
             }
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpGet]
         public IEnumerable<RoomRenovationEvent> GetRenovationsByRoom(int roomId)
         {
@@ -125,6 +130,7 @@ namespace HospitalApi.Controllers
                                      renovation.MergeRoomId == roomId);
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpPost]
         public IActionResult CancelRenovation(RoomRenovationEventDto roomRenovationDTO)
         {

@@ -14,7 +14,7 @@ import { SecondFloorComponent } from './first-building/second-floor/second-floor
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FeedbacksManagerComponent } from './components/feedbacks-manager/feedbacks-manager.component';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SecondBuildingComponent } from './second-building/second-building.component';
 import { FloorFirstComponent } from './second-building/floor-first/floor-first.component';
@@ -67,6 +67,8 @@ import { TimeInfoComponent } from './renovation-form/time-info/time-info.compone
 import { FirstRoomInfoComponent } from './renovation-form/first-room-info/first-room-info.component';
 import { SecondRoomInfoComponent } from './renovation-form/second-room-info/second-room-info.component';
 import { AvailableTermsComponent } from './renovation-form/available-terms/available-terms.component';
+import { LoginComponent } from './components/login/login.component';
+import { JwtInterceptor } from './JWTInterceptor/JwtInterceptor';
 
 @NgModule({
   declarations: [
@@ -121,6 +123,7 @@ import { AvailableTermsComponent } from './renovation-form/available-terms/avail
     FirstRoomInfoComponent,
     SecondRoomInfoComponent,
     AvailableTermsComponent,
+    LoginComponent,
 
   ],
   imports: [
@@ -140,7 +143,10 @@ import { AvailableTermsComponent } from './renovation-form/available-terms/avail
     MaterialModule,
     MatDialogModule,
   ],
-  providers: [HttpClientModule],
+  providers: [HttpClientModule,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+
+  ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

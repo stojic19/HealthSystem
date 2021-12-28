@@ -17,18 +17,26 @@ namespace HospitalApi.Controllers
         private readonly UserManager<User> _userManager;
         private readonly IConfiguration _config;
         private readonly IMapper _mapper;
+        private readonly RoleManager<IdentityRole<int>> _roleManager;
 
-        public RegistrationController(UserManager<User> userManager, IConfiguration config, IMapper mapper)
+        public RegistrationController(UserManager<User> userManager, IConfiguration config, IMapper mapper, RoleManager<IdentityRole<int>> roleManager)
         {
             _config = config;
             _userManager = userManager;
             _mapper = mapper;
+            _roleManager = roleManager;
         }
 
         [Consumes("application/json")]
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] NewPatientDTO newUser)
         {
+            if (!(await _roleManager.RoleExistsAsync("Patient")))
+            {
+                await _roleManager.CreateAsync(new IdentityRole<int>("Patient"));
+            }
+
+
             var userToCreate = _mapper.Map<Patient>(newUser);
             ////var userToCreate = new Patient();
             ////userToCreate.UserName = newUser.UserName;
@@ -42,6 +50,7 @@ namespace HospitalApi.Controllers
             if (!result.Succeeded) return BadRequest(result);
 
             var userFromDB = await _userManager.FindByNameAsync(userToCreate.UserName);
+            await _userManager.AddToRoleAsync(userFromDB, "Patient");
 
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(userFromDB);
 

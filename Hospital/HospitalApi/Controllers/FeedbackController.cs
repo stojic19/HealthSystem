@@ -4,6 +4,7 @@ using Hospital.Schedule.Repository;
 using Hospital.SharedModel.Model.Enumerations;
 using Hospital.SharedModel.Repository.Base;
 using HospitalApi.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,7 @@ using System.Linq;
             _mapper = mapper;
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpGet]
         public IActionResult GetPublishableFeedbacks()
         {
@@ -45,6 +47,7 @@ using System.Linq;
             
         }
 
+        
         [HttpGet("approved")]
         public IEnumerable<Feedback> GetApprovedFeedbacks()
         {
@@ -52,6 +55,7 @@ using System.Linq;
             return feedbackReadRepo.GetAll().Include(x => x.Patient).Where(x => x.IsPublishable == true && x.FeedbackStatus == FeedbackStatus.Approved);
         }
 
+        
         [HttpPost]
         public IActionResult InsertFeedback(NewFeedbackDTO feedbackDTO)
         {
@@ -78,6 +82,8 @@ using System.Linq;
             }
         }
 
+        
+        [Authorize(Roles = "Manager")]
         [HttpPut("publish")]
         public IActionResult ApproveFeedback(Feedback feedback)
         {
@@ -104,6 +110,8 @@ using System.Linq;
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error updating data in database!");
             }
         }
+
+        [Authorize]
         [HttpGet("{Id}")]
         public Feedback GetFeedback(int Id )
         {
@@ -112,6 +120,7 @@ using System.Linq;
 
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpPut("unpublish")]
         public IActionResult UnapproveFeedback(Feedback feedback)
         {

@@ -3,15 +3,17 @@ using System;
 using Hospital.Database.EfStructures;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Hospital.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211222170108_LoginMigration")]
+    partial class LoginMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -957,20 +959,10 @@ namespace Hospital.Migrations
                     b.Property<int>("MedicalRecordId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("PhotoEncoded")
-                        .HasColumnType("text");
-
                     b.HasIndex("MedicalRecordId")
                         .IsUnique();
 
                     b.HasDiscriminator().HasValue("Patient");
-                });
-
-            modelBuilder.Entity("Hospital.SharedModel.Model.Manager", b =>
-                {
-                    b.HasBaseType("Hospital.SharedModel.Model.User");
-
-                    b.HasDiscriminator().HasValue("Manager");
                 });
 
             modelBuilder.Entity("Hospital.SharedModel.Model.Staff", b =>
@@ -995,6 +987,15 @@ namespace Hospital.Migrations
                     b.HasIndex("SpecializationId");
 
                     b.HasDiscriminator().HasValue("Doctor");
+                });
+
+            modelBuilder.Entity("Hospital.SharedModel.Model.Manager", b =>
+                {
+                    b.HasBaseType("Hospital.SharedModel.Model.Staff");
+
+                    b.HasIndex("RoomId");
+
+                    b.HasDiscriminator().HasValue("Manager");
                 });
 
             modelBuilder.Entity("Hospital.GraphicalEditor.Model.RoomPosition", b =>
@@ -1380,6 +1381,17 @@ namespace Hospital.Migrations
                     b.Navigation("Room");
 
                     b.Navigation("Specialization");
+                });
+
+            modelBuilder.Entity("Hospital.SharedModel.Model.Manager", b =>
+                {
+                    b.HasOne("Hospital.RoomsAndEquipment.Model.Room", "Room")
+                        .WithMany()
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Room");
                 });
 
             modelBuilder.Entity("Hospital.MedicalRecords.Model.MedicalRecord", b =>

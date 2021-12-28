@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace HospitalApi.Controllers
@@ -22,6 +23,7 @@ namespace HospitalApi.Controllers
             this._uow = uow;
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpPost]
         public IEnumerable<RoomPosition> AddRoomPositions(IEnumerable<RoomPosition> roomPositions)
         {
@@ -29,6 +31,7 @@ namespace HospitalApi.Controllers
             return roomPositionRepo.AddRange(roomPositions);
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpGet]
         public IEnumerable<RoomPosition> GetRoomsByLocation([FromQuery(Name = "floorNumber")] int floorNumber, [FromQuery(Name = "buildingName")] string buildingName)
         {

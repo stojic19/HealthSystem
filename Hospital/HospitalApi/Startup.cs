@@ -66,7 +66,7 @@ namespace HospitalApi
                     options.Password.RequireDigit = true;
                     options.Password.RequireNonAlphanumeric = false;
                     options.Password.RequiredLength = 6;
-                    options.SignIn.RequireConfirmedAccount = true;
+                    options.SignIn.RequireConfirmedAccount = true; 
                 })
                 .AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
@@ -110,7 +110,7 @@ namespace HospitalApi
             app.UseRouting();
 
             app.UseCors("MyCorsImplementationPolicy");
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

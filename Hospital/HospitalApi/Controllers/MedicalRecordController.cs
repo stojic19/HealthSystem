@@ -3,6 +3,7 @@ using AutoMapper;
 using Hospital.MedicalRecords.Repository;
 using Hospital.SharedModel.Repository.Base;
 using HospitalApi.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,6 +22,7 @@ namespace HospitalApi.Controllers
             this._mapper = mapper;
         }
 
+        [Authorize]
         [HttpGet]
         public IActionResult GetPatientWithRecord()
         {

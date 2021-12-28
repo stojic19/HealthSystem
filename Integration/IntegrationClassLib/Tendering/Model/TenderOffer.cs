@@ -16,7 +16,7 @@ namespace Integration.Tendering.Model
         private List<MedicationRequest> medicationRequests;
         public List<MedicationRequest> MedicationRequests
         {
-            get => new List<MedicationRequest>(medicationRequests);
+            get => new(medicationRequests);
             private set => medicationRequests = value;
         }
         public DateTime CreatedDate { get; private set; }

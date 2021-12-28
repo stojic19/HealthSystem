@@ -23,14 +23,14 @@ namespace Integration.Tendering.Model
         private List<TenderOffer> tenderOffers;
         public List<TenderOffer> TenderOffers
         {
-            get => new List<TenderOffer>(tenderOffers);
+            get => new(tenderOffers);
             private set => tenderOffers = value;
         }
 
         private List<MedicationRequest> medicationRequests;
         public List<MedicationRequest> MedicationRequests
         {
-            get => new List<MedicationRequest>(medicationRequests);
+            get => new(medicationRequests);
             private set => medicationRequests = value;
         }
         public DateTime CreatedTime { get; private set; }

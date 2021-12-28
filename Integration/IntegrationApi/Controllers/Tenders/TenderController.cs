@@ -10,9 +10,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace IntegrationAPI.Controllers.Tender
+namespace IntegrationAPI.Controllers.Tenders
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class TenderController : ControllerBase
     {
@@ -49,7 +49,7 @@ namespace IntegrationAPI.Controllers.Tender
                     return BadRequest("Invalid quantity for " + medicineRequestDto.MedicineName + ".");
                 }
             }
-            Integration.Tendering.Model.Tender tender = new Integration.Tendering.Model.Tender(createTenderDto.Name, new TimeRange(createTenderDto.StartDate, createTenderDto.EndDate));
+            Tender tender = new Tender(createTenderDto.Name, new TimeRange(createTenderDto.StartDate, createTenderDto.EndDate));
             foreach(MedicineRequestDto medicineRequestDto in createTenderDto.MedicineRequests)
             {
                 tender.AddMedicationRequest(new MedicationRequest(medicineRequestDto.MedicineName, medicineRequestDto.Quantity));

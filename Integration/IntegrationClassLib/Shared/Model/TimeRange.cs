@@ -15,7 +15,7 @@ namespace Integration.Shared.Model
         }
         private void Validate()
         {
-            if (StartDate > EndDate) throw new Exception("Start Date should be less than End Date");
+            if (StartDate > EndDate) throw new ArgumentException("Start Date should be less than End Date");
         }
 
         public bool OverlapsWith(TimeRange timeRange)

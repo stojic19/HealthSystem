@@ -20,7 +20,7 @@ namespace Integration.Tendering.Model
 
         private void Validate()
         {
-            if (Amount < 0) throw new Exception("Invalid Amount, should not be negative!");
+            if (Amount < 0) throw new ArgumentException("Invalid Amount, should not be negative!");
         }
 
         public void Add(int amount, Currency currency)

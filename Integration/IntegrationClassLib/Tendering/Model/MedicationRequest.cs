@@ -20,8 +20,8 @@ namespace Integration.Tendering.Model
 
         private void Validate()
         {
-            if (MedicineName.Length < 1) throw new Exception("Invalid medicine name");
-            if (Quantity < 1) throw new Exception("Invalid quantity");
+            if (MedicineName.Length < 1) throw new ArgumentException("Invalid medicine name");
+            if (Quantity < 1) throw new ArgumentException("Invalid quantity");
         }
 
         public bool CheckName(string name)

@@ -16,7 +16,7 @@ namespace IntegrationAPI.Controllers.Tender
     [ApiController]
     public class TenderController : ControllerBase
     {
-        private IUnitOfWork _uow;
+        private readonly IUnitOfWork _uow;
 
         public TenderController(IUnitOfWork uow)
         {

@@ -3,15 +3,17 @@ using System;
 using Integration.Database.EfStructures;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Integration.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211227120051_InitialTenderMigration")]
+    partial class InitialTenderMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -197,12 +199,6 @@ namespace Integration.Migrations
                     b.Property<int>("CityId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ImageName")
-                        .HasColumnType("text");
-                        
                     b.Property<bool>("GrpcSupported")
                         .HasColumnType("boolean");
 
@@ -312,7 +308,7 @@ namespace Integration.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<int?>("WinningOfferId")
+                    b.Property<int>("WinningOfferId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -450,7 +446,9 @@ namespace Integration.Migrations
                 {
                     b.HasOne("Integration.Tendering.Model.TenderOffer", "WinningOffer")
                         .WithMany()
-                        .HasForeignKey("WinningOfferId");
+                        .HasForeignKey("WinningOfferId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.OwnsOne("Integration.Shared.Model.TimeRange", "ActiveRange", b1 =>
                         {

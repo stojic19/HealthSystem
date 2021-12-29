@@ -11,8 +11,8 @@ namespace Hospital.Schedule.Service.Interfaces
         public List<ScheduledEvent> GetCanceledUserEvents(int userId);
         public List<ScheduledEvent> GetUpcomingUserEvents(int userId);
         public int GetNumberOfFinishedEvents(int userId);
-        void UpdateFinishedUserEvents();
-        ScheduledEvent GetScheduledEvent(int eventId);
+        public void UpdateFinishedUserEvents();
+        public ScheduledEvent GetScheduledEvent(int eventId);
         public List<EventForSurvey> GetEventsForSurvey(int userId);
         public IEnumerable<DateTime> GetAvailableAppointments(int doctorId, DateTime preferredDate);
     }

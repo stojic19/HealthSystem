@@ -55,6 +55,7 @@ import { SurveySectionObserveComponent } from './components/survey-section-obser
 import { SurveysObserveComponent } from './components/surveys-observe/surveys-observe.component';
 import { MaterialModule } from './material/material.module';
 import { MedicineSpecificationListComponent } from './medicine-specification-requests/medicine-specification-list/medicine-specification-list.component';
+import { PharmacyProfileComponent } from './pharmacies/pharmacy-profile/pharmacy-profile.component';
 import { RenovationFormComponent } from './renovation-form/renovation-form.component';
 import { RenovationTypeComponent } from './renovation-form/renovation-type/renovation-type.component';
 import { FirstRoomComponent } from './renovation-form/first-room/first-room.component';
@@ -63,6 +64,7 @@ import { RoomScheduleComponent } from './room-schedule/room-schedule.component';
 import { ConfirmDialogComponent } from './room-schedule/confirm-dialog/confirm-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DetailsDialogComponent } from './room-schedule/details-dialog/details-dialog.component';
+import { ToastrModule } from 'ngx-toastr';
 import { MaliciousPatientsComponent } from './components/malicious-patients/malicious-patients.component';
 import { TimeInfoComponent } from './renovation-form/time-info/time-info.component';
 import { FirstRoomInfoComponent } from './renovation-form/first-room-info/first-room-info.component';
@@ -70,7 +72,6 @@ import { SecondRoomInfoComponent } from './renovation-form/second-room-info/seco
 import { AvailableTermsComponent } from './renovation-form/available-terms/available-terms.component';
 import { LoginComponent } from './components/login/login.component';
 import { JwtInterceptor } from './JWTInterceptor/JwtInterceptor';
-
 
 @NgModule({
   declarations: [
@@ -113,6 +114,7 @@ import { JwtInterceptor } from './JWTInterceptor/JwtInterceptor';
     SurveySectionObserveComponent,
     SurveysObserveComponent,
     MedicineSpecificationListComponent,
+    PharmacyProfileComponent,
     RenovationFormComponent,
     RenovationTypeComponent,
     FirstRoomComponent,
@@ -148,6 +150,8 @@ import { JwtInterceptor } from './JWTInterceptor/JwtInterceptor';
     MatSelectModule,
     MaterialModule,
     MatDialogModule,
+    ToastrModule.forRoot({timeOut: 3000,
+      positionClass: 'toast-top-right'}),
   ],
   providers: [HttpClientModule,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

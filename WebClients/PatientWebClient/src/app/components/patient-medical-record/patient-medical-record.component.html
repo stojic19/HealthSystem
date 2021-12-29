@@ -1,183 +1,299 @@
 <div class="container">
-    <mat-card class="bg-light">
-        <mat-card-title>Personal informations</mat-card-title>
-        <br>
-        <div class="row">
-            <br>
-            <div class="col center">
-                <ng-template [ngIf]="patient.gender == 0"><img class="profilePhoto" src="../../../assets/images/userMale.png"></ng-template>
-                <ng-template [ngIf]="patient.gender == 1"><img class="profilePhoto" src="../../../assets/images/userFemale.png"></ng-template>
+  <mat-card class="bg-light">
+    <mat-card-title>Personal informations</mat-card-title>
+    <br />
+    <div class="row">
+      <br />
+      <div class="col center">
+        <ng-template [ngIf]="patient.gender == 0"
+          ><img class="profilePhoto" [src]="imagePath"
+        /></ng-template>
+        <ng-template [ngIf]="patient.gender == 1"
+          ><img class="profilePhoto" [src]="imagePath"
+        /></ng-template>
+      </div>
+      <div class="col">
+        <p>First name</p>
+        <p>Middle name</p>
+        <p>Last name</p>
+        <p>Birth date</p>
+        <p>Gender</p>
+        <p>Username</p>
+        <p>Email address</p>
+        <p>Phone number</p>
+        <p>Address</p>
+        <p>Job status</p>
+        <p>Blood type</p>
+        <p>Weight</p>
+        <p>Height</p>
+        <p>Chosen doctor</p>
+      </div>
+      <div class="col">
+        <p>{{ patient.firstName }}</p>
+        <p>{{ patient.middleName }}</p>
+        <p>{{ patient.lastName }}</p>
+        <p>{{ patient.dateOfBirth | date }}</p>
+        <p *ngIf="patient.gender == 0; else content">Male</p>
+        <ng-template #content><p>Female</p></ng-template>
+        <p>{{ patient.userName }}</p>
+        <p>{{ patient.email }}</p>
+        <p>{{ patient.phoneNumber }}</p>
+        <p>
+          {{ patient.street }} {{ patient.streetNumber }},{{
+            patient.city.name
+          }}
+        </p>
+        <ng-template [ngIf]="patient.medicalRecord.jobStatus == 0"
+          ><p>Undefined</p></ng-template
+        >
+        <ng-template [ngIf]="patient.medicalRecord.jobStatus == 1"
+          ><p>Employed</p></ng-template
+        >
+        <ng-template [ngIf]="patient.medicalRecord.jobStatus == 2"
+          ><p>Unemployed</p></ng-template
+        >
+        <ng-template [ngIf]="patient.medicalRecord.jobStatus == 3"
+          ><p>Student</p></ng-template
+        >
+        <ng-template [ngIf]="patient.medicalRecord.jobStatus == 4"
+          ><p>Retired</p></ng-template
+        >
+        <ng-template [ngIf]="patient.medicalRecord.jobStatus == 5"
+          ><p>Child</p></ng-template
+        >
+        <ng-template [ngIf]="patient.medicalRecord.bloodType == 0"
+          ><p>Undefined</p></ng-template
+        >
+        <ng-template [ngIf]="patient.medicalRecord.bloodType == 1"
+          ><p>0 negative</p></ng-template
+        >
+        <ng-template [ngIf]="patient.medicalRecord.bloodType == 2"
+          ><p>0 positive</p></ng-template
+        >
+        <ng-template [ngIf]="patient.medicalRecord.bloodType == 3"
+          ><p>A negative</p></ng-template
+        >
+        <ng-template [ngIf]="patient.medicalRecord.bloodType == 4"
+          ><p>A positive</p></ng-template
+        >
+        <ng-template [ngIf]="patient.medicalRecord.bloodType == 5"
+          ><p>B negative</p></ng-template
+        >
+        <ng-template [ngIf]="patient.medicalRecord.bloodType == 6"
+          ><p>B positive</p></ng-template
+        >
+        <ng-template [ngIf]="patient.medicalRecord.bloodType == 7"
+          ><p>AB negative</p></ng-template
+        >
+        <ng-template [ngIf]="patient.medicalRecord.bloodType == 8"
+          ><p>AB positive</p></ng-template
+        >
+        <p>{{ patient.medicalRecord.weight }}kg</p>
+        <p>{{ patient.medicalRecord.height }}cm</p>
+        <p>
+          dr {{ patient.medicalRecord.doctor.firstName }}
+          {{ patient.medicalRecord.doctor.lastName }}
+        </p>
+      </div>
+    </div>
+  </mat-card>
+  <br />
+  <mat-card class="bg-light">
+    <mat-card-title>Medical informations</mat-card-title>
+    <mat-tab-group>
+      <mat-tab label="Allergies">
+        <mat-card class="bg-light col">
+          <div class="row">
+            <div class="col">
+              <img src="../../../assets/images/allergies.png" />
             </div>
             <div class="col">
-                <p>First name</p>
-                <p>Middle name</p>
-                <p>Last name</p>
-                <p>Birth date</p>
-                <p>Gender</p>
-                <p>Username</p>
-                <p>Email address </p>
-                <p>Phone number</p>
-                <p>Address</p>
-                <p>Job status</p>
-                <p>Blood type</p>
-                <p>Weight</p>
-                <p>Height</p>
-                <p>Chosen doctor</p>
+              <p *ngFor="let allergy of patient.medicalRecord.allergies">
+                {{ allergy.medicationIngredient.name }}
+              </p>
             </div>
-            <div class="col">
-                <p>{{patient.firstName}}</p>
-                <p>{{patient.middleName}}</p>
-                <p>{{patient.lastName}}</p>
-                <p>{{patient.dateOfBirth | date}}</p>
-                <p *ngIf="patient.gender == 0; else content">Male</p>
-                <ng-template #content><p>Female</p></ng-template>
-                <p>{{patient.userName}}</p>
-                <p>{{patient.email}}</p>   
-                <p>{{patient.phoneNumber}}</p>
-                <p>{{patient.street}} {{patient.streetNumber}},{{patient.city.name}}</p>
-                <ng-template [ngIf]="patient.medicalRecord.jobStatus == 0"><p>Undefined</p></ng-template>
-                <ng-template [ngIf]="patient.medicalRecord.jobStatus == 1"><p>Employed</p></ng-template>
-                <ng-template [ngIf]="patient.medicalRecord.jobStatus == 2"><p>Unemployed</p></ng-template>
-                <ng-template [ngIf]="patient.medicalRecord.jobStatus == 3"><p>Student</p></ng-template>
-                <ng-template [ngIf]="patient.medicalRecord.jobStatus == 4"><p>Retired</p></ng-template>
-                <ng-template [ngIf]="patient.medicalRecord.jobStatus == 5"><p>Child</p></ng-template>
-                <ng-template [ngIf]="patient.medicalRecord.bloodType == 0"><p>Undefined</p></ng-template>
-                <ng-template [ngIf]="patient.medicalRecord.bloodType == 1"><p>0 negative</p></ng-template>
-                <ng-template [ngIf]="patient.medicalRecord.bloodType == 2"><p>0 positive</p></ng-template>
-                <ng-template [ngIf]="patient.medicalRecord.bloodType == 3"><p>A negative</p></ng-template>
-                <ng-template [ngIf]="patient.medicalRecord.bloodType == 4"><p>A positive</p></ng-template>
-                <ng-template [ngIf]="patient.medicalRecord.bloodType == 5"><p>B negative</p></ng-template>
-                <ng-template [ngIf]="patient.medicalRecord.bloodType == 6"><p>B positive</p></ng-template>
-                <ng-template [ngIf]="patient.medicalRecord.bloodType == 7"><p>AB negative</p></ng-template>
-                <ng-template [ngIf]="patient.medicalRecord.bloodType == 8"><p>AB positive</p></ng-template>
-                <p>{{patient.medicalRecord.weight}}kg</p>
-                <p>{{patient.medicalRecord.height}}cm</p>
-                <p>dr {{patient.medicalRecord.doctor.firstName}} {{patient.medicalRecord.doctor.lastName}}</p>
+          </div>
+        </mat-card>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-card>
+  <br />
+  <mat-card class="bg-light">
+    <mat-card-title>Medical Appointments</mat-card-title>
+    <mat-tab-group>
+      <mat-tab label="Future Appointments">
+        <mat-card class="bg-light col">
+          <div class="row">
+            <div class="col-2">
+              <img src="../../../assets/images/appointment.png" />
             </div>
-        </div>
-    </mat-card>
-    <br>
-    <mat-card class="bg-light">
-        <mat-card-title>Medical informations</mat-card-title>
-       <mat-tab-group>
-           <mat-tab label="Allergies">
-            <mat-card class="bg-light col">
-                <div class="row">
-                    <div class="col">
-                        <img src="../../../assets/images/allergies.png">
-                    </div>
-                    <div class="col">
-                        <p *ngFor="let allergy of patient.medicalRecord.allergies">{{allergy.medicationIngredient.name}}</p>
-                    </div>
-                </div>
-            </mat-card>
-
-           </mat-tab>
-        </mat-tab-group>
-    </mat-card>
-<br>
-    <mat-card class="bg-light">
-        <mat-card-title>Medical Appointments</mat-card-title>
-       <mat-tab-group>
-           <mat-tab label="Future Appointments">
-            <mat-card class="bg-light col">
-                <div class="row">
-                    <div class="col-2">
-                        <img src="../../../assets/images/appointment.png">
-                    </div>
-                    <div class="col-9">
-                        <table>
-                            <thead>
-                                <th>Date</th>
-                                <th>Time</th>
-                                <th>Doctor</th>
-                                <th>Doctor Specialization</th>
-                                <th>Room</th>
-                                <th>Cancel </th>
-                            </thead>
-                            <tbody *ngFor = "let appointment of futureAppointments">
-                                <tr >
-                                    <td>{{appointment.startDate | date}}</td>
-                                    <td class="col-md-3" >{{appointment.startDate | date:'shortTime' }} - {{appointment.endDate | date:'shortTime'}}</td>
-                                    <td>{{appointment.doctorName}} {{appointment.doctorLastName}}</td>
-                                    <td>{{appointment.specializationName}}</td>
-                                    <td>{{appointment.roomName}}</td>
-                                    <td><button type="button" class="btn btn-warning">Cancel</button></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </mat-card>
-
-           </mat-tab>
-           <mat-tab label="Finished Appointments">
-            <mat-card class="bg-light col">
-                <div class="row">
-                    <div class="col-2">
-                        <img src="../../../assets/images/timetable.png">
-                    </div>
-                    <div class="col-9">
-                        <table>
-                            <thead>
-                                <th>Date</th>
-                                <th>Time</th>
-                                <th>Doctor</th>
-                                <th>Doctor Specialization</th>
-                                <th>Room</th>
-                                <th>Survey</th>
-                            </thead>
-                            <tbody *ngFor = "let appointmentt of finishedAppointments">
-                                <tr >
-                                    <td>{{appointmentt.scheduledEventsDTO.startDate | date}}</td>
-                                    <td class="col-md-3">{{appointmentt.scheduledEventsDTO.startDate | date:'shortTime' }} - {{appointmentt.scheduledEventsDTO.endDate | date:'shortTime'}}</td>
-                                    <td>{{appointmentt.scheduledEventsDTO.doctorName}} {{appointmentt.scheduledEventsDTO.doctorLastName}}</td>
-                                    <td>{{appointmentt.scheduledEventsDTO.specializationName}}</td>
-                                    <td>{{appointmentt.scheduledEventsDTO.roomName}}</td>
-                                    <td>
-                                        <button type="button" [disabled]='appointmentt.answeredSurveyId>0' class="btn btn-primary" (click)="answerSurvey(this.appointmentt.scheduledEventsDTO.id)" >Survey</button></td>
-                                </tr>
-                            </tbody>
-                            
-                        </table>
-                    </div>
-                </div>
-            </mat-card>
-
-           </mat-tab>
-           <mat-tab label="Canceled Appointments">
-            <mat-card class="bg-light col">
-                <div class="row">
-                    <div class="col-2">
-                        <img src="../../../assets/images/booking-cancel.png">
-                    </div>
-                    <div class="col-9">
-                        <table>
-                            <thead>
-                                <th>Date</th>
-                                <th>Time</th>
-                                <th>Doctor</th>
-                                <th>Doctor Specialization</th>
-                                <th>Room</th>
-                            </thead>
-                            <tbody *ngFor = "let appointment of canceledAppointments">
-                                <tr >
-                                    <td>{{appointment.startDate | date}}</td>
-                                    <td class="col-md-3">{{appointment.startDate | date:'shortTime' }} - {{appointment.endDate | date:'shortTime'}}</td>
-                                    <td>{{appointment.doctorName}} {{appointment.doctorLastName}}</td>
-                                    <td>{{appointment.specializationName}}</td>
-                                    <td>{{appointment.roomName}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </mat-card>
-
-           </mat-tab>
-        </mat-tab-group>
-    </mat-card>
+            <div class="col-9">
+              <table mat-table [dataSource]="futureAppointments" class="mat-elevation-z8">
+                <ng-container matColumnDef="No.">
+                  <th mat-header-cell *matHeaderCellDef>No.</th>
+                  <td mat-cell *matCellDef="let element; let i = index">{{i + 1}}</td>
+                </ng-container>
+                <ng-container matColumnDef="Date">
+                  <th mat-header-cell *matHeaderCellDef>Date</th>
+                  <td mat-cell *matCellDef="let element; let i = index">
+                    {{ element.startDate | date }}</td>
+                </ng-container>
+                <ng-container matColumnDef="Time">
+                  <th mat-header-cell *matHeaderCellDef>Time</th>
+                  <td mat-cell *matCellDef="let element; let i = index">
+                    {{element.startDate | date: "shortTime"}}
+                    -
+                    {{ element.endDate | date: "shortTime" }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="Doctor">
+                  <th mat-header-cell *matHeaderCellDef>Doctor</th>
+                  <td mat-cell *matCellDef="let element; let i = index">
+                    {{ element.doctorName }}
+                      {{ element.doctorLastName }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="DoctorSpecialization">
+                  <th mat-header-cell *matHeaderCellDef>Doctor Specialization</th>
+                  <td mat-cell *matCellDef="let element; let i = index">
+                    {{ element.specializationName }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="Room">
+                  <th mat-header-cell *matHeaderCellDef>Room</th>
+                  <td mat-cell *matCellDef="let element; let i = index">
+                    {{ element.roomName }}
+                  </td>
+                </ng-container> 
+                <ng-container matColumnDef="Cancel">
+                  <th mat-header-cell *matHeaderCellDef>Cancel</th>
+                  <td mat-cell *matCellDef="let element; let i = index">
+                   
+                  </td>
+                </ng-container>
+                  <tr mat-header-row *matHeaderRowDef="columnsToDisplayFutureAppointments"></tr>
+                  <tr mat-row *matRowDef="let element; columns: columnsToDisplayFutureAppointments">
+                  </tr>
+              </table>
+            </div>
+          </div>
+        </mat-card>
+      </mat-tab>
+      <mat-tab label="Finished Appointments">
+        <mat-card class="bg-light col">
+          <div class="row">
+            <div class="col-2">
+              <img src="../../../assets/images/timetable.png" />
+            </div>
+            <div class="col-9">
+              <table mat-table [dataSource]="finishedAppointments" class="mat-elevation-z8">
+                <ng-container matColumnDef="No.">
+                  <th mat-header-cell *matHeaderCellDef>No.</th>
+                  <td mat-cell *matCellDef="let element; let i = index">{{i + 1}}</td>
+                </ng-container>
+                <ng-container matColumnDef="Date">
+                  <th mat-header-cell *matHeaderCellDef>Date</th>
+                  <td mat-cell *matCellDef="let element; let i = index">
+                    {{ element.scheduledEventsDTO.startDate | date }}</td>
+                </ng-container>
+                <ng-container matColumnDef="Time">
+                  <th mat-header-cell *matHeaderCellDef>Time</th>
+                  <td mat-cell *matCellDef="let element; let i = index">
+                    {{element.scheduledEventsDTO.startDate | date: "shortTime"}}
+                    -
+                    {{ element.scheduledEventsDTO.endDate | date: "shortTime" }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="Doctor">
+                  <th mat-header-cell *matHeaderCellDef>Doctor</th>
+                  <td mat-cell *matCellDef="let element; let i = index">
+                    {{ element.scheduledEventsDTO.doctorName }}
+                      {{ element.scheduledEventsDTO.doctorLastName }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="DoctorSpecialization">
+                  <th mat-header-cell *matHeaderCellDef>Doctor Specialization</th>
+                  <td mat-cell *matCellDef="let element; let i = index">
+                    {{ element.scheduledEventsDTO.specializationName }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="Room">
+                  <th mat-header-cell *matHeaderCellDef>Room</th>
+                  <td mat-cell *matCellDef="let element; let i = index">
+                    {{ element.scheduledEventsDTO.roomName }}
+                  </td>
+                </ng-container> 
+                <ng-container  matColumnDef="Survey">
+                  <th mat-header-cell *matHeaderCellDef>Survey</th>
+                  <td mat-cell *matCellDef="let element; let i = index">
+                    <button
+                        type="button"
+                        [disabled]="element.answeredSurveyId > 0"
+                        class="btn btn-primary"
+                        (click)="answerSurvey(this.element.scheduledEventsDTO.id) "> Survey  </button>
+                  </td>
+                </ng-container>
+               
+                  <tr mat-header-row *matHeaderRowDef="columnsToDisplayFinishedAppointments"></tr>
+                  <tr mat-row *matRowDef="let element; columns: columnsToDisplayFinishedAppointments">
+                  </tr>
+              </table>
+            </div>
+          </div>
+        </mat-card>
+      </mat-tab>
+      <mat-tab label="Canceled Appointments">
+        <mat-card class="bg-light col">
+          <div class="row">
+            <div class="col-2">
+              <img src="../../../assets/images/booking-cancel.png" />
+            </div>
+            <div class="col-9">
+              <table mat-table [dataSource]="canceledAppointments" class="mat-elevation-z8">
+                <ng-container matColumnDef="No.">
+                  <th mat-header-cell *matHeaderCellDef>No.</th>
+                  <td mat-cell *matCellDef="let element; let i = index">{{i + 1}}</td>
+                </ng-container>
+                <ng-container matColumnDef="Date">
+                  <th mat-header-cell *matHeaderCellDef>Date</th>
+                  <td mat-cell *matCellDef="let element; let i = index">
+                    {{ element.startDate | date }}</td>
+                </ng-container>
+                <ng-container matColumnDef="Time">
+                  <th mat-header-cell *matHeaderCellDef>Time</th>
+                  <td mat-cell *matCellDef="let element; let i = index">
+                    {{element.startDate | date: "shortTime"}}
+                    -
+                    {{ element.endDate | date: "shortTime" }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="Doctor">
+                  <th mat-header-cell *matHeaderCellDef>Doctor</th>
+                  <td mat-cell *matCellDef="let element; let i = index">
+                    {{ element.doctorName }}
+                      {{ element.doctorLastName }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="DoctorSpecialization">
+                  <th mat-header-cell *matHeaderCellDef>Doctor Specialization</th>
+                  <td mat-cell *matCellDef="let element; let i = index">
+                    {{ element.specializationName }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="Room">
+                  <th mat-header-cell *matHeaderCellDef>Room</th>
+                  <td mat-cell *matCellDef="let element; let i = index">
+                    {{ element.roomName }}
+                  </td>
+                </ng-container> 
+                  <tr mat-header-row *matHeaderRowDef="columnsToDisplayCanceledAppointments"></tr>
+                  <tr mat-row *matRowDef="let element; columns: columnsToDisplayCanceledAppointments">
+                  </tr>
+              </table>
+            </div>
+          </div>
+        </mat-card>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-card>
 </div>
-
-
-

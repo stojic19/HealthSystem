@@ -1,5 +1,5 @@
-import { ICity } from "./city";
-import { IMedicalRecord } from "./medical-record";
+import { ICity } from './city';
+import { IMedicalRecord } from './medical-record';
 
 export enum Gender {
   Male,
@@ -9,7 +9,7 @@ export enum Gender {
 export interface IPatient {
   id: number;
   userName: string;
-  middleName : string;
+  middleName: string;
   password: string;
   firstName: string;
   lastName: string;
@@ -22,4 +22,5 @@ export interface IPatient {
   cityId: number;
   city: ICity;
   medicalRecord: IMedicalRecord;
+  photoEncoded: string;
 }

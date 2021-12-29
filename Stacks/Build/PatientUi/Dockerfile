@@ -1,8 +1,8 @@
 FROM node:15.14.0-alpine as buildPatient
-COPY /WebClients/PatientWebClient ./PatientWebClient
-RUN cd PatientWebClient && \
+COPY /WebClients/PatientWebClient ./WebClient
+RUN cd WebClient && \
     npm install
-COPY ./Stacks/Build/Gateway/Files/Front/environment.ts.template ./PatientWebClient
+COPY ./Stacks/Build/Gateway/Files/Front/environment.ts.template ./WebClient
 COPY ./Stacks/Build/Gateway/Files/Scripts/build-app.sh .
 ARG HOSPITAL_API_URL
 RUN chmod +x ./build-app.sh && \
@@ -10,7 +10,7 @@ RUN chmod +x ./build-app.sh && \
 
 
 FROM node:15.14.0-alpine as executer
-COPY --from=buildPatient /PatientWebClient /usr/src/server
+COPY --from=buildPatient /WebClient /usr/src/server
 EXPOSE 8081
 
 CMD ["node", "/usr/src/server/server.js"]

@@ -1,10 +1,11 @@
 {
-  "name": "manager-front",
+  "name": "integration-web-client",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "postbuild": "sed -i -e 's/src=\"/src=\"integration\\//g' dist/IntegrationWebClient/index.html",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
@@ -19,6 +20,7 @@
     "@angular/platform-browser-dynamic": "~13.0.0",
     "@angular/router": "~13.0.0",
     "bootstrap": "^5.1.3",
+    "morgan": "^1.10.0",
     "rxjs": "~7.4.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"

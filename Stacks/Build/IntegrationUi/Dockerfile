@@ -1,5 +1,5 @@
-FROM node:15.14.0-alpine as buildManager
-COPY /WebClients/ManagerWebClient ./WebClient
+FROM node:15.14.0-alpine as buildIntegration
+COPY /WebClients/IntegrationWebClient ./WebClient
 RUN cd WebClient && \
     npm install
 COPY ./Stacks/Build/Gateway/Files/Front/environment.ts.template ./WebClient
@@ -9,7 +9,7 @@ RUN chmod +x ./build-app.sh && \
     ./build-app.sh ${HOSPITAL_API_URL}
 
 FROM node:15.14.0-alpine as executer
-COPY --from=buildManager /WebClient /usr/src/server
-EXPOSE 8082
+COPY --from=buildIntegration /WebClient /usr/src/server
+EXPOSE 8083
 
 CMD ["node", "/usr/src/server/server.js"]

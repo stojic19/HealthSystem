@@ -45,20 +45,8 @@ namespace HospitalUnitTests
                 }
 
             });
-            Context.RoomInventories.Add(new RoomInventory()
-            {
-                Id = 1,
-                InventoryItemId = 1,
-                Amount = 3,
-                RoomId = 1
-            });
-            Context.RoomInventories.Add(new RoomInventory()
-            {
-                Id = 2,
-                InventoryItemId = 1,
-                Amount = 1,
-                RoomId = 2
-            });
+            Context.RoomInventories.Add(new RoomInventory(1, 1, 1, 3));
+            Context.RoomInventories.Add(new RoomInventory(2, 2, 1, 1));
             Context.SaveChanges();
 
             var transferingService = new TransferingEquipmentService(UoW);
@@ -103,20 +91,8 @@ namespace HospitalUnitTests
                 }
 
             });
-            Context.RoomInventories.Add(new RoomInventory()
-            {
-                Id = 1,
-                InventoryItemId = 1,
-                Amount = 2,
-                RoomId = 1
-            });
-            Context.RoomInventories.Add(new RoomInventory()
-            {
-                Id = 2,
-                InventoryItemId = 1,
-                Amount = 1,
-                RoomId = 2
-            });
+            Context.RoomInventories.Add(new RoomInventory(1, 1, 1, 2));
+            Context.RoomInventories.Add(new RoomInventory(1, 2, 1, 1));
             Context.SaveChanges();
 
             var transferingService = new TransferingEquipmentService(UoW);
@@ -159,24 +135,14 @@ namespace HospitalUnitTests
                 }
 
             });
-            Context.RoomInventories.Add(new RoomInventory()
-            {
-                Id = 1,
-                InventoryItemId = 1,
-                Amount = 3,
-                RoomId = 1
-            });
-            Context.RoomInventories.Add(new RoomInventory()
+            Context.RoomInventories.Add(new RoomInventory(1, 1, 1, 3));
+            Context.InventoryItems.Add(new InventoryItem()
             {
                 Id = 2,
-                InventoryItem = new InventoryItem()
-                {
-                    Id = 2,
-                    Name = "Test item",
-                },
-                Amount = 3,
-                RoomId = 1
+                Name = "Test item",
             });
+
+            Context.RoomInventories.Add(new RoomInventory(2, 1, 2, 3));
             Context.SaveChanges();
 
             var transferingService = new TransferingEquipmentService(UoW);

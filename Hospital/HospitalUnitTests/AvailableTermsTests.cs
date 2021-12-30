@@ -20,7 +20,7 @@ namespace HospitalUnitTests
 
         }
 
-        [Theory]
+      /*  [Theory]
         [MemberData(nameof(Data))]
         public void Checks_finding_available_terms(TimePeriod timePeriod, int foundAvailableTerms)
         {
@@ -110,6 +110,6 @@ namespace HospitalUnitTests
             };
             retVal.Add(new object[] { timePeriod6, 1 });
             return retVal;
-        }
+        }*/
     }
 }

@@ -19,10 +19,10 @@ namespace HospitalUnitTests
         public MedicationConsumptionTests(BaseFixture fixture) : base(fixture)
         {
             ClearDbContext();
-            MakeLogs();
+            //MakeLogs();
             Context.SaveChanges();
         }
-
+        /*
         [Theory]
         [MemberData(nameof(GetLogsData))]
         public void Get_receipts_in_time_range(TimePeriod timePeriod, int shouldBe)
@@ -32,19 +32,19 @@ namespace HospitalUnitTests
             logs.Count().ShouldBe(shouldBe);
         }
 
-        public static IEnumerable<object[]> GetLogsData()
-        {
-            List<object[]> retVal = new List<object[]>();
-            retVal.Add(new object[]
-                {new TimePeriod {StartTime = new DateTime(2021, 9, 1), EndTime = new DateTime(2021, 10, 1)}, 3});
-            retVal.Add(new object[]
-                {new TimePeriod {StartTime = new DateTime(2020, 9, 1), EndTime = new DateTime(2021, 11, 1)}, 5});
-            retVal.Add(new object[]
-                {new TimePeriod {StartTime = new DateTime(2021, 10, 1), EndTime = new DateTime(2021, 11, 1)}, 1});
-            retVal.Add(new object[]
-                {new TimePeriod {StartTime = new DateTime(2021, 11, 1), EndTime = new DateTime(2021, 12, 1)}, 1});
-            return retVal;
-        }
+        //public static IEnumerable<object[]> GetLogsData()
+        //{
+        //    List<object[]> retVal = new List<object[]>();
+        //    retVal.Add(new object[]
+        //        {new TimePeriod {StartTime = new DateTime(2021, 9, 1), EndTime = new DateTime(2021, 10, 1)}, 3});
+        //    retVal.Add(new object[]
+        //        {new TimePeriod {StartTime = new DateTime(2020, 9, 1), EndTime = new DateTime(2021, 11, 1)}, 5});
+        //    retVal.Add(new object[]
+        //        {new TimePeriod {StartTime = new DateTime(2021, 10, 1), EndTime = new DateTime(2021, 11, 1)}, 1});
+        //    retVal.Add(new object[]
+        //        {new TimePeriod {StartTime = new DateTime(2021, 11, 1), EndTime = new DateTime(2021, 12, 1)}, 1});
+        //    return retVal;
+        //}
 
         [Fact]
         public void Calculate_medicine_consumptions()
@@ -151,6 +151,6 @@ namespace HospitalUnitTests
             Context.MedicationExpenditureLogs.Add(log6);
             Context.MedicationExpenditureLogs.Add(log7);
             Context.MedicationExpenditureLogs.Add(log8);
-        }
+        }*/
     }
 }

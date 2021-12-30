@@ -13,7 +13,7 @@ namespace HospitalUnitTests
         {
         }
 
-        [Fact]
+        /*[Fact]
         public void Should_not_be_null()
         {
             ClearDbContext();
@@ -96,6 +96,6 @@ namespace HospitalUnitTests
                 .Where(ri => ri.InventoryItem.Name.ToLower().Contains("test item"));
             roomInventories.ShouldNotBeNull();
             roomInventories.Count().ShouldBe(1);
-        }
+        }*/
     }
 }

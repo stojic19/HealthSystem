@@ -85,6 +85,7 @@ namespace Integration.Tendering.Service
                     if (tender == null) return;
                     tender.AddTenderOffer(tenderOffer);
                     _uow.GetRepository<ITenderWriteRepository>().Update(tender);
+                    iteration.Item1.BasicAck(ea.DeliveryTag, false);
                 };
                 consumer.Shutdown += OnConsumerShutdown;
                 consumer.Registered += OnConsumerRegistered;

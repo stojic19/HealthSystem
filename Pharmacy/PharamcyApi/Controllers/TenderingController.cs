@@ -24,6 +24,14 @@ namespace PharmacyApi.Controllers
         private readonly string _integrationEndPoint;
         private readonly IHttpRequestSender _httpRequestSender;
 
+
+        //http zahtev za svaku bolnicu, dobavi sve aktivne tendere, svaki da posalje api kljuc i datuma (jedinstveno identifikuvati tender)
+        //rabbit?, 
+        //TENDER: createdDate, hospital, TimeRange active range, List<MedicationRequest>, closedDate, 
+        //Repositories -- get active tenders
+
+        //http zahtev -- confirmtenderoffer -- kad prodje metoda, poslati httpzahtev za predaju obecanih lekova
+
         public TenderingController(IUnitOfWork uow, PharmacyDetails details) : base(uow, details)
         {
             _tenderOffersService = new TenderOffersService(uow);
@@ -37,10 +45,23 @@ namespace PharmacyApi.Controllers
         {
             if (!IsApiKeyValid(tenderOfferDTO.ApiKey))
                 return BadRequest(ModelState);
-
+            Money cost = new Money(tenderOfferDTO.MoneyDto.Amount, tenderOfferDTO.MoneyDto.Currency);
+            List<MedicationRequest> medicationRequests = new List<MedicationRequest>();
             try
             {
-                _tenderOffersService.CreateTenderOffer(tenderOfferDTO.ApiKey, tenderOfferDTO.MedicineName, tenderOfferDTO.Quantity, tenderOfferDTO.CreationTime);
+                foreach (MedicationRequestDTO dto in tenderOfferDTO.MedicationRequestDtos)
+                {
+                    medicationRequests.Add(new MedicationRequest(dto.MedicineName, dto.Quantity));
+                }
+            }
+            catch (ArgumentException exception)
+            {
+                return BadRequest(exception.Message);
+
+            }
+            try
+            {
+                _tenderOffersService.CreateTenderOffer(tenderOfferDTO.ApiKey, medicationRequests, cost, tenderOfferDTO.TenderId);
             }
             catch (MedicineUnavailableException exception) { return NotFound(exception.Message); }
             catch (MedicineFromManufacturerNotFoundException exception) { return NotFound(exception.Message); }
@@ -79,8 +100,8 @@ namespace PharmacyApi.Controllers
             }
             catch (TenderNotFoundException exception) { return NotFound(exception.Message); }
             catch (MedicineUnavailableException exception) { return NotFound(exception.Message); }
-            catch( UnauthorizedAccessException exception) { return Unauthorized(exception.Message); }
-            catch( TenderAlreadyEnabledException exception) { return BadRequest(exception.Message); }
+            catch (UnauthorizedAccessException exception) { return Unauthorized(exception.Message); }
+            catch (TenderAlreadyEnabledException exception) { return BadRequest(exception.Message); }
 
             return Ok("Tender offer succesfully confirmed!");
         }
@@ -88,18 +109,42 @@ namespace PharmacyApi.Controllers
         private ApplyTenderOfferDTO CreateApplyTenderDto(int tenderOfferId,double price)
         {
             TenderOffer tenderOffer = _uow.GetRepository<ITenderOfferReadRepository>().GetById(tenderOfferId);
-            
+            List<MedicationRequestDTO> medicationRequestDtos = new List<MedicationRequestDTO>();
+            foreach (MedicationRequest medReq in tenderOffer.MedicationRequests)
+            {
+                medicationRequestDtos.Add(new MedicationRequestDTO{MedicineName = medReq.MedicineName, Quantity = medReq.Quantity});
+            }
+
             ApplyTenderOfferDTO applyTenderOfferDTO = new ApplyTenderOfferDTO() {
                 TenderOfferId = tenderOfferId,
-                MedicineName = tenderOffer.Medicine.Name,
-                Quantity = tenderOffer.Quantity,
-                CreationTime = DateTime.Now,
+                MedicationRequestDto = medicationRequestDtos,
+                CreationTime = tenderOffer.CreationTime,
                 TotalPrice = price,
-                ApiKey = tenderOffer.Hospital.ApiKey
+                ApiKey = tenderOffer.Tender.Hospital.ApiKey
             };
             return applyTenderOfferDTO;
         }
 
+        [HttpPost]
+        public IActionResult CreateTenderTest()
+        {
+            Tender tender = new Tender()
+            {
+                ActiveRange = new TimeRange(DateTime.Now.AddDays(-2), DateTime.Now.AddDays(3)),
+                ClosedDate = DateTime.MinValue,
+                HospitalId = 34
+            };
+            UoW.GetRepository<ITenderWriteRepository>().Add(tender);
+            TenderOffer tenderOffer = new TenderOffer()
+            {
+                TenderId = tender.Id,
+                Cost = new Money(20, 0),
+                IsConfirmed = false,
+                CreationTime = DateTime.Now
+            };
+            UoW.GetRepository<ITenderOfferWriteRepository>().Add(tenderOffer);
+            return Ok(tenderOffer);
+        }
 
 
     }

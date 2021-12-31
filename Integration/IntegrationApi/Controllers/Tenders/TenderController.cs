@@ -8,7 +8,12 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Integration.Pharmacies.Repository;
+using Newtonsoft.Json;
+using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 
 namespace IntegrationAPI.Controllers.Tenders
 {
@@ -55,6 +60,45 @@ namespace IntegrationAPI.Controllers.Tenders
                 tender.AddMedicationRequest(new MedicationRequest(medicineRequestDto.MedicineName, medicineRequestDto.Quantity));
             }
             _uow.GetRepository<ITenderWriteRepository>().Add(tender);
+            var pharmacies = _uow.GetRepository<IPharmacyReadRepository>().GetAll();
+            try
+            {
+                var factory = new ConnectionFactory() {HostName = Environment.GetEnvironmentVariable("RABBITMQ_HOST")};
+                using (var connection = factory.CreateConnection())
+                {
+                    foreach (var pharmacy in pharmacies)
+                    {
+                        using (var channel = connection.CreateModel())
+                        {
+                            channel.ExchangeDeclare("new tender", ExchangeType.Direct);
+                            TenderToPharmacyDto dto = new TenderToPharmacyDto
+                            {
+                                Name = tender.Name,
+                                Apikey = pharmacy.ApiKey,
+                                CreatedDate = tender.CreatedTime,
+                                EndDate = tender.ActiveRange.EndDate,
+                                StartDate = tender.ActiveRange.StartDate,
+                                MedicationRequestDto = new List<MedicationRequestDto>()
+                            };
+                            foreach (MedicationRequest req in tender.MedicationRequests)
+                            {
+                                dto.MedicationRequestDto.Add(new MedicationRequestDto
+                                {
+                                    MedicineName = req.MedicineName,
+                                    Quantity = req.Quantity
+                                });
+                            }
+
+                            var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(dto));
+                            channel.BasicPublish("new tender", pharmacy.ApiKey.ToString(), null, body);
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error while sending tender via rabbitmq!");
+            }
             return Ok("Tender created");
         }
     }

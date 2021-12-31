@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Pharmacy.EfStructures;
@@ -9,9 +10,10 @@ using Pharmacy.EfStructures;
 namespace Pharmacy.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211229174844_TenderAndTenderOfferAddedFields")]
+    partial class TenderAndTenderOfferAddedFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -318,9 +320,6 @@ namespace Pharmacy.Migrations
                     b.Property<int>("HospitalId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
                     b.HasIndex("HospitalId");
@@ -338,16 +337,16 @@ namespace Pharmacy.Migrations
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int?>("HospitalId")
+                    b.Property<int>("HospitalId")
                         .HasColumnType("integer");
 
                     b.Property<bool>("IsConfirmed")
                         .HasColumnType("boolean");
 
-                    b.Property<bool>("IsWinning")
-                        .HasColumnType("boolean");
+                    b.Property<int>("MedicineId")
+                        .HasColumnType("integer");
 
-                    b.Property<int?>("MedicineId")
+                    b.Property<int>("Quantity")
                         .HasColumnType("integer");
 
                     b.Property<int>("TenderId")
@@ -526,13 +525,17 @@ namespace Pharmacy.Migrations
 
             modelBuilder.Entity("Pharmacy.Model.TenderOffer", b =>
                 {
-                    b.HasOne("Pharmacy.Model.Hospital", null)
+                    b.HasOne("Pharmacy.Model.Hospital", "Hospital")
                         .WithMany("TenderOffers")
-                        .HasForeignKey("HospitalId");
+                        .HasForeignKey("HospitalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("Pharmacy.Model.Medicine", null)
+                    b.HasOne("Pharmacy.Model.Medicine", "Medicine")
                         .WithMany("TenderOffers")
-                        .HasForeignKey("MedicineId");
+                        .HasForeignKey("MedicineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Pharmacy.Model.Tender", "Tender")
                         .WithMany()
@@ -587,7 +590,11 @@ namespace Pharmacy.Migrations
 
                     b.Navigation("Cost");
 
+                    b.Navigation("Hospital");
+
                     b.Navigation("MedicationRequests");
+
+                    b.Navigation("Medicine");
 
                     b.Navigation("Tender");
                 });

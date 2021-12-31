@@ -4,13 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Integration.Tendering.Model
+namespace Pharmacy.Model
 {
+    public enum Currency
+    {
+        Din,
+        Eur,
+        Usd,
+        Hrk,
+        Bam
+    }
     public class Money
     {
         public double Amount { get; private set; }
         public Currency Currency { get; private set; }
-        private Money(){}
+        private Money() { }
         public Money(double amount, Currency currency)
         {
             Amount = amount;

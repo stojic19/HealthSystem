@@ -1,12 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Integration.Shared.Model
+namespace Pharmacy.Model
 {
     public class TimeRange
     {
         public DateTime StartDate { get; private set; }
         public DateTime EndDate { get; private set; }
-        private TimeRange(){}
+        private TimeRange() { }
         public TimeRange(DateTime startDate, DateTime endDate)
         {
             StartDate = startDate;

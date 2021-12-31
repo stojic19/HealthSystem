@@ -11,7 +11,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Text.Json.Serialization;
 using Hospital.Database.EfStructures;
@@ -22,7 +21,6 @@ using Microsoft.AspNetCore.Identity;
 using Hospital.Schedule.Service.ServiceInterface;
 using Hospital.Schedule.Service;
 using Hospital.Schedule.Service.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace HospitalApi
 {
@@ -59,19 +57,8 @@ namespace HospitalApi
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "HospitalApi", Version = "v1" });
             });
-
-            services.AddDbContextPool<AppDbContext>(options =>
-            {
-                var connectionString = Environment.GetEnvironmentVariable("HOSPITAL_DB_PATH");
-                options.UseNpgsql(connectionString);
-                using (var context = new AppDbContext((DbContextOptions<AppDbContext>)options.Options))
-                {
-                    if (context.Database.GetPendingMigrations().Any())
-                    {
-                        context.Database.Migrate();
-                    }
-                }
-            });
+            var builder = new ContainerBuilder();
+            builder.RegisterModule(new DbModule());
 
             services.AddIdentity<User, IdentityRole<int>>(options =>
                 {
@@ -88,8 +75,6 @@ namespace HospitalApi
             services.AddScoped<IScheduledEventService, ScheduledEventService>();
             services.AddScoped<ISurveyService, SurveyService>();
            
-
-            var builder = new ContainerBuilder();
 
             builder.RegisterModule(new RepositoryModule()
             {

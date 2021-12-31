@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Integration.Tendering.Model
+namespace Pharmacy.Model
 {
     public class MedicationRequest
     {
         public string MedicineName { get; private set; }
         public int Quantity { get; private set; }
-        private MedicationRequest(){}
+        private MedicationRequest() { }
         public MedicationRequest(string medicineName, int quantity)
         {
             MedicineName = medicineName;
@@ -20,7 +20,7 @@ namespace Integration.Tendering.Model
 
         private void Validate()
         {
-            if (MedicineName.Length < 1) throw new ArgumentException("Invalid medicine name");
+            if (string.IsNullOrWhiteSpace(MedicineName)) throw new ArgumentException("Invalid medicine name");
             if (Quantity < 1) throw new ArgumentException("Invalid quantity");
         }
 

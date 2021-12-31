@@ -19,6 +19,16 @@ namespace Integration.Tendering.Model
         {
             tenderOffers = new List<TenderOffer>();
         }
+        public Tender(string name, TimeRange activeRange)
+        {
+            MedicationRequests = new List<MedicationRequest>();
+            TenderOffers = new List<TenderOffer>();
+            CreatedTime = DateTime.Now;
+            ClosedTime = DateTime.MinValue;
+            Name = name;
+            ActiveRange = activeRange;
+            Validate();
+        }
 
         private List<TenderOffer> tenderOffers;
         public List<TenderOffer> TenderOffers
@@ -39,22 +49,11 @@ namespace Integration.Tendering.Model
         public int? WinningOfferId { get; private set; }
         public TenderOffer WinningOffer { get; private set; }
 
-        public Tender(string name, TimeRange activeRange)
-        {
-            MedicationRequests = new List<MedicationRequest>();
-            TenderOffers = new List<TenderOffer>();
-            CreatedTime = DateTime.Now;
-            ClosedTime = DateTime.MinValue;
-            Name = name;
-            ActiveRange = activeRange;
-            Validate();
-        }
-
         private void Validate()
         {
-            if (Name.Length < 1) throw new Exception("Invalid tender name");
+            if (Name.Length < 1) throw new ArgumentException("Invalid tender name");
             if (ClosedTime != DateTime.MinValue && ClosedTime < CreatedTime)
-                throw new Exception("Date of closure is less than date of creation");
+                throw new ArgumentException("Date of closure is less than date of creation");
         }
 
         public void ChooseWinner(TenderOffer tenderOffer)

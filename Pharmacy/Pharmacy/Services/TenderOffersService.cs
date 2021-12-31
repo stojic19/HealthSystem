@@ -19,24 +19,25 @@ namespace Pharmacy.Services
             _uow = uow;
         }
 
-        public void CreateTenderOffer(Guid hospitalApiKey,string medicineName,int quantity,DateTime creationTime)
+        public void CreateTenderOffer(Guid hospitalApiKey,List<MedicationRequest> medicationRequests,Money money, int tenderId)
         {
-            Medicine medicine = _uow.GetRepository<IMedicineReadRepository>().GetMedicineByName(medicineName);
-            if (medicine == null) throw new MedicineFromManufacturerNotFoundException();
-            if (medicine.Quantity < quantity) throw new MedicineUnavailableException();
-
+            foreach (MedicationRequest iterationRequest in medicationRequests)
+            {
+                Medicine medicine = _uow.GetRepository<IMedicineReadRepository>().GetMedicineByName(iterationRequest.MedicineName);
+                if (medicine == null) throw new MedicineFromManufacturerNotFoundException();
+                if (medicine.Quantity < iterationRequest.Quantity) throw new MedicineUnavailableException();
+            }
             Hospital hospital = _uow.GetRepository<IHospitalReadRepository>()
                 .GetAll()
                 .FirstOrDefault(x => x.ApiKey == hospitalApiKey);
 
             TenderOffer tenderOffer = new TenderOffer()
             {
-                MedicineId = medicine.Id,
-                Medicine = medicine,
-                HospitalId = hospital.Id,
-                Hospital = hospital,
-                Quantity = quantity,
-                CreationTime = creationTime,
+                MedicationRequests = medicationRequests,
+                TenderId = tenderId,
+                CreationTime = DateTime.Now,
+                Cost = money,
+                IsWinning = false,
                 IsConfirmed = false
             };
 
@@ -53,27 +54,33 @@ namespace Pharmacy.Services
             Hospital hospital = _uow.GetRepository<IHospitalReadRepository>()
                 .GetAll()
                 .FirstOrDefault(x => x.ApiKey == hospitalApiKey);
-            if (hospital.Id != tenderOffer.HospitalId) throw new UnauthorizedAccessException();
+            if (hospital.Id != tenderOffer.Tender.HospitalId) throw new UnauthorizedAccessException();
 
-            Medicine medicine = _uow.GetRepository<IMedicineReadRepository>().GetById(tenderOffer.MedicineId);
-            if (tenderOffer.Quantity > medicine.Quantity) throw  new MedicineUnavailableException();
+            foreach (MedicationRequest iterationRequest in tenderOffer.MedicationRequests)
+            {
+                Medicine medicine = _uow.GetRepository<IMedicineReadRepository>().GetMedicineByName(iterationRequest.MedicineName);
+                if (iterationRequest.Quantity > medicine.Quantity) throw new MedicineUnavailableException();
+            }
 
-            medicine.Quantity -= tenderOffer.Quantity;
+            var medRepo = _uow.GetRepository<IMedicineWriteRepository>();
+            foreach (MedicationRequest iterationRequest in tenderOffer.MedicationRequests)
+            {
+                Medicine medicine = _uow.GetRepository<IMedicineReadRepository>().GetMedicineByName(iterationRequest.MedicineName);
+                medicine.Quantity -= iterationRequest.Quantity;
+                medRepo.Update(medicine);
+            }
             tenderOffer.IsConfirmed = true;
-
-            _uow.GetRepository<IMedicineWriteRepository>().Update(medicine);
             _uow.GetRepository<ITenderOfferWriteRepository>().Update(tenderOffer);
-
         }
 
         public double GetTenderPrice(int tenderOfferId)
         {
             TenderOffer tenderOffer = _uow.GetRepository<ITenderOfferReadRepository>().GetById(tenderOfferId);
             CheckTender(tenderOffer);
+            return tenderOffer.Cost.Amount;
+            /*if(tenderOffer.Medicine.Quantity < tenderOffer.Quantity) throw new MedicineUnavailableException();
 
-            if(tenderOffer.Medicine.Quantity < tenderOffer.Quantity) throw new MedicineUnavailableException();
-
-            return tenderOffer.Medicine.Price * tenderOffer.Quantity;
+            return tenderOffer.Medicine.Price * tenderOffer.Quantity;*/
         }
 
         private static void CheckTender(TenderOffer tenderOffer)

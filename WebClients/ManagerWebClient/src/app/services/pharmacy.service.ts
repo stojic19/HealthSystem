@@ -52,6 +52,22 @@ export class PharmacyService{
         return this._httpClient.post<any>(this._APIUrl + '/Pharmacy/GetImage', val);
     }
 
+    getPharmacyById(id: number): Observable<any>{
+        return this._httpClient.get<any[]>(this._APIUrl+`/Pharmacy/GetPharmacyById/${id}`);
+    }
+
+    updatePharmacy(val: any){
+        return this._httpClient.post<any[]>(this._APIUrl + '/Pharmacy/UpdatePharmacy', val);
+    }
+
+    uploadImage(val: any){
+        return this._httpClient.post<any[]>(this._APIUrl + '/Pharmacy/UploadImage', val);
+    }
+
+    getImage(val: any){
+        return this._httpClient.post<any>(this._APIUrl + '/Pharmacy/GetImage', val);
+    }
+
     checkMedicine(val: any): Observable<IMedicineResponse>{
         return this._httpClient.post<IMedicineResponse>(this._APIUrl + 'api/Medicine/RequestMedicineInformation', val);
     }

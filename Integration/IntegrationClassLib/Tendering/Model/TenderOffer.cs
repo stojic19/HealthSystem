@@ -35,7 +35,7 @@ namespace Integration.Tendering.Model
 
         private void Validate()
         {
-            if (CreatedDate >= DateTime.Now) throw new Exception("Invalid date of creation");
+            if (CreatedDate >= DateTime.Now) throw new ArgumentException("Invalid date of creation");
         }
 
         public bool IsThisPharmacy(Pharmacy pharmacy)

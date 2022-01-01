@@ -70,7 +70,11 @@ namespace Pharmacy.Services
                     var newTender = JsonConvert.DeserializeObject<NewTenderMessage>(jsonMessage);
                     var hospital = _uow.GetRepository<IHospitalReadRepository>()
                         .GetAll().FirstOrDefault(h => h.ApiKey == newTender.Apikey);
-                    if (hospital == null) return;
+                    if (hospital == null) 
+                    {
+                        iteration.Item1.BasicAck(ea.DeliveryTag, false);
+                        return;
+                    }
                     Tender tender = new Tender
                     {
                         ActiveRange = new TimeRange(newTender.StartDate, newTender.EndDate),

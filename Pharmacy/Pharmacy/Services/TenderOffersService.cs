@@ -1,7 +1,10 @@
-﻿using Pharmacy.Exceptions;
+﻿using Newtonsoft.Json;
+using Pharmacy.Exceptions;
 using Pharmacy.Model;
+using Pharmacy.Model.RabbitMQMessages;
 using Pharmacy.Repositories;
 using Pharmacy.Repositories.Base;
+using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +45,39 @@ namespace Pharmacy.Services
             };
 
             _uow.GetRepository<ITenderOfferWriteRepository>().Add(tenderOffer);
+            try
+            {
+                var factory = new ConnectionFactory() { HostName = Environment.GetEnvironmentVariable("RABBITMQ_HOST") };
+                using (var connection = factory.CreateConnection())
+                using (var channel = connection.CreateModel())
+                {
+                    channel.ExchangeDeclare("new tender offer", ExchangeType.Direct);
+                    var tender = _uow.GetRepository<ITenderReadRepository>().GetById(tenderId);
+                    NewTenderOfferMessage msg = new NewTenderOfferMessage
+                    {
+                        Apikey = hospital.ApiKey,
+                        Cost = tenderOffer.Cost.Amount,
+                        Currency = tenderOffer.Cost.Currency,
+                        MedicationRequests = new List<MedicationRequestMessage>(),
+                        TenderCreatedDate = tender.CreatedDate,
+                        CreatedDate = tenderOffer.CreationTime
+                    };
+                    foreach(MedicationRequest medReq in tenderOffer.MedicationRequests)
+                    {
+                        msg.MedicationRequests.Add(new MedicationRequestMessage
+                        {
+                            MedicineName = medReq.MedicineName,
+                            Quantity = medReq.Quantity
+                        });
+                    }
+                    var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(msg));
+                    channel.BasicPublish("new tender offer", hospital.ApiKey.ToString(), null, body);
+                }
+            }
+            catch
+            {
+                throw new RabbitMQNewOfferException();
+            }
 
         }
 

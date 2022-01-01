@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Pharmacy.Exceptions;
 using Pharmacy.Model;
 using Pharmacy.Repositories;
@@ -65,6 +66,7 @@ namespace PharmacyApi.Controllers
             }
             catch (MedicineUnavailableException exception) { return NotFound(exception.Message); }
             catch (MedicineFromManufacturerNotFoundException exception) { return NotFound(exception.Message); }
+            catch (RabbitMQNewOfferException exception) { return StatusCode(StatusCodes.Status500InternalServerError, exception.Message); }
 
             return Ok("Tender offer succesfully created!");
         }

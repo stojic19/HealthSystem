@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Grpc.Core;
@@ -16,13 +13,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Reflection;
-using Integration.Database.EfStructures;
 using IntegrationAPI.HttpRequestSenders;
 using IntegrationAPI.HttpRequestSenders.Implementation;
-using Microsoft.EntityFrameworkCore;
+using Integration.Tendering.Service;
 
 namespace IntegrationAPI
 {
@@ -31,15 +25,7 @@ namespace IntegrationAPI
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-
-            string sourceFolder = Path.Combine(Directory.GetCurrentDirectory(), "MedicineReports");
-            string targetZip = Path.Combine(Directory.GetCurrentDirectory(), "Archive", DateTime.Now.Ticks + ".zip");
-
-            //FileZipService fileZipService = new FileZipService();
-            //fileZipService.FileZip(sourceFolder, targetZip);
         }
-
-        
 
         public IConfiguration Configuration { get; }
         private Server server;
@@ -58,21 +44,10 @@ namespace IntegrationAPI
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "IntegrationApi", Version = "v1" });
             });
             services.AddHostedService<BenefitRabbitMqService>();
-
-            services.AddDbContextPool<AppDbContext>(options =>
-            {
-                var connectionString = Environment.GetEnvironmentVariable("INTEGRATION_DB_PATH");
-                options.UseNpgsql(connectionString);
-                using (var context = new AppDbContext((DbContextOptions<AppDbContext>)options.Options))
-                {
-                    if (context.Database.GetPendingMigrations().Any())
-                    {
-                        context.Database.Migrate();
-                    }
-                }
-            });
+            services.AddHostedService<NewTenderOfferRabbitMQService>();
 
             var builder = new ContainerBuilder();
+            builder.RegisterModule(new DbModule());
             builder.RegisterModule(new RepositoryModule()
             {
 

@@ -52,6 +52,8 @@ namespace PharmacyApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PharmacyApi", Version = "v1" });
             });
             services.AddHostedService<NewTenderRabbitMQService>();
+            services.AddHostedService<CloseTenderRabbitMQService>();
+            services.AddHostedService<WinningTenderOfferRabbitMQService>();
 
             PharmacyDetails details = new PharmacyDetails();
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Pharmacy.Exceptions;
 using Pharmacy.Model;
 using Pharmacy.Repositories;
@@ -12,6 +13,7 @@ using PharmacyApi.HttpRequestSenders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace PharmacyApi.Controllers
@@ -110,7 +112,7 @@ namespace PharmacyApi.Controllers
 
         private ApplyTenderOfferDTO CreateApplyTenderDto(int tenderOfferId,double price)
         {
-            TenderOffer tenderOffer = _uow.GetRepository<ITenderOfferReadRepository>().GetById(tenderOfferId);
+            TenderOffer tenderOffer = _uow.GetRepository<ITenderOfferReadRepository>().GetAll().Include(x => x.Tender).FirstOrDefault(tender => tender.Id == tenderOfferId);
             List<MedicationRequestDTO> medicationRequestDtos = new List<MedicationRequestDTO>();
             foreach (MedicationRequest medReq in tenderOffer.MedicationRequests)
             {

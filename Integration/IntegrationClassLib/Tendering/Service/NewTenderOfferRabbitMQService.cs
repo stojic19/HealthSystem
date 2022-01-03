@@ -21,8 +21,8 @@ namespace Integration.Tendering.Service
     public class NewTenderOfferRabbitMQService : BackgroundService
     {
         private IConnection _connection;
-        private List<IModel> _channels;
-        private List<string> _queueNames;
+        private readonly List<IModel> _channels;
+        private readonly List<string> _queueNames;
         private readonly IUnitOfWork _uow;
 
         public NewTenderOfferRabbitMQService(IUnitOfWork unitOfWork)
@@ -33,11 +33,30 @@ namespace Integration.Tendering.Service
             InitRabbitMQ();
         }
 
-        private void OnConsumerConsumerCancelled(object sender, ConsumerEventArgs e) { }
-        private void OnConsumerUnregistered(object sender, ConsumerEventArgs e) { }
-        private void OnConsumerRegistered(object sender, ConsumerEventArgs e) { }
-        private void OnConsumerShutdown(object sender, ShutdownEventArgs e) { }
-        private void RabbitMQ_ConnectionShutdown(object sender, ShutdownEventArgs e) { }
+        private void OnConsumerConsumerCancelled(object sender, ConsumerEventArgs e) 
+        { 
+            //no action needed for "consumer cancelled"
+        }
+
+        private void OnConsumerUnregistered(object sender, ConsumerEventArgs e)
+        {
+            //no action needed for "consumer unregistered"
+        }
+
+        private void OnConsumerRegistered(object sender, ConsumerEventArgs e)
+        {
+            //no action needed for "consumer registered"
+        }
+
+        private void OnConsumerShutdown(object sender, ShutdownEventArgs e)
+        {
+            //no action needed for "consumer shutdown"
+        }
+
+        private void RabbitMQ_ConnectionShutdown(object sender, ShutdownEventArgs e)
+        {
+            //no action needed for "connection shutdown"
+        }
 
         private void InitRabbitMQ()
         {

@@ -19,10 +19,10 @@ namespace HospitalUnitTests
         public MedicationConsumptionTests(BaseFixture fixture) : base(fixture)
         {
             ClearDbContext();
-            //MakeLogs();
+            MakeLogs();
             Context.SaveChanges();
         }
-        /*
+        
         [Theory]
         [MemberData(nameof(GetLogsData))]
         public void Get_receipts_in_time_range(TimePeriod timePeriod, int shouldBe)
@@ -32,19 +32,19 @@ namespace HospitalUnitTests
             logs.Count().ShouldBe(shouldBe);
         }
 
-        //public static IEnumerable<object[]> GetLogsData()
-        //{
-        //    List<object[]> retVal = new List<object[]>();
-        //    retVal.Add(new object[]
-        //        {new TimePeriod {StartTime = new DateTime(2021, 9, 1), EndTime = new DateTime(2021, 10, 1)}, 3});
-        //    retVal.Add(new object[]
-        //        {new TimePeriod {StartTime = new DateTime(2020, 9, 1), EndTime = new DateTime(2021, 11, 1)}, 5});
-        //    retVal.Add(new object[]
-        //        {new TimePeriod {StartTime = new DateTime(2021, 10, 1), EndTime = new DateTime(2021, 11, 1)}, 1});
-        //    retVal.Add(new object[]
-        //        {new TimePeriod {StartTime = new DateTime(2021, 11, 1), EndTime = new DateTime(2021, 12, 1)}, 1});
-        //    return retVal;
-        //}
+        public static IEnumerable<object[]> GetLogsData()
+        {
+            List<object[]> retVal = new List<object[]>();
+            retVal.Add(new object[]
+                {new TimePeriod(new DateTime(2021, 9, 1), new DateTime(2021, 10, 1)), 3});
+            retVal.Add(new object[]
+                {new TimePeriod (new DateTime(2020, 9, 1), new DateTime(2021, 11, 1)), 5});
+            retVal.Add(new object[]
+                {new TimePeriod(new DateTime(2021, 10, 1), new DateTime(2021, 11, 1)), 1});
+            retVal.Add(new object[]
+                {new TimePeriod(new DateTime(2021, 11, 1), new DateTime(2021, 12, 1)), 1});
+            return retVal;
+        }
 
         [Fact]
         public void Calculate_medicine_consumptions()
@@ -58,20 +58,16 @@ namespace HospitalUnitTests
         [MemberData(nameof(GetTimePeriods))]
         public void Create_medication_report(TimePeriod timePeriod, int shouldBe)
         {
-            TimePeriod september = new TimePeriod
-            { StartTime = new DateTime(2021, 9, 1), EndTime = new DateTime(2021, 10, 1) };
+            TimePeriod september = new TimePeriod(new DateTime(2021, 9, 1), new DateTime(2021, 10, 1));
             MedicationConsumptionReportService service = new MedicationConsumptionReportService(UoW);
             MedicationConsumptionReport report = service.CreateMedicationExpenditureReportInTimePeriod(timePeriod);
             report.MedicationConsumptions.Count().ShouldBe(shouldBe);
         }
         public static IEnumerable<object[]> GetTimePeriods()
         {
-            TimePeriod september = new TimePeriod
-            { StartTime = new DateTime(2021, 9, 1), EndTime = new DateTime(2021, 10, 1) };
-            TimePeriod november = new TimePeriod
-            { StartTime = new DateTime(2021, 11, 1), EndTime = new DateTime(2021, 12, 1) };
-            TimePeriod december = new TimePeriod()
-            { StartTime = new DateTime(2021, 12, 1), EndTime = new DateTime(2022, 1, 1) };
+            TimePeriod september = new TimePeriod(new DateTime(2021, 9, 1), new DateTime(2021, 10, 1));
+            TimePeriod november = new TimePeriod(new DateTime(2021, 11, 1), new DateTime(2021, 12, 1));
+            TimePeriod december = new TimePeriod(new DateTime(2021, 12, 1), new DateTime(2022, 1, 1));
             List<object[]> retVal = new List<object[]>();
             retVal.Add(new object[] { september, 3 });
             retVal.Add(new object[] { november, 1 });
@@ -151,6 +147,6 @@ namespace HospitalUnitTests
             Context.MedicationExpenditureLogs.Add(log6);
             Context.MedicationExpenditureLogs.Add(log7);
             Context.MedicationExpenditureLogs.Add(log8);
-        }*/
+        }
     }
 }

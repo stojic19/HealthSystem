@@ -17,11 +17,16 @@ namespace HospitalUnitTests
         {
 
         }
-
+        
         [Fact]
         public void One_item_should_be_moved()
         {
             ClearDbContext();
+            InventoryItem it = new InventoryItem()
+            {
+                Id = 1,
+                Name = "Test item"
+            };
 
             Context.EquipmentTransferEvents.Add(new EquipmentTransferEvent()
             {
@@ -45,6 +50,7 @@ namespace HospitalUnitTests
                 }
 
             });
+
             Context.RoomInventories.Add(new RoomInventory(1, 1, 1, 3));
             Context.RoomInventories.Add(new RoomInventory(2, 2, 1, 1));
             Context.SaveChanges();
@@ -62,7 +68,7 @@ namespace HospitalUnitTests
             destinationRoomInventory.ShouldNotBeNull();
             destinationRoomInventory.Amount.ShouldBe(2);
         }
-
+        
         [Fact]
         public void Two_items_should_be_moved()
         {
@@ -92,7 +98,7 @@ namespace HospitalUnitTests
 
             });
             Context.RoomInventories.Add(new RoomInventory(1, 1, 1, 2));
-            Context.RoomInventories.Add(new RoomInventory(1, 2, 1, 1));
+            Context.RoomInventories.Add(new RoomInventory(2, 2, 1, 1));
             Context.SaveChanges();
 
             var transferingService = new TransferingEquipmentService(UoW);
@@ -136,13 +142,7 @@ namespace HospitalUnitTests
 
             });
             Context.RoomInventories.Add(new RoomInventory(1, 1, 1, 3));
-            Context.InventoryItems.Add(new InventoryItem()
-            {
-                Id = 2,
-                Name = "Test item",
-            });
-
-            Context.RoomInventories.Add(new RoomInventory(2, 1, 2, 3));
+            Context.RoomInventories.Add(new RoomInventory(2, 2, 1, 3));
             Context.SaveChanges();
 
             var transferingService = new TransferingEquipmentService(UoW);
@@ -151,11 +151,11 @@ namespace HospitalUnitTests
             var initialRoomInventory = UoW.GetRepository<IRoomInventoryReadRepository>()
                 .GetById(1);
             var destinationRoomInventory = UoW.GetRepository<IRoomInventoryReadRepository>()
-               .GetById(3);
+               .GetById(2);
 
             initialRoomInventory.ShouldBeNull();
             destinationRoomInventory.ShouldNotBeNull();
-            destinationRoomInventory.Amount.ShouldBe(3);
+            destinationRoomInventory.Amount.ShouldBe(6);
         }
     }
 }

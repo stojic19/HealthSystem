@@ -10,21 +10,22 @@ namespace Hospital.Schedule.Model
     public class OnCallDuty
     {
         public int Id { get; set; }
-        public DateTime OnCallDutyDate { get; }
-        public List<Doctor> DoctorsOnDuty { get; }
+        public int Month { get; private set; }
+        public int Week { get; private set; }
+        public ICollection<Doctor> DoctorsOnDuty { get; private set; }
 
-        public OnCallDuty() { }
-
-        public OnCallDuty(DateTime onCallDutyDate, List<Doctor> doctorsOnDuty)
+        public OnCallDuty(int month, int week, ICollection<Doctor> doctorsOnDuty)
         {
-            OnCallDutyDate = onCallDutyDate;
+            Month = month;
+            Week = week;
             DoctorsOnDuty = doctorsOnDuty;
             this.Validate();
         }
+        public OnCallDuty() { }
 
         private void Validate()
         {
-            if(this.DoctorsOnDuty.Count == 0 || DateTime.Compare(this.OnCallDutyDate, DateTime.Now) < 0 )
+            if (this.DoctorsOnDuty.Count == 0 || Month > 12 || Month < 1 || Week < 1 || Week > 4)
                 throw new Exception("Not Valid");
         }
 

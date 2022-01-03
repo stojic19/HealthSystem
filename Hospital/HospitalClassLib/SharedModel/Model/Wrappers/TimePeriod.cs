@@ -6,8 +6,8 @@ namespace Hospital.SharedModel.Model.Wrappers
 {
     public class TimePeriod : ValueObject
     {
-        public DateTime StartTime { get; }
-        public DateTime EndTime { get; }
+        public DateTime StartTime { get; private set; }
+        public DateTime EndTime { get; private set; }
 
         public TimePeriod(DateTime start, DateTime end)
         {

@@ -13,7 +13,7 @@ namespace HospitalUnitTests
         {
         }
 
-        /*[Fact]
+        [Fact]
         public void Should_not_be_null()
         {
             ClearDbContext();
@@ -71,31 +71,27 @@ namespace HospitalUnitTests
         public void Should_get_one_item()
         {
             ClearDbContext();
-            Context.RoomInventories.Add(new RoomInventory()
+            Room room = new Room()
             {
                 Id = 1,
-                Room = new Room()
-                {
-                    Id = 1,
-                    Name = "Test name",
-                    Description = "Test description",
-                    FloorNumber = 1,
-                    BuildingName = "Test building"
-                },
-                InventoryItem = new InventoryItem()
-                {
-                    Id = 1,
-                    Name = "Test item",
-                    InventoryItemType = 0
-                },
-                Amount = 3
-            });
+                Name = "Test name",
+                Description = "Test description",
+                FloorNumber = 1,
+                BuildingName = "Test building"
+            };
+            InventoryItem inventoryItem = new InventoryItem()
+            {
+                Id = 1,
+                Name = "Test item",
+                InventoryItemType = 0
+            };
+            Context.RoomInventories.Add(new RoomInventory(1, room, inventoryItem, 3)) ;
             Context.SaveChanges();
 
             var roomInventories = UoW.GetRepository<IRoomInventoryReadRepository>().GetAll()
                 .Where(ri => ri.InventoryItem.Name.ToLower().Contains("test item"));
             roomInventories.ShouldNotBeNull();
             roomInventories.Count().ShouldBe(1);
-        }*/
+        }
     }
 }

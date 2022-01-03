@@ -46,7 +46,7 @@ namespace Hospital.RoomsAndEquipment.Service
               var repo = uow.GetRepository<IRoomInventoryWriteRepository>();
               if (destinationRoom == null)
               {
-                destinationRoom = new RoomInventory((int)transferEvent.DestinationRoomId, (int)transferEvent.InventoryItemId, transferEvent.Quantity);
+                //destinationRoom = new RoomInventory((int)transferEvent.DestinationRoomId, (int)transferEvent.InventoryItemId, transferEvent.Quantity);
                   
                   repo.Add(destinationRoom);
               }

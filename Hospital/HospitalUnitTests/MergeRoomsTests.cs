@@ -115,11 +115,11 @@ namespace HospitalUnitTests
                 Name = "Test item 2"
             });
 
-           Context.RoomInventories.Add(new RoomInventory( 1, 1, 1, 2));
+            Context.RoomInventories.Add(new RoomInventory(1, 1, 1, 2));
 
             Context.RoomInventories.Add(new RoomInventory(2, 2, 2, 2));
 
-            Context.RoomInventories.Add(new RoomInventory(3, 1, 2, 2));
+            Context.RoomInventories.Add(new RoomInventory(3, 2, 1, 2));
 
             Context.SaveChanges();
         }

@@ -39,6 +39,7 @@ namespace Hospital.Database.EfStructures
         public DbSet<MedicationExpenditureLog> MedicationExpenditureLogs { get; set; }
         public DbSet<RoomRenovationEvent> RoomRenovationEvents { get; set; }
         public DbSet<OnCallDuty> OnCallDuties { get; set; }
+        public DbSet<Shift> Shifts { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -49,7 +50,7 @@ namespace Hospital.Database.EfStructures
             builder.Entity<Room>().OwnsOne(r => r.RoomPosition);
             builder.Entity<Doctor>().OwnsMany(d => d.Vacations);
             builder.Entity<Doctor>().OwnsOne(d => d.DoctorsScheduleReport);
-            builder.Entity<OnCallDuty>().OwnsMany(oc => oc.DoctorsOnDuty);
+            builder.Entity<OnCallDuty>().HasMany(oc => oc.DoctorsOnDuty).WithMany(d => d.OnCallDuties);
            
             base.OnModelCreating(builder);
         }

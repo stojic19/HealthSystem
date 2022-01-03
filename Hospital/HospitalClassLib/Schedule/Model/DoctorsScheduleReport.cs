@@ -13,22 +13,24 @@ namespace Hospital.Schedule.Model
         public int NumOfAppointments { get; private set; }
         public int NumOfOnCallShifts { get; private set; }
         public int NumOfPatients { get; private set; }
-        public TimePeriod DateRange { get; }
+        public DateTime StartTime { get; private set; }
+        public DateTime EndTime { get; private set; }
 
         public DoctorsScheduleReport() { }
 
-        public DoctorsScheduleReport(int numOfAppointments, int numOfOnCallShifts, int numOfPatients, TimePeriod dateRange)
+        public DoctorsScheduleReport(int numOfAppointments, int numOfOnCallShifts, int numOfPatients, DateTime startTime, DateTime endTime)
         {
             NumOfAppointments = numOfAppointments;
             NumOfOnCallShifts = numOfOnCallShifts;
             NumOfPatients = numOfPatients;
-            DateRange = dateRange;
+            StartTime = startTime;
+            EndTime = endTime;
             Validate();
         }
 
         private void Validate()
         {
-            if (double.IsNegative(NumOfAppointments) || double.IsNegative(NumOfOnCallShifts) || double.IsNegative(NumOfPatients))
+            if (double.IsNegative(NumOfAppointments) || double.IsNegative(NumOfOnCallShifts) || double.IsNegative(NumOfPatients) || DateTime.Compare(this.EndTime, this.StartTime) < 0)
                 throw new Exception("Not Valid");
         }
 

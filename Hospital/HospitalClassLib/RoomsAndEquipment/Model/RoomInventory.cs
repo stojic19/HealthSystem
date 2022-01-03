@@ -4,9 +4,7 @@ namespace Hospital.RoomsAndEquipment.Model
 {
     public class RoomInventory
     {
-        private int destinationRoomId;
-        private int quantity;
-
+    
         public int Id { get; set;  }
         public int RoomId { get; set; }
         public Room Room { get; private set;  }
@@ -28,21 +26,22 @@ namespace Hospital.RoomsAndEquipment.Model
             InventoryItemId = inventoryItemId;
             InventoryItem = inventoryItem;
             Amount = amount;
+            Validate();
         }
 
-        public RoomInventory(int destinationRoomId, int inventoryItemId, int quantity)
-        {
-            this.destinationRoomId = destinationRoomId;
-            InventoryItemId = inventoryItemId;
-            this.quantity = quantity;
+        public RoomInventory(int id, Room room, InventoryItem inventoryItem, int amount) {
+
+            Id = id;
+            Room = room;
+            InventoryItem = inventoryItem;
+            Amount = amount;
         }
 
-        public RoomInventory(int id, int destinationRoomId, int inventoryItemId, int quantity)
-        {
-            this.Id = id;
-            this.destinationRoomId = destinationRoomId;
+        public RoomInventory(int id, int roomId, int inventoryItemId, int amount) {
+            Id = id;
+            RoomId = roomId;
             InventoryItemId = inventoryItemId;
-            this.quantity = quantity;
+            Amount = amount;
         }
 
         private void Validate()

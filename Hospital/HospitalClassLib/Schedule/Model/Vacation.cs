@@ -11,10 +11,11 @@ namespace Hospital.Schedule.Model
 {
     public class Vacation : ValueObject
     {
-        public VacationType Type { get; }
-        public DateTime StartDate { get; }
-        public DateTime EndDate { get; }
+        public VacationType Type { get; private set; }
+        public DateTime StartDate { get; private set; }
+        public DateTime EndDate { get; private set; }
 
+        public Vacation() { }
 
         public Vacation(VacationType type, DateTime start, DateTime end)
         {

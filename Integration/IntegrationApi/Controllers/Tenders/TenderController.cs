@@ -69,7 +69,7 @@ namespace IntegrationAPI.Controllers.Tenders
                 var factory = new ConnectionFactory() {HostName = Environment.GetEnvironmentVariable("RABBITMQ_HOST")};
                 using (var connection = factory.CreateConnection())
                 {
-                    foreach (var pharmacy in pharmacies)
+                    foreach (var pharmacyApiKey in pharmacies.Select(x => x.ApiKey))
                     {
                         using (var channel = connection.CreateModel())
                         {
@@ -77,7 +77,7 @@ namespace IntegrationAPI.Controllers.Tenders
                             TenderToPharmacyDto dto = new TenderToPharmacyDto
                             {
                                 Name = tender.Name,
-                                Apikey = pharmacy.ApiKey,
+                                Apikey = pharmacyApiKey,
                                 CreatedDate = tender.CreatedTime,
                                 EndDate = tender.ActiveRange.EndDate,
                                 StartDate = tender.ActiveRange.StartDate,
@@ -93,7 +93,7 @@ namespace IntegrationAPI.Controllers.Tenders
                             }
 
                             var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(dto));
-                            channel.BasicPublish("new tender", pharmacy.ApiKey.ToString(), null, body);
+                            channel.BasicPublish("new tender", pharmacyApiKey.ToString(), null, body);
                         }
                     }
                 }
@@ -109,11 +109,11 @@ namespace IntegrationAPI.Controllers.Tenders
         public IEnumerable<Tender> GetActiveTenders()
         {
             List<Tender> retVal = new List<Tender>();
-            var all = _uow.GetRepository<ITenderReadRepository>().GetAll()
+            var tenders = _uow.GetRepository<ITenderReadRepository>().GetAll()
                 .Include(t => t.TenderOffers).Include(t => t.MedicationRequests);
-            foreach (var tender in all)
+            foreach (var tender in tenders.AsEnumerable().Where(t => t.IsActive() == true))
             {
-                if(tender.IsActive())retVal.Add(tender);
+                retVal.Add(tender);
             }
 
             return retVal;
@@ -175,23 +175,23 @@ namespace IntegrationAPI.Controllers.Tenders
             return Ok();
         }
 
-        private void CloseTenderRmq(ConnectionFactory factory, IEnumerable<Pharmacy> pharmacies, Tender tender)
+        private static void CloseTenderRmq(ConnectionFactory factory, IEnumerable<Pharmacy> pharmacies, Tender tender)
         {
             using (var connection = factory.CreateConnection())
             {
-                foreach (var pharmacy in pharmacies)
+                foreach (var pharmacyApiKey in pharmacies.Select(x => x.ApiKey))
                 {
                     using (var channel = connection.CreateModel())
                     {
                         channel.ExchangeDeclare("close tender", ExchangeType.Direct);
                         var msg = new CloseTenderToPharmaciesDto
                         {
-                            ApiKey = pharmacy.ApiKey,
+                            ApiKey = pharmacyApiKey,
                             TenderClosedDate = tender.ClosedTime,
                             TenderCreatedDate = tender.CreatedTime
                         };
                         var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(msg));
-                        channel.BasicPublish("close tender", pharmacy.ApiKey.ToString(), null, body);
+                        channel.BasicPublish("close tender", pharmacyApiKey.ToString(), null, body);
                     }
                 }
             }

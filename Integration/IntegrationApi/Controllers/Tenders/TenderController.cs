@@ -124,7 +124,9 @@ namespace IntegrationAPI.Controllers.Tenders
         {
             var tender = _uow.GetRepository<ITenderReadRepository>().GetAll().Where(t => t.Id == dto.TenderId)
                 .Include(t => t.TenderOffers).ThenInclude(to => to.Pharmacy).FirstOrDefault();
+            if (!tender.IsActive()) return BadRequest("Tender already closed!");
             var winningOffer = tender.TenderOffers.FirstOrDefault(t => t.Id == dto.TenderOfferId);
+            if(winningOffer == null) return BadRequest("Invalid tender offer!");
             tender.ChooseWinner(winningOffer);
             tender.CloseTender();
             _uow.GetRepository<ITenderWriteRepository>().Update(tender);
@@ -160,6 +162,7 @@ namespace IntegrationAPI.Controllers.Tenders
         {
             var tender = _uow.GetRepository<ITenderReadRepository>().GetById(tenderId);
             if (tender == null) return NotFound("Tender does not exist");
+            if (!tender.IsActive()) return BadRequest("Tender already closed!");
             tender.CloseTender();
             _uow.GetRepository<ITenderWriteRepository>().Update(tender);
             try

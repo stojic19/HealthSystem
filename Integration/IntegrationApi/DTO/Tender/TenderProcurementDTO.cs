@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace IntegrationAPI.DTO.Tender
 {
-    public class TenderProcurementDTO
+    public class TenderProcurementDto
     {
         public Guid ApiKey { get; set; }
-        public List<TenderMedicineDTO> Medications { get; set; }
+        public List<TenderMedicineDto> Medications { get; set; }
     }
 }

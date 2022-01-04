@@ -6,9 +6,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace IntegrationAPI.DTO.Tender
 {
-    public class TenderMedicineDTO
+    public class TenderMedicineDto
     {
-        public MedicineDTO Medicine { get; set; }
+        public MedicineDto Medicine { get; set; }
         [Range(1, int.MaxValue, ErrorMessage = "Only positive number allowed.")]
         public int Quantity { get; set; }
     }

@@ -49,7 +49,6 @@ namespace Hospital.Database.EfStructures
         {
             builder.Entity<Room>().OwnsOne(r => r.RoomPosition);
             builder.Entity<Doctor>().OwnsMany(d => d.Vacations);
-            builder.Entity<Doctor>().OwnsOne(d => d.DoctorsScheduleReport);
             builder.Entity<OnCallDuty>().HasMany(oc => oc.DoctorsOnDuty).WithMany(d => d.OnCallDuties);
            
             base.OnModelCreating(builder);

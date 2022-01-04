@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Hospital.GraphicalEditor.Model;
-using Hospital.GraphicalEditor.Repository;
 using Hospital.RoomsAndEquipment.Model;
 using Hospital.RoomsAndEquipment.Repository;
 using Hospital.SharedModel.Model.Enumerations;
@@ -27,9 +26,9 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Transfer_event_should_be_canceled()
         {
-            var sourceRoom = InsertRoom("SR-2");
-            var destinationRoom = InsertRoom("SR-3");
-            var inventoryItem = InsertInventoryItem("Chair");
+            var sourceRoom = InsertRoom("Test initial room");
+            var destinationRoom = InsertRoom("Test destination room");
+            var inventoryItem = InsertInventoryItem("Test item");
             var roomInventoryItem = InsertInventoryInRoom(sourceRoom.Id, inventoryItem.Id, 4);
             var transferRequest = InsertTransferRequest(new DateTime(2025, 11, 22, 0, 0, 0), sourceRoom.Id, destinationRoom.Id, inventoryItem.Id);
 
@@ -63,8 +62,7 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Renovation_should_be_canceled()
         {
-            var room = InsertRoom("AR-1");
-            var roomPosition = InsertRoomPosition("AR-1");
+            var room = InsertRoom("Test renovating room");
             var roomRenovation = InsertRoomRenovationEvent(new DateTime(2025, 11, 22, 0, 0, 0), new DateTime(2025, 11, 25, 0, 0, 0), room.Id, false);
 
             var content = GetContent(new RoomRenovationEventDto()
@@ -90,29 +88,6 @@ namespace HospitalIntegrationTests
                                      x.IsMerge == roomRenovation.IsMerge);
 
             canceledRequest.ShouldBeNull();
-        }
-
-        private RoomPosition InsertRoomPosition(string roomName)
-        {
-            var roomPosition = UoW.GetRepository<IRoomPositionReadRepository>()
-                .GetAll().Include(x => x.Room)
-                .FirstOrDefault(x => x.Room.Name == roomName);
-
-            if (roomPosition == null)
-            {
-                roomPosition = new RoomPosition()
-                {
-                    Room = InsertRoom(roomName),
-                    DimensionX = 0,
-                    DimensionY = 0,
-                    Width = 150,
-                    Height = 122
-                };
-
-                UoW.GetRepository<IRoomPositionWriteRepository>().Add(roomPosition);
-            }
-
-            return roomPosition;
         }
 
         public RoomRenovationEvent InsertRoomRenovationEvent(DateTime startDate, DateTime endDate, int roomId, bool isMerge)
@@ -180,7 +155,8 @@ namespace HospitalIntegrationTests
                     FloorNumber = 1,
                     BuildingName = "Building 2",
                     RoomType = RoomType.Storage,
-                };
+                    RoomPosition = new RoomPosition(0, 0, 150, 122)
+            };
 
                 UoW.GetRepository<IRoomWriteRepository>().Add(room);
             }
@@ -196,17 +172,12 @@ namespace HospitalIntegrationTests
 
             if (roomInventory == null)
             {
-                roomInventory = new RoomInventory()
-                {
-                    Amount = amount,
-                    InventoryItemId = inventoryId,
-                    RoomId = roomId
-                };
+                roomInventory = new RoomInventory(roomId, inventoryId, amount);
                 UoW.GetRepository<IRoomInventoryWriteRepository>().Add(roomInventory);
             }
             else if (roomInventory.Amount < amount)
             {
-                roomInventory.Amount = amount;
+                roomInventory.Add(amount - roomInventory.Amount);
                 UoW.GetRepository<IRoomInventoryWriteRepository>().Update(roomInventory);
             }
 
@@ -238,5 +209,35 @@ namespace HospitalIntegrationTests
 
             return transferEvent;
         }
+
+        private void ClearAllTestData()
+        {
+            var initialRoom = UoW.GetRepository<IRoomReadRepository>()
+                .GetAll()
+                .FirstOrDefault(x => x.Name == "Test initial room");
+            var destinationRoom = UoW.GetRepository<IRoomReadRepository>()
+                .GetAll()
+                .FirstOrDefault(x => x.Name == "Test destination room");
+            var inventoryItem = UoW.GetRepository<IInventoryItemReadRepository>()
+                .GetAll()
+                .FirstOrDefault(x => x.Name == "Test item");
+            var roomInventory = UoW.GetRepository<IRoomInventoryReadRepository>()
+                .GetAll()
+                .FirstOrDefault(x => x.InventoryItemId == inventoryItem.Id &&
+                                     x.RoomId == initialRoom.Id);
+
+            if (roomInventory != null)
+                UoW.GetRepository<IRoomInventoryWriteRepository>().Delete(roomInventory);
+
+            if (inventoryItem != null)
+                UoW.GetRepository<IInventoryItemWriteRepository>().Delete(inventoryItem);
+
+            if (initialRoom != null)
+                UoW.GetRepository<IRoomWriteRepository>().Delete(initialRoom);
+
+            if (destinationRoom != null)
+                UoW.GetRepository<IRoomWriteRepository>().Delete(destinationRoom);
+        }
+
     }
 }

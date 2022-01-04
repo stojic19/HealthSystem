@@ -30,6 +30,7 @@ using Hospital.SharedModel.Service;
 using Hospital.SharedModel.Service.Implementation;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 
 namespace HospitalApi
 {

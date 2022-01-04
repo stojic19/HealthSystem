@@ -30,18 +30,6 @@ namespace HospitalApi.Controllers
             _uow = uow;
             _mapper = mapper;
         }
-
-        [Authorize(Roles = "Manager")]
-        [HttpGet]
-        public IEnumerable<RoomRenovationEvent> GetRenovationsByRoom(int roomId)
-        {
-            var roomRenovationRepo = _uow.GetRepository<IRoomRenovationEventReadRepository>();
-            return roomRenovationRepo.GetAll()
-                .Where(renovation => renovation.IsCanceled == false &&
-                                     (renovation.RoomId == roomId ||
-                                     renovation.MergeRoomId == roomId));
-
-        }
         
         [HttpGet]
         public IActionResult GetSurroundingRoomsForRoom([FromQuery(Name = "roomId")] int roomId)

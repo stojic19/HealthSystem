@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 ﻿using Hospital.Schedule.Repository;
 using Hospital.Schedule.Service.Interfaces;
 using Hospital.SharedModel.Repository.Base;
+=======
+﻿using Hospital.Schedule.Service.Interfaces;
+>>>>>>> feature/ddd-refactoring-ge
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Linq;

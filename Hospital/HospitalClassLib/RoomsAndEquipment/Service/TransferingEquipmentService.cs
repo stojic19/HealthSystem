@@ -18,10 +18,13 @@ namespace Hospital.RoomsAndEquipment.Service
             this.uow = unitOfWork;
         }
 
-        public void StartEquipmentTransferEvent() {
+        public void StartEquipmentTransferEvent()
+        {
             var repo = uow.GetRepository<IEquipmentTransferEventReadRepository>();
-            foreach (EquipmentTransferEvent transferEvent in repo.GetAll().ToList()) {
-                if (DateTime.Compare(transferEvent.EndDate, DateTime.Now) <= 0) {
+            foreach (EquipmentTransferEvent transferEvent in repo.GetAll().ToList())
+            {
+                if (DateTime.Compare(transferEvent.EndDate, DateTime.Now) <= 0)
+                {
                     ExecuteTransfer(transferEvent);
                 }
             }
@@ -47,17 +50,12 @@ namespace Hospital.RoomsAndEquipment.Service
             var repo = uow.GetRepository<IRoomInventoryWriteRepository>();
             if (destinationRoom == null)
             {
-                destinationRoom = new RoomInventory()
-                {
-                    RoomId = (int)transferEvent.DestinationRoomId,
-                    InventoryItemId = (int)transferEvent.InventoryItemId,
-                    Amount = transferEvent.Quantity
-                };
+                destinationRoom = new RoomInventory((int)transferEvent.DestinationRoomId, (int)transferEvent.InventoryItemId, transferEvent.Quantity);
                 repo.Add(destinationRoom);
             }
             else
             {
-                destinationRoom.Amount += transferEvent.Quantity;
+                destinationRoom.Add(transferEvent.Quantity);
                 repo.Update(destinationRoom);
             }
 
@@ -72,7 +70,7 @@ namespace Hospital.RoomsAndEquipment.Service
             }
             else
             {
-                initialRoom.Amount -= transferEvent.Quantity;
+                initialRoom.Add(-transferEvent.Quantity);
                 repo.Update(initialRoom);
             }
         }

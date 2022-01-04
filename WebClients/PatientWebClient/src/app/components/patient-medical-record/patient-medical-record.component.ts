@@ -19,16 +19,16 @@ export class PatientMedicalRecordComponent implements OnInit {
   patient!: IPatient;
   sub!: Subscription;
 
-  columnsToDisplayFutureAppointments: string[] = ['No.', 'Date', 'Time' , 'Doctor', 'DoctorSpecialization', 'Room',  'Cancel'];
-  columnsToDisplayCanceledAppointments: string[] = ['No.', 'Date', 'Time' , 'Doctor', 'DoctorSpecialization', 'Room'];
-  columnsToDisplayFinishedAppointments: string[] = ['No.', 'Date', 'Time' , 'Doctor', 'DoctorSpecialization', 'Room', 'Survey'];
-  
+  columnsToDisplayFutureAppointments: string[] = ['No.', 'Date', 'Time', 'Doctor', 'DoctorSpecialization', 'Room', 'Cancel'];
+  columnsToDisplayCanceledAppointments: string[] = ['No.', 'Date', 'Time', 'Doctor', 'DoctorSpecialization', 'Room'];
+  columnsToDisplayFinishedAppointments: string[] = ['No.', 'Date', 'Time', 'Doctor', 'DoctorSpecialization', 'Room', 'Survey'];
+
   futureAppointments!: MatTableDataSource<IAppointment>;
   finishedAppointments!: MatTableDataSource<IFinishedAppointment>;
   canceledAppointments!: MatTableDataSource<IAppointment>;
   message!: String;
   imagePath!: any;
-  patientId!:number;
+  patientId!: number;
   constructor(
     private _sanitizer: DomSanitizer,
     private snackBar: MatSnackBar,
@@ -38,8 +38,8 @@ export class PatientMedicalRecordComponent implements OnInit {
   ) {
 
     this.futureAppointments = new MatTableDataSource<IAppointment>();
-    this.finishedAppointments = new  MatTableDataSource<IFinishedAppointment>();
-    this.canceledAppointments = new  MatTableDataSource<IAppointment>();
+    this.finishedAppointments = new MatTableDataSource<IFinishedAppointment>();
+    this.canceledAppointments = new MatTableDataSource<IAppointment>();
     this.sub = this._service.get().subscribe({
       next: (patient: IPatient) => {
         this.patient = patient;
@@ -54,7 +54,7 @@ export class PatientMedicalRecordComponent implements OnInit {
     this.sub = this._service.get().subscribe({
       next: (patient: IPatient) => {
         this.patient = patient;
-         
+
       },
     });
     this.patientId = 1;

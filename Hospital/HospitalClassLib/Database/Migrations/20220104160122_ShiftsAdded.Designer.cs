@@ -3,15 +3,17 @@ using System;
 using Hospital.Database.EfStructures;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Hospital.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220104160122_ShiftsAdded")]
+    partial class ShiftsAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -989,13 +991,6 @@ namespace Hospital.Migrations
                         .IsUnique();
 
                     b.HasDiscriminator().HasValue("Patient");
-                });
-
-            modelBuilder.Entity("Hospital.SharedModel.Model.Manager", b =>
-                {
-                    b.HasBaseType("Hospital.SharedModel.Model.User");
-
-                    b.HasDiscriminator().HasValue("Manager");
                 });
 
             modelBuilder.Entity("Hospital.SharedModel.Model.Staff", b =>

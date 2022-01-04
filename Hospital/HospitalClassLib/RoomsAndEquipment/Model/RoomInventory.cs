@@ -44,6 +44,13 @@ namespace Hospital.RoomsAndEquipment.Model
             Amount = amount;
         }
 
+        public RoomInventory(int roomId, int inventoryItemId, int amount)
+        {
+            RoomId = roomId;
+            InventoryItemId = inventoryItemId;
+            Amount = amount;
+        }
+
         private void Validate()
         {
             if (double.IsNegative(Amount))

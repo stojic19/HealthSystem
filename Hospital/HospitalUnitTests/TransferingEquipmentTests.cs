@@ -141,8 +141,15 @@ namespace HospitalUnitTests
                 }
 
             });
+            InventoryItem newItem = new InventoryItem()
+            {
+                Id = 2,
+                Name = "Test item"
+            };
+            Context.InventoryItems.Add(newItem);
+
             Context.RoomInventories.Add(new RoomInventory(1, 1, 1, 3));
-            Context.RoomInventories.Add(new RoomInventory(2, 2, 1, 3));
+            Context.RoomInventories.Add(new RoomInventory(2, 2, 2, 3));
             Context.SaveChanges();
 
             var transferingService = new TransferingEquipmentService(UoW);
@@ -151,11 +158,11 @@ namespace HospitalUnitTests
             var initialRoomInventory = UoW.GetRepository<IRoomInventoryReadRepository>()
                 .GetById(1);
             var destinationRoomInventory = UoW.GetRepository<IRoomInventoryReadRepository>()
-               .GetById(2);
+               .GetById(3);
 
             initialRoomInventory.ShouldBeNull();
             destinationRoomInventory.ShouldNotBeNull();
-            destinationRoomInventory.Amount.ShouldBe(6);
+            destinationRoomInventory.Amount.ShouldBe(3);
         }
     }
 }

@@ -42,6 +42,15 @@ namespace Hospital.SharedModel.Model
                 .Select(x => x != null ? x.GetHashCode() : 0)
                 .Aggregate((x, y) => x ^ y);
         }
-        // Other utility methods
+
+        public static bool operator ==(ValueObject one, ValueObject two)
+        {
+            return one?.Equals(two) ?? false;
+        }
+
+        public static bool operator !=(ValueObject one, ValueObject two)
+        {
+            return !(one?.Equals(two) ?? false);
+        }
     }
 }

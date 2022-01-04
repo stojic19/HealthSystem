@@ -19,7 +19,27 @@ namespace Hospital.Migrations
                 .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-            modelBuilder.Entity("DoctorOnCallDuty", b =>
+            modelBuilder.Entity("Hospital.EventStoring.Model.StoredEvent", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("StateData")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Time")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StoredEvent", "EventStoring");
+                });
+
+            modelBuilder.Entity("Hospital.GraphicalEditor.Model.RoomPosition", b =>
                 {
                     b.Property<int>("DoctorsOnDutyId")
                         .HasColumnType("integer");

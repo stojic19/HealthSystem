@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Autofac;
 using System.Reflection;
 using Autofac.Extensions.DependencyInjection;
@@ -67,8 +68,19 @@ namespace HospitalApi
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "HospitalApi", Version = "v1" });
             });
-            var builder = new ContainerBuilder();
-            builder.RegisterModule(new DbModule());
+
+            services.AddDbContextPool<AppDbContext>(options =>
+            {
+                var connectionString = Environment.GetEnvironmentVariable("HOSPITAL_DB_PATH");
+                options.UseNpgsql(connectionString);
+                using (var context = new AppDbContext((DbContextOptions<AppDbContext>)options.Options))
+                {
+                    if (context.Database.GetPendingMigrations().Any())
+                    {
+                        context.Database.Migrate();
+                    }
+                }
+            });
 
             services.AddIdentity<User, IdentityRole<int>>(options =>
                 {
@@ -99,8 +111,9 @@ namespace HospitalApi
             });
             services.AddScoped<IPatientSurveyService, PatientSurveyService>();
             services.AddScoped<IScheduledEventService, ScheduledEventService>();
-            services.AddScoped<ISurveyService, SurveyService>();
-           
+       
+
+            var builder = new ContainerBuilder();
 
             builder.RegisterModule(new RepositoryModule()
             {

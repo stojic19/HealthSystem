@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 import { RoomInventory } from '../model/room-inventory.model';
 import { RoomInventoriesService } from '../services/room-inventories.service';
 
@@ -18,6 +19,7 @@ export class HospitalEquipmentComponent implements OnInit {
   selectedItem = new RoomInventory();
   itemSelected = false;
   isLoading = true;
+  isProd: boolean = environment.production;
 
   ngOnInit(): void {
     this.roomInventoryService
@@ -47,13 +49,13 @@ export class HospitalEquipmentComponent implements OnInit {
     if (this.selectedItem.room.buildingName == 'Building 1') {
       console.log(this.selectedItem.room.floorNumber);
       this.router.navigate([
-        '/firstBuilding',
+        this.isProd ? '/manager/firstBuilding' : '/firstBuilding',
         this.selectedItem.room.name,
         this.selectedItem.room.floorNumber,
       ]);
     } else {
       this.router.navigate([
-        '/secondBuilding',
+        this.isProd ? '/manager/secondBuilding' : '/secondBuilding',
         this.selectedItem.room.name,
         this.selectedItem.room.floorNumber,
       ]);
@@ -66,6 +68,6 @@ export class HospitalEquipmentComponent implements OnInit {
   }
 
   moveSelectedItem(item: RoomInventory) {
-    this.router.navigate(['/moveEquipment', item.id]);
+    this.router.navigate([this.isProd ? '/manager/moveEquipment' : '/moveEquipment', item.id]);
   }
 }

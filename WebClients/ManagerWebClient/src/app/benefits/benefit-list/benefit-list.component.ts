@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { BenefitsService } from 'src/app/services/benefits.service';
 import { PharmacyService } from 'src/app/services/pharmacy.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-benefit-list',
@@ -10,6 +11,8 @@ import { PharmacyService } from 'src/app/services/pharmacy.service';
   styleUrls: ['./benefit-list.component.css']
 })
 export class BenefitListComponent implements OnInit {
+
+    isProd: boolean = environment.production;
 
   constructor(private _benefitsService: BenefitsService, private _pharmaciesService: PharmacyService) { 
     this._pharmaciesService.getPharmacies()

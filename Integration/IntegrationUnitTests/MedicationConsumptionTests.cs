@@ -35,13 +35,13 @@ namespace IntegrationUnitTests
         {
             List<object[]> retVal = new List<object[]>();
             retVal.Add(new object[]
-                {new TimeRange {startDate = new DateTime(2021, 9, 1), endDate = new DateTime(2021, 10, 1)}, 3});
+                {new TimeRange (new DateTime(2021, 9, 1), new DateTime(2021, 10, 1)), 3});
             retVal.Add(new object[]
-                {new TimeRange {startDate = new DateTime(2020, 9, 1), endDate = new DateTime(2021, 11, 1)}, 5});
+                {new TimeRange (new DateTime(2020, 9, 1), new DateTime(2021, 11, 1)), 5});
             retVal.Add(new object[]
-                {new TimeRange {startDate = new DateTime(2021, 10, 1), endDate = new DateTime(2021, 11, 1)}, 1});
+                {new TimeRange (new DateTime(2021, 10, 1),new DateTime(2021, 11, 1)), 1});
             retVal.Add(new object[]
-                {new TimeRange {startDate = new DateTime(2021, 11, 1), endDate = new DateTime(2021, 12, 1)}, 1});
+                {new TimeRange (new DateTime(2021, 11, 1), new DateTime(2021, 12, 1)), 1});
             return retVal;
         }
 
@@ -58,7 +58,7 @@ namespace IntegrationUnitTests
         public void Create_medication_report(TimeRange timeRange, int shouldBe)
         {
             TimeRange september = new TimeRange
-                {startDate = new DateTime(2021, 9, 1), endDate = new DateTime(2021, 10, 1)};
+                (new DateTime(2021, 9, 1), new DateTime(2021, 10, 1));
             MedicineConsumptionMasterService service = new MedicineConsumptionMasterService(UoW);
             MedicineConsumptionReport report = service.CreateConsumptionReportInTimeRange(timeRange);
             report.MedicineConsumptions.Count().ShouldBe(shouldBe);
@@ -66,11 +66,11 @@ namespace IntegrationUnitTests
         public static IEnumerable<object[]> GetTimeRanges()
         {
             TimeRange september = new TimeRange
-                { startDate = new DateTime(2021, 9, 1), endDate = new DateTime(2021, 10, 1) };
+                (new DateTime(2021, 9, 1), new DateTime(2021, 10, 1) );
             TimeRange november = new TimeRange
-                { startDate = new DateTime(2021, 11, 1), endDate = new DateTime(2021, 12, 1) };
-            TimeRange december = new TimeRange() 
-                { startDate = new DateTime(2021, 12, 1), endDate = new DateTime(2022, 1, 1) };
+                (new DateTime(2021, 11, 1), new DateTime(2021, 12, 1));
+            TimeRange december = new TimeRange
+                (new DateTime(2021, 12, 1), new DateTime(2022, 1, 1));
             List<object[]> retVal = new List<object[]>();
             retVal.Add(new object[] {september, 3});
             retVal.Add(new object[] {november, 1});

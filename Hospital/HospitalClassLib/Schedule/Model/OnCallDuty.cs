@@ -9,7 +9,7 @@ namespace Hospital.Schedule.Model
 {
     public class OnCallDuty
     {
-        public int Id { get; set; }
+        public int Id { get; private set; }
         public int Month { get; private set; }
         public int Week { get; private set; }
         public ICollection<Doctor> DoctorsOnDuty { get; private set; }

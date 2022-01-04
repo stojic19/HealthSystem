@@ -38,20 +38,9 @@ namespace HospitalApi.Controllers
             transferingService.StartEquipmentTransferEvent();
             var roomInventoryRepo = _uow.GetRepository<IRoomInventoryReadRepository>();
             return Ok(
-            roomInventoryRepo.GetAll().Select(ri => new RoomInventory()
-            {
-                Id = ri.Id,
-                Amount = ri.Amount,
-                InventoryItemId = ri.InventoryItemId,
-                RoomId = ri.RoomId,
-                InventoryItem = new InventoryItem()
-                {
-                    Id = ri.InventoryItem.Id,
-                    InventoryItemType = ri.InventoryItem.InventoryItemType,
-                    Name = ri.InventoryItem.Name
-                }
-            }
-            ).Where(roomInventory => roomInventory.RoomId == roomId));
+            roomInventoryRepo.GetAll()
+                             .Include(r => r.Room)
+                             .Where(roomInventory => roomInventory.RoomId == roomId));
         }
 
         [Authorize(Roles = "Manager")]
@@ -62,25 +51,9 @@ namespace HospitalApi.Controllers
             transferingService.StartEquipmentTransferEvent();
             var roomInventoryRepo = _uow.GetRepository<IRoomInventoryReadRepository>();
             return Ok(
-            roomInventoryRepo.GetAll().Select(ri => new RoomInventory()
-            {
-                Id = ri.Id,
-                Amount = ri.Amount,
-                InventoryItemId = ri.InventoryItemId,
-                Room = new Room()
-                {
-                    Name = ri.Room.Name,
-                    BuildingName = ri.Room.BuildingName,
-                    FloorNumber = ri.Room.FloorNumber
-                },
-                InventoryItem = new InventoryItem()
-                {
-                    Id = ri.InventoryItem.Id,
-                    InventoryItemType = ri.InventoryItem.InventoryItemType,
-                    Name = ri.InventoryItem.Name
-                }
-            }
-            ));
+            roomInventoryRepo.GetAll()
+                             .Include(r => r.Room)
+                             .Include(r => r.InventoryItem));
         }
 
         [Authorize(Roles = "Manager")]
@@ -92,25 +65,11 @@ namespace HospitalApi.Controllers
             {
                 return BadRequest();
             }
-            return Ok(roomInventoryRepo.GetAll().Select(ri => new RoomInventory()
-            {
-                Id = ri.Id,
-                Amount = ri.Amount,
-                InventoryItemId = ri.InventoryItemId,
-                Room = new Room()
-                {
-                    Name = ri.Room.Name,
-                    BuildingName = ri.Room.BuildingName,
-                    FloorNumber = ri.Room.FloorNumber
-                },
-                InventoryItem = new InventoryItem()
-                {
-                    Id = ri.InventoryItem.Id,
-                    InventoryItemType = ri.InventoryItem.InventoryItemType,
-                    Name = ri.InventoryItem.Name
-                }
-            }
-            ).Where(ri => ri.InventoryItem.Name.ToLower().Contains(inventoryItemName.ToLower())));
+            return Ok(roomInventoryRepo.GetAll()
+                                       .Include(r => r.Room)
+                                       .Include(r => r.InventoryItem)
+                                       .Where(ri => ri.InventoryItem.Name.ToLower()
+                                       .Contains(inventoryItemName.ToLower())));
         }
 
         [Authorize(Roles = "Manager")]
@@ -119,25 +78,10 @@ namespace HospitalApi.Controllers
         {
             var repo = _uow.GetRepository<IRoomInventoryReadRepository>();
 
-            return Ok(repo.GetAll().Include(x => x.Room).Include(x => x.InventoryItem).Select(ri => new RoomInventory()
-            {
-                Id = ri.Id,
-                Amount = ri.Amount,
-                InventoryItemId = ri.InventoryItemId,
-                RoomId = ri.RoomId,
-                Room = new Room()
-                {
-                    Name = ri.Room.Name,
-                    BuildingName = ri.Room.BuildingName
-                },
-                InventoryItem = new InventoryItem()
-                {
-                    Id = ri.InventoryItem.Id,
-                    InventoryItemType = ri.InventoryItem.InventoryItemType,
-                    Name = ri.InventoryItem.Name
-                }
-            }
-            ).Where(ri => ri.Id == id));
+            return Ok(repo.GetAll()
+                          .Include(x => x.Room)
+                          .Include(x => x.InventoryItem)
+                          .Where(ri => ri.Id == id));
         }
 
         [Authorize(Roles = "Manager")]
@@ -147,7 +91,8 @@ namespace HospitalApi.Controllers
             var roomInventoryRepo = _uow.GetRepository<IRoomInventoryReadRepository>();
             IEnumerable<RoomInventory> roomInventories = new List<RoomInventory>();
 
-            roomInventories = roomInventoryRepo.GetAll().Where(ri => ri.RoomId == roomId && ri.InventoryItemId == itemId);
+            roomInventories = roomInventoryRepo.GetAll()
+                .Where(ri => ri.RoomId == roomId && ri.InventoryItemId == itemId);
 
             if (roomInventories.Count() == 0)
             {

@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace Hospital.Schedule.Model
 {
-    public class DoctorsScheduleReport : ValueObject
+    public class DoctorsScheduleReport
     {
-        public int NumOfAppointments { get; private set; }
-        public int NumOfOnCallShifts { get; private set; }
-        public int NumOfPatients { get; private set; }
-        public DateTime StartTime { get; private set; }
-        public DateTime EndTime { get; private set; }
+        public int NumOfAppointments { get; set; }
+        public int NumOfOnCallShifts { get; set; }
+        public int NumOfPatients { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
 
         public DoctorsScheduleReport() { }
 
@@ -25,20 +25,6 @@ namespace Hospital.Schedule.Model
             NumOfPatients = numOfPatients;
             StartTime = startTime;
             EndTime = endTime;
-            Validate();
-        }
-
-        private void Validate()
-        {
-            if (double.IsNegative(NumOfAppointments) || double.IsNegative(NumOfOnCallShifts) || double.IsNegative(NumOfPatients) || DateTime.Compare(this.EndTime, this.StartTime) < 0)
-                throw new Exception("Not Valid");
-        }
-
-        protected override IEnumerable<object> GetEqualityComponents()
-        {
-            yield return NumOfAppointments;
-            yield return NumOfOnCallShifts;
-            yield return NumOfPatients;
         }
     }
 }

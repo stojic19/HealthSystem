@@ -75,11 +75,7 @@ namespace HospitalApi.Controllers
         public IEnumerable<TimePeriodDTO> GetAvailableTerms(AvailableTermDTO availableTermsDTO)
         {
             var availableTermsService = new AvailableTermsService(_uow);
-            var timePeriod = new TimePeriod()
-            {
-                StartTime = availableTermsDTO.StartDate,
-                EndTime = availableTermsDTO.EndDate
-            };
+            var timePeriod = new TimePeriod(availableTermsDTO.StartDate, availableTermsDTO.EndDate);
 
             var terms = availableTermsService.GetAvailableTerms(timePeriod, availableTermsDTO.InitialRoomId, availableTermsDTO.DestinationRoomId, availableTermsDTO.Duration);
             var availableTerms = new List<TimePeriodDTO>();

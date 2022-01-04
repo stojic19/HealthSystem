@@ -3,15 +3,17 @@ using System;
 using Hospital.Database.EfStructures;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Hospital.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220104204825_DoctorUpdated")]
+    partial class DoctorUpdated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,27 +21,7 @@ namespace Hospital.Migrations
                 .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-            modelBuilder.Entity("Hospital.EventStoring.Model.StoredEvent", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("StateData")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Time")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("StoredEvent", "EventStoring");
-                });
-
-            modelBuilder.Entity("Hospital.GraphicalEditor.Model.RoomPosition", b =>
+            modelBuilder.Entity("DoctorOnCallDuty", b =>
                 {
                     b.Property<int>("DoctorsOnDutyId")
                         .HasColumnType("integer");
@@ -1009,13 +991,6 @@ namespace Hospital.Migrations
                         .IsUnique();
 
                     b.HasDiscriminator().HasValue("Patient");
-                });
-
-            modelBuilder.Entity("Hospital.SharedModel.Model.Manager", b =>
-                {
-                    b.HasBaseType("Hospital.SharedModel.Model.User");
-
-                    b.HasDiscriminator().HasValue("Manager");
                 });
 
             modelBuilder.Entity("Hospital.SharedModel.Model.Staff", b =>

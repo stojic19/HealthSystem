@@ -28,6 +28,7 @@ namespace Integration.Tendering.Service
         private List<int> _pharmacyIds;
         private Thread _thread;
         private readonly List<EventingBasicConsumer> consumers;
+        private bool runThread;
 
         public NewTenderOfferRabbitMQService(IUnitOfWork unitOfWork)
         {
@@ -36,6 +37,7 @@ namespace Integration.Tendering.Service
             _queueNames = new List<string>();
             _pharmacyIds = new List<int>();
             consumers = new List<EventingBasicConsumer>();
+            runThread = true;
             InitRabbitMQ();
             _thread = new Thread(ChannelThreads);
             _thread.Start();
@@ -43,7 +45,7 @@ namespace Integration.Tendering.Service
 
         private void ChannelThreads()
         {
-            while (true)
+            while (runThread)
             {
                 var pharmacies = _uow.GetRepository<IPharmacyReadRepository>().GetAll().ToList();
                 foreach (var pharmacy in pharmacies)
@@ -177,6 +179,7 @@ namespace Integration.Tendering.Service
                 channel.Close();
             }
             _connection.Close();
+            runThread = false;
             base.Dispose();
         }
     }

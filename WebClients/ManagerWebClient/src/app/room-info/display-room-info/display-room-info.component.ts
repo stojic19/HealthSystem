@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Room } from 'src/app/interfaces/room';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-display-room-info',
@@ -14,6 +15,8 @@ export class DisplayRoomInfoComponent implements OnInit {
   messageToEmit = new EventEmitter<boolean>();
   constructor(private router: Router) {}
 
+  isProd: boolean = environment.production;
+
   ngOnInit(): void {}
 
   startEditing() {
@@ -21,10 +24,10 @@ export class DisplayRoomInfoComponent implements OnInit {
   }
 
   showRoomInventory(idR: number) {
-    this.router.navigate(['/roomInventory', idR]);
+    this.router.navigate([this.isProd ? '/manager/roomInventory' : '/roomInventory', idR]);
   }
 
   showRoomSchedule(id: number) {
-    this.router.navigate(['/schedule', id]);
+    this.router.navigate([this.isProd ? '/manager/schedule' : '/schedule', id]);
   }
 }

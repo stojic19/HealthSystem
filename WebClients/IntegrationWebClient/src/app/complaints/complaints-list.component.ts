@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { ComplaintsService } from './complaints.service';
 
 @Component({
@@ -15,6 +16,7 @@ export class ComplaintsListComponent implements OnInit {
   SearchString:string="";
   nonFilteredComplaints:any=[];
   isAnswered:string="All";
+  isProd: boolean= environment.production;
 
   ngOnInit(): void {
 

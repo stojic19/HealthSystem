@@ -33,7 +33,7 @@ namespace PharmacyApi.Controllers
                 benefit = UoW.GetRepository<IBenefitReadRepository>()
                     .GetById(dto.BenefitId);
 
-                var factory = new ConnectionFactory() {HostName = "localhost"};
+                var factory = new ConnectionFactory() {HostName = Environment.GetEnvironmentVariable("RABBITMQ_HOST")}; //localhost
                 using (var connection = factory.CreateConnection())
                 using (var channel = connection.CreateModel())
                 {

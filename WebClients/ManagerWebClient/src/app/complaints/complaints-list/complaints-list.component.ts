@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ComplaintsService } from 'src/app/services/complaints.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-complaints-list',
@@ -8,6 +9,7 @@ import { ComplaintsService } from 'src/app/services/complaints.service';
 })
 export class ComplaintsListComponent implements OnInit {
   
+    isProd: boolean = environment.production;
 
   constructor(private _complaintsService: ComplaintsService) { }
 

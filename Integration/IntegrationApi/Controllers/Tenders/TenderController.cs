@@ -123,7 +123,8 @@ namespace IntegrationAPI.Controllers.Tenders
         public IActionResult ChooseWinningOffer(WinningOfferDto dto)
         {
             var tender = _uow.GetRepository<ITenderReadRepository>().GetAll().Where(t => t.Id == dto.TenderId)
-                .Include(t => t.TenderOffers).ThenInclude(to => to.Pharmacy).FirstOrDefault();
+                .Include(t => t.TenderOffers).ThenInclude(to => to.Pharmacy).FirstOrDefault(); 
+            if (tender == null) return NotFound("Tender does not exist");
             if (!tender.IsActive()) return BadRequest("Tender already closed!");
             var winningOffer = tender.TenderOffers.FirstOrDefault(t => t.Id == dto.TenderOfferId);
             if(winningOffer == null) return BadRequest("Invalid tender offer!");

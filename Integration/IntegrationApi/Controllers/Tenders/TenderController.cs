@@ -9,14 +9,17 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Integration.Pharmacies.Model;
 using Integration.Pharmacies.Repository;
+using IntegrationAPI.HttpRequestSenders;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using RestSharp;
 
 namespace IntegrationAPI.Controllers.Tenders
 {
@@ -25,10 +28,12 @@ namespace IntegrationAPI.Controllers.Tenders
     public class TenderController : ControllerBase
     {
         private readonly IUnitOfWork _uow;
+        private readonly IHttpRequestSender _requestSender;
 
-        public TenderController(IUnitOfWork uow)
+        public TenderController(IUnitOfWork uow, IHttpRequestSender requestSender)
         {
             _uow = uow;
+            _requestSender = requestSender;
         }
 
         [HttpPost, Produces("application/json")]
@@ -176,6 +181,22 @@ namespace IntegrationAPI.Controllers.Tenders
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error while sending closed tender via rabbitmq!");
             }
+            return Ok();
+        }
+
+        [HttpPost]
+        public IActionResult ExecuteTenderProcurement(TenderProcurementDTO tenderProcurementDto)
+        {
+            var pharmacy = _uow.GetRepository<IPharmacyReadRepository>().GetAll().FirstOrDefault(p => p.ApiKey == tenderProcurementDto.ApiKey);
+            if (pharmacy == null) return NotFound("Pharmacy not registered in hospital");
+
+            string targetUrl = "https://localhost:44303/api/Medication/AddMedicineTender";
+            IRestResponse response = _requestSender.Post(targetUrl, tenderProcurementDto);
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                return BadRequest("Hospital could not add received medicine");
+            }
+
             return Ok();
         }
 

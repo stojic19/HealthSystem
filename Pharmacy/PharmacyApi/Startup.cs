@@ -23,6 +23,8 @@ using Pharmacy.Repositories.DbImplementation;
 using Pharmacy.Services;
 using PharmacyApi.ConfigurationMappers;
 using PharmacyApi.GrpcServices;
+using PharmacyApi.HttpRequestSenders;
+using PharmacyApi.HttpRequestSenders.Implementation;
 using PharmacyApi.Protos;
 
 namespace PharmacyApi
@@ -95,6 +97,7 @@ namespace PharmacyApi
 
             }); 
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
+            builder.RegisterType<HttpRequestSender>().As<IHttpRequestSender>();
             builder.Populate(services);
             var container = builder.Build();
 

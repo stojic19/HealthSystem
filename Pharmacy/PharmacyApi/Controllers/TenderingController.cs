@@ -35,12 +35,13 @@ namespace PharmacyApi.Controllers
 
         //http zahtev -- confirmtenderoffer -- kad prodje metoda, poslati httpzahtev za predaju obecanih lekova
 
-        public TenderingController(IUnitOfWork uow, PharmacyDetails details) : base(uow, details)
+        public TenderingController(IUnitOfWork uow, PharmacyDetails details, IHttpRequestSender requestSender) : base(uow, details)
         {
             _tenderOffersService = new TenderOffersService(uow);
             _uow = uow;
             //FOR INTEGRATION TO SET ON NEXT SPRINT!
             _integrationEndPoint = "";
+            _httpRequestSender = requestSender;
         }
 
         [HttpPost]
@@ -107,7 +108,51 @@ namespace PharmacyApi.Controllers
             catch (UnauthorizedAccessException exception) { return Unauthorized(exception.Message); }
             catch (TenderAlreadyEnabledException exception) { return BadRequest(exception.Message); }
 
+            TenderOffer tenderOffer = _uow.GetRepository<ITenderOfferReadRepository>().GetAll().Include(x => x.Tender).ThenInclude(x => x.Hospital).FirstOrDefault(tender => tender.Id == tenderOfferId);
+            TenderProcurementDTO tenderProcurementDTO = CreateTenderProcurementDTO(tenderOffer);
+            var response = _httpRequestSender.Post(tenderOffer.Tender.Hospital.BaseUrl + "/api/Tender/ExecuteTenderProcurement", tenderProcurementDTO);
+            if (response.StatusCode != System.Net.HttpStatusCode.OK) return BadRequest("Unable to reach integration API!");
             return Ok("Tender offer succesfully confirmed!");
+        }
+
+        private TenderProcurementDTO CreateTenderProcurementDTO(TenderOffer tenderOffer)
+        {
+            List<TenderMedicineDTO> tenderMedicineDtos = new List<TenderMedicineDTO>();
+            foreach (MedicationRequest medReq in tenderOffer.MedicationRequests)
+            {
+                Medicine medicine = _uow.GetRepository<IMedicineReadRepository>().GetMedicineByName(medReq.MedicineName);
+                List<string> substances = new List<string>();
+                foreach (var substance in medicine.Substances)
+                {
+                    substances.Add(substance.Name);
+                }
+
+                tenderMedicineDtos.Add(
+                    new TenderMedicineDTO
+                    {
+                        Medicine = new MedicineDTO
+                        {
+                            Name = medicine.Name,
+                            Manufacturer = medicine.Manufacturer.Name,
+                            SideEffects = medicine.SideEffects,
+                            Reactions = medicine.Reactions,
+                            Precautions = medicine.Precautions,
+                            MedicinePotentialDangers = medicine.MedicinePotentialDangers,
+                            Substances = substances,
+                            Type = medicine.Type,
+                            Usage = medicine.Usage,
+                            WeightInMilligrams = medicine.WeightInMilligrams
+                        },
+                        Quantity = medReq.Quantity
+                    });
+            }
+
+            TenderProcurementDTO tenderProcurementDto = new TenderProcurementDTO
+            {
+                ApiKey = tenderOffer.Tender.Hospital.ApiKey,
+                Medications = tenderMedicineDtos
+            };
+            return tenderProcurementDto;
         }
 
         private ApplyTenderOfferDTO CreateApplyTenderDto(int tenderOfferId,double price)

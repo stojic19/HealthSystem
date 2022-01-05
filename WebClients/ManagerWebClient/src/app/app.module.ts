@@ -70,6 +70,7 @@ import { TimeInfoComponent } from './renovation-form/time-info/time-info.compone
 import { FirstRoomInfoComponent } from './renovation-form/first-room-info/first-room-info.component';
 import { SecondRoomInfoComponent } from './renovation-form/second-room-info/second-room-info.component';
 import { AvailableTermsComponent } from './renovation-form/available-terms/available-terms.component';
+import { AddTenderComponent } from './tendering/add-tender/add-tender.component';
 
 @NgModule({
   declarations: [
@@ -125,7 +126,7 @@ import { AvailableTermsComponent } from './renovation-form/available-terms/avail
     FirstRoomInfoComponent,
     SecondRoomInfoComponent,
     AvailableTermsComponent,
-
+    AddTenderComponent
   ],
   imports: [
     BrowserModule,

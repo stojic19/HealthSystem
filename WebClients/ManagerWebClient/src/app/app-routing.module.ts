@@ -28,6 +28,7 @@ import { PharmacyProfileComponent } from './pharmacies/pharmacy-profile/pharmacy
 import { RenovationFormComponent } from './renovation-form/renovation-form.component';
 import { RoomScheduleComponent } from './room-schedule/room-schedule.component';
 import { MaliciousPatientsComponent } from './components/malicious-patients/malicious-patients.component';
+import { AddTenderComponent } from './tendering/add-tender/add-tender.component';
 
 import { environment } from 'src/environments/environment';
 
@@ -71,6 +72,7 @@ const routes: Routes = [
   { path: _isProd? 'manager/moveEquipment/:id' : 'moveEquipment/:id', component: EquipmentFormComponent },
   { path: _isProd? 'manager/surveys' : 'surveys', component: SurveysObserveComponent },
   { path: _isProd? 'manager/schedule/:id' : 'schedule/:id', component: RoomScheduleComponent },
+  { path: _isProd? 'manager/add-tender' : 'add-tender', component: AddTenderComponent },
 ];
 
 @NgModule({

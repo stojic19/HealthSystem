@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { TenderingService } from 'src/app/services/tendering.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-add-tender',
@@ -12,13 +14,13 @@ export class AddTenderComponent implements OnInit {
   SearchString: string = "";
   MedicineString: string = "";
   QuantityString: string = "";
-  EditMedicineString: string = "";
-  EditQuantityString: string = "";
   TenderNameString: string = "";
   nonFilteredMedicines: any = [];
-  ModalHidden: boolean = true;
-  ModalButton: HTMLElement = document.getElementById("openModalButton") as HTMLElement;
-  constructor() { }
+  EditMedicineString: string = "";
+  EditQuantityString: string = "";
+  EditedMedicineName: string = "";
+
+  constructor(private _tenderingService: TenderingService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
 
@@ -45,22 +47,64 @@ export class AddTenderComponent implements OnInit {
     this.nonFilteredMedicines = [];
   }
 
-  Edit(name: any){
-    let element: HTMLElement = document.getElementById("openModalButton") as HTMLElement;
-    console.log(name);
+  Edit(name: any, quantity: any){
+    this.EditedMedicineName = name;
+    this.EditMedicineString = name;
+    this.EditQuantityString = quantity;
+  }
+
+  Save(){
+    if(this.EditMedicineString === "" || this.EditMedicineString == null)
+    {
+      this.toastr.error("Enter valid medicine name!", "Error!");
+      return;
+    }
+    if(this.EditQuantityString === "" || this.EditQuantityString == null || isNaN(Number(this.QuantityString)))
+    {
+      this.toastr.error("Enter valid medicine quantity!", "Error!");
+      return;
+    }
+    var quantity = Number(this.QuantityString)
+    if(quantity < 1)
+    {
+      this.toastr.error("Enter valid medicine quantity!", "Error!");
+      return;
+    }
     for(var i = 0; i < this.nonFilteredMedicines.length; i++){
-      console.log(this.nonFilteredMedicines[i].name);
-      if(this.nonFilteredMedicines[i].name === name){
-          this.EditMedicineString = this.MedicineString;
-          this.EditQuantityString = this.EditQuantityString;
-          this.ModalButton.click();
+      if(this.nonFilteredMedicines[i].name === this.MedicineString && this.nonFilteredMedicines[i].name != this.EditedMedicineName){     
+        this.toastr.error("Enter unique medicine name!", "Error!");
+        return;
+      }
+    }
+    for(var i = 0; i < this.nonFilteredMedicines.length; i++){
+      if(this.nonFilteredMedicines[i].name === this.EditedMedicineName){     
+        this.nonFilteredMedicines[i].name = this.EditMedicineString;
+        this.nonFilteredMedicines[i].quantity = this.EditQuantityString;
+        this.toastr.success("Medicine data updated successfully!", "Success!");
       }
     }
   }
 
   Add(){
+    if(this.MedicineString === "" || this.MedicineString == null)
+    {
+      this.toastr.error("Enter valid medicine name!", "Error!");
+      return;
+    }
+    if(this.QuantityString === "" || this.QuantityString == null || isNaN(Number(this.QuantityString)))
+    {
+      this.toastr.error("Enter valid medicine quantity!", "Error!");
+      return;
+    }
+    var quantity = Number(this.QuantityString)
+    if(quantity < 1)
+    {
+      this.toastr.error("Enter valid medicine quantity!", "Error!");
+      return;
+    }
     for(var i = 0; i < this.nonFilteredMedicines.length; i++){
       if(this.nonFilteredMedicines[i].name === this.MedicineString){     
+        this.toastr.error("Enter unique medicine name!", "Error!");
         return;
       }
     }
@@ -69,13 +113,12 @@ export class AddTenderComponent implements OnInit {
     this.nonFilteredMedicines.push(medicine);
     this.MedicineString = "";
     this.QuantityString = "";
+    this.toastr.success("Medicine succesfully added!", "Success!");
   }
 
   Delete(name: any){
-    console.log(name);
     let nonFilteredMedicinesTemp = [] as  any
     for(var i = 0; i < this.nonFilteredMedicines.length; i++){
-      console.log(this.nonFilteredMedicines[i].name)
       if(this.nonFilteredMedicines[i].name !== name){
         nonFilteredMedicinesTemp.push(this.nonFilteredMedicines[i]);
       }
@@ -88,9 +131,34 @@ export class AddTenderComponent implements OnInit {
     }
     this.medicines = medicinesTemp;
     this.nonFilteredMedicines = nonFilteredMedicinesTemp;
+    this.toastr.success("Medicine succesfully deleted!", "Success!");
   }
 
-  CreateTender(){
-
+  CreateTender(end: HTMLInputElement){
+    if(this.TenderNameString === "" || this.TenderNameString == null)
+    {
+      this.toastr.error("Enter valid tender name!", "Error!");
+      return;
+    }
+    if(this.nonFilteredMedicines.length < 1)
+    {
+      this.toastr.error("You must add at least one medicine!", "Error!");
+      return;
+    }
+    var endDate;
+    if(end.value !== "")
+    {
+      endDate = new Date(end.value);
+    }
+    var request = 
+    {
+      name : this.TenderNameString,
+      endDate : endDate,
+      medicineRequests : this.nonFilteredMedicines
+    }
+    this._tenderingService.createTender(request).subscribe(res =>
+      {
+        this.toastr.success(res.toString());
+      },(error) => this.toastr.error(error.error));
   }
 }

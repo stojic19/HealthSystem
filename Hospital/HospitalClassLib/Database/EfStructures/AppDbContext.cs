@@ -38,6 +38,7 @@ namespace Hospital.Database.EfStructures
         public DbSet<EquipmentTransferEvent> EquipmentTransferEvents { get; set; }
         public DbSet<MedicationExpenditureLog> MedicationExpenditureLogs { get; set; }
         public DbSet<RoomRenovationEvent> RoomRenovationEvents { get; set; }
+        public DbSet<Manager> Managers { get; set; }
         public DbSet<OnCallDuty> OnCallDuties { get; set; }
         public DbSet<Shift> Shifts { get; set; }
 

@@ -69,7 +69,7 @@ namespace HospitalUnitTests
             Context.Rooms.Add(new Room()
             {
                 Id = 1,
-                Name = "Test room name",
+                Name = "Test room",
                 FloorNumber = 1,
                 BuildingName = "Test building"
             });

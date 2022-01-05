@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Hospital.EventStoring.Model;
+using Hospital.EventStoring.Repository;
 using Hospital.SharedModel.Repository.Base;
 using HospitalApi.DTOs;
 using Microsoft.AspNetCore.Mvc;
@@ -22,12 +24,22 @@ namespace HospitalApi.Controllers
         [HttpGet]
         public IActionResult GetAllEvents()
         {
-            return Ok();
+            var events = uow.GetRepository<IStoredEventReadRepository>().GetAll();
+            return Ok(events);
         }
 
         [HttpPost]
         public IActionResult AddEvent(EventDTO newEvent)
         {
+            var incomingEvent = new StoredEvent()
+            {
+                StateData = newEvent.StateData,
+                Time = DateTime.Now,
+                UserId = newEvent.UserId
+            };
+
+            uow.GetRepository<IStoredEventWriteRepository>().Add(incomingEvent);
+
             return Ok();
         }
     }

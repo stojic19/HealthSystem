@@ -28,6 +28,8 @@ import { PharmacyProfileComponent } from './pharmacies/pharmacy-profile/pharmacy
 import { RenovationFormComponent } from './renovation-form/renovation-form.component';
 import { RoomScheduleComponent } from './room-schedule/room-schedule.component';
 import { MaliciousPatientsComponent } from './components/malicious-patients/malicious-patients.component';
+import { TendersListComponent } from './tenders/tenders-list.component';
+import { TenderProfileComponent } from './tenders/tender-profile/tender-profile.component';
 
 
 const routes: Routes = [
@@ -51,6 +53,8 @@ const routes: Routes = [
   { path: 'benefit-list', component: BenefitListComponent },
   { path: 'benefit/:id', component: BenefitDetailsComponent },
   { path: 'home', component: HomePageComponent },
+  { path: 'tenders', component: TendersListComponent},
+  { path: 'tender-profile/:id', component: TenderProfileComponent},
   {
     path: 'medication-consumption-report',
     component: MedicationReportsComponent,
@@ -68,7 +72,7 @@ const routes: Routes = [
   { path: 'surveys', component: SurveysObserveComponent},
   { path: 'roomRenovation', component: RenovationFormComponent},
   { path: 'schedule/:id', component: RoomScheduleComponent },
-  { path: 'blocking', component: MaliciousPatientsComponent},
+  { path: 'blocking', component: MaliciousPatientsComponent}
 ];
 
 @NgModule({

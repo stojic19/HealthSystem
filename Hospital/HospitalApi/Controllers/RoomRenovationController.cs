@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Hospital.GraphicalEditor.Repository;
 using Hospital.GraphicalEditor.Service;
 using Hospital.RoomsAndEquipment.Model;
 using Hospital.RoomsAndEquipment.Repository;
@@ -48,9 +47,7 @@ namespace HospitalApi.Controllers
                 return BadRequest();
             }
 
-            var roomPosition = _uow.GetRepository<IRoomPositionReadRepository>().GetByRoom(roomId);
-
-            return Ok(surroundingRoomsService.GetSurroundingRooms(roomPosition));
+            return Ok(surroundingRoomsService.GetSurroundingRooms(room));
         }
 
         [Authorize(Roles = "Manager")]
@@ -58,11 +55,7 @@ namespace HospitalApi.Controllers
         public IEnumerable<TimePeriodDTO> GetAvailableTerms(AvailableTermDTO availableTermsDTO)
         {
             var availableTermsService = new AvailableTermsService(_uow);
-            var timePeriod = new TimePeriod()
-            {
-                StartTime = availableTermsDTO.StartDate,
-                EndTime = availableTermsDTO.EndDate
-            };
+            var timePeriod = new TimePeriod(availableTermsDTO.StartDate, availableTermsDTO.EndDate);
 
             var terms = availableTermsService.GetAvailableTerms(timePeriod, availableTermsDTO.InitialRoomId, availableTermsDTO.DestinationRoomId, availableTermsDTO.Duration);
             var availableTerms = new List<TimePeriodDTO>();

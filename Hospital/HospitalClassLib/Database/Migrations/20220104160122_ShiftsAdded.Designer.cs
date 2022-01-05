@@ -3,15 +3,17 @@ using System;
 using Hospital.Database.EfStructures;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Hospital.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220104160122_ShiftsAdded")]
+    partial class ShiftsAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -991,13 +993,6 @@ namespace Hospital.Migrations
                     b.HasDiscriminator().HasValue("Patient");
                 });
 
-            modelBuilder.Entity("Hospital.SharedModel.Model.Manager", b =>
-                {
-                    b.HasBaseType("Hospital.SharedModel.Model.User");
-
-                    b.HasDiscriminator().HasValue("Manager");
-                });
-
             modelBuilder.Entity("Hospital.SharedModel.Model.Staff", b =>
                 {
                     b.HasBaseType("Hospital.SharedModel.Model.User");
@@ -1449,6 +1444,36 @@ namespace Hospital.Migrations
                         .WithMany()
                         .HasForeignKey("SpecializationId");
 
+                    b.OwnsOne("Hospital.Schedule.Model.DoctorsScheduleReport", "DoctorsScheduleReport", b1 =>
+                        {
+                            b1.Property<int>("DoctorId")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("integer")
+                                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                            b1.Property<DateTime>("EndTime")
+                                .HasColumnType("timestamp without time zone");
+
+                            b1.Property<int>("NumOfAppointments")
+                                .HasColumnType("integer");
+
+                            b1.Property<int>("NumOfOnCallShifts")
+                                .HasColumnType("integer");
+
+                            b1.Property<int>("NumOfPatients")
+                                .HasColumnType("integer");
+
+                            b1.Property<DateTime>("StartTime")
+                                .HasColumnType("timestamp without time zone");
+
+                            b1.HasKey("DoctorId");
+
+                            b1.ToTable("AspNetUsers");
+
+                            b1.WithOwner()
+                                .HasForeignKey("DoctorId");
+                        });
+
                     b.OwnsMany("Hospital.Schedule.Model.Vacation", "Vacations", b1 =>
                         {
                             b1.Property<int>("DoctorId")
@@ -1475,6 +1500,8 @@ namespace Hospital.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("DoctorId");
                         });
+
+                    b.Navigation("DoctorsScheduleReport");
 
                     b.Navigation("Room");
 

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { PharmacyService } from '../pharmacy/pharmacy.service';
 
 @Component({
@@ -13,6 +14,7 @@ export class PharmacyListComponent implements OnInit {
 
   SearchString:string="";
   nonFilteredPharmacies:any=[];
+  isProd: boolean = environment.production;
 
   ngOnInit(): void {
     this._pharmacyService.getPharmacies()

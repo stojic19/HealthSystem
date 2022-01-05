@@ -12,7 +12,7 @@ export class RoomsService {
 
   getRoomsByNameFirstBuilding(roomName: string) {
     return this.http.get(
-      `${environment.baseUrl}` + 'api/Room/FindByNameAndBuildingName',
+      `${environment.baseHospitalUrl}` + 'api/Room/FindByNameAndBuildingName',
       {
         params: {
           name: roomName,
@@ -24,7 +24,7 @@ export class RoomsService {
 
   getRoomsByNameSecondBuilding(roomName: string) {
     return this.http.get(
-      `${environment.baseUrl}` + 'api/Room/FindByNameAndBuildingName',
+      `${environment.baseHospitalUrl}` + 'api/Room/FindByNameAndBuildingName',
       {
         params: {
           name: roomName,
@@ -40,7 +40,7 @@ export class RoomsService {
   }
 
   getAllRooms() {
-    return this.http.get(`${environment.baseUrl}` + 'api/Room/GetAllRooms');
+    return this.http.get(`${environment.baseHospitalUrl}` + 'api/Room/GetAllRooms');
   }
 
 }

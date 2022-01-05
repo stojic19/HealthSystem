@@ -32,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\IntegrationApi\IntegrationAPI.csproj" />
+    <ProjectReference Include="..\IntegrationApi\IntegrationApi.csproj" />
   </ItemGroup>
 
 </Project>

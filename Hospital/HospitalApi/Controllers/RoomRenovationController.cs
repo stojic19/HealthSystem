@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Hospital.GraphicalEditor.Repository;
 using Hospital.GraphicalEditor.Service;
 using Hospital.RoomsAndEquipment.Model;
 using Hospital.RoomsAndEquipment.Repository;
@@ -14,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HospitalApi.Controllers
 {
@@ -30,6 +30,7 @@ namespace HospitalApi.Controllers
             _mapper = mapper;
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpGet]
         public IActionResult GetSurroundingRoomsForRoom([FromQuery(Name = "roomId")] int roomId)
         {
@@ -46,20 +47,15 @@ namespace HospitalApi.Controllers
                 return BadRequest();
             }
 
-            var roomPosition = _uow.GetRepository<IRoomPositionReadRepository>().GetByRoom(roomId);
-
-            return Ok(surroundingRoomsService.GetSurroundingRooms(roomPosition));
+            return Ok(surroundingRoomsService.GetSurroundingRooms(room));
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpPost]
         public IEnumerable<TimePeriodDTO> GetAvailableTerms(AvailableTermDTO availableTermsDTO)
         {
             var availableTermsService = new AvailableTermsService(_uow);
-            var timePeriod = new TimePeriod()
-            {
-                StartTime = availableTermsDTO.StartDate,
-                EndTime = availableTermsDTO.EndDate
-            };
+            var timePeriod = new TimePeriod(availableTermsDTO.StartDate, availableTermsDTO.EndDate);
 
             var terms = availableTermsService.GetAvailableTerms(timePeriod, availableTermsDTO.InitialRoomId, availableTermsDTO.DestinationRoomId, availableTermsDTO.Duration);
             var availableTerms = new List<TimePeriodDTO>();
@@ -78,6 +74,7 @@ namespace HospitalApi.Controllers
             return availableTerms;
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpPost]
         public IActionResult AddNewRoomRenovationEvent(RoomRenovationEvent roomRenovationEvent)
         {
@@ -105,6 +102,7 @@ namespace HospitalApi.Controllers
             }
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpGet]
         public IEnumerable<RoomRenovationEvent> GetRenovationsByRoom(int roomId)
         {
@@ -114,6 +112,7 @@ namespace HospitalApi.Controllers
                                      renovation.MergeRoomId == roomId);
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpPost]
         public IActionResult CancelRenovation(RoomRenovationEventDto roomRenovationDTO)
         {

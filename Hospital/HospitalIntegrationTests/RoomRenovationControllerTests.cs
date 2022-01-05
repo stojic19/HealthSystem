@@ -1,5 +1,4 @@
 ﻿using Hospital.GraphicalEditor.Model;
-using Hospital.GraphicalEditor.Repository;
 using Hospital.RoomsAndEquipment.Model;
 using Hospital.RoomsAndEquipment.Repository;
 using Hospital.SharedModel.Model.Enumerations;
@@ -24,8 +23,8 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Add_renovation_request_should_return_200()
         {
-            var room = InsertRoom("AR-1");
-            var surroundingRoom = InsertSurroundingRoom("AR-2");
+            var room = InsertRoom("Test room 1");
+            var surroundingRoom = InsertSurroundingRoom("Test surrounding room");
 
             CheckAndDeleteRequests(new DateTime(2025, 11, 22, 0, 0, 0));
 
@@ -65,6 +64,7 @@ namespace HospitalIntegrationTests
                                 x.SecondRoomType == newRequest.SecondRoomType);
 
             foundRequest.ShouldNotBeNull();
+            ClearAllTestData();
         }
 
         private Room InsertRoom(string name)
@@ -129,5 +129,21 @@ namespace HospitalIntegrationTests
             }
         }
 
+        private void ClearAllTestData()
+        {
+            var initialRoom = UoW.GetRepository<IRoomReadRepository>()
+                .GetAll()
+                .FirstOrDefault(x => x.Name == "Test room 1");
+            var secondRoom = UoW.GetRepository<IRoomReadRepository>()
+                .GetAll()
+                .FirstOrDefault(x => x.Name == "Test surrounding room");
+
+            if (initialRoom != null)
+                UoW.GetRepository<IRoomWriteRepository>().Delete(initialRoom);
+
+            if (secondRoom != null)
+                UoW.GetRepository<IRoomWriteRepository>().Delete(secondRoom);
+
+        }
     }
 }

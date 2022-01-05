@@ -2,7 +2,7 @@
     <div class="panel-heading m-3">
         <h2>Complaints List</h2>
     </div>
-    <button class="btn btn-primary m-3" [routerLink]="['/complaint-add']"><strong>Add complaint</strong></button>
+    <button class="btn btn-primary m-3" [routerLink]="[isProd ? '/manager/complaint-add' : '/complaint-add']"><strong>Add complaint</strong></button>
 
     <div class="form-control form-control-lg">
         <input [(ngModel)]="SearchString"  (keyup)="FilterFn()" placeholder="Filter" > 
@@ -41,7 +41,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor='let complaint of complaints' [routerLink]="['/complaints', complaint.id]">
+                <tr *ngFor='let complaint of complaints' [routerLink]="[isProd ? '/manager/complaints' : '/complaints', complaint.id]">
                     <td>{{complaint.id}}</td>
                     <td>{{complaint.title}}</td>
                     <td>{{complaint.createdDate | date: 'dd-MM-yyyy, hh:mm'}}</td>

@@ -42,6 +42,16 @@ namespace Integration.Pharmacies.Service
             pharmacyRepo.Add(pharmacy);
         }
 
+        public void UpdatePharmacy(Model.Pharmacy pharmacy)
+        {
+            City existingCity = _cityMasterService.GetCityByNameAndCountry(pharmacy.City.Name, pharmacy.City.Country.Name);
+            var countryRepo = unitOfWork.GetRepository<ICountryReadRepository>();
+            Country country = countryRepo.GetByName(pharmacy.City.Country.Name);
+            pharmacyMicroService.LinkPharmacyWithExistingEntities(pharmacy, existingCity, country);
+            var pharmacyRepo = unitOfWork.GetRepository<IPharmacyWriteRepository>();
+            pharmacyRepo.Update(pharmacy);
+        }
+
         public Model.Pharmacy FindPharmacyByName(string pharmacyName)
         {
             var pharmacyRepo = unitOfWork.GetRepository<IPharmacyReadRepository>();

@@ -29,7 +29,7 @@ namespace Hospital.Schedule.Service
             var patients = _uow.GetRepository<IPatientReadRepository>().GetAll().Where(x => x.IsBlocked == false).ToList();
             return (from patient in patients
                 let numOfCanceledEventsInLastMonth = CalculateInLastMonthForPatient(patient.Id)
-                where patient.isMalicious(numOfCanceledEventsInLastMonth)
+                where patient.IsMalicious(numOfCanceledEventsInLastMonth)
                 select patient).ToList();
         }
         private int CalculateInLastMonthForPatient(int patientId)

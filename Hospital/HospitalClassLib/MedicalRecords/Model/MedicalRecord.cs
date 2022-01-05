@@ -10,25 +10,24 @@ namespace Hospital.MedicalRecords.Model
 {
     public class MedicalRecord
     {
-        public int Id { get; set; }
+        public int Id { get; private set; }
         [Required]
-        public Measurements Measurements { get; }
+        public Measurements Measurements { get; private set; }
         [Required]
-        public BloodType BloodType { get; }
+        public BloodType BloodType { get; private set; }
         [Required]
-        public JobStatus JobStatus { get;  }
+        public JobStatus JobStatus { get; private set; }
         [Required]
-        public int DoctorId { get;  }
+        public int DoctorId { get; private set; }
         public Doctor Doctor { get; }
         public IEnumerable<Allergy> Allergies { get; }
 
-        public MedicalRecord( Measurements measurements, BloodType bloodType, JobStatus jobStatus, int doctorId, Doctor doctor, IEnumerable<Allergy> allergies)
+        public MedicalRecord( Measurements measurements, BloodType bloodType, JobStatus jobStatus, int doctorId, IEnumerable<Allergy> allergies)
         {
             Measurements = measurements;
             BloodType = bloodType;
             JobStatus = jobStatus;
             DoctorId = doctorId;
-            Doctor = doctor;
             Allergies = allergies;
             Validate();
         }
@@ -50,6 +49,7 @@ namespace Hospital.MedicalRecords.Model
         public void AddNewAllergy(Allergy newAllergy)
         {
             Allergies.ToList().Add(newAllergy);
+            Validate();
         }
     }
 }

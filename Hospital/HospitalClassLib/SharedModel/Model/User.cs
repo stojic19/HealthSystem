@@ -8,23 +8,24 @@ namespace Hospital.SharedModel.Model
     public class User : IdentityUser<int>
     {
         private const int MaxCanceledEvents = 3;
-        [Required] public string FirstName { get; }
-        [Required] public string MiddleName { get; }
-        [Required] public string LastName { get; }
-        [Required] public DateTime DateOfBirth { get; }
-        [Required] public Gender Gender { get; }
-        [Required] public string Street { get; }
-        [Required] public string StreetNumber { get; }
+        [Required] public string FirstName { get; private set; }
+        [Required] public string MiddleName { get; private set; }
+        [Required] public string LastName { get; private set; }
+        [Required] public DateTime DateOfBirth { get; private set; }
+        [Required] public Gender Gender { get; private set; }
+        [Required] public string Street { get; private set; }
+        [Required] public string StreetNumber { get; private set; }
+        public int CityId { get; private set; }
         public City City { get; }
-        public bool IsBlocked { get; set; }
-        public string PhotoEncoded { get; set; }
+        public bool IsBlocked { get; private set; }
+        public string PhotoEncoded { get; private set; }
 
         public User()
         {
         }
 
         public User(string firstName, string middleName, string lastName, DateTime dateOfBirth, Gender gender,
-            string street, string streetNumber, City city, bool isBlocked, string photoEncoded)
+            string street, string streetNumber, int cityId, string photoEncoded)
         {
             FirstName = firstName;
             MiddleName = middleName;
@@ -33,17 +34,19 @@ namespace Hospital.SharedModel.Model
             Gender = gender;
             Street = street;
             StreetNumber = streetNumber;
-            City = city;
+            CityId = cityId;
             IsBlocked = false;
             PhotoEncoded = photoEncoded;
+            //TODO: add validate method
         }
 
         public void Block()
         {
             IsBlocked = true;
+            //Validate();
         }
 
-        public bool isMalicious(int numOfCanceledEventsInLastMonth)
+        public bool IsMalicious(int numOfCanceledEventsInLastMonth)
         {
             return numOfCanceledEventsInLastMonth >= MaxCanceledEvents;
         }

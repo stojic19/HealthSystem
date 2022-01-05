@@ -8,23 +8,22 @@ namespace Hospital.Schedule.Model
 {
     public class ScheduledEvent
     {
-        public int Id { get; }
-        public ScheduledEventType ScheduledEventType { get;  }
-        public bool IsCanceled { get; }
+        public int Id { get; private set; }
+        public ScheduledEventType ScheduledEventType { get; private set; }
+        public bool IsCanceled { get; private set; }
         public bool IsDone { get; private set; }
-        public DateTime StartDate { get; }
-        public DateTime EndDate { get; }    
-        public DateTime CancellationDate { get; }
-        public int PatientId { get; }
+        public DateTime StartDate { get; private set; }
+        public DateTime EndDate { get; private set; }    
+        public DateTime CancellationDate { get; private set; }
+        public int PatientId { get; private set;  }
         public Patient Patient { get; private set; }
-        public int DoctorId { get; }
+        public int DoctorId { get; private set; }
         public Doctor Doctor { get; }
-        public int? RoomId { get;  }
+        public int RoomId { get; private set; }
         public Room Room { get;  }
 
-        public ScheduledEvent(int id, ScheduledEventType scheduledEventType, bool isCanceled, bool isDone, DateTime startDate, DateTime endDate, DateTime cancellationDate, int patientId, Patient patient, int doctorId, Doctor doctor)
+        public ScheduledEvent(ScheduledEventType scheduledEventType, bool isCanceled, bool isDone, DateTime startDate, DateTime endDate, DateTime cancellationDate, int patientId, int doctorId, Doctor doctor)
         {
-            Id = id;
             ScheduledEventType = scheduledEventType;
             IsCanceled = isCanceled;
             IsDone = isDone;
@@ -32,10 +31,9 @@ namespace Hospital.Schedule.Model
             EndDate = endDate;
             CancellationDate = cancellationDate;
             PatientId = patientId;
-            Patient = patient;
             DoctorId = doctorId;
-            Doctor = doctor;
             Room = doctor.Room;
+            //TODO: add validate method
         }
 
         public ScheduledEvent()
@@ -44,7 +42,9 @@ namespace Hospital.Schedule.Model
 
         public void ScheduleEventForPatient(Patient patient)
         {
+            PatientId = patient.Id;
             Patient = patient;
+            //Validate();
         }
         public bool IsCanceledThisMonth()
         {
@@ -54,6 +54,7 @@ namespace Hospital.Schedule.Model
         public void SetToDone()
         {
             IsDone = true;
+            //Validate();
         }
 
         public bool ShouldBeDone()

@@ -7,29 +7,28 @@ namespace Hospital.Schedule.Model
 {
     public class Feedback
     {
-        public int Id { get; }
+        public int Id { get; private set; }
         [Required]
-        public int PatientId { get;  }
+        public int PatientId { get; private set; }
         public Patient Patient { get; }
         public FeedbackStatus FeedbackStatus { get; private set; }
-        public DateTime CreatedDate { get; }
+        public DateTime CreatedDate { get; private set; }
         [Required]
-        public string Text { get;  }
+        public string Text { get; private set; }
         [Required]
-        public bool IsPublishable { get; }
+        public bool IsPublishable { get; private set; }
         [Required]
-        public bool IsAnonymous { get; }
+        public bool IsAnonymous { get; private set; }
 
-        public Feedback(int id, int patientId, Patient patient, string text, bool isPublishable, bool isAnonymous)
+        public Feedback(int patientId, string text, bool isPublishable, bool isAnonymous)
         {
-            Id = id;
             PatientId = patientId;
-            Patient = patient;
             FeedbackStatus = FeedbackStatus.NotApproved;
             CreatedDate = DateTime.Now;
             Text = text;
             IsPublishable = isPublishable;
             IsAnonymous = isAnonymous;
+            Validate();
         }
 
         public Feedback()
@@ -45,11 +44,13 @@ namespace Hospital.Schedule.Model
         public void Publish()
         {
             this.FeedbackStatus = FeedbackStatus.Approved;
+            Validate();
         }
 
         public void Unpublish()
         {
             this.FeedbackStatus = FeedbackStatus.NotApproved;
+            Validate();
         }
 
         public bool IsApproved()

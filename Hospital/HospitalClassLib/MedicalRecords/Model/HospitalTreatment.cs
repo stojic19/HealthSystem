@@ -5,20 +5,22 @@ namespace Hospital.MedicalRecords.Model
 {
     public class HospitalTreatment
     {
-        public int Id { get; }
-        public DateTime StartDate { get; }
-        public DateTime EndDate { get;}
-        public string Reason { get; }
+        public int Id { get; private set; }
+        public DateTime StartDate { get; private set; }
+        public DateTime EndDate { get; private set; }
+        public string Reason { get; private set; }
+        public int RoomId { get; private set; }
         public Room Room { get; }
+        public int MedicalRecordId { get; private set; }
         public MedicalRecord MedicalRecord { get; }
 
-        public HospitalTreatment(DateTime startDate, DateTime endDate, string reason, Room room, MedicalRecord medicalRecord)
+        public HospitalTreatment(DateTime startDate, DateTime endDate, string reason, int roomId, int medicalRecordId)
         {
             StartDate = startDate;
             EndDate = endDate;
             Reason = reason;
-            Room = room;
-            MedicalRecord = medicalRecord;
+            RoomId = roomId;
+            MedicalRecordId = medicalRecordId;
         }
 
         public HospitalTreatment()

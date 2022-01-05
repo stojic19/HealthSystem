@@ -17,6 +17,9 @@ namespace Hospital.MedicalRecords.Model
             Height = height;
             Validate();
         }
+        public Measurements()
+        {
+        }
 
         private void Validate()
         {

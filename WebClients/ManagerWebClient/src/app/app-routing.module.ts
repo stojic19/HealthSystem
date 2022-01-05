@@ -31,47 +31,48 @@ import { MaliciousPatientsComponent } from './components/malicious-patients/mali
 import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from 'src/app/AuthGuard/AuthGuard';
 
+import { environment } from 'src/environments/environment';
+
+const _isProd = environment.production;
 
 const routes: Routes = [
-  { path: 'overview', component: HospitalOverviewComponent ,  canActivate: [AuthGuard]},
-  { path: 'feedbacks', component: FeedbacksManagerComponent, canActivate: [AuthGuard] },
-  { path: 'firstBuilding', component: FirstBuildingComponent ,  canActivate: [AuthGuard] },
-  { path: 'secondBuilding', component: SecondBuildingComponent ,  canActivate: [AuthGuard]},
-  { path: 'roomInventory/:id', component: RoomInventoryComponent ,  canActivate: [AuthGuard]},
-  { path: 'hospitalEquipment', component: HospitalEquipmentComponent,  canActivate: [AuthGuard] },
-  { path: 'firstBuilding/:roomName/:floor', component: FirstBuildingComponent , canActivate: [AuthGuard]},
+  { path: _isProd? 'manager/overview' : 'overview', component: HospitalOverviewComponent },
+  { path: _isProd? 'manager/feedbacks' : 'feedbacks', component: FeedbacksManagerComponent },
+  { path: _isProd? 'manager/firstBuilding' : 'firstBuilding', component: FirstBuildingComponent },
+  { path: _isProd? 'manager/secondBuilding' : 'secondBuilding', component: SecondBuildingComponent },
+  { path: _isProd? 'manager/roomInventory/:id' : 'roomInventory/:id', component: RoomInventoryComponent },
+  { path: _isProd? 'manager/hospitalEquipment' : 'hospitalEquipment', component: HospitalEquipmentComponent },
+  { path: _isProd? 'manager/firstBuilding/:roomName/:floor' : 'firstBuilding/:roomName/:floor', component: FirstBuildingComponent },
   {
-    path: 'secondBuilding/:roomName/:floor',
-    component: SecondBuildingComponent, canActivate: [AuthGuard]
+    path: _isProd? 'manager/secondBuilding/:roomName/:floor' : 'secondBuilding/:roomName/:floor',
+    component: SecondBuildingComponent,
   },
-  { path: 'complaints', component: ComplaintsListComponent },
-  { path: 'complaints/:id', component: ComplaintDetailsComponent },
-  { path: 'complaint-add', component: AddComplaintComponent },
-  { path: 'pharmacy-register', component: RegisterPharmacyComponent },
-  { path: 'pharmacy-list', component: PharmaciesListComponent },
-  { path: 'pharmacy-profile/:id', component: PharmacyProfileComponent },
-  { path: 'benefit-list', component: BenefitListComponent },
-  { path: 'benefit/:id', component: BenefitDetailsComponent },
-  { path: 'home', component: HomePageComponent },
+  { path: _isProd? 'manager/complaints' : 'complaints', component: ComplaintsListComponent },
+  { path: _isProd? 'manager/complaints/:id' : 'complaints/:id', component: ComplaintDetailsComponent },
+  { path: _isProd? 'manager/complaint-add' : 'complaint-add', component: AddComplaintComponent },
+  { path: _isProd? 'manager/pharmacy-register' : 'pharmacy-register', component: RegisterPharmacyComponent },
+  { path: _isProd? 'manager/pharmacy-list' : 'pharmacy-list', component: PharmaciesListComponent },
+  { path: _isProd? 'manager/benefit-list' : 'benefit-list', component: BenefitListComponent },
+  { path: _isProd? 'manager/benefit/:id' : 'benefit/:id', component: BenefitDetailsComponent },
+  { path: _isProd? 'manager/home' : 'home', component: HomePageComponent },
   {
-    path: 'medication-consumption-report',
-    component: MedicationReportsComponent
-  },
-  {
-    path: 'medicine-specification-requests',
-    component: MedicineSpecificationListComponent
+    path: _isProd? 'manager/medication-consumption-report' : 'medication-consumption-report',
+    component: MedicationReportsComponent,
   },
   {
-    path: 'new-medicine-specification-request',
+    path: _isProd? 'manager/medicine-specification-requests' : 'medicine-specification-requests',
+    component: MedicineSpecificationListComponent,
+  },
+  {
+    path: _isProd? 'manager/new-medicine-specification-request' : 'new-medicine-specification-request',
     component: MedicineSpecificationRequestsComponent,
   },
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'moveEquipment/:id', component: EquipmentFormComponent , canActivate: [AuthGuard]},
-  { path: 'surveys', component: SurveysObserveComponent,canActivate: [AuthGuard]},
-  { path: 'roomRenovation', component: RenovationFormComponent, canActivate: [AuthGuard]},
-  { path: 'schedule/:id', component: RoomScheduleComponent, canActivate: [AuthGuard] },
-  { path: 'blocking', component: MaliciousPatientsComponent,canActivate: [AuthGuard]},
-  { path: 'login', component: LoginComponent},
+  { path: _isProd? 'manager/roomRenovation' : 'roomRenovation', component: RenovationFormComponent},
+  { path: _isProd? 'manager/blocking' : 'blocking', component: MaliciousPatientsComponent},
+  { path: _isProd? 'manager' : '', redirectTo: _isProd? 'manager/home' : 'home', pathMatch: 'full' },
+  { path: _isProd? 'manager/moveEquipment/:id' : 'moveEquipment/:id', component: EquipmentFormComponent },
+  { path: _isProd? 'manager/surveys' : 'surveys', component: SurveysObserveComponent },
+  { path: _isProd? 'manager/schedule/:id' : 'schedule/:id', component: RoomScheduleComponent },
 ];
 
 @NgModule({

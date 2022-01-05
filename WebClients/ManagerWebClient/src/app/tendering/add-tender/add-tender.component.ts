@@ -64,7 +64,7 @@ export class AddTenderComponent implements OnInit {
       this.toastr.error("Enter valid medicine quantity!", "Error!");
       return;
     }
-    var quantity = Number(this.QuantityString)
+    var quantity = Number(this.EditQuantityString)
     if(quantity < 1)
     {
       this.toastr.error("Enter valid medicine quantity!", "Error!");

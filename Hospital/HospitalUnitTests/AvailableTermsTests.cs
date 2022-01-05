@@ -39,22 +39,22 @@ namespace HospitalUnitTests
             Context.ScheduledEvents.Add(new ScheduledEvent()
             {
                 Id = 1,
-                StartDate = new DateTime(2021, 12, 1, 10, 0, 0),
-                EndDate = new DateTime(2021, 12, 1, 10, 30, 0),
+                StartDate = new DateTime(2022, 12, 1, 10, 0, 0),
+                EndDate = new DateTime(2022, 12, 1, 10, 30, 0),
                 RoomId = 2,
             });
             Context.ScheduledEvents.Add(new ScheduledEvent()
             {
                 Id = 2,
-                StartDate = new DateTime(2021, 12, 3, 6, 0, 0),
-                EndDate = new DateTime(2021, 12, 3, 8, 0, 0),
+                StartDate = new DateTime(2022, 12, 3, 6, 0, 0),
+                EndDate = new DateTime(2022, 12, 3, 8, 0, 0),
                 RoomId = 2,
             });
             Context.ScheduledEvents.Add(new ScheduledEvent()
             {
                 Id = 3,
-                StartDate = new DateTime(2021, 12, 5, 3, 0, 0),
-                EndDate = new DateTime(2021, 12, 5, 3, 30, 0),
+                StartDate = new DateTime(2022, 12, 5, 3, 0, 0),
+                EndDate = new DateTime(2022, 12, 5, 3, 30, 0),
                 RoomId = 2,
             });
 
@@ -71,24 +71,24 @@ namespace HospitalUnitTests
 
             var retVal = new List<object[]>();
 
-            var timePeriod = new TimePeriod(new DateTime(2021, 12, 10, 0, 0, 0), new DateTime(2021, 12, 11, 0, 1, 0));
+            var timePeriod = new TimePeriod(new DateTime(2022, 12, 10, 0, 0, 0), new DateTime(2022, 12, 11, 0, 1, 0));
             
             retVal.Add(new object[] { timePeriod, 24 });
 
-            var timePeriod2 = new TimePeriod(new DateTime(2021, 12, 1, 0, 0, 0), new DateTime(2021, 12, 2, 0, 1, 0));
+            var timePeriod2 = new TimePeriod(new DateTime(2022, 12, 1, 0, 0, 0), new DateTime(2022, 12, 2, 0, 1, 0));
             
             retVal.Add(new object[] { timePeriod2, 22 });
 
-            var timePeriod3 = new TimePeriod(new DateTime(2021, 12, 1, 9, 0, 0), new DateTime(2021, 12, 1, 11, 1, 0));
+            var timePeriod3 = new TimePeriod(new DateTime(2022, 12, 1, 9, 0, 0), new DateTime(2022, 12, 1, 11, 1, 0));
             
             retVal.Add(new object[] { timePeriod3, 1 });
-            var timePeriod4 = new TimePeriod(new DateTime(2021, 12, 3, 6, 30, 0), new DateTime(2021, 12, 3, 8, 1, 0));
+            var timePeriod4 = new TimePeriod(new DateTime(2022, 12, 3, 6, 30, 0), new DateTime(2022, 12, 3, 8, 1, 0));
             
             retVal.Add(new object[] { timePeriod4, 0 });
-            var timePeriod5 = new TimePeriod(new DateTime(2021, 12, 5, 2, 0, 0), new DateTime(2021, 12, 5, 5, 31, 0));
+            var timePeriod5 = new TimePeriod(new DateTime(2022, 12, 5, 2, 0, 0), new DateTime(2022, 12, 5, 5, 31, 0));
             
             retVal.Add(new object[] { timePeriod5, 1 });
-            var timePeriod6 = new TimePeriod(new DateTime(2021, 12, 5, 2, 0, 0), new DateTime(2021, 12, 5, 3, 31, 0));
+            var timePeriod6 = new TimePeriod(new DateTime(2022, 12, 5, 2, 0, 0), new DateTime(2022, 12, 5, 3, 31, 0));
        
             retVal.Add(new object[] { timePeriod6, 1 });
             return retVal;

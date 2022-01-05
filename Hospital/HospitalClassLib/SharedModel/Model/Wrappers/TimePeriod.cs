@@ -24,7 +24,7 @@ namespace Hospital.SharedModel.Model.Wrappers
 
         public void Validate()
         {
-            if (DateTime.Compare(this.EndTime, this.StartTime) <= 0)
+            if (this.StartTime > this.EndTime)
                 throw new ArgumentException("End date cannot be earlier than start date");
         }
 

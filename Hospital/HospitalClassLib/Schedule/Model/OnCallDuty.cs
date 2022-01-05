@@ -26,7 +26,7 @@ namespace Hospital.Schedule.Model
         private void Validate()
         {
             if (this.DoctorsOnDuty.Count == 0 || Month > 12 || Month < 1 || Week < 1 || Week > 4)
-                throw new Exception("Not Valid");
+                throw new ArgumentException("Not Valid");
         }
 
         public void AddDoctor(Doctor newDoctor)

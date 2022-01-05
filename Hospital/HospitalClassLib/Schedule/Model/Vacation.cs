@@ -29,7 +29,7 @@ namespace Hospital.Schedule.Model
         {
             if (!Enum.IsDefined<VacationType>(Type) || (this.Type == VacationType.Vacation && this.GetDuration() > 7)
                 || DateTime.Compare(this.EndDate, this.StartDate) < 0)
-                throw new Exception("Not Valid");
+                throw new ArgumentException("Not Valid");
         }
 
         public double GetDuration() {

@@ -14,8 +14,6 @@ namespace Hospital.RoomsAndEquipment.Model
 
         public int Amount { get; private set; }
 
-        //validate, add, substract
-
         public RoomInventory() { }
 
         public RoomInventory(int id, int roomId, Room room, int inventoryItemId, InventoryItem inventoryItem, int amount)
@@ -54,7 +52,7 @@ namespace Hospital.RoomsAndEquipment.Model
         private void Validate()
         {
             if (double.IsNegative(Amount))
-                throw new Exception();
+                throw new ArgumentException("Quantity of an item must be larger than 0!");
         }
 
         public void Add(int amount)

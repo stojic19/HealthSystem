@@ -26,9 +26,8 @@ namespace Hospital.GraphicalEditor.Model
 
         private void Validate()
         {
-            //TODO: add validations
             if (this.Width < 0 || this.Height < 0 || DimensionX < 0 || DimensionY < 0)
-                throw new Exception("Not Valid");
+                throw new ArgumentException("Dimensions must be larger than 0!");
         }
 
 

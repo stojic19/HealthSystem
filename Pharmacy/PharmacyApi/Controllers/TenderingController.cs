@@ -24,23 +24,13 @@ namespace PharmacyApi.Controllers
     {
         private readonly TenderOffersService _tenderOffersService;
         private readonly IUnitOfWork _uow;
-        private readonly string _integrationEndPoint;
         private readonly IHttpRequestSender _httpRequestSender;
-
-
-        //http zahtev za svaku bolnicu, dobavi sve aktivne tendere, svaki da posalje api kljuc i datuma (jedinstveno identifikuvati tender)
-        //rabbit?, 
-        //TENDER: createdDate, hospital, TimeRange active range, List<MedicationRequest>, closedDate, 
-        //Repositories -- get active tenders
-
-        //http zahtev -- confirmtenderoffer -- kad prodje metoda, poslati httpzahtev za predaju obecanih lekova
 
         public TenderingController(IUnitOfWork uow, PharmacyDetails details, IHttpRequestSender requestSender) : base(uow, details)
         {
             _tenderOffersService = new TenderOffersService(uow);
             _uow = uow;
-            //FOR INTEGRATION TO SET ON NEXT SPRINT!
-            _integrationEndPoint = "";
+            
             _httpRequestSender = requestSender;
         }
 
@@ -72,25 +62,6 @@ namespace PharmacyApi.Controllers
             catch (RabbitMQNewOfferException exception) { return StatusCode(StatusCodes.Status500InternalServerError, exception.Message); }
 
             return Ok("Tender offer succesfully created!");
-        }
-
-        [HttpPost]
-        public IActionResult ApplyForTender(int tenderOfferId)
-        {
-            double price;
-            try
-            {
-                price = _tenderOffersService.GetTenderPrice(tenderOfferId);
-            }
-            catch (TenderNotFoundException exception) { return NotFound(exception.Message); }
-            catch (MedicineUnavailableException exception) { return NotFound(exception.Message); }
-            catch (TenderAlreadyEnabledException exception) { return BadRequest(exception.Message); }
-
-            ApplyTenderOfferDTO applyTenderOfferDTO = CreateApplyTenderDto(tenderOfferId, price);
-            var response = _httpRequestSender.Post(_integrationEndPoint, applyTenderOfferDTO);
-            if (response.StatusCode != System.Net.HttpStatusCode.OK) return BadRequest("Unable to reach integration API!");
-
-            return Ok("Succesfully applied for tender!");
         }
 
         [HttpPost]

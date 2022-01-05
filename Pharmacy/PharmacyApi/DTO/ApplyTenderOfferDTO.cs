@@ -8,8 +8,7 @@ namespace PharmacyApi.DTO
     public class ApplyTenderOfferDTO
     {
         public int TenderOfferId { get; set; }
-        public string MedicineName { get; set; }
-        public int Quantity { get; set; }
+        public List<MedicationRequestDTO> MedicationRequestDto { get; set; }
         public DateTime CreationTime { get; set; }
         public double TotalPrice { get; set; }
         public Guid ApiKey { get; set; }

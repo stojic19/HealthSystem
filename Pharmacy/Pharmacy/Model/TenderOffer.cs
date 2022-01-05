@@ -9,12 +9,12 @@ namespace Pharmacy.Model
     public class TenderOffer
     {
         public int Id { get; set; }
-        public int MedicineId  { get; set; }
-        public  Medicine Medicine { get; set; }
-        public int HospitalId { get; set; }
-        public Hospital Hospital { get; set; }
-        public int Quantity  { get; set; }
+        public List<MedicationRequest> MedicationRequests { get; set; }
         public DateTime CreationTime { get; set; }
         public bool IsConfirmed { get; set; }
+        public bool IsWinning { get; set; }
+        public int TenderId { get; set; }
+        public Tender Tender { get; set; }
+        public Money Cost { get; set; }
     }
 }

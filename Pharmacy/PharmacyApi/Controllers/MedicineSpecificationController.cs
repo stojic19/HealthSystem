@@ -17,7 +17,6 @@ using Pharmacy.Repositories.DbImplementation;
 using PharmacyApi.ConfigurationMappers;
 using PharmacyApi.Controllers.Base;
 using PharmacyApi.DTO;
-using PharmacyApi.DTO.MedicineDTO;
 using Renci.SshNet;
 
 namespace PharmacyApi.Controllers

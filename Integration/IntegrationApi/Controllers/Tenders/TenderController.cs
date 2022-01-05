@@ -9,26 +9,30 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Integration.Pharmacies.Model;
 using Integration.Pharmacies.Repository;
+using IntegrationAPI.Controllers.Base;
+using IntegrationAPI.HttpRequestSenders;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using RestSharp;
 
 namespace IntegrationAPI.Controllers.Tenders
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class TenderController : ControllerBase
+    public class TenderController : BaseIntegrationController
     {
-        private readonly IUnitOfWork _uow;
+        private readonly IHttpRequestSender _requestSender;
 
-        public TenderController(IUnitOfWork uow)
+        public TenderController(IUnitOfWork uow, IHttpRequestSender requestSender) : base(uow)
         {
-            _uow = uow;
+            _requestSender = requestSender;
         }
 
         [HttpPost, Produces("application/json")]
@@ -62,8 +66,8 @@ namespace IntegrationAPI.Controllers.Tenders
             {
                 tender.AddMedicationRequest(new MedicationRequest(medicineRequestDto.MedicineName, medicineRequestDto.Quantity));
             }
-            _uow.GetRepository<ITenderWriteRepository>().Add(tender);
-            var pharmacies = _uow.GetRepository<IPharmacyReadRepository>().GetAll();
+            _unitOfWork.GetRepository<ITenderWriteRepository>().Add(tender);
+            var pharmacies = _unitOfWork.GetRepository<IPharmacyReadRepository>().GetAll();
             try
             {
                 var factory = new ConnectionFactory() {HostName = Environment.GetEnvironmentVariable("RABBITMQ_HOST")};
@@ -109,9 +113,9 @@ namespace IntegrationAPI.Controllers.Tenders
         public IEnumerable<Tender> GetActiveTenders()
         {
             List<Tender> retVal = new List<Tender>();
-            var tenders = _uow.GetRepository<ITenderReadRepository>().GetAll()
+            var tenders = _unitOfWork.GetRepository<ITenderReadRepository>().GetAll()
                 .Include(t => t.TenderOffers).Include(t => t.MedicationRequests);
-            foreach (var tender in tenders.AsEnumerable().Where(t => t.IsActive() == true))
+            foreach (var tender in tenders.AsEnumerable().Where(t => t.IsActive()))
             {
                 retVal.Add(tender);
             }
@@ -122,12 +126,15 @@ namespace IntegrationAPI.Controllers.Tenders
         [HttpPost]
         public IActionResult ChooseWinningOffer(WinningOfferDto dto)
         {
-            var tender = _uow.GetRepository<ITenderReadRepository>().GetAll().Where(t => t.Id == dto.TenderId)
-                .Include(t => t.TenderOffers).ThenInclude(to => to.Pharmacy).FirstOrDefault();
+            var tender = _unitOfWork.GetRepository<ITenderReadRepository>().GetAll().Where(t => t.Id == dto.TenderId)
+                .Include(t => t.TenderOffers).ThenInclude(to => to.Pharmacy).FirstOrDefault(); 
+            if (tender == null) return NotFound("Tender does not exist");
+            if (!tender.IsActive()) return BadRequest("Tender already closed!");
             var winningOffer = tender.TenderOffers.FirstOrDefault(t => t.Id == dto.TenderOfferId);
+            if(winningOffer == null) return BadRequest("Invalid tender offer!");
             tender.ChooseWinner(winningOffer);
             tender.CloseTender();
-            _uow.GetRepository<ITenderWriteRepository>().Update(tender);
+            _unitOfWork.GetRepository<ITenderWriteRepository>().Update(tender);
             try
             {
                 var factory = new ConnectionFactory() { HostName = Environment.GetEnvironmentVariable("RABBITMQ_HOST") };
@@ -146,7 +153,7 @@ namespace IntegrationAPI.Controllers.Tenders
                     channel.BasicPublish("declare winning offer", tender.WinningOffer.Pharmacy.ApiKey.ToString(), null, body);
                 }
 
-                var pharmacies = _uow.GetRepository<IPharmacyReadRepository>().GetAll().Where(p => p.Id != tender.WinningOffer.PharmacyId);
+                var pharmacies = _unitOfWork.GetRepository<IPharmacyReadRepository>().GetAll().Where(p => p.Id != tender.WinningOffer.PharmacyId);
                 CloseTenderRmq(factory, pharmacies, tender);
             }
             catch
@@ -158,13 +165,14 @@ namespace IntegrationAPI.Controllers.Tenders
         [HttpPost]
         public IActionResult CloseTender(int tenderId)
         {
-            var tender = _uow.GetRepository<ITenderReadRepository>().GetById(tenderId);
+            var tender = _unitOfWork.GetRepository<ITenderReadRepository>().GetById(tenderId);
             if (tender == null) return NotFound("Tender does not exist");
+            if (!tender.IsActive()) return BadRequest("Tender already closed!");
             tender.CloseTender();
-            _uow.GetRepository<ITenderWriteRepository>().Update(tender);
+            _unitOfWork.GetRepository<ITenderWriteRepository>().Update(tender);
             try
             {
-                var pharmacies = _uow.GetRepository<IPharmacyReadRepository>().GetAll();
+                var pharmacies = _unitOfWork.GetRepository<IPharmacyReadRepository>().GetAll();
                 var factory = new ConnectionFactory() { HostName = Environment.GetEnvironmentVariable("RABBITMQ_HOST") };
                 CloseTenderRmq(factory, pharmacies, tender);
             }
@@ -172,6 +180,22 @@ namespace IntegrationAPI.Controllers.Tenders
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error while sending closed tender via rabbitmq!");
             }
+            return Ok();
+        }
+
+        [HttpPost]
+        public IActionResult ExecuteTenderProcurement(TenderProcurementDto tenderProcurementDto)
+        {
+            var pharmacy = _unitOfWork.GetRepository<IPharmacyReadRepository>().GetAll().FirstOrDefault(p => p.ApiKey == tenderProcurementDto.ApiKey);
+            if (pharmacy == null) return NotFound("Pharmacy not registered in hospital");
+
+            string targetUrl = _hospitalBaseUrl + "/api/Medication/AddMedicineTender";
+            IRestResponse response = _requestSender.Post(targetUrl, tenderProcurementDto);
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                return BadRequest("Hospital could not add received medicine");
+            }
+
             return Ok();
         }
 

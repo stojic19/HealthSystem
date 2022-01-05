@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Pharmacy.Services
 {
@@ -83,7 +84,10 @@ namespace Pharmacy.Services
 
         public void ConfirmTenderOffer(Guid hospitalApiKey, int tenderOfferId)
         {
-            TenderOffer tenderOffer = _uow.GetRepository<ITenderOfferReadRepository>().GetById(tenderOfferId);
+            TenderOffer tenderOffer = _uow.GetRepository<ITenderOfferReadRepository>()
+                .GetAll()
+                .Include(p => p.Tender)
+                .FirstOrDefault(p => p.Id == tenderOfferId);
             CheckTender(tenderOffer);
 
 

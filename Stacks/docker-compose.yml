@@ -9,6 +9,7 @@ services:
       target: gateway
       args:
         - HOSPITAL_API_URL=hospitalapi:80
+        - INTEGRATION_API_URL=integrationapi:80
     restart: on-failure
     ports:
       - 8080:8080
@@ -38,8 +39,10 @@ services:
     restart: on-failure
     depends_on:
       - pharmacydb
+      - rabbitmq
     environment:
       PHARMACY_DB_PATH: "host=pharmacydb;port=5432;database=PHARMACY;username=postgres;password=postgres"
+      RABBITMQ_HOST: "rabbitmq"
 
   integrationapi:
     build:
@@ -52,7 +55,8 @@ services:
       - integrationdb
       - rabbitmq
     environment:
-      PHARMACY_DB_PATH: "host=integrationdb;port=5432;database=INTEGRATION;username=postgres;password=postgres"
+      INTEGRATION_DB_PATH: "host=integrationdb;port=5432;database=INTEGRATION;username=postgres;password=postgres"
+      RABBITMQ_HOST: "rabbitmq"
 
   patient-ui:
     build:
@@ -69,6 +73,14 @@ services:
     ports:
       - "8082:8082"
     container_name: manager-ui
+
+  integration-ui:
+    build:
+      context: ../
+      dockerfile: Stacks/Build/IntegrationUi/Dockerfile
+    ports:
+      - "8083:8083"
+    container_name: integration-ui
 
   hospitaldb:
     image: postgres:13
@@ -106,9 +118,3 @@ services:
     ports:
         - 5672:5672
         - 15672:15672
-
-volumes:
-  hospitaldb-data:
-  pharmacydb-data:
-  integrationdb-data:
-  # web-sql:

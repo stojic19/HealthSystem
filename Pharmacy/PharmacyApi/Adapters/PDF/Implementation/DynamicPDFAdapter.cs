@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ceTe.DynamicPDF;
 using ceTe.DynamicPDF.PageElements;
-using PharmacyApi.DTO.MedicineDTO;
+using PharmacyApi.DTO;
 using Path = System.IO.Path;
 
 namespace IntegrationAPI.Adapters.PDF.Implementation

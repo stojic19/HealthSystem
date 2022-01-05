@@ -13,11 +13,7 @@ namespace Hospital.SharedModel.Model.Wrappers
         {
             this.StartTime = start;
             this.EndTime = end;
-            try
-            {
-                Validate();
-            }
-            catch (Exception ex) { }
+            Validate();
         }
 
         protected override IEnumerable<object> GetEqualityComponents()
@@ -26,9 +22,10 @@ namespace Hospital.SharedModel.Model.Wrappers
             yield return EndTime;
         }
 
-        public void Validate() {
-            if(DateTime.Compare(this.EndTime, this.StartTime) <= 0)
-                throw new Exception("Not Valid");
+        public void Validate()
+        {
+            if (DateTime.Compare(this.EndTime, this.StartTime) <= 0)
+                throw new ArgumentException("End date cannot be earlier than start date");
         }
 
         public bool OverlapsWith(TimePeriod timePeriod)
@@ -37,10 +34,10 @@ namespace Hospital.SharedModel.Model.Wrappers
             if (DateTime.Compare(timePeriod.StartTime, this.StartTime) == 0)
                 return true;
 
-            if (DateTime.Compare(timePeriod.StartTime, this.StartTime) < 0)
+            if (DateTime.Compare(timePeriod.StartTime, this.StartTime) < 0 &&
+                DateTime.Compare(timePeriod.EndTime, this.StartTime) > 0)
             {
-                if (DateTime.Compare(timePeriod.EndTime, this.StartTime) > 0)
-                    return true;
+                return true;
             }
 
             if (DateTime.Compare(timePeriod.StartTime, this.StartTime) > 0

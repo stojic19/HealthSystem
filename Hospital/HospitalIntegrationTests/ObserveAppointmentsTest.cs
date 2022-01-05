@@ -30,7 +30,7 @@ namespace HospitalIntegrationTests
            var response = await Client.GetAsync(BaseUrl + "api/ScheduledEvent/GetFinishedUserEvents/" + events.PatientId);
            response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-            UoW.GetRepository<IScheduledEventReadRepository>().GetFinishedUserEvents(events.PatientId).Count.ShouldNotBe(0);
+            UoW.GetRepository<IScheduledEventReadRepository>().GetFinishedUserEvents(events.Patient.UserName).Count.ShouldNotBe(0);
             DeleteDataFromDataBase(events);
         }
 
@@ -41,7 +41,7 @@ namespace HospitalIntegrationTests
             var response = await Client.GetAsync(BaseUrl + "api/ScheduledEvent/GetCanceledUserEvents/" + events.Patient.Id);
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-            UoW.GetRepository<IScheduledEventReadRepository>().GetCanceledUserEvents(events.PatientId).Count.ShouldNotBe(0);
+            UoW.GetRepository<IScheduledEventReadRepository>().GetCanceledUserEvents(events.Patient.UserName).Count.ShouldNotBe(0);
             DeleteDataFromDataBase(events);
         }
         [Fact]
@@ -51,7 +51,7 @@ namespace HospitalIntegrationTests
             var response = await Client.GetAsync(BaseUrl + "api/ScheduledEvent/GetUpcomingUserEvents/" + events.Patient.Id);
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-            UoW.GetRepository<IScheduledEventReadRepository>().GetUpcomingUserEvents(events.PatientId).Count.ShouldNotBe(0);
+            UoW.GetRepository<IScheduledEventReadRepository>().GetUpcomingUserEvents(events.Patient.UserName).Count.ShouldNotBe(0);
             DeleteDataFromDataBase(events);
         }
         private void DeleteDataFromDataBase(ScheduledEvent events)

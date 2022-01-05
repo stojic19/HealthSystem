@@ -93,6 +93,22 @@ namespace HospitalApi
                 }).AddRoles<IdentityRole<int>>()
                 .AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
+            services.AddAuthentication(cfg =>
+            {
+                cfg.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                cfg.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Token:Key"])),
+                    ValidIssuer = Configuration["Token:Issuer"],
+                    ValidateIssuer = true,
+                    ValidateAudience = false,
+                };
+            });
             services.AddHostedService<ConsumeScopedServiceHostedService>();
             services.AddAuthentication(cfg =>
             {
@@ -112,6 +128,7 @@ namespace HospitalApi
             });
             services.AddScoped<IPatientSurveyService, PatientSurveyService>();
             services.AddScoped<IScheduledEventService, ScheduledEventService>();
+            services.AddScoped<ISurveyService, SurveyService>();
        
 
             var builder = new ContainerBuilder();
@@ -150,7 +167,6 @@ namespace HospitalApi
             app.UseRouting();
 
             app.UseCors("MyCorsImplementationPolicy");
-
             app.UseAuthentication();
             app.UseAuthorization();
 

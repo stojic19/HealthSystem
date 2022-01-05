@@ -14,10 +14,10 @@ export class FeedbackService {
   constructor(private _http: HttpClient) { }
 
   getAll(): Observable<IPatientFeedback[]> {
-    return this._http.get<IPatientFeedback[]>(`${environment.baseUrl}` + 'api/Feedback');
+    return this._http.get<IPatientFeedback[]>('api/Feedback');
   }
   getApproved(): Observable<IPatientFeedback[]> {
-    return this._http.get<IPatientFeedback[]>(`${environment.baseUrl}` + 'api/Feedback/approved');
+    return this._http.get<IPatientFeedback[]>('api/Feedback/approved');
   }
 
   addFeedback(newFeedback: IFeedback): Observable<String> {

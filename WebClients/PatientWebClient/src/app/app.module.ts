@@ -11,7 +11,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { FeedbackComponent } from './components/feedback/feedback.component';
 import { PatientFeedbackComponent } from './components/patient-feedback/patient-feedback.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FeedbacksPageComponent } from './components/feedbacks-page/feedbacks-page.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MainComponent } from './components/main/main.component';
@@ -23,6 +23,10 @@ import { SurveySectionComponent } from './components/survey-section/survey-secti
 import { RecommendedAppointmentComponent } from './components/recommended-appointment/recommended-appointment.component';
 import { LoginComponent } from './components/login/login.component';
 import { SurveyPageComponent } from './components/survey-page/survey-page.component';
+import { JwtInterceptor } from './JwtInterceptor/jwt-interceptor';
+import { AuthGuard } from 'src/app/AuthGuard/AuthGuard';
+import { AuthService } from './services/AuthService/auth.service';
+
 
 @NgModule({
   declarations: [
@@ -57,7 +61,8 @@ import { SurveyPageComponent } from './components/survey-page/survey-page.compon
     ReactiveFormsModule,
     HttpClientModule,
   ],
-  providers: [HttpClientModule],
+  providers: [HttpClientModule,
+  {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

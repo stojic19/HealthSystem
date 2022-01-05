@@ -4,6 +4,7 @@ using System;
 using AutoMapper;
 using Hospital.MedicalRecords.Repository;
 using Hospital.SharedModel.Repository.Base;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HospitalApi.Controllers
 {
@@ -20,6 +21,7 @@ namespace HospitalApi.Controllers
             this._mapper = mapper;
         }
 
+        [Authorize(Roles = "Patient")]
         [HttpGet]
         public IActionResult GetAllergens()
         {

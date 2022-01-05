@@ -47,7 +47,7 @@ using System.Linq;
             
         }
 
-        
+        [Authorize(Roles = "Patient")]
         [HttpGet("approved")]
         public IEnumerable<Feedback> GetApprovedFeedbacks()
         {
@@ -55,7 +55,7 @@ using System.Linq;
             return feedbackReadRepo.GetAll().Include(x => x.Patient).Where(x => x.IsPublishable == true && x.FeedbackStatus == FeedbackStatus.Approved);
         }
 
-        
+        [Authorize(Roles = "Patient")]
         [HttpPost]
         public IActionResult InsertFeedback(NewFeedbackDTO feedbackDTO)
         {
@@ -111,7 +111,7 @@ using System.Linq;
             }
         }
 
-        [Authorize]
+        [Authorize(Roles = "Patient")]
         [HttpGet("{Id}")]
         public Feedback GetFeedback(int Id )
         {

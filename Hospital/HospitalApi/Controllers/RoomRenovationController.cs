@@ -29,7 +29,8 @@ namespace HospitalApi.Controllers
             _uow = uow;
             _mapper = mapper;
         }
-        
+
+        [Authorize(Roles = "Manager")]
         [HttpGet]
         public IActionResult GetSurroundingRoomsForRoom([FromQuery(Name = "roomId")] int roomId)
         {

@@ -1,4 +1,4 @@
-﻿using Hospital.GraphicalEditor.Model;
+﻿using Hospital.Schedule.Model;
 using Hospital.SharedModel.Repository.Base;
 using System;
 using System.Collections.Generic;
@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hospital.GraphicalEditor.Repository
+namespace Hospital.Schedule.Repository
 {
-    public interface IRoomPositionWriteRepository : IWriteBaseRepository<RoomPosition>
+    public interface IShiftReadRepository : IReadBaseRepository<int, Shift>
     {
     }
 }

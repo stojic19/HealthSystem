@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { BehaviorSubject, Observable} from 'rxjs';
 import { ILoginData } from 'src/app/interfaces/login-data';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,7 @@ export class AuthService {
 
   constructor(
     private _http: HttpClient, 
+    private _router: Router
    ) {
       this.currentUserSubject = new BehaviorSubject<ILoginData>(JSON.parse((localStorage.getItem('currentUser'))!));
        this.currentUser = this.currentUserSubject.asObservable();
@@ -23,13 +25,15 @@ export class AuthService {
       return this._http.post('api/Login', model).pipe(
         map((response: any) => {
           if (response && response.token) {
+            console.log("ovov" + response.token);
+            
             localStorage.setItem('token', response.token);
             localStorage.setItem('currentUser', JSON.stringify(response));
             this.currentUserSubject.next(response);
-      
+            this._router.navigate(['/record']);
           }
           return this.user;
-  
+         
         })
       );
     }

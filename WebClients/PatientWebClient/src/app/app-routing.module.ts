@@ -35,7 +35,8 @@ const routes: Routes = [
       },
       {
         path:'survey/:appointmentId',
-        component: SurveyPageComponent
+        component: SurveyPageComponent,
+        canActivate:[AuthGuard]
       },
     {
       path:'login',
@@ -45,7 +46,7 @@ const routes: Routes = [
   },
   { path: 'registration', component: RegistrationComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'recommendedAppointments', component: RecommendedAppointmentComponent}
+  { path: 'recommendedAppointments', component: RecommendedAppointmentComponent, canActivate:[AuthGuard]} 
   
 ];
 

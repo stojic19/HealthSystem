@@ -35,10 +35,11 @@ namespace HospitalApi.Controllers
                 return BadRequest("There is no user with this username!");
             }
 
+            System.Diagnostics.Debug.WriteLine("whatever: " + user.Password);
             var result = await _signInManager.CheckPasswordSignInAsync(userFromDb, user.Password, false);
             if (!result.Succeeded)
             {
-                return BadRequest("Incorrect password!");
+                return BadRequest("Incorrect password!" + result);
             }
 
             var roles = await _userManager.GetRolesAsync(userFromDb);

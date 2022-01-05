@@ -22,12 +22,12 @@ namespace HospitalApi.Controllers
             this._mapper = mapper;
         }
 
-        [Authorize]
-        [HttpGet]
-        public IActionResult GetPatientWithRecord()
+        [Authorize(Roles = "Patient")]
+        [HttpGet("{userName}")]
+        public IActionResult GetPatientWithRecord(string userName)
         {
             var patientRepo = _uow.GetRepository<IPatientReadRepository>();
-            var loggedInPatient = patientRepo.GetAll().First();
+            var loggedInPatient = patientRepo.GetAll().Where(x=>x.UserName.Equals(userName)).FirstOrDefault();
             var patient = patientRepo.GetPatient(loggedInPatient.Id);
             var medicalRecordRepo = _uow.GetRepository<IMedicalRecordReadRepository>();
             var medicalRecord = medicalRecordRepo.GetMedicalRecord(patient.MedicalRecordId);

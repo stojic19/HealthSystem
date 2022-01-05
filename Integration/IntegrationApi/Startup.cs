@@ -13,12 +13,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using Integration.Database.EfStructures;
 using IntegrationAPI.HttpRequestSenders;
 using IntegrationAPI.HttpRequestSenders.Implementation;
-using Microsoft.EntityFrameworkCore;
+using Integration.Tendering.Service;
 
 namespace IntegrationAPI
 {
@@ -46,21 +44,10 @@ namespace IntegrationAPI
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "IntegrationApi", Version = "v1" });
             });
             services.AddHostedService<BenefitRabbitMqService>();
-
-            services.AddDbContextPool<AppDbContext>(options =>
-            {
-                var connectionString = Environment.GetEnvironmentVariable("INTEGRATION_DB_PATH");
-                options.UseNpgsql(connectionString);
-                using (var context = new AppDbContext((DbContextOptions<AppDbContext>)options.Options))
-                {
-                    if (context.Database.GetPendingMigrations().Any())
-                    {
-                        context.Database.Migrate();
-                    }
-                }
-            });
+            services.AddHostedService<NewTenderOfferRabbitMQService>();
 
             var builder = new ContainerBuilder();
+            builder.RegisterModule(new DbModule());
             builder.RegisterModule(new RepositoryModule()
             {
 

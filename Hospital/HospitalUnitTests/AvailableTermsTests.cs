@@ -68,7 +68,6 @@ namespace HospitalUnitTests
 
         public static IEnumerable<object[]> Data()
         {
-
             var retVal = new List<object[]>();
 
             var timePeriod = new TimePeriod(new DateTime(2022, 12, 10, 0, 0, 0), new DateTime(2022, 12, 11, 0, 1, 0));

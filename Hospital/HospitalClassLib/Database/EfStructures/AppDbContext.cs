@@ -37,11 +37,21 @@ namespace Hospital.Database.EfStructures
         public DbSet<AnsweredSurvey> AnsweredSurveys { get; set; }
         public DbSet<EquipmentTransferEvent> EquipmentTransferEvents { get; set; }
         public DbSet<MedicationExpenditureLog> MedicationExpenditureLogs { get; set; }
-        public DbSet<RoomPosition> RoomPositions { get; set; }
         public DbSet<RoomRenovationEvent> RoomRenovationEvents { get; set; }
+        public DbSet<OnCallDuty> OnCallDuties { get; set; }
+        public DbSet<Shift> Shifts { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
+        }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Room>().OwnsOne(r => r.RoomPosition);
+            builder.Entity<Doctor>().OwnsMany(d => d.Vacations);
+            builder.Entity<OnCallDuty>().HasMany(oc => oc.DoctorsOnDuty).WithMany(d => d.OnCallDuties);
+           
+            base.OnModelCreating(builder);
         }
     }
 }

@@ -24,6 +24,7 @@ namespace HospitalApi.Controllers
             this._uow = uow;
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpGet]
         public IEnumerable<Room> GetRoomsByLocation([FromQuery(Name = "floorNumber")] int floorNumber, [FromQuery(Name = "buildingName")] string buildingName)
         {

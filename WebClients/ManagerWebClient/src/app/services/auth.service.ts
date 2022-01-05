@@ -14,7 +14,7 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class AuthService {
-  baseUrl: string = environment.baseUrl;
+  baseUrl: string = environment.baseHospitalUrl;
   private currentUserSubject: BehaviorSubject<LogedManager>;
   public currentUser: Observable<LogedManager>;
   private user: LogedManager;

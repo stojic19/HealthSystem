@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  baseHospitalUrl : '/manager/',
+  baseIntegrationUrl : '/integration/'
 };

@@ -11,7 +11,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Text.Json.Serialization;
 using Hospital.Database.EfStructures;
 using Hospital.SharedModel.Model;
@@ -21,6 +23,11 @@ using Microsoft.AspNetCore.Identity;
 using Hospital.Schedule.Service.ServiceInterface;
 using Hospital.Schedule.Service;
 using Hospital.Schedule.Service.Interfaces;
+using Hospital.SharedModel.Service;
+using Hospital.SharedModel.Service.Implementation;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 
 namespace HospitalApi
 {
@@ -51,14 +58,27 @@ namespace HospitalApi
                  options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
              );
 
+            services.AddScoped<IJWTTokenGenerator, JWTTokenGenerator>();
+
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "HospitalApi", Version = "v1" });
             });
-            var builder = new ContainerBuilder();
-            builder.RegisterModule(new DbModule());
+
+            services.AddDbContextPool<AppDbContext>(options =>
+            {
+                var connectionString = Environment.GetEnvironmentVariable("HOSPITAL_DB_PATH");
+                options.UseNpgsql(connectionString);
+                using (var context = new AppDbContext((DbContextOptions<AppDbContext>)options.Options))
+                {
+                    if (context.Database.GetPendingMigrations().Any())
+                    {
+                        context.Database.Migrate();
+                    }
+                }
+            });
 
             services.AddIdentity<User, IdentityRole<int>>(options =>
                 {
@@ -67,14 +87,32 @@ namespace HospitalApi
                     options.Password.RequireNonAlphanumeric = false;
                     options.Password.RequiredLength = 6;
                     options.SignIn.RequireConfirmedAccount = true;
-                })
+                }).AddRoles<IdentityRole<int>>()
                 .AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
+            services.AddAuthentication(cfg =>
+            {
+                cfg.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                cfg.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Token:Key"])),
+                    ValidIssuer = Configuration["Token:Issuer"],
+                    ValidateIssuer = true,
+                    ValidateAudience = false,
+                };
+            });
             services.AddHostedService<ConsumeScopedServiceHostedService>();
             services.AddScoped<IPatientSurveyService, PatientSurveyService>();
             services.AddScoped<IScheduledEventService, ScheduledEventService>();
             services.AddScoped<ISurveyService, SurveyService>();
-           
+       
+
+            var builder = new ContainerBuilder();
 
             builder.RegisterModule(new RepositoryModule()
             {
@@ -110,7 +148,7 @@ namespace HospitalApi
             app.UseRouting();
 
             app.UseCors("MyCorsImplementationPolicy");
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

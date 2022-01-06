@@ -10,6 +10,7 @@ using Hospital.Schedule.Repository;
 using Hospital.SharedModel.Repository;
 using Hospital.SharedModel.Repository.Base;
 using HospitalApi.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HospitalApi.Controllers
 {
@@ -25,7 +26,7 @@ namespace HospitalApi.Controllers
             _uow = uow;
             _mapper = mapper;
         }
-
+        [Authorize(Roles = "Patient")]
         [HttpPost]
         public IActionResult ScheduleAppointment(ScheduleAppointmentDTO scheduleAppointmentDTO)
         {

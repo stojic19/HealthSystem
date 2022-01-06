@@ -1,24 +1,24 @@
 <mat-card>
     <mat-card-title>Login</mat-card-title>
 <mat-card-content>
-<form  >
+<form [formGroup]="form" (submit)="submit()">
   <p>
     <mat-form-field>
-      <input type="text" matInput placeholder="Username" formControlName="username">
+      <input required formControlName="username" type="text" matInput placeholder="Username" formControlName="username">
     </mat-form-field>
   </p>
 
   <p>
     <mat-form-field>
-      <input type="password" matInput placeholder="Password" formControlName="password">
+      <input required formControlName="password" type="password" matInput placeholder="Password" formControlName="password">
     </mat-form-field>
   </p>
 
 
   <div class="button">
-    <button type="submit" mat-button>Login</button>
+    <button [disabled]="form.invalid" type="submit" mat-button>Login</button>
   </div>
 
-</form>
+</form> 
 </mat-card-content>
 </mat-card>

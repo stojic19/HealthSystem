@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Integration", "IntegrationC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{F2946645-8D60-4CD1-AEF4-B214812022F2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationAPI", "IntegrationApi\IntegrationAPI.csproj", "{EE270EDF-55E4-44AE-B934-8C07A2F4210E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationApi", "IntegrationApi\IntegrationApi.csproj", "{EE270EDF-55E4-44AE-B934-8C07A2F4210E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntegrationUnitTests", "IntegrationUnitTests", "{42CD61FF-1EFD-438F-AC2A-2C929FBDF537}"
 EndProject

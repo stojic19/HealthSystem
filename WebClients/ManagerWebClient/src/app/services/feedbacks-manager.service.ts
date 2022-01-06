@@ -1,14 +1,14 @@
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { IFeedback } from "../interfaces/feedback";
+
 
 
 @Injectable()
 export class FeedbacksManagerService {
 
   constructor(private http: HttpClient) {}
-
   getFeedback() : Observable<IFeedback[]>  {
 
     return  this.http.get<IFeedback[]>('/api/Feedback');
@@ -21,8 +21,9 @@ export class FeedbacksManagerService {
 
   unapproveFeedback(feedback: IFeedback) : Observable<IFeedback>  {
     var url =  '/api/Feedback/unpublish';
-    return this.http.put<any>(url, feedback );
+    return this.http.put<any>(url, feedback, );
   }
  
+
 }
 

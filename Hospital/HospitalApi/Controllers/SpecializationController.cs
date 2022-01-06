@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Hospital.SharedModel.Repository;
 using Hospital.SharedModel.Repository.Base;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HospitalApi.Controllers
 {
@@ -20,6 +21,7 @@ namespace HospitalApi.Controllers
             _uow = uow;
         }
 
+        [Authorize(Roles = "Patient")]
         [HttpGet]
         public IActionResult GetAll()
         {

@@ -21,9 +21,9 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Add_transfer_request_should_return_200()
         {
-            var sourceRoom = InsertRoom("SR-2");
-            var destinationRoom = InsertRoom("SR-3");
-            var inventoryItem = InsertInventoryItem("Chair");
+            var sourceRoom = InsertRoom("Test initial room");
+            var destinationRoom = InsertRoom("Test destination room");
+            var inventoryItem = InsertInventoryItem("Test item");
             var roomInventoryItem = InsertInventoryInRoom(sourceRoom.Id, inventoryItem.Id, 4);
 
             CheckAndDeleteRequests(new DateTime(2025, 11, 22, 0, 0, 0));
@@ -54,14 +54,15 @@ namespace HospitalIntegrationTests
                                 x.InventoryItemId == newRequest.InventoryItemId);
 
             foundRequest.ShouldNotBeNull();
+            ClearAllTestData();
         }
 
         [Fact]
         public async Task Add_transfer_request_should_return_400()
         {
-            var sourceRoom = InsertRoom("SR-2");
-            var destinationRoom = InsertRoom("SR-3");
-            var inventoryItem = InsertInventoryItem("Chair");
+            var sourceRoom = InsertRoom("Test initial room");
+            var destinationRoom = InsertRoom("Test destination room");
+            var inventoryItem = InsertInventoryItem("Test item");
             var roomInventoryItem = InsertInventoryInRoom(sourceRoom.Id, inventoryItem.Id, 4);
 
             CheckAndDeleteRequests(new DateTime(2025, 11, 22, 0, 0, 0));
@@ -92,6 +93,7 @@ namespace HospitalIntegrationTests
                                 x.InventoryItemId == newRequest.InventoryItemId);
 
             foundRequest.ShouldBeNull();
+            ClearAllTestData();
         }
 
         private void CheckAndDeleteRequests(DateTime startDate)
@@ -159,21 +161,46 @@ namespace HospitalIntegrationTests
 
             if (roomInventory == null)
             {
-                roomInventory = new RoomInventory()
-                {
-                    Amount = amount,
-                    InventoryItemId = inventoryId,
-                    RoomId = roomId
-                };
+                roomInventory = new RoomInventory(roomId, inventoryId, amount);
                 UoW.GetRepository<IRoomInventoryWriteRepository>().Add(roomInventory);
             }
             else if (roomInventory.Amount < amount)
             {
-                roomInventory.Amount = amount;
+                roomInventory.Add(amount - roomInventory.Amount);
                 UoW.GetRepository<IRoomInventoryWriteRepository>().Update(roomInventory);
             }
                 
             return roomInventory;
+        }
+
+        private void ClearAllTestData()
+        {
+            var initialRoom = UoW.GetRepository<IRoomReadRepository>()
+                .GetAll()
+                .FirstOrDefault(x => x.Name == "Test initial room");
+            var destinationRoom = UoW.GetRepository<IRoomReadRepository>()
+                .GetAll()
+                .FirstOrDefault(x => x.Name == "Test destination room");
+            var inventoryItem = UoW.GetRepository<IInventoryItemReadRepository>()
+                .GetAll()
+                .FirstOrDefault(x => x.Name == "Test item");
+            var roomInventory = UoW.GetRepository<IRoomInventoryReadRepository>()
+                .GetAll()
+                .FirstOrDefault(x => x.InventoryItemId == inventoryItem.Id && 
+                                     x.RoomId == initialRoom.Id);
+
+            if (roomInventory != null)
+                UoW.GetRepository<IRoomInventoryWriteRepository>().Delete(roomInventory);
+
+            if (inventoryItem != null)
+                UoW.GetRepository<IInventoryItemWriteRepository>().Delete(inventoryItem);
+
+            if (initialRoom != null)
+                UoW.GetRepository<IRoomWriteRepository>().Delete(initialRoom);
+
+            if (destinationRoom != null)
+                UoW.GetRepository<IRoomWriteRepository>().Delete(destinationRoom);
+
         }
     }
 }

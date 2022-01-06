@@ -109,6 +109,7 @@ namespace HospitalApi
             services.AddHostedService<ConsumeScopedServiceHostedService>();
             services.AddScoped<IPatientSurveyService, PatientSurveyService>();
             services.AddScoped<IScheduledEventService, ScheduledEventService>();
+            services.AddScoped<ISurveyService, SurveyService>();
        
 
             var builder = new ContainerBuilder();
@@ -147,7 +148,6 @@ namespace HospitalApi
             app.UseRouting();
 
             app.UseCors("MyCorsImplementationPolicy");
-
             app.UseAuthentication();
             app.UseAuthorization();
 

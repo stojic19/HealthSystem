@@ -4,6 +4,7 @@ using Hospital.Schedule.Model.Wrappers;
 using Hospital.Schedule.Service.ServiceInterface;
 using Hospital.SharedModel.Model.Enumerations;
 using HospitalApi.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -32,6 +33,7 @@ namespace HospitalApi.Controllers
         }
 
         //TODO : Vidi mapperom
+        [Authorize(Roles = "Patient")]
         [HttpGet("{SurveyId}")]
         public CategoriesSurvey getSurveyByCategories(int SurveyId)
         {
@@ -45,6 +47,7 @@ namespace HospitalApi.Controllers
             return categoriesSurvey;
         }
 
+        [Authorize(Roles = "Patient")]
         [HttpPost]
         public IActionResult CreateSurvey(SurveyDTO surveyDTO)
         {

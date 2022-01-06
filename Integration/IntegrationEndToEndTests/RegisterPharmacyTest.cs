@@ -9,6 +9,7 @@ using IntegrationEndToEndTests.Base;
 using IntegrationEndToEndTests.Pages;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using Shouldly;
 using Xunit;
 
 namespace IntegrationEndToEndTests
@@ -59,7 +60,7 @@ namespace IntegrationEndToEndTests
                     break;
                 }
             }
-            Assert.True(difference == 1);
+            difference.ShouldBe(1);
         }
     }
 }

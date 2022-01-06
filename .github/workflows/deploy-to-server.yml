@@ -5,6 +5,7 @@ on:
   push:
     branches: 
       - 'master'
+      - 'feature/upload-to-server'
 
 jobs:
   deploy:

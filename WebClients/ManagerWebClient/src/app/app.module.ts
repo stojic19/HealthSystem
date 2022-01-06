@@ -14,7 +14,7 @@ import { SecondFloorComponent } from './first-building/second-floor/second-floor
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FeedbacksManagerComponent } from './components/feedbacks-manager/feedbacks-manager.component';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SecondBuildingComponent } from './second-building/second-building.component';
 import { FloorFirstComponent } from './second-building/floor-first/floor-first.component';
@@ -55,6 +55,7 @@ import { SurveySectionObserveComponent } from './components/survey-section-obser
 import { SurveysObserveComponent } from './components/surveys-observe/surveys-observe.component';
 import { MaterialModule } from './material/material.module';
 import { MedicineSpecificationListComponent } from './medicine-specification-requests/medicine-specification-list/medicine-specification-list.component';
+import { PharmacyProfileComponent } from './pharmacies/pharmacy-profile/pharmacy-profile.component';
 import { RenovationFormComponent } from './renovation-form/renovation-form.component';
 import { RenovationTypeComponent } from './renovation-form/renovation-type/renovation-type.component';
 import { FirstRoomComponent } from './renovation-form/first-room/first-room.component';
@@ -63,12 +64,14 @@ import { RoomScheduleComponent } from './room-schedule/room-schedule.component';
 import { ConfirmDialogComponent } from './room-schedule/confirm-dialog/confirm-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DetailsDialogComponent } from './room-schedule/details-dialog/details-dialog.component';
+import { ToastrModule } from 'ngx-toastr';
 import { MaliciousPatientsComponent } from './components/malicious-patients/malicious-patients.component';
 import { TimeInfoComponent } from './renovation-form/time-info/time-info.component';
 import { FirstRoomInfoComponent } from './renovation-form/first-room-info/first-room-info.component';
 import { SecondRoomInfoComponent } from './renovation-form/second-room-info/second-room-info.component';
 import { AvailableTermsComponent } from './renovation-form/available-terms/available-terms.component';
-
+import { LoginComponent } from './components/login/login.component';
+import { JwtInterceptor } from './JWTInterceptor/JwtInterceptor';
 
 @NgModule({
   declarations: [
@@ -111,6 +114,7 @@ import { AvailableTermsComponent } from './renovation-form/available-terms/avail
     SurveySectionObserveComponent,
     SurveysObserveComponent,
     MedicineSpecificationListComponent,
+    PharmacyProfileComponent,
     RenovationFormComponent,
     RenovationTypeComponent,
     FirstRoomComponent,
@@ -123,6 +127,7 @@ import { AvailableTermsComponent } from './renovation-form/available-terms/avail
     FirstRoomInfoComponent,
     SecondRoomInfoComponent,
     AvailableTermsComponent,
+    LoginComponent,
 
   ],
   imports: [
@@ -145,8 +150,13 @@ import { AvailableTermsComponent } from './renovation-form/available-terms/avail
     MatSelectModule,
     MaterialModule,
     MatDialogModule,
+    ToastrModule.forRoot({timeOut: 3000,
+      positionClass: 'toast-top-right'}),
   ],
-  providers: [HttpClientModule],
+  providers: [HttpClientModule,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+
+  ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

@@ -1,5 +1,4 @@
 ﻿using Hospital.GraphicalEditor.Model;
-using Hospital.GraphicalEditor.Repository;
 using Hospital.RoomsAndEquipment.Model;
 using Hospital.RoomsAndEquipment.Repository;
 using Hospital.RoomsAndEquipment.Repository.Implementation;
@@ -32,9 +31,7 @@ namespace HospitalUnitTests
             var roomRenovationEvent = UoW.GetRepository<IRoomRenovationEventReadRepository>().GetById(1);
             service.SplitRoom(roomRenovationEvent);
             var rooms = UoW.GetRepository<IRoomReadRepository>().GetAll();
-            var roomPositions = UoW.GetRepository<IRoomPositionReadRepository>().GetAll();
             rooms.Count().ShouldBe(2);
-            roomPositions.Count().ShouldBe(2);
         }
 
         [Fact]
@@ -70,17 +67,8 @@ namespace HospitalUnitTests
                 FloorNumber = 1,
                 Width = 5,
                 Height = 6,
-                RoomType = RoomType.AppointmentRoom
-            });
-
-            Context.RoomPositions.Add(new RoomPosition()
-            {
-                Id = 1,
-                RoomId = 1,
-                DimensionY = 0,
-                DimensionX = 0,
-                Width = 150,
-                Height = 122
+                RoomType = RoomType.AppointmentRoom,
+                RoomPosition = new RoomPosition(0, 0, 150, 122)
             });
 
             Context.RoomRenovationEvents.Add(new RoomRenovationEvent()

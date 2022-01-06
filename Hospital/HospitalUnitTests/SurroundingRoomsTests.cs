@@ -1,15 +1,11 @@
 ﻿using Hospital.GraphicalEditor.Model;
 using Hospital.GraphicalEditor.Service;
-using Hospital.GraphicalEditor.Repository;
 using Hospital.RoomsAndEquipment.Model;
 using HospitalUnitTests.Base;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 using Shouldly;
+using Hospital.RoomsAndEquipment.Repository;
 
 namespace HospitalUnitTests
 {
@@ -29,39 +25,23 @@ namespace HospitalUnitTests
                 Id = 1,
                 Name = "Test room 1",
                 BuildingName = "Building 1",
-                FloorNumber = 1
+                FloorNumber = 1,
+                RoomPosition = new RoomPosition(0, 0, 150, 122)
             });
             Context.Rooms.Add(new Room()
             {
                 Id = 2,
                 Name = "Test room 2",
                 BuildingName = "Building 1",
-                FloorNumber = 1
+                FloorNumber = 1,
+                RoomPosition = new RoomPosition(0, 122, 150, 122)
             });
-            Context.RoomPositions.Add(new RoomPosition()
-            {
-                Id = 1,
-                RoomId = 1,
-                DimensionY = 0,
-                DimensionX = 0,
-                Width = 150,
-                Height = 122
-            });
-            Context.RoomPositions.Add(new RoomPosition()
-            {
-                Id = 2,
-                RoomId = 2,
-                DimensionY = 122,
-                DimensionX = 0,
-                Width = 150,
-                Height = 122
-            });
+            
             Context.SaveChanges();
 
-            var service = new FindingSurroundingRoomsService(UoW);
-            var firstPosition = UoW.GetRepository<IRoomPositionReadRepository>().GetById(1);
-            var secondPosition = UoW.GetRepository<IRoomPositionReadRepository>().GetById(2);
-            var result = service.AreNeighbors(firstPosition, secondPosition);
+            var firstRoom = UoW.GetRepository<IRoomReadRepository>().GetById(1);
+            var secondRoom = UoW.GetRepository<IRoomReadRepository>().GetById(2);
+            var result = firstRoom.AreNeighbors(secondRoom);
 
             result.ShouldBeTrue();
         }
@@ -75,39 +55,24 @@ namespace HospitalUnitTests
                 Id = 1,
                 Name = "Test room 1",
                 BuildingName = "Building 1",
-                FloorNumber = 1
+                FloorNumber = 1,
+                RoomPosition = new RoomPosition(0, 0, 150, 122)
             });
             Context.Rooms.Add(new Room()
             {
                 Id = 2,
                 Name = "Test room 2",
                 BuildingName = "Building 1",
-                FloorNumber = 1
+                FloorNumber = 1,
+                RoomPosition = new RoomPosition(0, 366, 150, 122)
+
             });
-            Context.RoomPositions.Add(new RoomPosition()
-            {
-                Id = 1,
-                RoomId = 1,
-                DimensionY = 0,
-                DimensionX = 0,
-                Width = 150,
-                Height = 122
-            });
-            Context.RoomPositions.Add(new RoomPosition()
-            {
-                Id = 2,
-                RoomId = 2,
-                DimensionY = 366,
-                DimensionX = 0,
-                Width = 150,
-                Height = 122
-            });
+            
             Context.SaveChanges();
 
-            var service = new FindingSurroundingRoomsService(UoW);
-            var firstPosition = UoW.GetRepository<IRoomPositionReadRepository>().GetById(1);
-            var secondPosition = UoW.GetRepository<IRoomPositionReadRepository>().GetById(2);
-            var result = service.AreNeighbors(firstPosition, secondPosition);
+            var firstRoom = UoW.GetRepository<IRoomReadRepository>().GetById(1);
+            var secondRoom = UoW.GetRepository<IRoomReadRepository>().GetById(2);
+            var result = firstRoom.AreNeighbors(secondRoom);
 
             result.ShouldBeFalse();
         }
@@ -121,39 +86,23 @@ namespace HospitalUnitTests
                 Id = 1,
                 Name = "Test room 1",
                 BuildingName = "Building 2",
-                FloorNumber = 1
+                FloorNumber = 1,
+                RoomPosition = new RoomPosition(0, 0, 225, 130)
             });
             Context.Rooms.Add(new Room()
             {
                 Id = 2,
                 Name = "Test room 2",
                 BuildingName = "Building 2",
-                FloorNumber = 1
+                FloorNumber = 1,
+                RoomPosition = new RoomPosition(225, 0, 225, 130)
             });
-            Context.RoomPositions.Add(new RoomPosition()
-            {
-                Id = 1,
-                RoomId = 1,
-                DimensionY = 0,
-                DimensionX = 0,
-                Width = 225,
-                Height = 130
-            });
-            Context.RoomPositions.Add(new RoomPosition()
-            {
-                Id = 2,
-                RoomId = 2,
-                DimensionY = 0,
-                DimensionX = 225,
-                Width = 225,
-                Height = 130
-            });
+      
             Context.SaveChanges();
 
-            var service = new FindingSurroundingRoomsService(UoW);
-            var firstPosition = UoW.GetRepository<IRoomPositionReadRepository>().GetById(1);
-            var secondPosition = UoW.GetRepository<IRoomPositionReadRepository>().GetById(2);
-            var result = service.AreNeighbors(firstPosition, secondPosition);
+            var firstRoom = UoW.GetRepository<IRoomReadRepository>().GetById(1);
+            var secondRoom = UoW.GetRepository<IRoomReadRepository>().GetById(2);
+            var result = firstRoom.AreNeighbors(secondRoom);
 
             result.ShouldBeTrue();
         }
@@ -167,54 +116,31 @@ namespace HospitalUnitTests
                 Id = 1,
                 Name = "Test room 1",
                 BuildingName = "Building 2",
-                FloorNumber = 1
+                FloorNumber = 1,
+                RoomPosition = new RoomPosition(0, 0, 225, 130)
             });
             Context.Rooms.Add(new Room()
             {
                 Id = 2,
                 Name = "Test room 2",
                 BuildingName = "Building 2",
-                FloorNumber = 1
+                FloorNumber = 1,
+                RoomPosition = new RoomPosition(225, 0, 225, 130)
             });
             Context.Rooms.Add(new Room()
             {
                 Id = 3,
                 Name = "Test room 3",
                 BuildingName = "Building 2",
-                FloorNumber = 1
+                FloorNumber = 1,
+                RoomPosition = new RoomPosition(450, 0, 225, 130)
             });
-            Context.RoomPositions.Add(new RoomPosition()
-            {
-                Id = 1,
-                RoomId = 1,
-                DimensionY = 0,
-                DimensionX = 0,
-                Width = 225,
-                Height = 130
-            });
-            Context.RoomPositions.Add(new RoomPosition()
-            {
-                Id = 2,
-                RoomId = 2,
-                DimensionY = 0,
-                DimensionX = 225,
-                Width = 225,
-                Height = 130
-            });
-            Context.RoomPositions.Add(new RoomPosition()
-            {
-                Id = 3,
-                RoomId = 3,
-                DimensionY = 0,
-                DimensionX = 450,
-                Width = 225,
-                Height = 130
-            });
+          
             Context.SaveChanges();
 
             var service = new FindingSurroundingRoomsService(UoW);
-            var firstPosition = UoW.GetRepository<IRoomPositionReadRepository>().GetById(2);
-            var result = service.GetSurroundingRooms(firstPosition);
+            var room= UoW.GetRepository<IRoomReadRepository>().GetById(2);
+            var result = service.GetSurroundingRooms(room);
             result.ShouldNotBeNull();
             result.Count().ShouldBe(2);
         }
@@ -228,38 +154,23 @@ namespace HospitalUnitTests
                 Id = 1,
                 Name = "Test room 1",
                 BuildingName = "Building 1",
-                FloorNumber = 1
+                FloorNumber = 1,
+                RoomPosition = new RoomPosition(0, 0, 150, 122)
             });
             Context.Rooms.Add(new Room()
             {
                 Id = 2,
                 Name = "Test room 2",
                 BuildingName = "Building 1",
-                FloorNumber = 1
+                FloorNumber = 1,
+                RoomPosition = new RoomPosition(0, 122, 150, 122)
             });
-            Context.RoomPositions.Add(new RoomPosition()
-            {
-                Id = 1,
-                RoomId = 1,
-                DimensionY = 0,
-                DimensionX = 0,
-                Width = 150,
-                Height = 122
-            });
-            Context.RoomPositions.Add(new RoomPosition()
-            {
-                Id = 2,
-                RoomId = 2,
-                DimensionY = 122,
-                DimensionX = 0,
-                Width = 150,
-                Height = 122
-            });
+         
             Context.SaveChanges();
 
             var service = new FindingSurroundingRoomsService(UoW);
-            var firstPosition = UoW.GetRepository<IRoomPositionReadRepository>().GetById(2);
-            var result = service.GetSurroundingRooms(firstPosition);
+            var room = UoW.GetRepository<IRoomReadRepository>().GetById(2);
+            var result = service.GetSurroundingRooms(room);
             result.ShouldNotBeNull();
             result.Count().ShouldBe(1);
         }

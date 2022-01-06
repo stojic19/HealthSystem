@@ -25,8 +25,8 @@ namespace Integration.Partnership.Service
                 medicineConsumptionCalculationMicroService.CalculateMedicineConsumptions(receiptsInTimeRange);
             MedicineConsumptionReport retVal = new MedicineConsumptionReport
             {
-                startDate = timeRange.startDate,
-                endDate = timeRange.endDate,
+                startDate = timeRange.StartDate,
+                endDate = timeRange.EndDate,
                 createdDate = DateTime.Now,
                 MedicineConsumptions = medicineConsumptions
             };

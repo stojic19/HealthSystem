@@ -1,5 +1,4 @@
 ﻿using Hospital.GraphicalEditor.Model;
-using Hospital.GraphicalEditor.Repository;
 using Hospital.RoomsAndEquipment.Model;
 using Hospital.RoomsAndEquipment.Repository;
 using Hospital.RoomsAndEquipment.Service;
@@ -30,9 +29,7 @@ namespace HospitalUnitTests
             var roomRenovationEvent = UoW.GetRepository<IRoomRenovationEventReadRepository>().GetById(1);
             service.MergeRooms(roomRenovationEvent);
             var rooms = UoW.GetRepository<IRoomReadRepository>().GetAll();
-            var roomPositions = UoW.GetRepository<IRoomPositionReadRepository>().GetAll();
             rooms.Count().ShouldBe(1);
-            roomPositions.Count().ShouldBe(1);
         }
 
         [Fact]
@@ -81,7 +78,8 @@ namespace HospitalUnitTests
                 FloorNumber = 1,
                 Width = 5,
                 Height = 6,
-                RoomType = RoomType.AppointmentRoom
+                RoomType = RoomType.AppointmentRoom,
+                RoomPosition = new RoomPosition(0, 0, 150, 122)
             });
 
             Context.Rooms.Add(new Room()
@@ -93,27 +91,8 @@ namespace HospitalUnitTests
                 FloorNumber = 1,
                 Width = 5,
                 Height = 6,
-                RoomType = RoomType.AppointmentRoom
-            });
-
-            Context.RoomPositions.Add(new RoomPosition()
-            {
-                Id = 1,
-                RoomId = 1,
-                DimensionY = 0,
-                DimensionX = 0,
-                Width = 150,
-                Height = 122
-            });
-
-            Context.RoomPositions.Add(new RoomPosition()
-            {
-                Id = 2,
-                RoomId = 2,
-                DimensionY = 122,
-                DimensionX = 0,
-                Width = 150,
-                Height = 122
+                RoomType = RoomType.AppointmentRoom,
+                RoomPosition = new RoomPosition(0, 122, 150, 122)
             });
 
             Context.RoomRenovationEvents.Add(new RoomRenovationEvent()
@@ -136,29 +115,11 @@ namespace HospitalUnitTests
                 Name = "Test item 2"
             });
 
-            Context.RoomInventories.Add(new RoomInventory()
-            {
-                Id = 1,
-                InventoryItemId = 1,
-                RoomId = 1,
-                Amount = 2
-            });
+            Context.RoomInventories.Add(new RoomInventory(1, 1, 1, 2));
 
-            Context.RoomInventories.Add(new RoomInventory()
-            {
-                Id = 2,
-                InventoryItemId = 2,
-                RoomId = 2,
-                Amount = 2
-            });
+            Context.RoomInventories.Add(new RoomInventory(2, 2, 2, 2));
 
-            Context.RoomInventories.Add(new RoomInventory()
-            {
-                Id = 3,
-                InventoryItemId = 1,
-                RoomId = 2,
-                Amount = 2
-            });
+            Context.RoomInventories.Add(new RoomInventory(3, 2, 1, 2));
 
             Context.SaveChanges();
         }

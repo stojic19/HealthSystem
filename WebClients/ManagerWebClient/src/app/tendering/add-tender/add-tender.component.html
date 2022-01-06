@@ -30,13 +30,13 @@
             </thead>
             <tbody>
                 <tr *ngFor='let medicine of medicines'>
-                    <td>{{medicine.name}}</td>
+                    <td>{{medicine.medicineName}}</td>
                     <td>{{medicine.quantity}}</td>
                     <td>
-                        <div><button class="btn btn-primary" (click)="Edit(medicine.name, medicine.quantity)" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button></div>
+                        <div><button class="btn btn-primary" (click)="Edit(medicine.medicineName, medicine.quantity)" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button></div>
                     </td>
                     <td>
-                        <div><button class="btn btn-primary" (click)="Delete(medicine.name)">Delete</button></div>
+                        <div><button class="btn btn-primary" (click)="Delete(medicine.medicineName)">Delete</button></div>
                     </td>
                 </tr>
             </tbody>

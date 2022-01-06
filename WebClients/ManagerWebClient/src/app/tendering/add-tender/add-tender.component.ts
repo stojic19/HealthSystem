@@ -36,7 +36,7 @@ export class AddTenderComponent implements OnInit {
 
     this.medicines = [];
     for(var i = 0; i < this.nonFilteredMedicines.length; i++){
-        if(this.nonFilteredMedicines[i].name.toLowerCase().includes(searchString)){
+        if(this.nonFilteredMedicines[i].medicineName.toLowerCase().includes(searchString)){
           this.medicines.push(this.nonFilteredMedicines[i]);
         }
     }
@@ -71,16 +71,24 @@ export class AddTenderComponent implements OnInit {
       return;
     }
     for(var i = 0; i < this.nonFilteredMedicines.length; i++){
-      if(this.nonFilteredMedicines[i].name === this.MedicineString && this.nonFilteredMedicines[i].name != this.EditedMedicineName){     
+      if(this.nonFilteredMedicines[i].medicineName === this.MedicineString && this.nonFilteredMedicines[i].medicineName != this.EditedMedicineName){     
         this.toastr.error("Enter unique medicine name!", "Error!");
         return;
       }
     }
+    for(var i = 0; i < this.medicines.length; i++){
+      if(this.medicines[i].medicineName === this.EditedMedicineName){     
+        this.medicines[i].medicineName = this.EditMedicineString;
+        this.medicines[i].quantity = this.EditQuantityString;
+        break;
+      }
+    }
     for(var i = 0; i < this.nonFilteredMedicines.length; i++){
-      if(this.nonFilteredMedicines[i].name === this.EditedMedicineName){     
-        this.nonFilteredMedicines[i].name = this.EditMedicineString;
+      if(this.nonFilteredMedicines[i].medicineName === this.EditedMedicineName){     
+        this.nonFilteredMedicines[i].medicineName = this.EditMedicineString;
         this.nonFilteredMedicines[i].quantity = this.EditQuantityString;
         this.toastr.success("Medicine data updated successfully!", "Success!");
+        return;
       }
     }
   }
@@ -103,12 +111,12 @@ export class AddTenderComponent implements OnInit {
       return;
     }
     for(var i = 0; i < this.nonFilteredMedicines.length; i++){
-      if(this.nonFilteredMedicines[i].name === this.MedicineString){     
+      if(this.nonFilteredMedicines[i].medicineName === this.MedicineString){     
         this.toastr.error("Enter unique medicine name!", "Error!");
         return;
       }
     }
-    var medicine = { name: this.MedicineString, quantity: this.QuantityString}
+    var medicine = { medicineName: this.MedicineString, quantity: this.QuantityString}
     this.medicines.push(medicine);
     this.nonFilteredMedicines.push(medicine);
     this.MedicineString = "";
@@ -119,13 +127,13 @@ export class AddTenderComponent implements OnInit {
   Delete(name: any){
     let nonFilteredMedicinesTemp = [] as  any
     for(var i = 0; i < this.nonFilteredMedicines.length; i++){
-      if(this.nonFilteredMedicines[i].name !== name){
+      if(this.nonFilteredMedicines[i].medicineName !== name){
         nonFilteredMedicinesTemp.push(this.nonFilteredMedicines[i]);
       }
     }
     let medicinesTemp = [] as  any
     for(var i = 0; i < this.medicines.length; i++){
-      if(this.medicines[i].name !== name){
+      if(this.medicines[i].medicineName !== name){
         medicinesTemp.push(this.medicines[i]);
       }
     }
@@ -159,6 +167,7 @@ export class AddTenderComponent implements OnInit {
     this._tenderingService.createTender(request).subscribe(res =>
       {
         this.toastr.success(res.toString());
-      },(error) => this.toastr.error(error.error));
+      },(error) => console.log(console.error()
+      ));
   }
 }

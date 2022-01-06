@@ -22,7 +22,7 @@ namespace HospitalUnitTests
             Context.Patients.Add(new Patient()
             {
                 Id = 10,
-                UserName = "userName"
+                UserName = "testUser"
             });
             Context.Doctors.Add(new Doctor()
             {
@@ -56,9 +56,9 @@ namespace HospitalUnitTests
             createDbContext(isCanceled: false, isDone: false);
 
             ScheduledEventService scheduledEventsService = new(UoW);           
-            scheduledEventsService.GetUpcomingUserEvents("userName").Count.ShouldBe(1);
+            scheduledEventsService.GetUpcomingUserEvents("testUser").Count.ShouldBe(1);
             scheduledEventsService.UpdateFinishedUserEvents();
-            scheduledEventsService.GetFinishedUserEvents("userName").Count.ShouldBe(1);
+            scheduledEventsService.GetFinishedUserEvents("testUser").Count.ShouldBe(1);
 
         }
 
@@ -70,9 +70,9 @@ namespace HospitalUnitTests
             createDbContext(isCanceled:false,isDone:true);
            
             ScheduledEventService scheduledEventsService = new ScheduledEventService(UoW);
-            scheduledEventsService.GetFinishedUserEvents("userName").Count.ShouldBe(1);
-            scheduledEventsService.GetCanceledUserEvents("userName").Count.ShouldBe(0);
-            scheduledEventsService.GetUpcomingUserEvents("userName").Count.ShouldBe(0);
+            scheduledEventsService.GetFinishedUserEvents("testUser").Count.ShouldBe(1);
+            scheduledEventsService.GetCanceledUserEvents("testUser").Count.ShouldBe(0);
+            scheduledEventsService.GetUpcomingUserEvents("testUser").Count.ShouldBe(0);
         }
 
         [Fact]
@@ -83,9 +83,9 @@ namespace HospitalUnitTests
             createDbContext(isCanceled: true, isDone: false);
 
             ScheduledEventService scheduledEventsService = new ScheduledEventService(UoW);
-            scheduledEventsService.GetFinishedUserEvents("userName").Count.ShouldBe(0);
-            scheduledEventsService.GetCanceledUserEvents("userName").Count.ShouldBe(1);
-            scheduledEventsService.GetUpcomingUserEvents("userName").Count.ShouldBe(0);
+            scheduledEventsService.GetFinishedUserEvents("testUser").Count.ShouldBe(0);
+            scheduledEventsService.GetCanceledUserEvents("testUser").Count.ShouldBe(1);
+            scheduledEventsService.GetUpcomingUserEvents("testUser").Count.ShouldBe(0);
            
         }
     
@@ -97,9 +97,9 @@ namespace HospitalUnitTests
             createDbContext(isCanceled: false, isDone: false);
 
             ScheduledEventService scheduledEventsService = new ScheduledEventService(UoW);
-            scheduledEventsService.GetFinishedUserEvents("userName").Count.ShouldBe(0);
-            scheduledEventsService.GetCanceledUserEvents("userName").Count.ShouldBe(0);
-            scheduledEventsService.GetUpcomingUserEvents("userName").Count.ShouldBe(1);
+            scheduledEventsService.GetFinishedUserEvents("testUser").Count.ShouldBe(0);
+            scheduledEventsService.GetCanceledUserEvents("testUser").Count.ShouldBe(0);
+            scheduledEventsService.GetUpcomingUserEvents("testUser").Count.ShouldBe(1);
 
         }
 

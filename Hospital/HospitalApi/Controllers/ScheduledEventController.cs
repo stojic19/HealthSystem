@@ -71,6 +71,15 @@ namespace HospitalApi.Controllers
         }
 
         [Authorize(Roles = "Patient")]
+        [HttpGet("{eventId}")]
+        public IActionResult CancelAppointment(int eventId)
+        {
+
+            _eventsService.CancelAppointment(eventId);
+            return Ok();
+        }
+
+        [Authorize(Roles = "Patient")]
         [HttpGet]
         public IActionResult GetAvailableAppointments([FromQuery(Name = "doctorId")] int doctorId, string preferredDate)
         {

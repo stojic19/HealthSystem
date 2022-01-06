@@ -52,6 +52,7 @@ export class SurveyPageComponent implements OnInit {
         scheduledEventId: this.scheduledEvent.id
       }
       this.surveyService.answerSurvey(this.answeredSurvey).subscribe();
+      
       this.snackBar.open("Thank you for answering our Survey . ", '', {
         duration: 3000,
         verticalPosition: 'bottom'
@@ -67,21 +68,23 @@ export class SurveyPageComponent implements OnInit {
       });
     }
   }
+  
   ngOnInit(): void {
+    this.refresh()
+  }
 
+  refresh(){
     this.appointmentId = this.route.snapshot.paramMap.get('appointmentId');
     console.log(this.appointmentId);
       
     this.appointmentService.getAppointment(this.appointmentId).subscribe((res:IAppointment)=>{
       this.scheduledEvent = res;
-    })
+    });
 
     this.surveyService.getSurvey().subscribe((res: ISurvey) => {
       this.survey = res;
       this.totalQuestions = this.survey.hospitalSection.questions.length + this.survey.doctorSection.questions.length + this.survey.medicalStaffSection.questions.length;
-    })
-
-
+    });
 
   }
 

@@ -38,6 +38,6 @@ export class LoginComponent implements OnInit {
    
    this._service.login(this.form.getRawValue()).subscribe(loginObserver);
    //TODO: Id za med record
-   this._router.navigate(['/record']);
+  
   }
 }

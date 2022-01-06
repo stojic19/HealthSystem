@@ -8,6 +8,7 @@ import { IPatient } from 'src/app/interfaces/patient-interface';
   providedIn: 'root'
 })
 export class MedicalRecordService {
+
   patient!: IPatient;
 
   constructor(private _http: HttpClient) {}
@@ -16,19 +17,21 @@ export class MedicalRecordService {
     return this._http.get<IPatient>('api/MedicalRecord/GetPatientWithRecord/' + userName);
   }
   getFutureAppointments(userName:any): any {
-    console.log(userName);
-    
+  
     return this._http.get<IAppointment[]>('api/ScheduledEvent/GetUpcomingUserEvents/' + userName);
   }
 
   getfinishedAppointments(userName:any): any {
-    console.log(userName);
+  
     return this._http.get<IFinishedAppointment[]>('api/ScheduledEvent/GetEventsForSurvey/' + userName);
   }
 
   getCanceledAppointments(userName:any): any {
-    console.log(userName);
+   
     return this._http.get<IAppointment[]>('api/ScheduledEvent/GetCanceledUserEvents/' + userName);
   }
-
+  cancelAppointments(id: number) : any {
+    
+   return this._http.get<any>('api/ScheduledEvent/CancelAppointment/' + id);
+  }
 }

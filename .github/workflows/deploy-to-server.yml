@@ -18,5 +18,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: 22207
           script: |
-            whoami
-            ls -al
+            cd psw/mainrepo
+            docker system prune
+            ls
+            

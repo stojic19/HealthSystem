@@ -3,22 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IntegrationEndToEndTests.Base;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
 namespace IntegrationEndToEndTests.Pages
 {
-    public class LoginPage
+    public class LoginPage : BasePage
     {
-        private readonly IWebDriver _driver;
-        public const string Uri = "http://localhost:4200/login";
+        
         private IWebElement LoginUsername => _driver.FindElement(By.Id("loginUsername"));
         private IWebElement LoginPassword => _driver.FindElement(By.Id("loginPassword"));
         private IWebElement Button => _driver.FindElement(By.Id("submitButton"));
 
-        public LoginPage(IWebDriver driver)
+        public LoginPage(IWebDriver driver) : base(driver)
         {
-            _driver = driver;
         }
         public void WaitForDisplay()
         {
@@ -40,6 +39,6 @@ namespace IntegrationEndToEndTests.Pages
         {
             Button.Click();
         }
-        public void Navigate() => _driver.Navigate().GoToUrl(Uri);
+        public void Navigate() => _driver.Navigate().GoToUrl(_angularBaseUrl + "login");
     }
 }

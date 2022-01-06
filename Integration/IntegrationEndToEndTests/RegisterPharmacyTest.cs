@@ -43,7 +43,7 @@ namespace IntegrationEndToEndTests
             _registrationPage.InsertStreetName("Vojvode Stepe");
             _registrationPage.InsertStreetNumber("14");
             _registrationPage.Submit();
-            Thread.Sleep(3000);
+            Thread.Sleep(5000);
             var afterTest = UoW.GetRepository<IPharmacyReadRepository>().GetAll().ToList();
             int difference = afterTest.Count() - beforeTest.Count();
             foreach (var pharmacy1 in afterTest)

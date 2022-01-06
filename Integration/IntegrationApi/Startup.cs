@@ -18,6 +18,7 @@ using System.Reflection;
 using Integration.Database.EfStructures;
 using IntegrationAPI.HttpRequestSenders;
 using IntegrationAPI.HttpRequestSenders.Implementation;
+using Integration.Tendering.Service;
 using Microsoft.EntityFrameworkCore;
 
 namespace IntegrationAPI
@@ -46,6 +47,7 @@ namespace IntegrationAPI
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "IntegrationApi", Version = "v1" });
             });
             services.AddHostedService<BenefitRabbitMqService>();
+            services.AddHostedService<NewTenderOfferRabbitMQService>();
 
             services.AddDbContextPool<AppDbContext>(options =>
             {
@@ -61,6 +63,7 @@ namespace IntegrationAPI
             });
 
             var builder = new ContainerBuilder();
+            builder.RegisterModule(new DbModule());
             builder.RegisterModule(new RepositoryModule()
             {
 

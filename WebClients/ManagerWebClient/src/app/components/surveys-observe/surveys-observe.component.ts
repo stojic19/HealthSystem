@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Subscription } from 'rxjs';
 import { ISurveySectionStatistic, SurveySectionStatistic } from 'src/app/interfaces/survey-section-statistic';
@@ -16,14 +17,25 @@ export class SurveysObserveComponent implements OnInit {
   survey!: ISurveyStatistic;
   selectedSection: ISurveySectionStatistic = new SurveySectionStatistic();
   sub! : Subscription;
-  constructor(private _surveyService: SurveyObserveService) { }
+  errorText: string;
+  constructor(private _surveyService: SurveyObserveService,private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.survey = this._surveyService.getSurvey().subscribe({
       next:  (data: ISurveyStatistic) => {this.survey = data;
-        this.selectedSection = this.survey.categoriesStatistic[0];
-        this.selectedSection.questionsStatistic = this.survey.categoriesStatistic[0].questionsStatistic;
+        try {
+          this.selectedSection = this.survey.categoriesStatistic[0]!;
+        this.selectedSection.questionsStatistic = this.survey.categoriesStatistic[0].questionsStatistic!;
+        } catch (error) {
         }
+        
+        },
+        error: (err: any) => {
+          console.log(err);
+          this._snackBar.open(err.error, "Dismiss");
+          this.errorText = err.error;
+          
+        },
   })
   }
   tabSelected(event: MatTabChangeEvent){

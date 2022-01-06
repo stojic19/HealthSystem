@@ -14,7 +14,7 @@ import { SecondFloorComponent } from './first-building/second-floor/second-floor
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FeedbacksManagerComponent } from './components/feedbacks-manager/feedbacks-manager.component';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SecondBuildingComponent } from './second-building/second-building.component';
 import { FloorFirstComponent } from './second-building/floor-first/floor-first.component';
@@ -71,6 +71,8 @@ import { FirstRoomInfoComponent } from './renovation-form/first-room-info/first-
 import { SecondRoomInfoComponent } from './renovation-form/second-room-info/second-room-info.component';
 import { AvailableTermsComponent } from './renovation-form/available-terms/available-terms.component';
 import { AddTenderComponent } from './tendering/add-tender/add-tender.component';
+import { LoginComponent } from './components/login/login.component';
+import { JwtInterceptor } from './JWTInterceptor/JwtInterceptor';
 
 @NgModule({
   declarations: [
@@ -126,7 +128,8 @@ import { AddTenderComponent } from './tendering/add-tender/add-tender.component'
     FirstRoomInfoComponent,
     SecondRoomInfoComponent,
     AvailableTermsComponent,
-    AddTenderComponent
+    AddTenderComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -151,7 +154,10 @@ import { AddTenderComponent } from './tendering/add-tender/add-tender.component'
     ToastrModule.forRoot({timeOut: 3000,
       positionClass: 'toast-top-right'}),
   ],
-  providers: [HttpClientModule],
+  providers: [HttpClientModule,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+
+  ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

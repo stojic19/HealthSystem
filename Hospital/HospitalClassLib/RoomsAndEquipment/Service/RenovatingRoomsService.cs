@@ -1,5 +1,4 @@
 ﻿using Hospital.GraphicalEditor.Model;
-using Hospital.GraphicalEditor.Repository;
 using Hospital.RoomsAndEquipment.Model;
 using Hospital.RoomsAndEquipment.Repository;
 using Hospital.Schedule.Model;
@@ -42,7 +41,7 @@ namespace Hospital.RoomsAndEquipment.Service
         public void SplitRoom(RoomRenovationEvent roomRenovationEvent)
         {
             var roomRepo = uow.GetRepository<IRoomReadRepository>();
-            Room selectedRoom = roomRepo.GetById((int)roomRenovationEvent.RoomId) ;
+            Room selectedRoom = roomRepo.GetById((int)roomRenovationEvent.RoomId);
             double width;
             double height;
             if (selectedRoom.BuildingName == "Building 1")
@@ -57,6 +56,7 @@ namespace Hospital.RoomsAndEquipment.Service
                 height = selectedRoom.Height;
                 selectedRoom.Width = width;
             }
+            RoomPosition newRoomPosition = GetNewPositionsWhenSplitting(selectedRoom);
 
             Room newRoom = new Room()
             {
@@ -66,7 +66,8 @@ namespace Hospital.RoomsAndEquipment.Service
                 FloorNumber = selectedRoom.FloorNumber,
                 RoomType = roomRenovationEvent.FirstRoomType,
                 Width = width,
-                Height = height
+                Height = height,
+                RoomPosition = newRoomPosition
             };
 
             var roomWriteRepo = uow.GetRepository<IRoomWriteRepository>();
@@ -75,43 +76,37 @@ namespace Hospital.RoomsAndEquipment.Service
             selectedRoom.Description = roomRenovationEvent.SecondRoomDescription;
             selectedRoom.RoomType = roomRenovationEvent.SecondRoomType;
             roomWriteRepo.Update(selectedRoom);
-            GetNewPositionsWhenSplitting(selectedRoom, newRoom);
+            
         }
 
-        private void GetNewPositionsWhenSplitting(Room selectedRoom, Room newRoom)
+        private RoomPosition GetNewPositionsWhenSplitting(Room selectedRoom)
         {
-            var roomPositionsWriteRepo = uow.GetRepository<IRoomPositionWriteRepository>();
-            var roomPositionReadRepo = uow.GetRepository<IRoomPositionReadRepository>();
-            var oldRoomPosition = roomPositionReadRepo.GetByRoom(selectedRoom.Id);
             RoomPosition newRoomPosition;
 
             if (selectedRoom.BuildingName == "Building 1")
             {
-                newRoomPosition = new RoomPosition()
-                {
-                    DimensionX = oldRoomPosition.DimensionX,
-                    DimensionY = oldRoomPosition.DimensionY + oldRoomPosition.Height / 2,
-                    Width = oldRoomPosition.Width,
-                    Height = oldRoomPosition.Height / 2,
-                    RoomId = newRoom.Id
-                };
-                oldRoomPosition.Height = oldRoomPosition.Height / 2;
+                double x = selectedRoom.RoomPosition.DimensionX;
+                double y = selectedRoom.RoomPosition.DimensionY + selectedRoom.RoomPosition.Height / 2;
+                double width = selectedRoom.RoomPosition.Width;
+                double height = selectedRoom.RoomPosition.Height / 2;
+
+                newRoomPosition = new RoomPosition(x, y, width, height);
+                selectedRoom.RoomPosition.AddHeight(-selectedRoom.RoomPosition.Height / 2); 
             }
             else
             {
-                newRoomPosition = new RoomPosition()
-                {
-                    DimensionX = oldRoomPosition.DimensionX + oldRoomPosition.Width / 2,
-                    DimensionY = oldRoomPosition.DimensionY,
-                    Width = oldRoomPosition.Width / 2,
-                    Height = oldRoomPosition.Height,
-                    RoomId = newRoom.Id
-                };
-                oldRoomPosition.Width = oldRoomPosition.Width / 2;
+                double x = selectedRoom.RoomPosition.DimensionX + selectedRoom.RoomPosition.Width / 2;
+                double y = selectedRoom.RoomPosition.DimensionY;
+                double width = selectedRoom.RoomPosition.Width / 2;
+                double height = selectedRoom.RoomPosition.Height;
+                newRoomPosition = new RoomPosition(x, y, width, height);
+                selectedRoom.RoomPosition.AddWidth(-selectedRoom.RoomPosition.Width / 2);
             }
 
-            roomPositionsWriteRepo.Update(oldRoomPosition);
-            roomPositionsWriteRepo.Add(newRoomPosition);
+            var roomWriteRepo = uow.GetRepository<IRoomWriteRepository>();
+            roomWriteRepo.Update(selectedRoom);
+
+            return newRoomPosition;
         }
 
         public void MergeRooms(RoomRenovationEvent roomRenovationEvent)
@@ -122,7 +117,7 @@ namespace Hospital.RoomsAndEquipment.Service
 
             TransferInventory(firstRoom, secondRoom);
 
-            GetNewPositionWhenMerging(firstRoom, secondRoom);
+            RoomPosition newRoomPosition = GetNewPositionWhenMerging(firstRoom, secondRoom);
 
             var roomWriteRepo = uow.GetRepository<IRoomWriteRepository>();
             if (firstRoom.BuildingName == "Building 1")
@@ -137,66 +132,33 @@ namespace Hospital.RoomsAndEquipment.Service
             firstRoom.Name = roomRenovationEvent.FirstRoomName;
             firstRoom.Description = roomRenovationEvent.FirstRoomDescription;
             firstRoom.RoomType = roomRenovationEvent.FirstRoomType;
+            firstRoom.RoomPosition = newRoomPosition;
             roomWriteRepo.Update(firstRoom);
             roomWriteRepo.Delete(secondRoom);
         }
 
-        private void GetNewPositionWhenMerging(Room firstRoom, Room secondRoom)
+        private RoomPosition GetNewPositionWhenMerging(Room firstRoom, Room secondRoom)
         {
 
 
             RoomPosition newPosition;
 
-            var roomPositionsWriteRepo = uow.GetRepository<IRoomPositionWriteRepository>();
-            var roomPositionReadRepo = uow.GetRepository<IRoomPositionReadRepository>();
-            var firstRoomPosition = roomPositionReadRepo.GetByRoom(firstRoom.Id);
-            var secondRoomPosition = roomPositionReadRepo.GetByRoom(secondRoom.Id);
-
-            if (firstRoomPosition.Room.BuildingName == "Building 1")
+            if (firstRoom.BuildingName == "Building 1")
             {
-                if (firstRoomPosition.DimensionY < secondRoomPosition.DimensionY)
-                    newPosition = new RoomPosition()
-                    {
-                        DimensionX = firstRoomPosition.DimensionX,
-                        DimensionY = firstRoomPosition.DimensionY,
-                        Width = firstRoomPosition.Width,
-                        Height = firstRoomPosition.Height + secondRoomPosition.Height,
-                        RoomId = firstRoomPosition.RoomId
-                    };
+                if (firstRoom.RoomPosition.DimensionY < secondRoom.RoomPosition.DimensionY)
+                    newPosition = firstRoom.RoomPosition.AddHeight(secondRoom.RoomPosition.Height);
                 else
-                    newPosition = new RoomPosition()
-                    {
-                        DimensionX = secondRoomPosition.DimensionX,
-                        DimensionY = secondRoomPosition.DimensionY,
-                        Width = secondRoomPosition.Width,
-                        Height = firstRoomPosition.Height + secondRoomPosition.Height,
-                        RoomId = firstRoomPosition.RoomId
-                    };
+                    newPosition = secondRoom.RoomPosition.AddHeight(firstRoom.RoomPosition.Height);
             }
             else
             {
-                if (firstRoomPosition.DimensionX < secondRoomPosition.DimensionX)
-                    newPosition = new RoomPosition()
-                    {
-                        DimensionX = firstRoomPosition.DimensionX,
-                        DimensionY = firstRoomPosition.DimensionY,
-                        Width = firstRoomPosition.Width + secondRoomPosition.Width,
-                        Height = firstRoomPosition.Height,
-                        RoomId = firstRoomPosition.RoomId
-                    };
+                if (firstRoom.RoomPosition.DimensionX < secondRoom.RoomPosition.DimensionX)
+                    newPosition = firstRoom.RoomPosition.AddWidth(secondRoom.RoomPosition.Width);
                 else
-                    newPosition = new RoomPosition()
-                    {
-                        DimensionX = secondRoomPosition.DimensionX,
-                        DimensionY = secondRoomPosition.DimensionY,
-                        Width = firstRoomPosition.Width + secondRoomPosition.Width,
-                        Height = secondRoomPosition.Height,
-                        RoomId = firstRoomPosition.RoomId
-                    };
+                    newPosition = secondRoom.RoomPosition.AddWidth(firstRoom.RoomPosition.Width);
+              
             }
-            roomPositionsWriteRepo.Add(newPosition);
-            roomPositionsWriteRepo.Delete(firstRoomPosition);
-            roomPositionsWriteRepo.Delete(secondRoomPosition);
+            return newPosition;
         }
 
         private void TransferInventory(Room firstRoom, Room secondRoom)
@@ -214,7 +176,7 @@ namespace Hospital.RoomsAndEquipment.Service
                 {
                     if (ritem.InventoryItemId == item.InventoryItemId)
                     {
-                        ritem.Amount += item.Amount;
+                        ritem.Add(item.Amount);
                         roomInventoryRepo.Update(ritem);
                         found = true;
                         break;

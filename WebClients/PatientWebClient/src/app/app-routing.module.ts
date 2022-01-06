@@ -6,8 +6,6 @@ import { FeedbackComponent } from './components/feedback/feedback.component';
 import { MaterialModule } from './material/material.module';
 import { MainComponent } from './components/main/main.component';
 import { RegistrationComponent } from './components/registration/registration.component';
-import { FormsModule } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './components/login/login.component';
@@ -15,6 +13,8 @@ import { PatientMedicalRecordComponent } from './components/patient-medical-reco
 import { AppointmentsPageComponent } from './components/appointments-page/appointments-page.component';
 import { SurveyPageComponent } from './components/survey-page/survey-page.component';
 import { RecommendedAppointmentComponent } from './components/recommended-appointment/recommended-appointment.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AuthGuard } from './AuthGuard/AuthGuard';
 
 const routes: Routes = [
   {
@@ -27,21 +27,26 @@ const routes: Routes = [
       },
       {
         path: 'feedbacks',
-        component: FeedbacksPageComponent,
+        component: FeedbacksPageComponent,canActivate:[AuthGuard]
       },
       {
         path: 'record',
-        component: PatientMedicalRecordComponent,
+        component: PatientMedicalRecordComponent, canActivate:[AuthGuard]
       },
       {
         path:'survey/:appointmentId',
-        component: SurveyPageComponent
-      }
+        component: SurveyPageComponent,
+        canActivate:[AuthGuard]
+      },
+    {
+      path:'login',
+      component: LoginComponent
+    }
     ],
   },
   { path: 'registration', component: RegistrationComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'recommendedAppointments', component: RecommendedAppointmentComponent}
+  { path: 'recommendedAppointments', component: RecommendedAppointmentComponent, canActivate:[AuthGuard]} 
   
 ];
 
@@ -54,7 +59,7 @@ const routes: Routes = [
     CommonModule,
     HttpClientModule,
   ],
-  exports: [RouterModule, MaterialModule, FormsModule],
+  exports: [RouterModule, MaterialModule, FormsModule, ReactiveFormsModule],
   entryComponents: [
     FeedbackComponent,
     AppointmentsPageComponent,

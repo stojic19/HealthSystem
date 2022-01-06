@@ -13,13 +13,13 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using Integration.Database.EfStructures;
 using IntegrationAPI.HttpRequestSenders;
 using IntegrationAPI.HttpRequestSenders.Implementation;
 using Integration.Tendering.Service;
-using Integration.Database.EfStructures;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace IntegrationAPI
 {

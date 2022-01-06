@@ -17,6 +17,9 @@ using System.Reflection;
 using IntegrationAPI.HttpRequestSenders;
 using IntegrationAPI.HttpRequestSenders.Implementation;
 using Integration.Tendering.Service;
+using Integration.Database.EfStructures;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace IntegrationAPI
 {
@@ -45,6 +48,19 @@ namespace IntegrationAPI
             });
             services.AddHostedService<BenefitRabbitMqService>();
             services.AddHostedService<NewTenderOfferRabbitMQService>();
+
+            services.AddDbContextPool<AppDbContext>(options =>
+            {
+                var connectionString = Environment.GetEnvironmentVariable("INTEGRATION_DB_PATH");
+                options.UseNpgsql(connectionString);
+                using (var context = new AppDbContext((DbContextOptions<AppDbContext>)options.Options))
+                {
+                    if (context.Database.GetPendingMigrations().Any())
+                    {
+                        context.Database.Migrate();
+                    }
+                }
+            });
 
             var builder = new ContainerBuilder();
             builder.RegisterModule(new DbModule());

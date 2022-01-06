@@ -1,4 +1,4 @@
-FROM node:15.14.0-alpine as buildIntegration
+FROM node:16.10.0-alpine as buildIntegration
 COPY /WebClients/IntegrationWebClient ./WebClient
 RUN cd WebClient && \
     npm install
@@ -8,7 +8,7 @@ ARG HOSPITAL_API_URL
 RUN chmod +x ./build-app.sh && \
     ./build-app.sh ${HOSPITAL_API_URL}
 
-FROM node:15.14.0-alpine as executer
+FROM node:16.10.0-alpine as executer
 COPY --from=buildIntegration /WebClient /usr/src/server
 EXPOSE 8083
 

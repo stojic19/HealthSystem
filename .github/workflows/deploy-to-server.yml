@@ -20,5 +20,6 @@ jobs:
           script: |
             cd psw/mainrepo
             docker system prune
+            y
             ls
-            
+

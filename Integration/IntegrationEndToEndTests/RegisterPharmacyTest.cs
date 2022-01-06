@@ -45,7 +45,7 @@ namespace IntegrationEndToEndTests
             _registrationPage.Submit();
             Thread.Sleep(5000);
             var afterTest = UoW.GetRepository<IPharmacyReadRepository>().GetAll().ToList();
-            int difference = afterTest.Count() - beforeTest.Count();
+            int difference = afterTest.Count - beforeTest.Count;
             foreach (var pharmacy1 in afterTest)
             {
                 bool existed = false;

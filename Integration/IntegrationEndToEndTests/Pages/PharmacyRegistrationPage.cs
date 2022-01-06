@@ -10,62 +10,62 @@ namespace IntegrationEndToEndTests.Pages
 {
     public class PharmacyRegistrationPage
     {
-        private readonly IWebDriver driver;
-        public const string uri = "http://localhost:4200/pharmacy-register";
-        private IWebElement name => driver.FindElement(By.Id("name"));  
-        private IWebElement streetNumber => driver.FindElement(By.Id("streetNumber"));  
-        private IWebElement streetName => driver.FindElement(By.Id("streetName"));  
-        private IWebElement cityName => driver.FindElement(By.Id("cityName"));  
-        private IWebElement postalCode => driver.FindElement(By.Id("postalCode"));  
-        private IWebElement country => driver.FindElement(By.Id("country"));  
-        private IWebElement baseUrl => driver.FindElement(By.Id("baseUrl"));
-        private IWebElement submitButton => driver.FindElement(By.Id("submitButton"));
+        private readonly IWebDriver _driver;
+        public const string Uri = "http://localhost:4200/pharmacy-register";
+        private IWebElement Name => _driver.FindElement(By.Id("name"));  
+        private IWebElement StreetNumber => _driver.FindElement(By.Id("streetNumber"));  
+        private IWebElement StreetName => _driver.FindElement(By.Id("streetName"));  
+        private IWebElement CityName => _driver.FindElement(By.Id("cityName"));  
+        private IWebElement PostalCode => _driver.FindElement(By.Id("postalCode"));  
+        private IWebElement Country => _driver.FindElement(By.Id("country"));  
+        private IWebElement BaseUrl => _driver.FindElement(By.Id("baseUrl"));
+        private IWebElement SubmitButton => _driver.FindElement(By.Id("submitButton"));
 
         public PharmacyRegistrationPage(IWebDriver driver)
         {
-            this.driver = driver;
+            this._driver = driver;
         }
 
         public void WaitForDisplay()
         {
-            var wait = new WebDriverWait(driver, new TimeSpan(0, 0, 10));
-            wait.Until(condition => submitButton.Displayed && baseUrl.Displayed);
+            var wait = new WebDriverWait(_driver, new TimeSpan(0, 0, 10));
+            wait.Until(condition => SubmitButton.Displayed && BaseUrl.Displayed);
         }
 
         public void InsertName(string name)
         {
-            this.name.SendKeys(name);
+            this.Name.SendKeys(name);
         }
         public void InsertStreetNumber(string streetNumber)
         {
-            this.streetNumber.SendKeys(streetNumber);
+            this.StreetNumber.SendKeys(streetNumber);
         }
         public void InsertStreetName(string streetName)
         {
-            this.streetName.SendKeys(streetName);
+            this.StreetName.SendKeys(streetName);
         }
         public void InsertCityName(string cityName)
         {
-            this.cityName.SendKeys(cityName);
+            this.CityName.SendKeys(cityName);
         }
         public void InsertPostalCode(string postalCode)
         {
-            this.postalCode.SendKeys(postalCode);
+            this.PostalCode.SendKeys(postalCode);
         }
         public void InsertCountry(string country)
         {
-            this.country.SendKeys(country);
+            this.Country.SendKeys(country);
         }
         public void InsertBaseUrl(string baseUrl)
         {
-            this.baseUrl.SendKeys(baseUrl);
+            this.BaseUrl.SendKeys(baseUrl);
         }
 
-        public void Navigate() => driver.Navigate().GoToUrl(uri);
+        public void Navigate() => _driver.Navigate().GoToUrl(Uri);
 
         public void Submit()
         {
-            submitButton.Click();
+            SubmitButton.Click();
         }
     }
 }

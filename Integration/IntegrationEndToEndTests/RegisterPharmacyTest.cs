@@ -15,28 +15,34 @@ namespace IntegrationEndToEndTests
 {
     public class RegisterPharmacyTest : BaseTest, IDisposable
     {
-        private PharmacyRegistrationPage page;
+        private PharmacyRegistrationPage registrationPage;
+        private LoginPage loginPage;
 
         public RegisterPharmacyTest(BaseFixture fixture) : base(fixture)
         {
-            page = new PharmacyRegistrationPage(_driver);
-            page.Navigate();
-            page.WaitForDisplay();
+            registrationPage = new PharmacyRegistrationPage(_driver);
+            loginPage = new LoginPage(_driver);
         }
 
         [Fact]
         public void Register_success()
         {
+            loginPage.Navigate();
+            loginPage.InsertUsername("Rade");
+            loginPage.InsertPassword("RadeRade654#@!");
+            loginPage.Submit();
             var beforeTest = UoW.GetRepository<IPharmacyReadRepository>().GetAll().ToList();
-            page.InsertName("Apoteka");
-            page.InsertCityName("Novi Sad");
-            page.InsertCountry("Srbija");
-            page.InsertPostalCode("21000");
-            page.InsertBaseUrl("https://localhost:44304");
-            page.InsertStreetName("Vojvode Stepe");
-            page.InsertStreetNumber("14");
-            page.Submit();
-            Thread.Sleep(2000);
+            registrationPage.Navigate();
+            registrationPage.WaitForDisplay();
+            registrationPage.InsertName("Apoteka");
+            registrationPage.InsertCityName("Novi Sad");
+            registrationPage.InsertCountry("Srbija");
+            registrationPage.InsertPostalCode("21000");
+            registrationPage.InsertBaseUrl("https://localhost:44304");
+            registrationPage.InsertStreetName("Vojvode Stepe");
+            registrationPage.InsertStreetNumber("14");
+            registrationPage.Submit();
+            Thread.Sleep(3000);
             var afterTest = UoW.GetRepository<IPharmacyReadRepository>().GetAll().ToList();
             int difference = afterTest.Count() - beforeTest.Count();
             foreach (var pharmacy1 in afterTest)

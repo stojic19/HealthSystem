@@ -3,6 +3,8 @@ name: Automated deploy to server
 on:
   workflow_dispatch:
   push:
+    branches: 
+      - 'feature/upload-to-server'
 
 jobs:
   deploy:

@@ -20,8 +20,11 @@ using Pharmacy.EfStructures;
 using Pharmacy.Infrastructure;
 using Pharmacy.Repositories.Base;
 using Pharmacy.Repositories.DbImplementation;
+using Pharmacy.Services;
 using PharmacyApi.ConfigurationMappers;
 using PharmacyApi.GrpcServices;
+using PharmacyApi.HttpRequestSenders;
+using PharmacyApi.HttpRequestSenders.Implementation;
 using PharmacyApi.Protos;
 
 namespace PharmacyApi
@@ -50,7 +53,10 @@ namespace PharmacyApi
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PharmacyApi", Version = "v1" });
             });
-            
+            services.AddHostedService<NewTenderRabbitMQService>();
+            services.AddHostedService<CloseTenderRabbitMQService>();
+            services.AddHostedService<WinningTenderOfferRabbitMQService>();
+
             PharmacyDetails details = new PharmacyDetails();
 
             var communicationMode = Configuration.GetValue<string>("PharmacyMode");
@@ -91,6 +97,7 @@ namespace PharmacyApi
 
             }); 
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
+            builder.RegisterType<HttpRequestSender>().As<IHttpRequestSender>();
             builder.Populate(services);
             var container = builder.Build();
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using PharmacyApi.DTO.MedicineDTO;
+using PharmacyApi.DTO;
 
 namespace IntegrationAPI.Adapters.PDF
 {

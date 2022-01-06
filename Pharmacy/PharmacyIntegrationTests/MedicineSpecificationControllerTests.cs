@@ -8,7 +8,6 @@ using Newtonsoft.Json;
 using Pharmacy.Model;
 using Pharmacy.Repositories;
 using PharmacyApi.DTO;
-using PharmacyApi.DTO.MedicineDTO;
 using PharmacyIntegrationTests.Base;
 using Shouldly;
 using Xunit;

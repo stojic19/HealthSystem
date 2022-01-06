@@ -1,68 +1,74 @@
 ﻿using Hospital.MedicalRecords.Model;
+using Hospital.MedicalRecords.Repository;
+using Hospital.RoomsAndEquipment.Model;
+using Hospital.RoomsAndEquipment.Repository;
 using Hospital.Schedule.Model;
 using Hospital.Schedule.Repository;
 using Hospital.SharedModel.Model;
-using HospitalIntegrationTests.Base;
-using System;
 using Hospital.SharedModel.Model.Enumerations;
+using Hospital.SharedModel.Repository;
+using HospitalIntegrationTests.Base;
+using Shouldly;
+using System;
+using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Xunit;
-using Hospital.RoomsAndEquipment.Model;
-using Shouldly;
-using System.Net;
-using Hospital.SharedModel.Repository;
-using Hospital.MedicalRecords.Repository;
-using System.Linq;
-using Hospital.RoomsAndEquipment.Repository;
 
 namespace HospitalIntegrationTests
 {
-    public class ObserveAppointmentsTest : BaseTest
+    public class CancelingAppointmentTests : BaseTest
     {
-        public ObserveAppointmentsTest(BaseFixture fixture) : base(fixture)
+        public CancelingAppointmentTests(BaseFixture fixture) : base(fixture)
         {
         }
-
+       
         [Fact]
-        public async Task Finished_events_count_should_not_be_zero()
-        {
-           var events = AddDataToDatabase(isCanceled: false, isDone: true);
-           var response = await Client.GetAsync(BaseUrl + "api/ScheduledEvent/GetFinishedUserEvents/" + events.PatientId);
-           response.StatusCode.ShouldBe(HttpStatusCode.OK);
-
-            UoW.GetRepository<IScheduledEventReadRepository>().GetFinishedUserEvents(events.Patient.UserName).Count.ShouldNotBe(0);
-            DeleteDataFromDataBase(events);
-        }
-
-       [Fact]
-        public async Task Canceled_events_count_should_not_be_zero()
-        {
-            var events = AddDataToDatabase(isCanceled: true, isDone: false);
-
-            var response = await Client.GetAsync(BaseUrl + "api/ScheduledEvent/GetCanceledUserEvents/" + events.Patient.Id);
-
-            response.StatusCode.ShouldBe(HttpStatusCode.OK);
-
-            UoW.GetRepository<IScheduledEventReadRepository>().GetCanceledUserEvents(events.Patient.UserName).Count.ShouldNotBe(0);
-            DeleteDataFromDataBase(events);
-        }
-        [Fact]
-        public async Task Upcoming_events_count_should_not_be_zero()
+        public async Task Appointment_should_be_canceled()
         {
             var events = AddDataToDatabase(isCanceled: false, isDone: false);
-            var response = await Client.GetAsync(BaseUrl + "api/ScheduledEvent/GetUpcomingUserEvents/" + events.Patient.Id);
-
+            var response = await Client.GetAsync(BaseUrl + "api/ScheduledEvent/CancelAppointment/" + events.Id);
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
-
-            UoW.GetRepository<IScheduledEventReadRepository>().GetUpcomingUserEvents(events.Patient.UserName).Count.ShouldNotBe(0);
+            UoW.GetRepository<IScheduledEventReadRepository>().GetCanceledUserEvents(events.Patient.UserName).Count.ShouldNotBe(0);
             DeleteDataFromDataBase(events);
+
         }
+
+        [Fact]
+        public async Task Finished_appointment_should_not_be_canceled()
+        {
+            var events = AddDataToDatabase(isCanceled: false, isDone: true);
+            var response = await Client.GetAsync(BaseUrl + "api/ScheduledEvent/CancelAppointment/" + events.Id);
+            response.StatusCode.ShouldBe(HttpStatusCode.OK);
+            UoW.GetRepository<IScheduledEventReadRepository>().GetCanceledUserEvents(events.Patient.UserName).Count.ShouldBe(0);
+            DeleteDataFromDataBase(events);
+
+        }
+
+        [Fact]
+        public async Task Appointment_should_not_be_canceled()
+        {
+            var events = AddDataToDatabase(isCanceled: false, isDone: false);
+            updateEventTime(events);
+            var response = await Client.GetAsync(BaseUrl + "api/ScheduledEvent/CancelAppointment/" + events.Id);
+            response.StatusCode.ShouldBe(HttpStatusCode.OK);
+            UoW.GetRepository<IScheduledEventReadRepository>().GetCanceledUserEvents(events.Patient.UserName).Count.ShouldBe(0);
+            DeleteDataFromDataBase(events);
+
+        }
+        
+        private void updateEventTime(ScheduledEvent events)
+        {
+            events.StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(-2).Day);
+            events.EndDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(-2).Day);
+            UoW.GetRepository<IScheduledEventWriteRepository>().Update(events, true);
+
+        }
+
         private void DeleteDataFromDataBase(ScheduledEvent events)
         {
-            UoW.GetRepository<IScheduledEventWriteRepository>().Delete(events);
-
+            UoW.GetRepository<IScheduledEventWriteRepository>().Delete(events, true);
         }
-
         private ScheduledEvent AddDataToDatabase(bool isCanceled, bool isDone)
         {
             #region Data
@@ -182,14 +188,15 @@ namespace HospitalIntegrationTests
                 patientWriteRepo.Add(testPatient);
             }
             #endregion
+
             ScheduledEvent scheduledEvent = new ScheduledEvent()
             {
 
                 ScheduledEventType = 0,
                 IsCanceled = isCanceled,
                 IsDone = isDone,
-                StartDate = new DateTime(2021, 10, 17),
-                EndDate = new DateTime(2021, 10, 17),
+                StartDate = new DateTime(DateTime.Now.Year,DateTime.Now.Month, DateTime.Now.AddDays(3).Day),
+                EndDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(3).Day),
                 Patient = testPatient,
                 Doctor = testDoctor,
                 Room = testRoom
@@ -200,5 +207,6 @@ namespace HospitalIntegrationTests
             UoW.GetRepository<IScheduledEventWriteRepository>().Add(scheduledEvent);
             return scheduledEvent;
         }
+
     }
 }

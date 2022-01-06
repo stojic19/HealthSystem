@@ -5,6 +5,6 @@ namespace Hospital.Schedule.Repository
 {
     public interface IScheduledEventWriteRepository : IWriteBaseRepository<ScheduledEvent>
     {
-      
+        void CancelEvent(int eventId);
     }
 }

@@ -56,11 +56,15 @@ export class PatientMedicalRecordComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.refresh();
+  }
+  refresh() {
     this.userName = JSON.parse((localStorage.getItem('currentUser'))!)
 
     this.sub = this._service.get(this.userName.userName).subscribe({
       next: (patient: IPatient) => {
         this.patient = patient;
+    
       },
     });
    
@@ -80,9 +84,15 @@ export class PatientMedicalRecordComponent implements OnInit {
       },
     });
   }
+
   answerSurvey(id: number) {
-    console.log(id);
     var str = id.toString();
     this._router.navigate(['/survey', str]);
+    this.refresh();
+    
+  }
+  cancelAppointment(id:number){
+    this._service.cancelAppointments(id).subscribe();
+    this.refresh();
   }
 }

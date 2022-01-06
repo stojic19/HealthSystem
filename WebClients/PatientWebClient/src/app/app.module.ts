@@ -48,6 +48,7 @@ import { AuthService } from './services/AuthService/auth.service';
     LoginComponent,
     SurveyPageComponent,
     RecommendedAppointmentComponent,
+   
   ],
   imports: [
     BrowserModule,

@@ -33,8 +33,7 @@ namespace HospitalApi.Controllers
             if (userFromDb == null)
             {
                 return BadRequest("There is no user with this username!");
-            }
-
+            }      
             var result = await _signInManager.CheckPasswordSignInAsync(userFromDb, user.Password, false);
             if (!result.Succeeded)
             {

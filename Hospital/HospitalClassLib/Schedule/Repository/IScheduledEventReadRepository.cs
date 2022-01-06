@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Hospital.Schedule.Model;
-using Hospital.Schedule.Model.Wrappers;
-using Hospital.SharedModel.Model.Wrappers;
 using Hospital.SharedModel.Repository.Base;
 
 

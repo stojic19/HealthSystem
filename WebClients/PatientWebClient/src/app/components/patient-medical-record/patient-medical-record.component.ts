@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { IAppointment } from 'src/app/interfaces/appointment';
 import { IFinishedAppointment } from 'src/app/interfaces/finished-appoinment';
 import { IPatient } from 'src/app/interfaces/patient-interface';
 import { MedicalRecordService } from 'src/app/services/MedicalRecordService/medicalrecord.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatTableDataSource } from '@angular/material/table';
 import { ICurrentUser } from 'src/app/interfaces/current-user';
@@ -32,10 +31,8 @@ export class PatientMedicalRecordComponent implements OnInit {
   userName!:ICurrentUser;
   constructor(
     private _sanitizer: DomSanitizer,
-    private snackBar: MatSnackBar,
     private _service: MedicalRecordService,
     private _router: Router,
-    private _activeRoute: ActivatedRoute
   ) {
 
     this.futureAppointments = new MatTableDataSource<IAppointment>();
@@ -55,6 +52,9 @@ export class PatientMedicalRecordComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.refresh();
+  }
+  refresh(){
     this.userName = JSON.parse((localStorage.getItem('currentUser'))!)
 
     this.sub = this._service.get(this.userName.userName).subscribe({
@@ -66,7 +66,7 @@ export class PatientMedicalRecordComponent implements OnInit {
     this.sub = this._service.getFutureAppointments(this.userName.userName).subscribe({
       next: (futureAppointments: IAppointment[]) => {
         this.futureAppointments.data = futureAppointments;
-      },
+      }
     });
     this.sub = this._service.getfinishedAppointments(this.userName.userName).subscribe({
       next: (finishedAppointments: IFinishedAppointment[]) => {
@@ -80,8 +80,19 @@ export class PatientMedicalRecordComponent implements OnInit {
     });
   }
   answerSurvey(id: number) {
-    console.log(id);
-    var str = id.toString();
+    var str = id.toString();    
     this._router.navigate(['/survey', str]);
+    this.refresh();
+  }
+  cancelAppointment(id:number){
+    this._service.cancelAppointments(id).subscribe()
+    this.sub = this._service.getFutureAppointments(this.userName.userName).subscribe({
+      next: (futureAppointments: IAppointment[]) => {
+        this.futureAppointments.data = futureAppointments;
+      }
+    });
+   this.refresh();
+
+    
   }
 }

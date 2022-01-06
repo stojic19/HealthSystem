@@ -16,7 +16,7 @@ using Cookie = System.Net.Cookie;
 
 namespace IntegrationEndToEndTests.Base
 {
-    public abstract class BaseTest : IClassFixture<BaseFixture>
+    public abstract class BaseTest : IClassFixture<BaseFixture>, IDisposable
     {
         private readonly BaseFixture _fixture;
         protected readonly IWebDriver _driver;

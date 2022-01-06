@@ -13,35 +13,35 @@ using Xunit;
 
 namespace IntegrationEndToEndTests
 {
-    public class RegisterPharmacyTest : BaseTest, IDisposable
+    public class RegisterPharmacyTest : BaseTest
     {
-        private PharmacyRegistrationPage registrationPage;
-        private LoginPage loginPage;
+        private readonly PharmacyRegistrationPage _registrationPage;
+        private readonly LoginPage _loginPage;
 
         public RegisterPharmacyTest(BaseFixture fixture) : base(fixture)
         {
-            registrationPage = new PharmacyRegistrationPage(_driver);
-            loginPage = new LoginPage(_driver);
+            _registrationPage = new PharmacyRegistrationPage(_driver);
+            _loginPage = new LoginPage(_driver);
         }
 
         [Fact]
         public void Register_success()
         {
-            loginPage.Navigate();
-            loginPage.InsertUsername("Rade");
-            loginPage.InsertPassword("RadeRade654#@!");
-            loginPage.Submit();
+            _loginPage.Navigate();
+            _loginPage.InsertUsername("Rade");
+            _loginPage.InsertPassword("RadeRade654#@!");
+            _loginPage.Submit();
             var beforeTest = UoW.GetRepository<IPharmacyReadRepository>().GetAll().ToList();
-            registrationPage.Navigate();
-            registrationPage.WaitForDisplay();
-            registrationPage.InsertName("Apoteka");
-            registrationPage.InsertCityName("Novi Sad");
-            registrationPage.InsertCountry("Srbija");
-            registrationPage.InsertPostalCode("21000");
-            registrationPage.InsertBaseUrl("https://localhost:44304");
-            registrationPage.InsertStreetName("Vojvode Stepe");
-            registrationPage.InsertStreetNumber("14");
-            registrationPage.Submit();
+            _registrationPage.Navigate();
+            _registrationPage.WaitForDisplay();
+            _registrationPage.InsertName("Apoteka");
+            _registrationPage.InsertCityName("Novi Sad");
+            _registrationPage.InsertCountry("Srbija");
+            _registrationPage.InsertPostalCode("21000");
+            _registrationPage.InsertBaseUrl("https://localhost:44304");
+            _registrationPage.InsertStreetName("Vojvode Stepe");
+            _registrationPage.InsertStreetNumber("14");
+            _registrationPage.Submit();
             Thread.Sleep(3000);
             var afterTest = UoW.GetRepository<IPharmacyReadRepository>().GetAll().ToList();
             int difference = afterTest.Count() - beforeTest.Count();

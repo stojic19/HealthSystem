@@ -1,0 +1,22 @@
+name: Automated deploy to server
+
+on:
+  workflow_dispatch:
+  push:
+    branches: 
+      - 'master'
+
+jobs:
+  deploy:
+    runs-on : ubuntu-latest
+    steps:
+      - name: multiple command
+        uses: appleboy/ssh-action@master
+        with:
+          host: '79.101.34.218'
+          username: 'student'
+          key: ${{ secrets.SSH_KEY }}
+          port: 22207
+          script: |
+            whoami
+            ls -al

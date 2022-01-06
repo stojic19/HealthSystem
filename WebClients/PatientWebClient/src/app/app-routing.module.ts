@@ -15,6 +15,7 @@ import { SurveyPageComponent } from './components/survey-page/survey-page.compon
 import { RecommendedAppointmentComponent } from './components/recommended-appointment/recommended-appointment.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthGuard } from './AuthGuard/AuthGuard';
+import { LandingPageComponent } from './components/landing-page/landing-page.component';
 
 const routes: Routes = [
   {
@@ -23,31 +24,36 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: HomePageComponent,
+        component: LandingPageComponent,
       },
       {
         path: 'feedbacks',
-        component: FeedbacksPageComponent,canActivate:[AuthGuard]
+        component: FeedbacksPageComponent,
+        canActivate: [AuthGuard],
       },
       {
         path: 'record',
-        component: PatientMedicalRecordComponent, canActivate:[AuthGuard]
+        component: PatientMedicalRecordComponent,
+        canActivate: [AuthGuard],
       },
       {
-        path:'survey/:appointmentId',
+        path: 'survey/:appointmentId',
         component: SurveyPageComponent,
-        canActivate:[AuthGuard]
+        canActivate: [AuthGuard],
       },
-    {
-      path:'login',
-      component: LoginComponent
-    }
+      {
+        path: 'login',
+        component: LoginComponent,
+      },
     ],
   },
   { path: 'registration', component: RegistrationComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'recommendedAppointments', component: RecommendedAppointmentComponent, canActivate:[AuthGuard]} 
-  
+  {
+    path: 'recommendedAppointments',
+    component: RecommendedAppointmentComponent,
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({

@@ -7,6 +7,7 @@ secrets:
 services:
 
   gateway:
+    image: srdjansukovic/psw_gateway
     build:
       context: ../
       dockerfile: Stacks/Build/Gateway/Dockerfile
@@ -23,6 +24,7 @@ services:
       - integrationapi
 
   hospitalapi:
+    image: srdjansukovic/psw_hospitalapi
     build:
       dockerfile: Stacks/Build/Hospital/Dockerfile
       context: ../
@@ -35,6 +37,7 @@ services:
       HOSPITAL_DB_PATH: "host=hospitaldb;port=5432;database=HOSPITAL;username=postgres;password=/run/secrets/postgres_password"
 
   pharmacyapi:
+    image: srdjansukovic/psw_pharmacyapi
     build:
       dockerfile: Stacks/Build/Pharmacy/Dockerfile
       context: ../
@@ -49,6 +52,7 @@ services:
       RABBITMQ_HOST: "rabbitmq"
 
   integrationapi:
+    image: srdjansukovic/psw_integrationapi
     build:
       dockerfile: Stacks/Build/Integration/Dockerfile
       context: ../
@@ -63,6 +67,7 @@ services:
       RABBITMQ_HOST: "rabbitmq"
 
   patient-ui:
+    image: srdjansukovic/psw_patientui
     build:
       context: ../
       dockerfile: Stacks/Build/PatientUi/Dockerfile
@@ -71,6 +76,7 @@ services:
     container_name: patient-ui
 
   manager-ui:
+    image: srdjansukovic/psw_managerui
     build:
       context: ../
       dockerfile: Stacks/Build/ManagerUi/Dockerfile
@@ -79,6 +85,7 @@ services:
     container_name: manager-ui
 
   integration-ui:
+    image: srdjansukovic/psw_integrationui
     build:
       context: ../
       dockerfile: Stacks/Build/IntegrationUi/Dockerfile

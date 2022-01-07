@@ -8,6 +8,7 @@ namespace SeleniumTests.Pages
     {
         private readonly IWebDriver driver;
         public readonly string LoginUri = "http://localhost:4200/login";
+        public readonly string FirstPage = "http://localhost:4200/overview";
 
         private IWebElement UsernameElement => driver.FindElement(By.Id("loginUsername"));
         private IWebElement PasswordElement => driver.FindElement(By.Id("loginPassword"));
@@ -44,9 +45,9 @@ namespace SeleniumTests.Pages
             PasswordElement.SendKeys(password);
         }
 
-        public void SubmitForm()
+        public void Submit()
         {
-            SubmitButtonElement.Click();
+            SubmitButtonElement.Submit();
         }
 
         public void EnsureLoginFormForAdminIsDisplayed()
@@ -57,6 +58,26 @@ namespace SeleniumTests.Pages
                 try
                 {
                     return UsernameElementDisplayed() && PasswordElementDisplayed() && SubmitButtonElementDisplayed();
+                }
+                catch (StaleElementReferenceException)
+                {
+                    return false;
+                }
+                catch (NoSuchElementException)
+                {
+                    return false;
+                }
+            });
+        }
+
+        public void EnsureAdminIsLoggedIn()
+        {
+            var wait = new WebDriverWait(driver, new TimeSpan(0, 0, 40));
+            wait.Until(condition =>
+            {
+                try
+                {
+                    return driver.Url.Equals(FirstPage);
                 }
                 catch (StaleElementReferenceException)
                 {

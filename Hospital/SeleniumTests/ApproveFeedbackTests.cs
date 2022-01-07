@@ -1,6 +1,7 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
+using SeleniumTests.Pages;
 using Xunit;
 
 namespace SeleniumTests
@@ -8,8 +9,9 @@ namespace SeleniumTests
     public class ApproveFeedbackTests : IDisposable
     {
         private readonly IWebDriver driver;
-        private Pages.ApproveFeedbackPage approveFeedbackPage;
-        private Pages.LoginPage loginPage;
+        private ApproveFeedbackPage approveFeedbackPage;
+        public readonly string LoginUri = "http://localhost:4200/login";
+        private LoginPage loginPage;
 
         public ApproveFeedbackTests() {
             var options = new ChromeOptions();
@@ -21,16 +23,16 @@ namespace SeleniumTests
             options.AddArguments("--no-sandbox");               
             options.AddArguments("--disable-notifications");    
             driver = new ChromeDriver(options);
-            loginPage = new Pages.LoginPage(driver,loginPage.LoginUri);
+            loginPage = new LoginPage(driver,LoginUri);
             loginPage.Navigate();
             loginPage.EnsureLoginFormForAdminIsDisplayed();
+            approveFeedbackPage = new ApproveFeedbackPage(driver);
         }
         [Fact]
         public void ApproveFeedback()
         {
             InsertCredentials();
-            if (!loginPage.IsSnackBarDisplayed()) return;
-            approveFeedbackPage = new Pages.ApproveFeedbackPage(driver);
+            loginPage.EnsureAdminIsLoggedIn();
             approveFeedbackPage.Navigate();
             approveFeedbackPage.EnsurePageIsDisplayed();
             approveFeedbackPage.Approve();
@@ -43,6 +45,7 @@ namespace SeleniumTests
         {
             loginPage.InsertUsername("admin");
             loginPage.InsertPassword("Admin123.");
+            loginPage.Submit();
         }
 
         public void Dispose()

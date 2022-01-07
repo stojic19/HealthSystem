@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs';
 import { IChosenDoctor } from './chosen-doctor';
+import { IMeasurements } from './imeasurements';
 import { INewAllergy } from './new-allergy';
 
 export enum BloodType {
@@ -24,8 +25,7 @@ export enum JobStatus {
 }
 
 export interface IMedicalRecord {
-  height: number;
-  weight: number;
+  measurements: IMeasurements;
   doctorId: number;
   doctor: IChosenDoctor;
   bloodType: BloodType;

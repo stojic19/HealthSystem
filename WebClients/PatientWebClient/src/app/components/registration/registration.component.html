@@ -110,14 +110,16 @@
         </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label class="col-4">City</mat-label>
-          <mat-select
+          <input matInput formControlName="city" />
+
+          <!-- <mat-select
             formControlName="city"
             (selectionChange)="getCity($event)"
           >
-            <mat-option *ngFor="let c of cities" [value]="c.id">{{
+            <mat-option *ngFor="let c of cities" [value]="c">{{
               c.name
             }}</mat-option>
-          </mat-select>
+          </mat-select> -->
           <mat-error
             *ngIf="
               !createForm?.get('city')?.valid &&

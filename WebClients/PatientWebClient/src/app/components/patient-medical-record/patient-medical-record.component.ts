@@ -8,6 +8,8 @@ import { MedicalRecordService } from 'src/app/services/MedicalRecordService/medi
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatTableDataSource } from '@angular/material/table';
+import { ICurrentUser } from 'src/app/interfaces/current-user';
+
 
 @Component({
   selector: 'app-patient-medical-record',
@@ -27,7 +29,7 @@ export class PatientMedicalRecordComponent implements OnInit {
   canceledAppointments!: MatTableDataSource<IAppointment>;
   message!: String;
   imagePath!: any;
-  patientId!:number;
+  userName!:ICurrentUser;
   constructor(
     private _sanitizer: DomSanitizer,
     private snackBar: MatSnackBar,
@@ -39,7 +41,10 @@ export class PatientMedicalRecordComponent implements OnInit {
     this.futureAppointments = new MatTableDataSource<IAppointment>();
     this.finishedAppointments = new  MatTableDataSource<IFinishedAppointment>();
     this.canceledAppointments = new  MatTableDataSource<IAppointment>();
-    this.sub = this._service.get().subscribe({
+
+    this.userName = JSON.parse((localStorage.getItem('currentUser'))!)
+
+    this.sub = this._service.get(this.userName.userName).subscribe({
       next: (patient: IPatient) => {
         this.patient = patient;
         this.imagePath = this._sanitizer.bypassSecurityTrustResourceUrl(
@@ -50,24 +55,25 @@ export class PatientMedicalRecordComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.sub = this._service.get().subscribe({
+    this.userName = JSON.parse((localStorage.getItem('currentUser'))!)
+
+    this.sub = this._service.get(this.userName.userName).subscribe({
       next: (patient: IPatient) => {
         this.patient = patient;
-         
       },
     });
-    this.patientId = 1;
-    this.sub = this._service.getFutureAppointments(this.patientId).subscribe({
+   
+    this.sub = this._service.getFutureAppointments(this.userName.userName).subscribe({
       next: (futureAppointments: IAppointment[]) => {
         this.futureAppointments.data = futureAppointments;
       },
     });
-    this.sub = this._service.getfinishedAppointments(this.patientId).subscribe({
+    this.sub = this._service.getfinishedAppointments(this.userName.userName).subscribe({
       next: (finishedAppointments: IFinishedAppointment[]) => {
         this.finishedAppointments.data = finishedAppointments;
       },
     });
-    this.sub = this._service.getCanceledAppointments(this.patientId).subscribe({
+    this.sub = this._service.getCanceledAppointments(this.userName.userName).subscribe({
       next: (canceledAppointments: IAppointment[]) => {
         this.canceledAppointments.data = canceledAppointments;
       },

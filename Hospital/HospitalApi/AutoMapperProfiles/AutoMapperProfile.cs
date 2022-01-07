@@ -45,6 +45,7 @@ namespace HospitalApi.AutoMapperProfiles
 
             CreateMap<Patient, UserForBlockingDTO>();
             CreateMap<RoomRenovationEventDto, RoomRenovationEvent>();
+            CreateMap<NewManagerDTO, Manager>();
         }
     }
 }

@@ -33,19 +33,25 @@ namespace Hospital.Database.EfStructures
         public DbSet<AnsweredSurvey> AnsweredSurveys { get; set; }
         public DbSet<EquipmentTransferEvent> EquipmentTransferEvents { get; set; }
         public DbSet<MedicationExpenditureLog> MedicationExpenditureLogs { get; set; }
-        public DbSet<RoomPosition> RoomPositions { get; set; }
         public DbSet<RoomRenovationEvent> RoomRenovationEvents { get; set; }
+        public DbSet<Manager> Managers { get; set; }
+        public DbSet<OnCallDuty> OnCallDuties { get; set; }
+        public DbSet<Shift> Shifts { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
-            modelBuilder.Entity<User>().OwnsOne(u => u.City, c => c.OwnsOne(x => x.Country));
-            modelBuilder.Entity<Doctor>().OwnsOne(d => d.Specialization);
-            modelBuilder.Entity<MedicalRecord>().OwnsOne(d => d.Measurements);
-            base.OnModelCreating(modelBuilder);
+            builder.Entity<Room>().OwnsOne(r => r.RoomPosition);
+            builder.Entity<Doctor>().OwnsMany(d => d.Vacations);
+            builder.Entity<OnCallDuty>().HasMany(oc => oc.DoctorsOnDuty).WithMany(d => d.OnCallDuties);
+            builder.Entity<User>().OwnsOne(u => u.City, c => c.OwnsOne(x => x.Country));
+            builder.Entity<Doctor>().OwnsOne(d => d.Specialization);
+            builder.Entity<MedicalRecord>().OwnsOne(d => d.Measurements);
+           
+            base.OnModelCreating(builder);
         }
     }
 }

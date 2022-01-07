@@ -17,6 +17,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Hospital.Schedule.Model.Wrappers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HospitalApi.Controllers
 {
@@ -70,7 +71,7 @@ namespace HospitalApi.Controllers
                 retVal.Add(_mapper.Map<AvailableAppointmentDTO>(appointment));
             }
         }
-
+        [Authorize(Roles = "Patient")]
         [HttpPost]
         public IActionResult ScheduleAppointment([FromBody] RecommendedAppointmentDTO newAppointment)
         {

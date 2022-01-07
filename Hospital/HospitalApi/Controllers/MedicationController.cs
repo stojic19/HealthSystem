@@ -35,5 +35,25 @@ namespace HospitalApi.Controllers
             AddMedicationResponseDto responseDTO = new AddMedicationResponseDto() { Answer = "Succesfully added medicine." };
             return Ok(responseDTO);
         }
+
+        [HttpPost]
+        public IActionResult AddMedicineTender(TenderProcurementDTO tenderProcurementDTO)
+        {
+            foreach (TenderMedicineDTO medicineDto in tenderProcurementDTO.Medications)
+            {
+                if (medicineDto.Quantity <= 0)
+                {
+                    return BadRequest("Invalid quantity.");
+                }
+                if (medicineDto.Medicine.Name.Length <= 0)
+                {
+                    return BadRequest("Invalid medicine name.");
+                }
+                _medicationInventoryMasterService.AddMedicineToInventory(medicineDto.Medicine.Name, medicineDto.Quantity);
+            }
+            
+            AddMedicationResponseDto responseDTO = new AddMedicationResponseDto() { Answer = "Succesfully added medicine." };
+            return Ok(responseDTO);
+        }
     }
 }

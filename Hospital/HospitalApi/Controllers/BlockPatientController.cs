@@ -9,6 +9,7 @@ using Hospital.MedicalRecords.Repository;
 using Hospital.SharedModel.Repository.Base;
 using HospitalApi.DTOs;
 using Hospital.Schedule.Service;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HospitalApi.Controllers
 {
@@ -25,6 +26,7 @@ namespace HospitalApi.Controllers
             _mapper = mapper;
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpGet]
         public IActionResult GetMaliciousPatients()
         {
@@ -33,6 +35,7 @@ namespace HospitalApi.Controllers
             var patientDTOs = patients.Select(patient => _mapper.Map<UserForBlockingDTO>(patient)).ToList();
             return Ok(patientDTOs);
         }
+        [Authorize(Roles = "Manager")]
         [HttpPut]
         public IActionResult BlockPatient(UserForBlockingDTO user)
         {

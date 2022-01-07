@@ -34,21 +34,21 @@ namespace Hospital.Schedule.Repository.Implementation
             return GetAll().Where(x => x.IsUserCanceled() && x.Patient.Id == id).ToList();
         }
 
-        public List<ScheduledEvent> GetCanceledUserEvents(int userId)
+        public List<ScheduledEvent> GetCanceledUserEvents(string userName)
         {
             return GetAll().Include(x => x.Doctor)
                             .Include(x => x.Room)
                             .Include(x => x.Doctor.Specialization)
-                            .Where(x => x.IsUserCanceled() && x.Patient.Id == userId)
+                            .Where(x => x.IsCanceled && !x.IsDone && x.Patient.UserName.Equals(userName))
                             .ToList();
         }
 
-        public List<ScheduledEvent> GetFinishedUserEvents(int userId)
+        public List<ScheduledEvent> GetFinishedUserEvents(string userName)
         {
             return  GetAll().Include(x => x.Doctor)
                             .Include(x => x.Room)
                             .Include(x => x.Doctor.Specialization)
-                            .Where(x => x.IsDone && x.Patient.Id == userId)
+                            .Where(x => x.IsDone && x.Patient.UserName.Equals(userName))
                             .ToList();
         }
 
@@ -67,12 +67,12 @@ namespace Hospital.Schedule.Repository.Implementation
                             .Include(x => x.Doctor.Specialization).FirstOrDefault();
         }
 
-        public List<ScheduledEvent> GetUpcomingUserEvents(int userId)
+        public List<ScheduledEvent> GetUpcomingUserEvents(string userName)
         {
             return GetAll().Include(x => x.Doctor)
                             .Include(x => x.Room)
                             .Include(x => x.Doctor.Specialization)
-                            .Where(x => x.IsUpcoming() && x.Patient.Id == userId)
+                            .Where(x => !x.IsCanceled && !x.IsDone && x.Patient.UserName.Equals(userName))
                             .ToList();
         }
 

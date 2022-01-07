@@ -25,11 +25,7 @@ namespace HospitalIntegrationTests
         public async Task Get_medication_expenditure_report_should_return_4()
         {
             var medications = AddDataToDataBase();
-            var content = GetContent(new TimePeriod
-            {
-                StartTime = new DateTime(2020, 9, 1),
-                EndTime = new DateTime(2020, 10, 1)
-            });
+            var content = GetContent(new TimePeriod(new DateTime(2020, 9, 1), new DateTime(2020, 10, 1)));
             var response = await Client.PostAsync(BaseUrl + "api/MedicationExpenditureReport/GetMedicationExpenditureReport", content);
             var responseContentString = await response.Content.ReadAsStringAsync();
             var responseContent = JsonConvert.DeserializeObject<MedicationExpenditureReportDTO>(responseContentString);

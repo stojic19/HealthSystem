@@ -350,4 +350,13 @@
       </mat-tab>
     </mat-tab-group>
   </mat-card>
+  <hr />
+  <br />
+  <button class="btn btn-primary btn-md" (click)="scheduleBasic()">
+    Schedule an appointment
+  </button>
+
+  <div *ngIf="isVisible">
+    <app-basic-appointment></app-basic-appointment>
+  </div>
 </div>

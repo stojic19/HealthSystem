@@ -9,7 +9,8 @@ namespace Hospital.SharedModel.Repository
         public IEnumerable<Doctor> GetNonOverloadedDoctors();
         public IEnumerable<Doctor> GetDoctorsBySpecialization(int? specializationId);
         public IEnumerable<Doctor> GetAllDoctorsWithSpecialization();
-        public IEnumerable<Doctor> GetSpecializedDoctors(int specializationId);
+        public IEnumerable<Doctor> GetSpecializedDoctors(string specializationName);
+        public IEnumerable<Specialization> GetAllSpecializations();
     }
 
 }

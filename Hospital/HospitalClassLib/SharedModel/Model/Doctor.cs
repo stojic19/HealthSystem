@@ -15,5 +15,6 @@ namespace Hospital.SharedModel.Model
         public ICollection<OnCallDuty> OnCallDuties { get; set; }
         public int ShiftId { get; set; }
         public Shift Shift { get; set; }
+
     }
 }

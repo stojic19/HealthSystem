@@ -86,9 +86,11 @@ namespace HospitalApi.Controllers
         [HttpPost]
         public IActionResult ScheduleAppointment(ScheduleAppointmentDTO scheduleAppointmentDTO)
         {
-            var appointmentToAdd = _mapper.Map<ScheduledEvent>(scheduleAppointmentDTO);
+            var loggedInPatient = _uow.GetRepository<IPatientReadRepository>()
+                .GetByUsername(scheduleAppointmentDTO.PatientUsername);
+            scheduleAppointmentDTO.PatientId = loggedInPatient.Id;
             var scheduledEventWriteRepo = _uow.GetRepository<IScheduledEventWriteRepository>();
-            var addedAppointment = scheduledEventWriteRepo.Add(appointmentToAdd);
+            var addedAppointment = scheduledEventWriteRepo.Add(_mapper.Map<ScheduledEvent>(scheduleAppointmentDTO));
 
             return addedAppointment == null ? StatusCode(StatusCodes.Status500InternalServerError,
                 "Could not schedule appointment. Please try again.") : Ok(addedAppointment);

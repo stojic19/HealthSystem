@@ -7,7 +7,6 @@ secrets:
 services:
 
   gateway:
-    image: srdjansukovic/test
     build:
       context: ../
       dockerfile: Stacks/Build/Gateway/Dockerfile
@@ -24,7 +23,6 @@ services:
       - integrationapi
 
   hospitalapi:
-    image: srdjansukovic/test
     build:
       dockerfile: Stacks/Build/Hospital/Dockerfile
       context: ../
@@ -37,7 +35,6 @@ services:
       HOSPITAL_DB_PATH: "host=hospitaldb;port=5432;database=HOSPITAL;username=postgres;password=/run/secrets/postgres_password"
 
   pharmacyapi:
-    image: srdjansukovic/test
     build:
       dockerfile: Stacks/Build/Pharmacy/Dockerfile
       context: ../
@@ -52,7 +49,6 @@ services:
       RABBITMQ_HOST: "rabbitmq"
 
   integrationapi:
-    image: srdjansukovic/test
     build:
       dockerfile: Stacks/Build/Integration/Dockerfile
       context: ../
@@ -67,7 +63,6 @@ services:
       RABBITMQ_HOST: "rabbitmq"
 
   patient-ui:
-    image: srdjansukovic/test
     build:
       context: ../
       dockerfile: Stacks/Build/PatientUi/Dockerfile
@@ -76,7 +71,6 @@ services:
     container_name: patient-ui
 
   manager-ui:
-    image: srdjansukovic/test
     build:
       context: ../
       dockerfile: Stacks/Build/ManagerUi/Dockerfile
@@ -85,7 +79,6 @@ services:
     container_name: manager-ui
 
   integration-ui:
-    image: srdjansukovic/test
     build:
       context: ../
       dockerfile: Stacks/Build/IntegrationUi/Dockerfile

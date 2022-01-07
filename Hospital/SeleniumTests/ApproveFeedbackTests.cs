@@ -9,9 +9,10 @@ namespace SeleniumTests
     {
         private readonly IWebDriver driver;
         private Pages.ApproveFeedbackPage approveFeedbackPage;
+        private Pages.LoginPage loginPage;
 
         public ApproveFeedbackTests() {
-            ChromeOptions options = new ChromeOptions();
+            var options = new ChromeOptions();
             options.AddArguments("start-maximized");            
             options.AddArguments("disable-infobars");           
             options.AddArguments("--disable-extensions");       
@@ -20,18 +21,30 @@ namespace SeleniumTests
             options.AddArguments("--no-sandbox");               
             options.AddArguments("--disable-notifications");    
             driver = new ChromeDriver(options);
-            approveFeedbackPage = new Pages.ApproveFeedbackPage(driver);      
-            approveFeedbackPage.Navigate();
-            approveFeedbackPage.EnsurePageIsDisplayed();
+            loginPage = new Pages.LoginPage(driver,loginPage.LoginUri);
+            loginPage.Navigate();
+            loginPage.EnsureLoginFormForAdminIsDisplayed();
         }
         [Fact]
         public void ApproveFeedback()
         {
+            InsertCredentials();
+            if (!loginPage.IsSnackBarDisplayed()) return;
+            approveFeedbackPage = new Pages.ApproveFeedbackPage(driver);
+            approveFeedbackPage.Navigate();
+            approveFeedbackPage.EnsurePageIsDisplayed();
             approveFeedbackPage.Approve();
             Assert.True(approveFeedbackPage.UnapproveButtonDisplayed());
-            Assert.True(approveFeedbackPage.IsSnackbarDisplayed());
+            Assert.True(approveFeedbackPage.IsSnackBarDisplayed());
             Assert.Equal(driver.Url, approveFeedbackPage.URI);
         }
+
+        private void InsertCredentials()
+        {
+            loginPage.InsertUsername("admin");
+            loginPage.InsertPassword("Admin123.");
+        }
+
         public void Dispose()
         {
             driver.Quit();

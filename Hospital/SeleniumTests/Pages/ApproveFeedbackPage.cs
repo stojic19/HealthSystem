@@ -31,7 +31,7 @@ namespace SeleniumTests.Pages
         {
             return UnapproveButton.Displayed;
         }
-        public bool IsSnackbarDisplayed()
+        public bool IsSnackBarDisplayed()
         {
             try
             {

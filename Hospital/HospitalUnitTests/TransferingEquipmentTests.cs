@@ -17,11 +17,16 @@ namespace HospitalUnitTests
         {
 
         }
-
+        
         [Fact]
         public void One_item_should_be_moved()
         {
             ClearDbContext();
+            InventoryItem it = new InventoryItem()
+            {
+                Id = 1,
+                Name = "Test item"
+            };
 
             Context.EquipmentTransferEvents.Add(new EquipmentTransferEvent()
             {
@@ -45,20 +50,9 @@ namespace HospitalUnitTests
                 }
 
             });
-            Context.RoomInventories.Add(new RoomInventory()
-            {
-                Id = 1,
-                InventoryItemId = 1,
-                Amount = 3,
-                RoomId = 1
-            });
-            Context.RoomInventories.Add(new RoomInventory()
-            {
-                Id = 2,
-                InventoryItemId = 1,
-                Amount = 1,
-                RoomId = 2
-            });
+
+            Context.RoomInventories.Add(new RoomInventory(1, 1, 1, 3));
+            Context.RoomInventories.Add(new RoomInventory(2, 2, 1, 1));
             Context.SaveChanges();
 
             var transferingService = new TransferingEquipmentService(UoW);
@@ -74,7 +68,7 @@ namespace HospitalUnitTests
             destinationRoomInventory.ShouldNotBeNull();
             destinationRoomInventory.Amount.ShouldBe(2);
         }
-
+        
         [Fact]
         public void Two_items_should_be_moved()
         {
@@ -103,20 +97,8 @@ namespace HospitalUnitTests
                 }
 
             });
-            Context.RoomInventories.Add(new RoomInventory()
-            {
-                Id = 1,
-                InventoryItemId = 1,
-                Amount = 2,
-                RoomId = 1
-            });
-            Context.RoomInventories.Add(new RoomInventory()
-            {
-                Id = 2,
-                InventoryItemId = 1,
-                Amount = 1,
-                RoomId = 2
-            });
+            Context.RoomInventories.Add(new RoomInventory(1, 1, 1, 2));
+            Context.RoomInventories.Add(new RoomInventory(2, 2, 1, 1));
             Context.SaveChanges();
 
             var transferingService = new TransferingEquipmentService(UoW);
@@ -159,24 +141,15 @@ namespace HospitalUnitTests
                 }
 
             });
-            Context.RoomInventories.Add(new RoomInventory()
-            {
-                Id = 1,
-                InventoryItemId = 1,
-                Amount = 3,
-                RoomId = 1
-            });
-            Context.RoomInventories.Add(new RoomInventory()
+            InventoryItem newItem = new InventoryItem()
             {
                 Id = 2,
-                InventoryItem = new InventoryItem()
-                {
-                    Id = 2,
-                    Name = "Test item",
-                },
-                Amount = 3,
-                RoomId = 1
-            });
+                Name = "Test item"
+            };
+            Context.InventoryItems.Add(newItem);
+
+            Context.RoomInventories.Add(new RoomInventory(1, 1, 1, 3));
+            Context.RoomInventories.Add(new RoomInventory(2, 2, 2, 3));
             Context.SaveChanges();
 
             var transferingService = new TransferingEquipmentService(UoW);

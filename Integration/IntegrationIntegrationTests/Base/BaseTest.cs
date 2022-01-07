@@ -4,7 +4,9 @@ using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
 using Xunit;
+using System.Linq;
 
 namespace IntegrationIntegrationTests.Base
 {
@@ -30,6 +32,35 @@ namespace IntegrationIntegrationTests.Base
         public StringContent GetContent(object content)
         {
             return new StringContent(JsonConvert.SerializeObject(content), Encoding.UTF8, "application/json");
+        }
+        public static void GenericRemoveSet<T>(DbSet<T> set) where T : class
+        {
+            foreach (var item in set)
+            {
+                set.Remove(item);
+            }
+        }
+        protected void ClearDbContext()
+        {
+            var removeMethod = System.Reflection.MethodBase
+                .GetCurrentMethod()
+                .DeclaringType
+                .GetMethod(nameof(GenericRemoveSet));
+
+            var properties = Context
+                .GetType()
+                .GetProperties()
+                .Where(x => x.PropertyType.IsGenericType &&
+                            x.PropertyType.GetGenericTypeDefinition() == typeof(DbSet<>));
+
+            foreach (var property in properties)
+            {
+                var genericArgument = property.PropertyType.GetGenericArguments();
+                var typedRemove = removeMethod.MakeGenericMethod(genericArgument);
+                typedRemove.Invoke(null, new object[] { property.GetValue(Context) });
+            }
+
+            Context.SaveChanges();
         }
     }
 }

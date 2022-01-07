@@ -23,10 +23,7 @@ namespace SeleniumTests.Pages
            EnsureUnapproveButtonIsDisplayed();
         }
         public void Navigate() => driver.Navigate().GoToUrl(URI);
-        public bool ApproveButtonDisplayed()
-        {
-            return ApproveButton.Displayed;
-        }
+        
         public bool UnapproveButtonDisplayed()
         {
             return UnapproveButton.Displayed;

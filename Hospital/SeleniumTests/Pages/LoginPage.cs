@@ -89,23 +89,6 @@ namespace SeleniumTests.Pages
                 }
             });
         }
-
-        public bool IsSnackBarDisplayed()
-        {
-            try
-            {
-                return driver.FindElement(By.ClassName("mat-snack-bar-container")).Displayed;
-            }
-            catch (StaleElementReferenceException)
-            {
-                return false;
-            }
-            catch (NoSuchElementException)
-            {
-                return false;
-            }
-        }
-
         public void Navigate() => driver.Navigate().GoToUrl(LoginUri);
     }
 }

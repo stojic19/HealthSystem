@@ -1,4 +1,4 @@
-FROM node:15.14.0-alpine as buildPatient
+FROM node:14.15.0-alpine as buildPatient
 COPY /WebClients/PatientWebClient ./WebClient
 RUN cd WebClient && \
     npm install
@@ -9,7 +9,7 @@ RUN chmod +x ./build-app.sh && \
     ./build-app.sh ${HOSPITAL_API_URL}
 
 
-FROM node:15.14.0-alpine as executer
+FROM node:14.15.0-alpine as executer
 COPY --from=buildPatient /WebClient /usr/src/server
 EXPOSE 8081
 

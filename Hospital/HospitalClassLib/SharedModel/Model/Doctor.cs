@@ -6,6 +6,8 @@ namespace Hospital.SharedModel.Model
 {
     public class Doctor : User
     {
+        public int RoomId { get; set; }
+        public Room Room { get; set; }
         public Specialization Specialization { get; set; }
         public IEnumerable<ScheduledEvent> ScheduledEvents { get; set; }
         public IEnumerable<Vacation> Vacations { get; set; }

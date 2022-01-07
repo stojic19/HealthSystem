@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Hospital.MedicalRecords.Repository;
 
 namespace HospitalApi.Controllers
 {
@@ -59,21 +60,13 @@ namespace HospitalApi.Controllers
         [HttpPost]
         public IActionResult InsertFeedback(NewFeedbackDTO feedbackDTO)
         {
-            try
-            {
-                if (feedbackDTO == null)
-                    return BadRequest("Incorrect feedback format sent! Please try again.");
-
                 var feedbackWriteRepo = _uow.GetRepository<IFeedbackWriteRepository>();
-                var addedFeedback = feedbackWriteRepo.Add(_mapper.Map<Feedback>(feedbackDTO));
-
-                return addedFeedback == null ? StatusCode(StatusCodes.Status500InternalServerError, "Could not insert feedback in the database.")
+                var loggedInPatient = _uow.GetRepository<IPatientReadRepository>()
+                    .GetByUsername(feedbackDTO.PatientUsername);
+                feedbackDTO.PatientId = loggedInPatient.Id;
+                var newFeedback = _mapper.Map<Feedback>(feedbackDTO);
+                return feedbackWriteRepo.Add(newFeedback) == null ? StatusCode(StatusCodes.Status500InternalServerError, "Could not insert feedback in the database.")
                     : Ok("Your feedback has been submitted.");
-            }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error inserting feedback in the database.");
-            }
         }
 
         

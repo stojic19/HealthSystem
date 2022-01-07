@@ -8,5 +8,6 @@ namespace Hospital.MedicalRecords.Repository
     public interface IPatientReadRepository : IReadBaseRepository<int, Patient>
     {
         public Patient GetPatient();
+        public Patient GetByUsername(string username);
     }
 }

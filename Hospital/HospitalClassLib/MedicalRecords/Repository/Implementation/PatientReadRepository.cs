@@ -20,5 +20,10 @@ namespace Hospital.MedicalRecords.Repository.Implementation
                 .Include(p => p.MedicalRecord).ThenInclude(mr => mr.Allergies)
                 .ThenInclude(a => a.MedicationIngredient).First();
         }
+
+        public Patient GetByUsername(string username)
+        {
+            return GetAll().FirstOrDefault(p => p.UserName.Equals(username));
+        }
     }
 }

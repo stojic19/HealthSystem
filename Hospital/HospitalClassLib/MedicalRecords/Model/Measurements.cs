@@ -8,8 +8,8 @@ namespace Hospital.MedicalRecords.Model
     public class Measurements : ValueObject
     {
         
-        public double Weight { get; }
-        public double Height { get; }
+        public double Weight { get; private set; }
+        public double Height { get; private set; }
 
         public Measurements(double weight, double height)
         {

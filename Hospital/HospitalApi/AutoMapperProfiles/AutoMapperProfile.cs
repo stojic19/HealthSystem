@@ -21,29 +21,13 @@ namespace HospitalApi.AutoMapperProfiles
                 .ForMember(toSchedule => toSchedule.IsDone, opt => opt.MapFrom(src => false))
                 .ForMember(toSchedule => toSchedule.ScheduledEventType,
                     opt => opt.MapFrom(src => ScheduledEventType.Appointment));
-            CreateMap<NewFeedbackDTO, Feedback>();
             CreateMap<Survey, SurveyStatisticDTO>();
 
-            CreateMap<CityDTO, City>();
-            CreateMap<DoctorDTO, Doctor>();
-            CreateMap<MedicationIngredientDTO, MedicationIngredient>();
-            CreateMap<NewAllergyDTO, Allergy>();
-            CreateMap<NewMedicalRecordDTO, MedicalRecord>();
-            CreateMap<NewPatientDTO, Patient>();
-
-            CreateMap<Doctor, SpecializedDoctorDTO>();
-            CreateMap<MedicationIngredient, MedicationIngredientDTO>();
-            CreateMap<City, CityDTO>();
-            CreateMap<Allergy, AllergyDTO>();
-            CreateMap<Doctor, DoctorDTO>();
-            CreateMap<MedicalRecord, MedicalRecordDTO>();
-            CreateMap<Patient, PatientDTO>();
             CreateMap<EquipmentTransferEventDto, EquipmentTransferEvent>();
             CreateMap<DoctorAppointmentDTO, Doctor>().ReverseMap();
 
             CreateMap<AvailableAppointmentDTO, AvailableAppointment>().ReverseMap();
 
-            CreateMap<Patient, UserForBlockingDTO>();
             CreateMap<RoomRenovationEventDto, RoomRenovationEvent>();
             CreateMap<NewManagerDTO, Manager>();
         }

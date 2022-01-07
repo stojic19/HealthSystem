@@ -15,8 +15,7 @@ namespace Hospital.SharedModel.Model
         [Required] public Gender Gender { get; private set; }
         [Required] public string Street { get; private set; }
         [Required] public string StreetNumber { get; private set; }
-        public int CityId { get; private set; }
-        public City City { get; }
+        public City City { get; private set; }
         public bool IsBlocked { get; private set; }
         public string PhotoEncoded { get; private set; }
 
@@ -25,7 +24,7 @@ namespace Hospital.SharedModel.Model
         }
 
         public User(string firstName, string middleName, string lastName, DateTime dateOfBirth, Gender gender,
-            string street, string streetNumber, int cityId, string photoEncoded)
+            string street, string streetNumber, City city, string photoEncoded)
         {
             FirstName = firstName;
             MiddleName = middleName;
@@ -34,7 +33,7 @@ namespace Hospital.SharedModel.Model
             Gender = gender;
             Street = street;
             StreetNumber = streetNumber;
-            CityId = cityId;
+            City = city;
             IsBlocked = false;
             PhotoEncoded = photoEncoded;
             //TODO: add validate method

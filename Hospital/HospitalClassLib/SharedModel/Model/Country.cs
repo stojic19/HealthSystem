@@ -6,7 +6,7 @@ namespace Hospital.SharedModel.Model
 {
     public class Country : ValueObject
     {
-        public string Name { get;}
+        public string Name { get; private set; }
 
         public Country(string name) {
             Name = name;

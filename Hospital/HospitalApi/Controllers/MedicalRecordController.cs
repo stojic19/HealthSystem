@@ -28,13 +28,10 @@ namespace HospitalApi.Controllers
         public IActionResult GetPatientWithRecord(string userName)
         {
             var patientRepo = _uow.GetRepository<IPatientReadRepository>();
-            var loggedInPatient = patientRepo.GetAll().Where(x=>x.UserName.Equals(userName)).FirstOrDefault();
-            var patient = patientRepo.GetPatient(loggedInPatient.Id);
-            var medicalRecordRepo = _uow.GetRepository<IMedicalRecordReadRepository>();
-            var medicalRecord = medicalRecordRepo.GetMedicalRecord(patient.MedicalRecordId);
-            patient.MedicalRecord = medicalRecord;
-            var patientWithRecord = _mapper.Map<PatientDTO>(patient);
-            return Ok(patientWithRecord);
+            var patient = patientRepo.GetAll().Include(p => p.MedicalRecord).ThenInclude(mr => mr.Doctor)
+                .Include(p => p.MedicalRecord).ThenInclude(mr => mr.Allergies)
+                .ThenInclude(a => a.MedicationIngredient).FirstOrDefault(p => p.UserName.Equals(userName));
+            return Ok(_mapper.Map<PatientDTO>(patient));
         }
     }
 }

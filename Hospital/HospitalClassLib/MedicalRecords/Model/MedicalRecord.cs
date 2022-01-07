@@ -19,8 +19,8 @@ namespace Hospital.MedicalRecords.Model
         public JobStatus JobStatus { get; private set; }
         [Required]
         public int DoctorId { get; private set; }
-        public Doctor Doctor { get; }
-        public IEnumerable<Allergy> Allergies { get; }
+        public Doctor Doctor { get; private set; }
+        public IEnumerable<Allergy> Allergies { get; private set; }
 
         public MedicalRecord( Measurements measurements, BloodType bloodType, JobStatus jobStatus, int doctorId, IEnumerable<Allergy> allergies)
         {

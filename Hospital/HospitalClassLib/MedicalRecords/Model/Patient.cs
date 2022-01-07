@@ -9,8 +9,8 @@ namespace Hospital.MedicalRecords.Model
     public class Patient : User
     {
         public int MedicalRecordId { get; private set; }
-        public MedicalRecord MedicalRecord { get; }
-        public IEnumerable<ScheduledEvent> ScheduledEvents { get; }
+        public MedicalRecord MedicalRecord { get; private set; }
+        public IEnumerable<ScheduledEvent> ScheduledEvents { get; private set; }
         public Patient()
         {
         }

@@ -18,9 +18,9 @@ namespace Hospital.Schedule.Model
         public int PatientId { get; private set;  }
         public Patient Patient { get; private set; }
         public int DoctorId { get; private set; }
-        public Doctor Doctor { get; }
+        public Doctor Doctor { get; private set; }
         public int RoomId { get; private set; }
-        public Room Room { get;  }
+        public Room Room { get; private set; }
 
         public ScheduledEvent(ScheduledEventType scheduledEventType, bool isCanceled, bool isDone, DateTime startDate, DateTime endDate, DateTime cancellationDate, int patientId, int doctorId, Doctor doctor)
         {

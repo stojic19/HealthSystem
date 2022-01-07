@@ -71,9 +71,10 @@ namespace HospitalApi.Controllers
                 retVal.Add(_mapper.Map<AvailableAppointmentDTO>(appointment));
             }
         }
+
         [Authorize(Roles = "Patient")]
         [HttpPost]
-        public IActionResult ScheduleAppointment([FromBody] RecommendedAppointmentDTO newAppointment)
+        public IActionResult ScheduleRecommendedAppointment([FromBody] RecommendedAppointmentDTO newAppointment)
         {
             var appointmentToCreate = _mapper.Map<ScheduledEvent>(newAppointment);
             appointmentToCreate.ScheduleEventForPatient(_uow.GetRepository<IPatientReadRepository>().GetAll().First());
@@ -82,7 +83,7 @@ namespace HospitalApi.Controllers
 
         }
 
-        [HttpPost] 
+        [HttpPost]
         public IActionResult ScheduleAppointment(ScheduleAppointmentDTO scheduleAppointmentDTO)
         {
             var appointmentToAdd = _mapper.Map<ScheduledEvent>(scheduleAppointmentDTO);

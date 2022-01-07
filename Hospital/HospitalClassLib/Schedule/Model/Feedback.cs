@@ -10,7 +10,7 @@ namespace Hospital.Schedule.Model
         public int Id { get; private set; }
         [Required]
         public int PatientId { get; private set; }
-        public Patient Patient { get; }
+        public Patient Patient { get; private set; }
         public FeedbackStatus FeedbackStatus { get; private set; }
         public DateTime CreatedDate { get; private set; }
         [Required]

@@ -6,10 +6,10 @@ namespace Hospital.SharedModel.Model
 {
     public class City : ValueObject
     {
-        public string Name { get;}
-        public int PostalCode { get;  }
-        public Country Country { get; }
-        
+        public string Name { get; private set; }
+        public int PostalCode { get; private set; }
+        public Country Country { get; private set; }
+
         public City(string name, int postalCode, Country country)
         {
             Name = name;

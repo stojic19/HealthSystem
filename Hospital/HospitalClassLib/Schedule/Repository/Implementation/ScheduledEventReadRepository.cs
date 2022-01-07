@@ -78,7 +78,7 @@ namespace Hospital.Schedule.Repository.Implementation
 
         public List<ScheduledEvent> UpdateFinishedUserEvents()
         {
-            return GetAll().Where(x => x.ShouldBeDone()).ToList();
+            return GetAll().ToList(); //.Where(x => x.ShouldBeDone()).ToList();
         }
     }
 }

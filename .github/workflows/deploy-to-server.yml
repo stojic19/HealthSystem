@@ -6,6 +6,7 @@ on:
     branches: 
       - 'master'
       - 'feature/upload-to-server'
+      # - 'feature/docker-security'
 
 jobs:
   deploy:
@@ -22,7 +23,7 @@ jobs:
           script: |
             cd psw/mainrepo
             docker system prune -f
-            git checkout feature/upload-to-server
+            git checkout feature/docker-security
             git pull
             cd Stacks
             docker-compose build --no-cache

@@ -1,5 +1,9 @@
 version: '3.4'
 
+secrets:
+  postgres_password:
+    external: true
+
 services:
 
   gateway:
@@ -28,7 +32,7 @@ services:
     depends_on:
       - hospitaldb
     environment:
-      HOSPITAL_DB_PATH: "host=hospitaldb;port=5432;database=HOSPITAL;username=postgres;password=postgres"
+      HOSPITAL_DB_PATH: "host=hospitaldb;port=5432;database=HOSPITAL;username=postgres;password=/run/secrets/postgres_password"
 
   pharmacyapi:
     build:

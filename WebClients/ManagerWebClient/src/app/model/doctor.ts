@@ -18,7 +18,8 @@ export interface Doctor {
   specialization: any;
   shiftId: number;
   shift: Shift;
-  onCallDuties: OnCallDuty[]
+  onCallDuties: OnCallDuty[];
+  vacations: Vacation[];
 }
 
 export interface Shift {
@@ -33,4 +34,16 @@ export interface OnCallDuty {
   month: number;
   week: number;
   doctorsOnDuty: Doctor[]
+}
+
+export interface Vacation {
+  id: number;
+  type: VacationType;
+  startDate: Date;
+  endDate: Date;
+}
+
+export enum VacationType {
+  SickLeave,
+  Vacation
 }

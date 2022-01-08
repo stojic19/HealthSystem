@@ -19,7 +19,7 @@ export class DoctorsScheduleComponent implements OnInit {
       .toPromise()
       .then((res) => {
         this.doctors = res as Doctor[];
-        console.log(this.doctors[1].onCallDuties)
+        console.log(this.doctors[1].vacations)
         this.isLoading = false;
       });;
 

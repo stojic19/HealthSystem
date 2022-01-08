@@ -81,7 +81,8 @@ namespace HospitalApi.Controllers
                     .GetAll()
                     .Include(d => d.Specialization)
                     .Include(d => d.Shift)
-                    .Include(d => d.OnCallDuties);
+                    .Include(d => d.OnCallDuties)
+                    .Include(d => d.Vacations);
                 return Ok(doctors);
             }
             catch (Exception)
@@ -89,5 +90,6 @@ namespace HospitalApi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error!Failed loading doctors!");
             }
         }
+
     }
 }

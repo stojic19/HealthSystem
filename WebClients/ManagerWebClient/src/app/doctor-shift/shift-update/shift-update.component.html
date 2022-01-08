@@ -1,0 +1,40 @@
+<div class="justify-content-center">
+    <table class="shiftUpdatetForm">
+        <tr>
+            <td class="label">
+                Current shift:
+            </td>
+            <td>
+                <input disabled [(ngModel)]="selectedDoctorShift.shift.name" class="form-control text-start" type="text"
+                    name="name" />
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                New shift:
+            </td>
+            <td>
+                <select [(ngModel)]="newShift" class="form-control text-start" name="nameShifts" id="nameShift">
+                    <ng-container *ngFor="let shift of shifts">
+                        <option *ngIf="shift.name != null" [ngValue]="shift">{{shift.name}}</option>
+                    </ng-container>
+                </select>
+            </td>
+        </tr>
+        <tr *ngIf="!isEnteredDataCorrect()">
+            <td colspan="2" style="text-align: center">
+                <p style="color: red">
+                    {{ errorMessage }}
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align: center">
+                <button type="button" class="btn btn-primary mt-5" [disabled]="isButtonDisabled()"
+                    (click)="updateDoctorShift()">Update</button>
+            </td>
+        </tr>
+
+    </table>
+
+</div>

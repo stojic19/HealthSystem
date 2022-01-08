@@ -77,6 +77,8 @@ import { HospitalShiftsComponent } from './hospital-shifts/hospital-shifts.compo
 import { CreateShiftComponent } from './create-shift/create-shift.component';
 import { UpdateShiftComponent } from './update-shift/update-shift.component';
 import { DoctorShiftComponent } from './doctor-shift/doctor-shift.component';
+import { ShiftListComponent } from './doctor-shift/shift-list/shift-list.component';
+import { ShiftUpdateComponent } from './doctor-shift/shift-update/shift-update.component';
 
 @NgModule({
   declarations: [
@@ -138,6 +140,8 @@ import { DoctorShiftComponent } from './doctor-shift/doctor-shift.component';
     CreateShiftComponent,
     UpdateShiftComponent,
     DoctorShiftComponent,
+    ShiftListComponent,
+    ShiftUpdateComponent,
 
 
   ],

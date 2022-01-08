@@ -10,27 +10,42 @@ import { DoctorShiftService } from '../services/doctor-shift.service';
 export class DoctorShiftComponent implements OnInit {
 
   isLoading = true;
-  shift = "";
   isAddOperation: boolean;
-  isUpdateOperation : boolean;
-  doctorShift = "";
-  doctors : DoctorShift[];
-  constructor(private service : DoctorShiftService) { }
+  chosenOperationAdd = false;
+  chosenOperationUpdate = false;
+  isUpdateOperation: boolean;
+  doctorShift: DoctorShift;
+  doctors: DoctorShift[];
+  refresh = "";
+  constructor(private service: DoctorShiftService) { }
 
   ngOnInit(): void {
     this.service.getDoctors().toPromise().then(res => this.doctors = res as DoctorShift[]);
     this.isLoading = false;
+
   }
 
-  addShift(){
+  addShift(doctorShift: DoctorShift) {
     this.isAddOperation = true;
+    this.chosenOperationAdd = true;
     this.isUpdateOperation = false;
+    this.doctorShift = doctorShift;
   }
 
-  updateShift(shiftName: string){
-    this.doctorShift = shiftName;
+  updateShift(doctorShift: DoctorShift) {
     this.isUpdateOperation = true;
+    this.chosenOperationUpdate = true;
     this.isAddOperation = false;
+    this.doctorShift = doctorShift;
+  }
+
+  check() {
+    if (this.refresh == 'changed') {
+      this.service.getDoctors().toPromise().then(res => this.doctors = res as DoctorShift[]);
+      console.log(this.doctors)
+
+    }
+    return true
   }
 
 }

@@ -80,10 +80,10 @@ const routes: Routes = [
   { path: _isProd? 'manager/surveys' : 'surveys', component: SurveysObserveComponent , canActivate: [AuthGuard]},
   { path: _isProd? 'manager/schedule/:id' : 'schedule/:id', component: RoomScheduleComponent , canActivate: [AuthGuard]},
   { path: _isProd? 'manager/login' : 'login', component: LoginComponent},
-  { path:  'hospitalShifts', component: HospitalShiftsComponent},
-  { path:  'createNewShift', component: CreateShiftComponent},
-  { path:  'updateShift/:id', component: UpdateShiftComponent},
-  { path:  'doctorShifts', component: DoctorShiftComponent},
+  { path: _isProd? 'manager/hospitalShifts' : 'hospitalShifts', component: HospitalShiftsComponent, canActivate: [AuthGuard]},
+  { path: _isProd? 'manager/createNewShift' : 'createNewShift', component: CreateShiftComponent, canActivate: [AuthGuard]},
+  { path: _isProd? 'manager/updateShift/:id' : 'updateShift/:id', component: UpdateShiftComponent, canActivate: [AuthGuard]},
+  { path: _isProd? 'manager/doctorShifts' : 'doctorShifts', component: DoctorShiftComponent, canActivate: [AuthGuard]},
 
 ];
 

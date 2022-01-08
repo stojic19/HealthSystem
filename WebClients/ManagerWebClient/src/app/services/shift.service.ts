@@ -8,7 +8,7 @@ import { ShiftRequest } from '../model/shift-request.model';
 })
 export class ShiftService {
 
-  constructor(private http : HttpClient) { }
+  constructor(private http: HttpClient) { }
 
   getHospitalShifts() {
     return this.http.get(
@@ -25,7 +25,7 @@ export class ShiftService {
       .subscribe();
   }
 
-  updateShift(id: number, from: number, to: number){
+  updateShift(id: number, from: number, to: number) {
 
     return this.http.put(
       'api/Shift/UpdateShift',
@@ -38,5 +38,18 @@ export class ShiftService {
         },
       }
     ).subscribe();
+  }
+
+  deleteShift(id: number) {
+    return this.http
+      .delete(
+        '/api/Shift/DeleteShift',
+        {
+          params: {
+            id: id
+          }
+        }
+      )
+      .subscribe();
   }
 }

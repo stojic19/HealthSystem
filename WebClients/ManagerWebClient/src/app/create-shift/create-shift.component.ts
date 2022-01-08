@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 import { ShiftRequest } from '../model/shift-request.model';
 import { ShiftService } from '../services/shift.service';
 
@@ -13,11 +15,9 @@ export class CreateShiftComponent implements OnInit {
   errorMessage = '';
   fromTime: string;
   toTime: string;
- 
+  isProd: boolean = environment.production;
 
-  constructor(private service : ShiftService) {
-    
-   }
+  constructor(private service: ShiftService, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -33,12 +33,12 @@ export class CreateShiftComponent implements OnInit {
       return false;
     }
 
-    if(this.fromTime == ''){
+    if (this.fromTime == '') {
       this.errorMessage = 'From time must be entered!';
       return false;
     }
 
-    if(this.toTime == ''){
+    if (this.toTime == '') {
       this.errorMessage = 'To time must be entered!';
       return false;
     }
@@ -47,28 +47,29 @@ export class CreateShiftComponent implements OnInit {
     return true;
   }
 
-  isButtonDisabled(){
+  isButtonDisabled() {
 
-    if(this.shiftName == '' || this.fromTime == '' || this.toTime == ''){
-      return true;   
-    }
-    if(this.shiftName == undefined || this.fromTime == undefined || this.toTime == undefined){
+    if (this.shiftName == '' || this.fromTime == '' || this.toTime == '') {
       return true;
     }
-    if(+this.fromTime < 0 || +this.toTime < 0){
+    if (this.shiftName == undefined || this.fromTime == undefined || this.toTime == undefined) {
+      return true;
+    }
+    if (+this.fromTime < 0 || +this.toTime < 0) {
       return true;
     }
     return false;
   }
 
-  createShift(){
+  createShift() {
     let newShift: ShiftRequest = {
       name: this.shiftName,
       from: +this.fromTime,
       to: +this.toTime
-      
+
     };
     this.service.addNewShift(newShift);
+    this.router.navigate([this.isProd ? '/manager/hospitalShifts' : '/hospitalShifts'])
   }
 
 }

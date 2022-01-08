@@ -15,41 +15,45 @@
                             <th scope="col">Shift</th>
                             <th scope="col">Create</th>
                             <th scope="col">Update</th>
-                            
+
                         </tr>
                     </thead>
-                    <tbody *ngIf="!isLoading">
+                    <tbody *ngIf="!isLoading && check()">
                         <tr *ngFor="let doctor of doctors">
                             <th scope="row"></th>
                             <td data-label="Doctor">
-                               {{doctor.firstName}} {{doctor.lastName}}
+                                {{doctor.firstName}} {{doctor.lastName}}
                             </td>
                             <td data-label="Shift">
                                 {{doctor.shift.name}}
                             </td>
                             <td data-label="Add">
-                                <button *ngIf="doctor.shift.name == null" type="button" class="btn btn-primary" (click) = "addShift()">Add</button>
+                                <button *ngIf="doctor.shift.name == null" type="button" class="btn btn-primary"
+                                    (click)="addShift(doctor)">Add</button>
                             </td>
                             <td data-label="Update">
-                                <button *ngIf="doctor.shift.name != ''" type="button" class="btn btn-primary" (click) = "updateShift('First shift')">Update</button>
+                                <button *ngIf="doctor.shift.name != '' && doctor.shift.name != null" type="button"
+                                    class="btn btn-primary" (click)="updateShift(doctor)">Update</button>
                             </td>
-                           
+
                     </tbody>
                 </table>
                 <mat-card *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center">
                     <mat-progress-spinner color="primary" mode="indeterminate">
                     </mat-progress-spinner>
                 </mat-card>
-                              
+
             </div>
         </div>
-        <!--
-        <div class="col-3" *ngIf = "isAddOperation">
-            <app-shift-list (chosenShift)="shift=$event"></app-shift-list>
+
+        <div class="col-3" *ngIf="isAddOperation && chosenOperationAdd">
+            <app-shift-list [doctorShift]="doctorShift" (addOperation)="chosenOperationAdd=$event"
+                (shiftAddedIndicator)="refresh=$event"></app-shift-list>
         </div>
-        <div class="col-3" *ngIf = "isUpdateOperation">
-            <app-shift-update [selectedDoctorShift] = "doctorShift"></app-shift-update>
+
+        <div class="col-3" *ngIf="isUpdateOperation && chosenOperationUpdate">
+            <app-shift-update [selectedDoctorShift]="doctorShift" (updateOperation)="chosenOperationUpdate=$event"
+                (shiftUpdatedIndicator)="refresh=$event"></app-shift-update>
         </div>
-    -->
     </div>
 </div>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 import { ShiftService } from '../services/shift.service';
 
 @Component({
@@ -13,8 +14,9 @@ export class UpdateShiftComponent implements OnInit {
   fromTime: string;
   toTime: string;
   public selectedItemId: number;
+  isProd: boolean = environment.production;
 
-  constructor(private service: ShiftService, private route: ActivatedRoute) { 
+  constructor(private service: ShiftService, private route: ActivatedRoute, private router: Router) {
     this.route.params.subscribe((params) => {
       this.selectedItemId = +params['id'];
     });
@@ -24,49 +26,48 @@ export class UpdateShiftComponent implements OnInit {
   }
 
   isEnteredDataCorrect() {
-  
-    if (+this.fromTime < 0 || +this.toTime < 0) {
-      this.errorMessage = "Time must be positive number!";
-      return false;
-    }
 
     if (+this.fromTime < 0 || +this.toTime < 0) {
       this.errorMessage = "Time must be positive number!";
       return false;
     }
 
-    if(this.fromTime == ''){
+    if (+this.fromTime < 0 || +this.toTime < 0) {
+      this.errorMessage = "Time must be positive number!";
+      return false;
+    }
+
+    if (this.fromTime == '') {
       this.errorMessage = "From time must be entered!";
       return false;
     }
 
-    if(this.toTime == ''){
+    if (this.toTime == '') {
       this.errorMessage = "To time must be entered!";
       return false;
     }
-     
+
     this.errorMessage = '';
     return true;
   }
 
-  isButtonDisabled(){
+  isButtonDisabled() {
 
-    if(this.fromTime == '' || this.toTime == ''){
-      return true;   
-    }
-    if(this.fromTime == undefined || this.toTime == undefined){
+    if (this.fromTime == '' || this.toTime == '') {
       return true;
     }
-    if(+this.fromTime < 0 || +this.toTime < 0){
+    if (this.fromTime == undefined || this.toTime == undefined) {
+      return true;
+    }
+    if (+this.fromTime < 0 || +this.toTime < 0) {
       return true;
     }
     return false;
   }
-  
-  updateShift(){
 
+  updateShift() {
     this.service.updateShift(this.selectedItemId, +this.fromTime, +this.toTime);
-
+    this.router.navigate([this.isProd ? '/manager/hospitalShifts' : '/hospitalShifts']);
   }
 
 }

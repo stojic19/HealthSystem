@@ -6,6 +6,7 @@ using HospitalApi.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HospitalApi.Controllers
 {
@@ -22,6 +23,7 @@ namespace HospitalApi.Controllers
             _mapper = mapper;
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpGet]
         public IActionResult GetHospitalShifts()
         {
@@ -29,7 +31,7 @@ namespace HospitalApi.Controllers
             return Ok(
             shiftRepo.GetAll());
         }
-
+        [Authorize(Roles = "Manager")]
         [HttpPost]
         public IActionResult InsertShift(ShiftDTO shiftDTO)
         {
@@ -56,7 +58,7 @@ namespace HospitalApi.Controllers
             }
 
         }
-
+        [Authorize(Roles = "Manager")]
         [HttpPut]
         public IActionResult UpdateShift([FromQuery(Name = "id")] int id, [FromQuery(Name = "from")] int from, [FromQuery(Name = "to")] int to)
         {
@@ -86,7 +88,7 @@ namespace HospitalApi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error updating data in database!");
             }
         }
-
+        [Authorize(Roles = "Manager")]
         [HttpDelete]
         public IActionResult DeleteShift([FromQuery(Name = "id")] int id) {
 

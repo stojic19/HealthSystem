@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 import { Shift } from '../model/shift.model';
 import { ShiftService } from '../services/shift.service';
 
@@ -12,7 +13,9 @@ export class HospitalShiftsComponent implements OnInit {
 
   isLoading = true;
   public shifts: Shift[];
-  constructor(private router: Router, private service : ShiftService) { }
+  isProd: boolean = environment.production;
+
+  constructor(private router: Router, private service: ShiftService) { }
 
   ngOnInit(): void {
     this.service.getHospitalShifts().toPromise().then(res => this.shifts = res as Shift[]);
@@ -20,19 +23,21 @@ export class HospitalShiftsComponent implements OnInit {
   }
 
   createNewShift() {
-    this.router.navigate(['/createNewShift']);
+
+    this.router.navigate([this.isProd ? '/manager/createNewShift' : '/createNewShift']);
   }
 
   updateShift(shiftId: number) {
-    this.router.navigate(['/updateShift', shiftId]);
+    this.router.navigate([this.isProd ? '/manager/updateShift' : '/updateShift', shiftId]);
   }
 
-  goBack(){
-    this.router.navigate(['/hospitalShifts'])
+  goBack() {
+    this.service.getHospitalShifts().toPromise().then(res => this.shifts = res as Shift[]);
+    this.router.navigate([this.isProd ? '/manager/hospitalShifts' : '/hospitalShifts']);
   }
 
-  deleteShift() {
-    console.log("Deleted");
+  deleteShift(shiftId: number) {
+    this.service.deleteShift(shiftId);
   }
 
 }

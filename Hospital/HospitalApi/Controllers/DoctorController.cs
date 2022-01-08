@@ -9,6 +9,7 @@ using HospitalApi.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HospitalApi.Controllers
 {
@@ -70,7 +71,7 @@ namespace HospitalApi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error! Failed loading doctors!");
             }
         }
-
+        [Authorize(Roles = "Manager")]
         [HttpPut]
         public IActionResult AddOrUpdateDoctorShift(DoctorShiftDTO doctorShiftDTO)
         {
@@ -90,7 +91,7 @@ namespace HospitalApi.Controllers
                 {
                     return StatusCode(StatusCodes.Status500InternalServerError, "Could not find doctor in the database.");
                 }
-                doctor.ShiftId = doctorShiftDTO.ShiftId;
+                doctor.Shift = doctorShiftDTO.Shift;
 
                 Doctor updatedDoctor = doctorWriteRepo.Update(doctor);
 
@@ -116,6 +117,7 @@ namespace HospitalApi.Controllers
             return doctorRepo.AddRange(doctors);
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpGet]
 
         public IActionResult GetDoctorsWithShift() {

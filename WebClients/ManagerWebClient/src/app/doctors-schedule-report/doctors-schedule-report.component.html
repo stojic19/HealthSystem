@@ -3,22 +3,27 @@
     <div class="col-md-3" style="text-align: start">
       <mat-form-field class="mt-0" style="font-size: 1rem">
         <mat-label>Doctor</mat-label>
-        <mat-select>
-          <mat-option>doctor</mat-option>
+        <mat-select (selectionChange)="changeDoctor($event.value)">
+          <mat-option *ngFor="let doctor of doctors" [value]="doctor.id">
+            {{ doctor.firstName
+            }}<span class="ms-1">{{ doctor.lastName }}</span>
+          </mat-option>
         </mat-select>
       </mat-form-field>
     </div>
     <div class="col-md-3" style="text-align: start">
       <mat-form-field>
         <mat-label>Month and Year</mat-label>
-        <input matInput [matDatepicker]="dp" />
-        <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
-        <mat-datepicker
-          #dp
-          startView="multi-year"
-          panelClass="example-month-picker"
-        >
-        </mat-datepicker>
+        <input
+          matInput
+          type="month"
+          id="start"
+          name="start"
+          min="2017-01"
+          value="2022-01"
+          [(ngModel)]="chosenDate"
+          (input)="getDoctorsReport()"
+        />
       </mat-form-field>
     </div>
     <div class="col-md-6"></div>

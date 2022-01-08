@@ -5,7 +5,7 @@
     </h4>
   </div>
 
-  <div class="col-8">
+  <div class="col-10">
     <div
       style="height: 515px; overflow: auto"
       id="table"
@@ -42,7 +42,17 @@
                 }}
               </span>
             </td>
-            <td>25.06.2022. - 30.06.2022.</td>
+            <td>
+              <div *ngFor="let vacation of doctor.vacations" class="mb-1">
+                <span *ngIf="vacation.type === 0"> Sick Leave: </span>
+                <span *ngIf="vacation.type === 1"> Vacation: </span>
+                <span>
+                  {{ vacation.startDate | date: "dd.MM.yyyy" }}
+                </span>
+                <span class="mx-1">-</span
+                >{{ vacation.endDate | date: "dd.MM.yyyy" }}
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>

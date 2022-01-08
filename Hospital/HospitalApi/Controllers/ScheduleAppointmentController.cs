@@ -38,6 +38,8 @@ namespace HospitalApi.Controllers
             _mapper = mapper;
             _scheduleAppointmentService = scheduleAppointmentService;
         }
+
+        [Authorize(Roles = "Patient")]
         [HttpGet]
         public IActionResult GetRecommendedAppointments([FromQuery(Name = "doctorId")] int doctorId, string dateStart, string dateEnd, bool isDoctorPriority)
         {
@@ -72,11 +74,11 @@ namespace HospitalApi.Controllers
         }
 
         [Authorize(Roles = "Patient")]
-        [HttpPost]
-        public IActionResult ScheduleRecommendedAppointment([FromBody] RecommendedAppointmentDTO newAppointment)
+        [HttpPost("{userName}")]
+        public IActionResult ScheduleRecommendedAppointment([FromBody] RecommendedAppointmentDTO newAppointment,string userName)
         {
             var appointmentToCreate = _mapper.Map<ScheduledEvent>(newAppointment);
-            appointmentToCreate.ScheduleEventForPatient(_uow.GetRepository<IPatientReadRepository>().GetByUsername("jradman123"));
+            appointmentToCreate.ScheduleEventForPatient(_uow.GetRepository<IPatientReadRepository>().GetByUsername(userName));
             appointmentToCreate.ScheduleEventRoom(_uow.GetRepository<IDoctorReadRepository>().GetDoctor(newAppointment.DoctorId).Room);
             var scheduledEvent = _uow.GetRepository<IScheduledEventWriteRepository>().Add(appointmentToCreate);
             return scheduledEvent != null ? Ok(scheduledEvent) : StatusCode(StatusCodes.Status500InternalServerError, "Internal server error!");

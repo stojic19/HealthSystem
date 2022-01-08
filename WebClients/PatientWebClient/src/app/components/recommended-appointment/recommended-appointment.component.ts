@@ -34,7 +34,7 @@ export class RecommendedAppointmentComponent implements OnInit {
   newAppointment : IRecommendedAppointment;
   firstFormGroup!: FormGroup;
   todayDate:Date = new Date();
-  userName!: ICurrentUser;
+  user!: ICurrentUser;
 
   constructor(private _formBuilder: FormBuilder,
     private doctorService: DoctorService,
@@ -50,7 +50,7 @@ export class RecommendedAppointmentComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userName = JSON.parse(localStorage.getItem('currentUser')!);
+    this.user = JSON.parse(localStorage.getItem('currentUser')!);
     this.range = this._formBuilder.group({
       start: ['',Validators.required],
       end: ['', Validators.required]
@@ -117,7 +117,7 @@ export class RecommendedAppointmentComponent implements OnInit {
   }
 
   createAppointment() {
-    this.availableAppointmentService.createNewAppointment(this.newAppointment).subscribe(
+    this.availableAppointmentService.createNewAppointment(this.newAppointment,this.user.userName).subscribe(
       (res) => {
         this.router.navigate(['/record']);
         this._snackBar.open(

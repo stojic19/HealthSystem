@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Hospital.SharedModel.Model;
 using Hospital.SharedModel.Repository;
 using Hospital.SharedModel.Repository.Base;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HospitalApi.Controllers
 {
@@ -42,7 +45,8 @@ namespace HospitalApi.Controllers
         {
             try
             {
-                var doctors = _uow.GetRepository<IDoctorReadRepository>().GetAllDoctorsWithSpecialization();
+                var doctors = _uow.GetRepository<IDoctorReadRepository>()
+                    .GetAllDoctorsWithSpecialization();
                 return Ok(doctors);
 
             }
@@ -51,6 +55,7 @@ namespace HospitalApi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error!Failed loading doctors!");
             }
         }
+
         [HttpGet]
         public IActionResult GetDoctorsWithSpecialization([FromQuery(Name = "specializationId")] int specializationId)
         {
@@ -64,6 +69,24 @@ namespace HospitalApi.Controllers
             catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error! Failed loading doctors!");
+            }
+        }
+
+        [HttpGet]
+        public IActionResult GetAllDoctorsWithShifts()
+        {
+            try
+            {
+                var doctors = _uow.GetRepository<IDoctorReadRepository>()
+                    .GetAll()
+                    .Include(d => d.Specialization)
+                    .Include(d => d.Shift)
+                    .Include(d => d.OnCallDuties);
+                return Ok(doctors);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error!Failed loading doctors!");
             }
         }
     }

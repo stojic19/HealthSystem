@@ -1,0 +1,58 @@
+<div class="row mb-3 mt-1 d-flex justify-content-center">
+  <div style="width: 80%; margin: auto">
+    <h4 class="mb-4 title" style="text-align: center">
+      DOCTORS <span class="ms-4">S C H E D U L E</span>
+    </h4>
+  </div>
+
+  <div class="col-8">
+    <div
+      style="height: 515px; overflow: auto"
+      id="table"
+      class="table-responsive custom-table-responsive"
+    >
+      <table
+        *ngIf="!isLoading"
+        class="table table-hover justify-content-center equipmentTable equipmentTable"
+      >
+        <thead>
+          <tr>
+            <th>Doctor</th>
+            <th>Working hours</th>
+            <th>Planned on-call shift</th>
+            <th>Planned vacation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let doctor of doctors">
+            <td>{{ doctor.firstName }} {{ doctor.lastName }}</td>
+            <td>
+              {{ doctor.shift.from }}<span>:00</span> - {{ doctor.shift.to
+              }}<span>:00</span>
+            </td>
+            <td>
+              <span *ngFor="let duty of doctor.onCallDuties">
+                {{
+                  getStartOfDuty(duty.week, 2022, duty.month)
+                    | date: "dd.MM.yyyy"
+                }}
+                <span class="mx-1"> - </span>
+                {{
+                  getEndOfDuty(duty.week, 2022, duty.month) | date: "dd.MM.yyyy"
+                }}
+              </span>
+            </td>
+            <td>25.06.2022. - 30.06.2022.</td>
+          </tr>
+        </tbody>
+      </table>
+      <mat-card
+        *ngIf="isLoading"
+        style="display: flex; justify-content: center; align-items: center"
+      >
+        <mat-progress-spinner color="primary" mode="indeterminate">
+        </mat-progress-spinner>
+      </mat-card>
+    </div>
+  </div>
+</div>

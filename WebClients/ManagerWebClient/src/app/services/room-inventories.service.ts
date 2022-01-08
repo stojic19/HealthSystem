@@ -10,7 +10,7 @@ import { map } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class RoomInventoriesService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getRoomInventory(roomId: number) {
     return this.http.get(

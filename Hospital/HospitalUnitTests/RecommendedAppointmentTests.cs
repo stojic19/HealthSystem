@@ -8,104 +8,60 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Hospital.RoomsAndEquipment.Model;
+using Hospital.Schedule.Service.Interfaces;
+using Hospital.SharedModel.Model.Enumerations;
+using Hospital.SharedModel.Model.Wrappers;
 using Xunit;
 
 namespace HospitalUnitTests
 {
     public class RecommendedAppointmentTests : BaseTest
     {
+        
         public RecommendedAppointmentTests(BaseFixture fixture) : base(fixture)
         {
         }
 
-        //[Fact]
-        //public void Available_appointments_should_not_be_zero()
-        //{
-        //    ClearDbContext();
-        //    Context.Specializations.Add(new Specialization
-        //    {
-        //        Id = 1,
-        //        Name = "GP"
-        //    });
-        //    Context.Doctors.Add(new Doctor
-        //    {
-        //        SpecializationId = 1,
-        //        Id = 1,
-        //        FirstName = "Marija",
-        //        LastName = "Savic",
-        //        UserName = "marija123"
-        //    });
-        //    Context.Doctors.Add(new Doctor
-        //    {
-        //        SpecializationId = 1,
-        //        Id = 2,
-        //        FirstName = "Sanja",
-        //        LastName = "Miranic"
-        //    });
-        //    Context.ScheduledEvents.Add(new ScheduledEvent
-        //    {
-        //        StartDate = new DateTime(2023, 12, 16, 13, 00, 00),
-        //        EndDate = new DateTime(2023, 12, 16, 14, 00, 00),
-        //        DoctorId = 1
+        [Fact]
+        public void Available_appointments_should_not_be_zero() 
+        {
+            ClearDbContext();
+            Context.Rooms.Add(new Room{Id = 1, Name = "Ordination"});
+            Context.Shifts.Add(new Shift(3, "first", 7, 15));
+            var firstDoctor = new Doctor(1, 3, new Specialization("General Practice", ""));
+            Context.Doctors.Add(firstDoctor);
+            var secondDoctor = new Doctor(2, 3, new Specialization("General Practice", ""));
+            Context.Doctors.Add(secondDoctor);
+            Context.SaveChanges();
 
-        //    });
+            var service = new ScheduleAppointmentService(UoW);
+            var appointments = service.GetAvailableAppointmentsForDoctorAndDateRange(1, new TimePeriod(new DateTime(2023, 12, 16, 9, 0, 0), new DateTime(2023, 12, 17, 17, 0, 0))).ToList();
 
-        //    Context.ScheduledEvents.Add(new ScheduledEvent
-        //    {
-        //        StartDate = new DateTime(2023, 12, 16, 15, 00, 00),
-        //        EndDate = new DateTime(2023, 12, 16, 16, 00, 00),
-        //        DoctorId = 1
+            appointments.Count.ShouldNotBe(0);
+            appointments[0].Doctor.Id.ShouldBe(1);
+        }
 
-        //    });
+        [Fact]
+        public void Should_be_eight_available_appointments()
+        {
+            ClearDbContext();
+            Context.Rooms.Add(new Room { Id = 1, Name = "Ordination" });
+            Context.Shifts.Add(new Shift(3, "second", 13, 17));
+            var firstDoctor = new Doctor(1, 3, new Specialization("General Practice", ""));
+            Context.Doctors.Add(firstDoctor);
+            Context.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment,false,false, new DateTime(2023, 12, 16, 13, 00, 00),
+                new DateTime(2023, 12, 16, 14, 00, 00),new DateTime(),0,1,firstDoctor));
+            Context.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, false, false, new DateTime(2023, 12, 17, 15, 00, 00),
+                new DateTime(2023, 12, 17, 16, 00, 00), new DateTime(), 0, 1, firstDoctor));
+            Context.SaveChanges();
 
-        //    Context.SaveChanges();
-        //    var service = new RecommendedAppointmentService(UoW, Context);
-        //    var appointments = service.GetAvailableAppointmentsForDoctorAndDateRange(1, new DateTime(2023, 12, 16, 9, 0, 0), new DateTime(2023, 12, 17, 17, 0, 0)).ToList();
+            var service = new ScheduleAppointmentService(UoW);
+            var appointments = service.GetAvailableAppointmentsForDoctorAndDateRange(1, new TimePeriod(new DateTime(2023, 12, 16, 13, 0, 0), new DateTime(2023, 12, 16, 17, 0, 0))).ToList();
 
-        //    appointments.Count.ShouldNotBe(0);
+            appointments.Count.ShouldBe(8);
 
-        //}
-
-        //[Fact]
-        //public void Should_be_four_available_appointments()
-        //{
-        //    ClearDbContext();
-        //    Context.Specializations.Add(new Specialization
-        //    {
-        //        Id = 1,
-        //        Name = "GP"
-        //    });
-        //    Context.Doctors.Add(new Doctor
-        //    {
-        //        SpecializationId = 1,
-        //        Id = 1,
-        //        FirstName = "Marija",
-        //        LastName = "Savic",
-        //        UserName = "marija123"
-        //    });
-        //    Context.ScheduledEvents.Add(new ScheduledEvent
-        //    {
-        //        StartDate = new DateTime(2023, 12, 16, 13, 00, 00),
-        //        EndDate = new DateTime(2023, 12, 16, 14, 00, 00),
-        //        DoctorId = 1
-
-        //    });
-
-        //    Context.ScheduledEvents.Add(new ScheduledEvent
-        //    {
-        //        StartDate = new DateTime(2023, 12, 17, 15, 00, 00),
-        //        EndDate = new DateTime(2023, 12, 17, 16, 00, 00),
-        //        DoctorId = 1
-
-        //    });
-
-        //    Context.SaveChanges();
-        //    var service = new RecommendedAppointmentService(UoW, Context);
-        //    var appointments = service.GetAvailableAppointmentsForDoctorAndDateRange(1, new DateTime(2023, 12, 16, 13, 0, 0), new DateTime(2023, 12, 16, 17, 0, 0)).ToList();
-
-        //    appointments.Count.ShouldBe(4);
-
-        //}
+        }
 
 
         //[Fact]

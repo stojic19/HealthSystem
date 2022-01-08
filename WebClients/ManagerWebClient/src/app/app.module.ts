@@ -72,6 +72,7 @@ import { SecondRoomInfoComponent } from './renovation-form/second-room-info/seco
 import { AvailableTermsComponent } from './renovation-form/available-terms/available-terms.component';
 import { LoginComponent } from './components/login/login.component';
 import { JwtInterceptor } from './JWTInterceptor/JwtInterceptor';
+import { OnCallShiftsComponent } from './on-call-shifts/on-call-shifts.component';
 
 @NgModule({
   declarations: [
@@ -128,6 +129,7 @@ import { JwtInterceptor } from './JWTInterceptor/JwtInterceptor';
     SecondRoomInfoComponent,
     AvailableTermsComponent,
     LoginComponent,
+    OnCallShiftsComponent,
 
   ],
   imports: [

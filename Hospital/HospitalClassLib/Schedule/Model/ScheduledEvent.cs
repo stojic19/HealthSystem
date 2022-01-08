@@ -33,6 +33,7 @@ namespace Hospital.Schedule.Model
             PatientId = patientId;
             DoctorId = doctorId;
             Room = doctor.Room;
+            RoomId = doctor.Room.Id;
             //TODO: add validate method
         }
 

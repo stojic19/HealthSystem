@@ -121,7 +121,7 @@ export class RecommendedAppointmentComponent implements OnInit {
       (res) => {
         this.router.navigate(['/record']);
         this._snackBar.open(
-          'Scheduling was successful.',
+          'Appointment successfully scheduled!',
           'Dismiss'
         );
       },

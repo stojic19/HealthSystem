@@ -116,4 +116,8 @@ export class PatientMedicalRecordComponent implements OnInit {
   scheduleBasic() {
     this.isVisible = true;
   }
+
+  scheduleRecommended() {
+    this._router.navigate(['/recommendedAppointments']);
+  }
 }

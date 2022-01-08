@@ -352,9 +352,15 @@
   </mat-card>
   <hr />
   <br />
+  <div class="button-row">
   <button class="btn btn-primary btn-md" (click)="scheduleBasic()">
     Schedule an appointment
   </button>
+  <div class="divider"></div>
+  <button class="btn btn-primary btn-md" (click)="scheduleRecommended()">
+    Schedule with priority
+  </button>
+  </div>
 
   <div *ngIf="isVisible">
     <app-basic-appointment></app-basic-appointment>

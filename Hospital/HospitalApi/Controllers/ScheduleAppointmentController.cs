@@ -29,14 +29,12 @@ namespace HospitalApi.Controllers
       
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _uow;
-        private readonly AppDbContext _context;
         private readonly IScheduleAppointmentService _scheduleAppointmentService;
 
-        public ScheduleAppointmentController(IUnitOfWork uow, IMapper mapper, AppDbContext context, IScheduleAppointmentService scheduleAppointmentService)
+        public ScheduleAppointmentController(IUnitOfWork uow, IMapper mapper, IScheduleAppointmentService scheduleAppointmentService)
         {
             _uow = uow;
             _mapper = mapper;
-            _context = context;
             _scheduleAppointmentService = scheduleAppointmentService;
         }
         [HttpGet]
@@ -44,19 +42,18 @@ namespace HospitalApi.Controllers
         {
             DateTime startDate = DateTime.ParseExact(dateStart, "M/d/yyyy", CultureInfo.InvariantCulture);
             DateTime endDate = DateTime.ParseExact(dateEnd, "M/d/yyyy", CultureInfo.InvariantCulture);
-            RecommendedAppointmentService service = new(_uow, _context);
-            var availableAppointments = service.GetAvailableAppointmentsForDoctorAndDateRange(doctorId, startDate, endDate);
+            var availableAppointments = _scheduleAppointmentService.GetAvailableAppointmentsForDoctorAndDateRange(doctorId, startDate, endDate);
             var retVal = new List<AvailableAppointmentDTO>();
             if (availableAppointments.ToList().Count == 0)
             {
                 if (isDoctorPriority)
                 {
-                    ConvertToDtoList(service.GetAvailableAppointmentsForDoctorPriority(doctorId, startDate, endDate), retVal);
+                    ConvertToDtoList(_scheduleAppointmentService.GetAvailableAppointmentsForDoctorPriority(doctorId, startDate, endDate), retVal);
                     return Ok(retVal);
                 }
                 else
                 {
-                    ConvertToDtoList(service.GetAvailableAppointmentsForDatePriority(doctorId, startDate, endDate), retVal);
+                    ConvertToDtoList(_scheduleAppointmentService.GetAvailableAppointmentsForDatePriority(doctorId, startDate, endDate), retVal);
                     return Ok(retVal);
                 }
             }
@@ -73,11 +70,11 @@ namespace HospitalApi.Controllers
         }
 
         [Authorize(Roles = "Patient")]
-        [HttpPost("{userName}")]
-        public IActionResult ScheduleRecommendedAppointment([FromBody] RecommendedAppointmentDTO newAppointment,string userName)
+        [HttpPost]
+        public IActionResult ScheduleRecommendedAppointment([FromBody] RecommendedAppointmentDTO newAppointment)
         {
             var appointmentToCreate = _mapper.Map<ScheduledEvent>(newAppointment);
-            appointmentToCreate.ScheduleEventForPatient(_uow.GetRepository<IPatientReadRepository>().GetByUsername(userName));
+            appointmentToCreate.ScheduleEventForPatient(_uow.GetRepository<IPatientReadRepository>().GetByUsername("jradman123"));
             appointmentToCreate.ScheduleEventRoom(_uow.GetRepository<IDoctorReadRepository>().GetDoctor(newAppointment.DoctorId).Room);
             var scheduledEvent = _uow.GetRepository<IScheduledEventWriteRepository>().Add(appointmentToCreate);
             return scheduledEvent != null ? Ok(scheduledEvent) : StatusCode(StatusCodes.Status500InternalServerError, "Internal server error!");

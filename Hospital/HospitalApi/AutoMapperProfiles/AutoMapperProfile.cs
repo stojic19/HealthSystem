@@ -16,7 +16,7 @@ namespace HospitalApi.AutoMapperProfiles
         {
 
             CreateMap<RecommendedAppointmentDTO, ScheduledEvent>()
-                .ForMember(toSchedule => toSchedule.EndDate, opt => opt.MapFrom(src => src.StartDate.AddHours(1)))
+                .ForMember(toSchedule => toSchedule.EndDate, opt => opt.MapFrom(src => src.StartDate.AddMinutes(30)))
                 .ForMember(toSchedule => toSchedule.IsCanceled, opt => opt.MapFrom(src => false))
                 .ForMember(toSchedule => toSchedule.IsDone, opt => opt.MapFrom(src => false))
                 .ForMember(toSchedule => toSchedule.ScheduledEventType,

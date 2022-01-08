@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Hospital.SharedModel.Model;
 using Hospital.SharedModel.Repository;
 using Hospital.SharedModel.Repository.Base;
+using HospitalApi.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HospitalApi.Controllers
 {
@@ -66,5 +70,59 @@ namespace HospitalApi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error! Failed loading doctors!");
             }
         }
+
+        [HttpPut]
+        public IActionResult AddOrUpdateDoctorShift(DoctorShiftDTO doctorShiftDTO)
+        {
+            try
+            {
+                if (doctorShiftDTO == null)
+                {
+                    return BadRequest("Incorrect doctor format sent! Please try again.");
+                }
+
+                var doctorReadRepo = _uow.GetRepository<IDoctorReadRepository>();
+                var doctorWriteRepo = _uow.GetRepository<IDoctorWriteRepository>();
+                var doctor = doctorReadRepo.GetById(doctorShiftDTO.Id);
+
+
+                if (doctor == null)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Could not find doctor in the database.");
+                }
+                doctor.ShiftId = doctorShiftDTO.ShiftId;
+
+                Doctor updatedDoctor = doctorWriteRepo.Update(doctor);
+
+                if (updatedDoctor == null)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Couldn't update doctor!");
+                }
+
+                return Ok(updatedDoctor);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error updating data in database!");
+            }
+
+        }
+
+        
+        [HttpPost]
+        public IEnumerable<Doctor> AddDoctors(IEnumerable<Doctor> doctors)
+        {
+            var doctorRepo = _uow.GetRepository<IDoctorWriteRepository>();
+            return doctorRepo.AddRange(doctors);
+        }
+
+        [HttpGet]
+
+        public IActionResult GetDoctorsWithShift() {
+
+            var doctorRepo = _uow.GetRepository<IDoctorReadRepository>();
+            return Ok(doctorRepo.GetAll().Include(d => d.Shift));
+        }
+
     }
 }

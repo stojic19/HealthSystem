@@ -52,6 +52,14 @@
             <a class="nav-link" routerLink="/manager/surveys" *ngIf="isProd">Surveys</a>
         </li>
         <li class="nav-item active">
+          <a class="nav-link" routerLink="/doctorShifts" *ngIf="!isProd">Doctor Shifts</a> 
+          <a class="nav-link" routerLink="/manager/doctorShifts" *ngIf="isProd">Doctor Shifts</a> 
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" routerLink="/hospitalShifts" *ngIf="!isProd">Shifts</a> 
+          <a class="nav-link" routerLink="/manager/hospitalShifts" *ngIf="isProd">Shifts</a> 
+        </li>
+        <li class="nav-item active">
           <a class="nav-link" routerLink="/blocking" >Blocking</a>
       </li>
       </ul>

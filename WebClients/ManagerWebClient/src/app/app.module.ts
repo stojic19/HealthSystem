@@ -73,6 +73,10 @@ import { AvailableTermsComponent } from './renovation-form/available-terms/avail
 import { AddTenderComponent } from './tendering/add-tender/add-tender.component';
 import { LoginComponent } from './components/login/login.component';
 import { JwtInterceptor } from './JWTInterceptor/JwtInterceptor';
+import { HospitalShiftsComponent } from './hospital-shifts/hospital-shifts.component';
+import { CreateShiftComponent } from './create-shift/create-shift.component';
+import { UpdateShiftComponent } from './update-shift/update-shift.component';
+import { DoctorShiftComponent } from './doctor-shift/doctor-shift.component';
 
 @NgModule({
   declarations: [
@@ -130,6 +134,12 @@ import { JwtInterceptor } from './JWTInterceptor/JwtInterceptor';
     AvailableTermsComponent,
     AddTenderComponent,
     LoginComponent,
+    HospitalShiftsComponent,
+    CreateShiftComponent,
+    UpdateShiftComponent,
+    DoctorShiftComponent,
+
+
   ],
   imports: [
     BrowserModule,

@@ -23,7 +23,7 @@ namespace Hospital.SharedModel.Repository.Implementation
 
             var query = medRecords
                 .GroupBy(t => new { Doctor = t.DoctorId })
-                .Select(g => new { Count = g.Count(p => p.Id > 0), Doctor = g.Key.Doctor });
+                .Select(g => new { Count = g.Count(p => p.Id > 0), g.Key.Doctor });
 
             var min = medRecords
                 .GroupBy(t => t.DoctorId)

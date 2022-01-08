@@ -16,5 +16,15 @@ namespace Hospital.SharedModel.Model
         public int ShiftId { get; set; }
         public Shift Shift { get; set; }
 
+        public Doctor()
+        {
+        }
+
+        public Doctor(int id, int shiftId, Specialization specialization)
+        {
+            Id = id;
+            ShiftId = shiftId;
+            Specialization = specialization;
+        }
     }
 }

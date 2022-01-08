@@ -22,8 +22,9 @@ namespace Hospital.MedicalRecords.Model
         public Doctor Doctor { get; private set; }
         public IEnumerable<Allergy> Allergies { get; private set; }
 
-        public MedicalRecord( Measurements measurements, BloodType bloodType, JobStatus jobStatus, int doctorId, IEnumerable<Allergy> allergies)
+        public MedicalRecord(int id, Measurements measurements, BloodType bloodType, JobStatus jobStatus, int doctorId, IEnumerable<Allergy> allergies)
         {
+            Id = id;
             Measurements = measurements;
             BloodType = bloodType;
             JobStatus = jobStatus;
@@ -35,6 +36,7 @@ namespace Hospital.MedicalRecords.Model
         public MedicalRecord()
         {
         }
+
 
         private void Validate()
         {

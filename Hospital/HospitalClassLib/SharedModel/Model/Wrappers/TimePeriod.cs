@@ -95,7 +95,7 @@ namespace Hospital.SharedModel.Model.Wrappers
         public IEnumerable<TimePeriod> SlotsWithDuration(double duration)
         {
             var periods = new List<TimePeriod>();
-            for (var date = StartTime; date <= EndTime; date = date.AddHours(duration))
+            for (var date = StartTime; date < EndTime; date = date.AddHours(duration))
             {
                 periods.Add(new TimePeriod(date, date.AddHours(duration)));
             }

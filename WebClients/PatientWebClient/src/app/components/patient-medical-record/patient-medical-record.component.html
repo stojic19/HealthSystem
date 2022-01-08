@@ -128,7 +128,7 @@
               <img src="../../../assets/images/appointment.png" />
             </div>
             <div class="col-9">
-              <table mat-table [dataSource]="futureAppointments" class="mat-elevation-z8">
+              <table mat-table [dataSource]="futureAppointments" id="futureAppointmentsMatTab" class="mat-elevation-z8">
                 <ng-container matColumnDef="No.">
                   <th mat-header-cell *matHeaderCellDef>No.</th>
                   <td mat-cell *matCellDef="let element; let i = index">{{i + 1}}</td>
@@ -169,6 +169,7 @@
                   <th mat-header-cell *matHeaderCellDef>Cancel</th>
                   <td mat-cell *matCellDef="let element; let i = index">
                     <button
+                    id={{i+1}}b
                     type="button"
                     class="btn btn-primary"
                     (click)="cancelAppointment(this.element.id)"> Cancel  </button>

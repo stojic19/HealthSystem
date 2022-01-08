@@ -15,6 +15,7 @@ namespace HospitalIntegrationTests.Base
         protected BaseTest(BaseFixture fixture)
         {
             _fixture = fixture;
+            
         }
 
         public IUnitOfWork UoW => _fixture.UoW;

@@ -22,8 +22,9 @@ namespace HospitalApi.Controllers
             this._eventsService = eventsService;
             this._mapper = mapper;
         }
-        [Authorize(Roles = "Patient")]
+        //[Authorize(Roles = "Patient")]
         [HttpGet("{userName}")]
+       
         public IActionResult GetFinishedUserEvents(string userName)
         {
             var eventsDTOs = _eventsService.GetFinishedUserEvents(userName).Select(e =>
@@ -31,7 +32,8 @@ namespace HospitalApi.Controllers
 
             return Ok(eventsDTOs);
         }
-        [Authorize(Roles = "Patient")]
+        
+        [Authorize(Roles = "Patient",Policy = "Privileged")]
         [HttpGet("{userName}")]
         public IActionResult GetEventsForSurvey(string userName)
         {
@@ -43,6 +45,7 @@ namespace HospitalApi.Controllers
 
         [Authorize(Roles = "Patient")]
         [HttpGet("{eventId}")]
+        //[Authorize(Policy = "Patient")]
         public IActionResult GetScheduledEvent(int eventId)
         {
             var eventsDTOs = _mapper.Map<ScheduledEventsDTO>(_eventsService.GetScheduledEvent(eventId));

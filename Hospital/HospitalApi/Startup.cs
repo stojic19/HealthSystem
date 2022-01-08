@@ -90,6 +90,9 @@ namespace HospitalApi
                 }).AddRoles<IdentityRole<int>>()
                 .AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
+
+
+
             services.AddAuthentication(cfg =>
             {
                 cfg.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -106,6 +109,17 @@ namespace HospitalApi
                     ValidateAudience = false,
                 };
             });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Privileged", policy => policy
+                    .AddAuthenticationSchemes(IdentityConstants.ApplicationScheme)
+                    .RequireRole("CustomRoleType", "God", "Angel", "Patient")
+                    .RequireAuthenticatedUser());          
+            });
+
+
+
             services.AddHostedService<ConsumeScopedServiceHostedService>();
             services.AddScoped<IPatientSurveyService, PatientSurveyService>();
             services.AddScoped<IScheduledEventService, ScheduledEventService>();

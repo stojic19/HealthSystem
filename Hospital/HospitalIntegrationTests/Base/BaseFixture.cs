@@ -2,6 +2,13 @@
 using Hospital.Database.Infrastructure;
 using Hospital.SharedModel.Repository.Base;
 using Hospital.SharedModel.Repository.Implementation;
+using HospitalApi;
+using HospitalIntegrationTests.Authentication;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
+using System.Security.Claims;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -10,7 +17,7 @@ using System.Reflection;
 
 namespace HospitalIntegrationTests.Base
 {
-    public class BaseFixture : IDisposable
+    public class BaseFixture : WebApplicationFactory<Startup>, IDisposable 
     {
         private IContainer container { get; set; }
         public IUnitOfWork UoW { get; set; }
@@ -24,6 +31,18 @@ namespace HospitalIntegrationTests.Base
             ConfigureHttpClient();
         }
 
+        public WebApplicationFactory<Startup> AuthenticatedInstance(params Claim[] claimSeed)
+        {
+            return WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureTestServices(services =>
+                {
+                    services.AddSingleton<IAuthenticationSchemeProvider, MockSchemeProvider>();
+                    services.AddSingleton<MockClaimSeed>(_ => new(claimSeed));
+                });
+            });
+        }
+
         private void ConfigureHttpClient()
         {
             CookieContainer = new CookieContainer();
@@ -31,6 +50,7 @@ namespace HospitalIntegrationTests.Base
             {
                 CookieContainer = CookieContainer
             };
+           
             Client = new HttpClient(handler);
         }
 

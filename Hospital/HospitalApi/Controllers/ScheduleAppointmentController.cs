@@ -17,6 +17,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Hospital.Schedule.Model.Wrappers;
+using Hospital.Schedule.Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 
 namespace HospitalApi.Controllers
@@ -29,12 +30,14 @@ namespace HospitalApi.Controllers
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _uow;
         private readonly AppDbContext _context;
+        private readonly IScheduleAppointmentService _scheduleAppointmentService;
 
-        public ScheduleAppointmentController(IUnitOfWork uow,IMapper mapper,AppDbContext context)
+        public ScheduleAppointmentController(IUnitOfWork uow, IMapper mapper, AppDbContext context, IScheduleAppointmentService scheduleAppointmentService)
         {
             _uow = uow;
             _mapper = mapper;
             _context = context;
+            _scheduleAppointmentService = scheduleAppointmentService;
         }
         [HttpGet]
         public IActionResult GetRecommendedAppointments([FromQuery(Name = "doctorId")] int doctorId, string dateStart, string dateEnd, bool isDoctorPriority)
@@ -83,6 +86,7 @@ namespace HospitalApi.Controllers
 
         }
 
+        [Authorize(Roles = "Patient")]
         [HttpPost]
         public IActionResult ScheduleAppointment(ScheduleAppointmentDTO scheduleAppointmentDTO)
         {
@@ -94,6 +98,15 @@ namespace HospitalApi.Controllers
 
             return addedAppointment == null ? StatusCode(StatusCodes.Status500InternalServerError,
                 "Could not schedule appointment. Please try again.") : Ok(addedAppointment);
+        }
+
+        [Authorize(Roles = "Patient")]
+        [HttpGet]
+        public IActionResult GetAvailableAppointments([FromQuery(Name = "doctorId")] int doctorId, string preferredDate)
+        {
+            var preferredDateTime = DateTime.Parse(preferredDate);
+            var availableTerms = _scheduleAppointmentService.GetAvailableTermsForDoctorAndDate(doctorId, preferredDateTime);
+            return Ok(availableTerms);
         }
     }
 }

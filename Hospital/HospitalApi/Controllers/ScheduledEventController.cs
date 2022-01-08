@@ -69,14 +69,5 @@ namespace HospitalApi.Controllers
 
             return Ok(eventsDTOs);
         }
-
-        [Authorize(Roles = "Patient")]
-        [HttpGet]
-        public IActionResult GetAvailableAppointments([FromQuery(Name = "doctorId")] int doctorId, string preferredDate)
-        {
-            var preferredDateTime = DateTime.Parse(preferredDate);
-            var scheduledEvents = _eventsService.GetAvailableAppointments(doctorId, preferredDateTime);
-            return Ok(scheduledEvents);
-        }
     }
 }

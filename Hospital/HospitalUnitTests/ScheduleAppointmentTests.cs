@@ -132,7 +132,7 @@ namespace HospitalUnitTests
                 .FirstOrDefault(s => s.Specialization.Name.ToLower().Equals("general practice"));
 
             var service = new ScheduledEventService(UoW);
-            var scheduledEvents = service.GetAvailableAppointments(doctor.Id, preferredDate).ToList();
+            var scheduledEvents = service.GetAvailableTermsForDoctorAndDate(doctor.Id, preferredDate).ToList();
 
             scheduledEvents.ShouldNotBeNull();
             scheduledEvents.Count().ShouldBe(16);
@@ -163,7 +163,7 @@ namespace HospitalUnitTests
                 .FirstOrDefault(s => s.Specialization.Name.ToLower().Equals("general practice"));
 
             var service = new ScheduledEventService(UoW);
-            var scheduledEvents = service.GetAvailableAppointments(doctor.Id, preferredDate);
+            var scheduledEvents = service.GetAvailableTermsForDoctorAndDate(doctor.Id, preferredDate);
 
             scheduledEvents.ShouldBeEmpty();
             scheduledEvents.Count().ShouldBe(0);

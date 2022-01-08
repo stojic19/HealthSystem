@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Hospital.Database.EfStructures;
 using Hospital.MedicalRecords.Model;
@@ -57,6 +58,12 @@ namespace Hospital.SharedModel.Repository.Implementation
         public IEnumerable<Specialization> GetAllSpecializations()
         {
             return GetAll().Select(doctor => doctor.Specialization).AsNoTracking().Distinct();
+        }
+        public bool IsDoctorAvailableInTerm(int doctorId, DateTime date)
+        {
+            var scheduledEvents = GetAll().Where(d => d.Id == doctorId).Include(d => d.ScheduledEvents).First()
+                .ScheduledEvents;
+            return scheduledEvents.All(se => DateTime.Compare(se.StartDate, date) != 0 || se.IsCanceled);
         }
     }
 }

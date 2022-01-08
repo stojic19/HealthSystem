@@ -92,5 +92,16 @@ namespace Hospital.SharedModel.Model.Wrappers
             return possibleTerms;
         }
 
+        public IEnumerable<TimePeriod> SlotsWithDuration(double duration)
+        {
+            var periods = new List<TimePeriod>();
+            for (var date = StartTime; date <= EndTime; date = date.AddHours(duration))
+            {
+                periods.Add(new TimePeriod(date, date.AddHours(duration)));
+            }
+
+            return periods;
+        }
+
     }
 }

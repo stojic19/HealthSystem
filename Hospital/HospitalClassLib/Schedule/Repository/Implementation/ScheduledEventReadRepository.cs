@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Hospital.SharedModel.Model;
 
 namespace Hospital.Schedule.Repository.Implementation
 {
@@ -18,15 +19,9 @@ namespace Hospital.Schedule.Repository.Implementation
             _context = context;
         }
 
-        public IEnumerable<ScheduledEvent> GetDoctorsScheduledEvents(int doctorId)
+        public IEnumerable<ScheduledEvent> GetScheduledEventsForDoctor(int doctorId)
         {
             return _context.Set<ScheduledEvent>().Where(x => x.DoctorId == doctorId).AsEnumerable();
-        }
-
-        public bool IsDoctorAvailableInTerm(int doctorId, DateTime date)
-        {
-            var scheduledEvents = GetDoctorsScheduledEvents(doctorId);
-            return scheduledEvents.Where(s => DateTime.Compare(s.StartDate, date) == 0).All(s => s.IsCanceled);
         }
 
         public List<ScheduledEvent> GetNumberOfCanceledEventsForPatient(int id)

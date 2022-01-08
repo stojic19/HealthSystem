@@ -110,6 +110,7 @@ namespace HospitalApi
             services.AddScoped<IPatientSurveyService, PatientSurveyService>();
             services.AddScoped<IScheduledEventService, ScheduledEventService>();
             services.AddScoped<ISurveyService, SurveyService>();
+            services.AddScoped<IScheduleAppointmentService, ScheduleAppointmentService>();
        
 
             var builder = new ContainerBuilder();

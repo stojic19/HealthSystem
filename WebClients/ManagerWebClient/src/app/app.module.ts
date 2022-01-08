@@ -72,6 +72,9 @@ import { SecondRoomInfoComponent } from './renovation-form/second-room-info/seco
 import { AvailableTermsComponent } from './renovation-form/available-terms/available-terms.component';
 import { LoginComponent } from './components/login/login.component';
 import { JwtInterceptor } from './JWTInterceptor/JwtInterceptor';
+import { DoctorsScheduleComponent } from './doctors-schedule/doctors-schedule.component';
+import { DoctorsScheduleReportComponent } from './doctors-schedule-report/doctors-schedule-report.component';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -128,6 +131,8 @@ import { JwtInterceptor } from './JWTInterceptor/JwtInterceptor';
     SecondRoomInfoComponent,
     AvailableTermsComponent,
     LoginComponent,
+    DoctorsScheduleComponent,
+    DoctorsScheduleReportComponent,
 
   ],
   imports: [
@@ -150,8 +155,11 @@ import { JwtInterceptor } from './JWTInterceptor/JwtInterceptor';
     MatSelectModule,
     MaterialModule,
     MatDialogModule,
-    ToastrModule.forRoot({timeOut: 3000,
-      positionClass: 'toast-top-right'}),
+    ChartsModule,
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      positionClass: 'toast-top-right'
+    }),
   ],
   providers: [HttpClientModule,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

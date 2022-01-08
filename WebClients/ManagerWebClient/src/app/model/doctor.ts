@@ -16,4 +16,21 @@ export interface Doctor {
   city: any;
   specializationId: number;
   specialization: any;
+  shiftId: number;
+  shift: Shift;
+  onCallDuties: OnCallDuty[]
+}
+
+export interface Shift {
+  id: number;
+  name: string;
+  from: number;
+  to: number
+}
+
+export interface OnCallDuty {
+  id: number;
+  month: number;
+  week: number;
+  doctorsOnDuty: Doctor[]
 }

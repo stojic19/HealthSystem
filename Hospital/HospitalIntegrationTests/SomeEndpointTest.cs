@@ -23,12 +23,12 @@ namespace HospitalIntegrationTests
         public async Task Test1Async()
         {
          
-            var client  = _fixture
+            /*var client  = _fixture
                 .AuthenticatedInstance(
                 new Claim("CustomRoleType", "God"))
-                .CreateClient();
+                .CreateClient();*/
 
-            var result =await client.GetAsync(BaseUrl + "api/ScheduledEvent/GetFinishedUserEvents/" + "andji");  
+            var result =await Client.GetAsync(BaseUrl + "api/ScheduledEvent/GetFinishedUserEvents/" + "andji");  
             Assert.Equal(HttpStatusCode.OK, result.StatusCode);
             //TODO : Check Content
         }
@@ -36,8 +36,8 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Test2Async()
         {
-            var client = _fixture.AuthenticatedInstance().CreateClient();
-            var result = await client.GetAsync(BaseUrl + "api/ScheduledEvent/GetEventsForSurvey/" + "andji");       
+            //var client = _fixture.AuthenticatedInstance().CreateClient();
+            var result = await Client.GetAsync(BaseUrl + "api/ScheduledEvent/GetEventsForSurvey/" + "andji");       
             Assert.Equal(HttpStatusCode.OK, result.StatusCode);
         }
     }

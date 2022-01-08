@@ -46,9 +46,13 @@ namespace HospitalIntegrationTests.Base
         private void ConfigureHttpClient()
         {
             CookieContainer = new CookieContainer();
+            var credentials = new NetworkCredential("andji", "Andji1234");
+
             var handler = new HttpClientHandler()
             {
-                CookieContainer = CookieContainer
+                CookieContainer = CookieContainer,
+                Credentials = credentials
+
             };
            
             Client = new HttpClient(handler);

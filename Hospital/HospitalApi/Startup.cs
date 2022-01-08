@@ -110,13 +110,13 @@ namespace HospitalApi
                 };
             });
 
-            services.AddAuthorization(options =>
+         /*   services.AddAuthorization(options =>
             {
                 options.AddPolicy("Privileged", policy => policy
                     .AddAuthenticationSchemes(IdentityConstants.ApplicationScheme)
                     .RequireRole("CustomRoleType", "God", "Angel", "Patient")
                     .RequireAuthenticatedUser());          
-            });
+            });*/
 
 
 

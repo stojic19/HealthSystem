@@ -33,7 +33,7 @@ namespace HospitalApi.Controllers
             return Ok(eventsDTOs);
         }
         
-        [Authorize(Roles = "Patient",Policy = "Privileged")]
+        [Authorize(Roles = "Patient")]
         [HttpGet("{userName}")]
         public IActionResult GetEventsForSurvey(string userName)
         {

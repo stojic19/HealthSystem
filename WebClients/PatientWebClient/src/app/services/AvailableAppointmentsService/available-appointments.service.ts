@@ -15,8 +15,8 @@ export class AvailableAppointmentsService {
     return this._http.get<IAvailableAppointment[]>('/api/ScheduleAppointment/GetRecommendedAppointments?doctorId='+doctorId+'&dateStart='+dateStart+'&dateEnd='+dateEnd+'&isDoctorPriority='+isDoctorPriority);
   }
 
-  createNewAppointment(newAppointment: IRecommendedAppointment, userName:any) {
-    return this._http.post('/api/ScheduleAppointment/ScheduleRecommendedAppointment/' + userName  , newAppointment, {
+  createNewAppointment(newAppointment: IRecommendedAppointment) {
+    return this._http.post('/api/ScheduleAppointment/ScheduleRecommendedAppointment', newAppointment, {
       responseType: 'text',
     });
   }

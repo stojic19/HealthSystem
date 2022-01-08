@@ -117,7 +117,7 @@ export class RecommendedAppointmentComponent implements OnInit {
   }
 
   createAppointment() {
-    this.availableAppointmentService.createNewAppointment(this.newAppointment,this.userName).subscribe(
+    this.availableAppointmentService.createNewAppointment(this.newAppointment).subscribe(
       (res) => {
         this.router.navigate(['/record']);
         this._snackBar.open(

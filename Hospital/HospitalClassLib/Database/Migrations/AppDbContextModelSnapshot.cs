@@ -19,34 +19,40 @@ namespace Hospital.Migrations
                 .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-            modelBuilder.Entity("Hospital.GraphicalEditor.Model.RoomPosition", b =>
+            modelBuilder.Entity("DoctorOnCallDuty", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<double>("DimensionX")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("DimensionY")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("Height")
-                        .HasColumnType("double precision");
-
-                    b.Property<int>("RoomId")
+                    b.Property<int>("DoctorsOnDutyId")
                         .HasColumnType("integer");
 
-                    b.Property<double>("Width")
-                        .HasColumnType("double precision");
+                    b.Property<int>("OnCallDutiesId")
+                        .HasColumnType("integer");
 
-                    b.HasKey("Id");
+                    b.HasKey("DoctorsOnDutyId", "OnCallDutiesId");
 
-                    b.HasIndex("RoomId");
+                    b.HasIndex("OnCallDutiesId");
 
-                    b.ToTable("RoomPositions");
+                    b.ToTable("DoctorOnCallDuty");
                 });
+
+            modelBuilder.Entity("Hospital.EventStoring.Model.StoredEvent", b =>
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uuid");
+
+                b.Property<string>("StateData")
+                    .HasColumnType("text");
+
+                b.Property<DateTime>("Time")
+                    .HasColumnType("timestamp without time zone");
+
+                b.Property<int>("UserId")
+                    .HasColumnType("integer");
+
+                b.HasKey("Id");
+
+                b.ToTable("StoredEvent", "EventStoring");
+            });
 
             modelBuilder.Entity("Hospital.MedicalRecords.Model.Allergy", b =>
                 {
@@ -530,6 +536,24 @@ namespace Hospital.Migrations
                     b.ToTable("Feedbacks");
                 });
 
+            modelBuilder.Entity("Hospital.Schedule.Model.OnCallDuty", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("Month")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Week")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OnCallDuties");
+                });
+
             modelBuilder.Entity("Hospital.Schedule.Model.Question", b =>
                 {
                     b.Property<int>("Id")
@@ -632,6 +656,27 @@ namespace Hospital.Migrations
                     b.HasIndex("RoomId");
 
                     b.ToTable("ScheduledEvents");
+                });
+
+            modelBuilder.Entity("Hospital.Schedule.Model.Shift", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("From")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<int>("To")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Shifts");
                 });
 
             modelBuilder.Entity("Hospital.Schedule.Model.Survey", b =>
@@ -966,6 +1011,13 @@ namespace Hospital.Migrations
                     b.HasDiscriminator().HasValue("Patient");
                 });
 
+            modelBuilder.Entity("Hospital.SharedModel.Model.Manager", b =>
+                {
+                    b.HasBaseType("Hospital.SharedModel.Model.User");
+
+                    b.HasDiscriminator().HasValue("Manager");
+                });
+
             modelBuilder.Entity("Hospital.SharedModel.Model.Staff", b =>
                 {
                     b.HasBaseType("Hospital.SharedModel.Model.User");
@@ -980,25 +1032,34 @@ namespace Hospital.Migrations
                 {
                     b.HasBaseType("Hospital.SharedModel.Model.Staff");
 
+                    b.Property<int>("ShiftId")
+                        .HasColumnType("integer");
+
                     b.Property<int?>("SpecializationId")
                         .HasColumnType("integer");
 
                     b.HasIndex("RoomId");
+
+                    b.HasIndex("ShiftId");
 
                     b.HasIndex("SpecializationId");
 
                     b.HasDiscriminator().HasValue("Doctor");
                 });
 
-            modelBuilder.Entity("Hospital.GraphicalEditor.Model.RoomPosition", b =>
+            modelBuilder.Entity("DoctorOnCallDuty", b =>
                 {
-                    b.HasOne("Hospital.RoomsAndEquipment.Model.Room", "Room")
+                    b.HasOne("Hospital.SharedModel.Model.Doctor", null)
                         .WithMany()
-                        .HasForeignKey("RoomId")
+                        .HasForeignKey("DoctorsOnDutyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Room");
+                    b.HasOne("Hospital.Schedule.Model.OnCallDuty", null)
+                        .WithMany()
+                        .HasForeignKey("OnCallDutiesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Hospital.MedicalRecords.Model.Allergy", b =>
@@ -1115,6 +1176,38 @@ namespace Hospital.Migrations
                     b.Navigation("InitialRoom");
 
                     b.Navigation("InventoryItem");
+                });
+
+            modelBuilder.Entity("Hospital.RoomsAndEquipment.Model.Room", b =>
+                {
+                    b.OwnsOne("Hospital.GraphicalEditor.Model.RoomPosition", "RoomPosition", b1 =>
+                        {
+                            b1.Property<int>("RoomId")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("integer")
+                                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                            b1.Property<double>("DimensionX")
+                                .HasColumnType("double precision");
+
+                            b1.Property<double>("DimensionY")
+                                .HasColumnType("double precision");
+
+                            b1.Property<double>("Height")
+                                .HasColumnType("double precision");
+
+                            b1.Property<double>("Width")
+                                .HasColumnType("double precision");
+
+                            b1.HasKey("RoomId");
+
+                            b1.ToTable("Rooms");
+
+                            b1.WithOwner()
+                                .HasForeignKey("RoomId");
+                        });
+
+                    b.Navigation("RoomPosition");
                 });
 
             modelBuilder.Entity("Hospital.RoomsAndEquipment.Model.RoomInventory", b =>
@@ -1366,13 +1459,50 @@ namespace Hospital.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Hospital.Schedule.Model.Shift", "Shift")
+                        .WithMany()
+                        .HasForeignKey("ShiftId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Hospital.SharedModel.Model.Specialization", "Specialization")
                         .WithMany()
                         .HasForeignKey("SpecializationId");
 
+                    b.OwnsMany("Hospital.Schedule.Model.Vacation", "Vacations", b1 =>
+                        {
+                            b1.Property<int>("DoctorId")
+                                .HasColumnType("integer");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("integer")
+                                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                            b1.Property<DateTime>("EndDate")
+                                .HasColumnType("timestamp without time zone");
+
+                            b1.Property<DateTime>("StartDate")
+                                .HasColumnType("timestamp without time zone");
+
+                            b1.Property<int>("Type")
+                                .HasColumnType("integer");
+
+                            b1.HasKey("DoctorId", "Id");
+
+                            b1.ToTable("Vacation");
+
+                            b1.WithOwner()
+                                .HasForeignKey("DoctorId");
+                        });
+
                     b.Navigation("Room");
 
+                    b.Navigation("Shift");
+
                     b.Navigation("Specialization");
+
+                    b.Navigation("Vacations");
                 });
 
             modelBuilder.Entity("Hospital.MedicalRecords.Model.MedicalRecord", b =>

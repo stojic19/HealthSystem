@@ -7,13 +7,14 @@ namespace Hospital.Schedule.Service.Interfaces
 {
     public interface IScheduledEventService
     {
-        public List<ScheduledEvent> GetFinishedUserEvents(int userId);
-        public List<ScheduledEvent> GetCanceledUserEvents(int userId);
-        public List<ScheduledEvent> GetUpcomingUserEvents(int userId);
+        public List<ScheduledEvent> GetFinishedUserEvents(string userName);
+        public List<ScheduledEvent> GetCanceledUserEvents(string userName);
+        public List<ScheduledEvent> GetUpcomingUserEvents(string userName);
         public int GetNumberOfFinishedEvents(int userId);
         public void UpdateFinishedUserEvents();
         public ScheduledEvent GetScheduledEvent(int eventId);
-        public List<EventForSurvey> GetEventsForSurvey(int userId);
+        public List<EventForSurvey> GetEventsForSurvey(string userName);
         public IEnumerable<DateTime> GetAvailableAppointments(int doctorId, DateTime preferredDate);
+        public void CancelAppointment(int eventId);
     }
 }

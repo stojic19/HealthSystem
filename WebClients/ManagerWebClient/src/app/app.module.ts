@@ -14,7 +14,7 @@ import { SecondFloorComponent } from './first-building/second-floor/second-floor
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FeedbacksManagerComponent } from './components/feedbacks-manager/feedbacks-manager.component';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SecondBuildingComponent } from './second-building/second-building.component';
 import { FloorFirstComponent } from './second-building/floor-first/floor-first.component';
@@ -64,6 +64,7 @@ import { RoomScheduleComponent } from './room-schedule/room-schedule.component';
 import { ConfirmDialogComponent } from './room-schedule/confirm-dialog/confirm-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DetailsDialogComponent } from './room-schedule/details-dialog/details-dialog.component';
+import { ToastrModule } from 'ngx-toastr';
 import { MaliciousPatientsComponent } from './components/malicious-patients/malicious-patients.component';
 import { TimeInfoComponent } from './renovation-form/time-info/time-info.component';
 import { FirstRoomInfoComponent } from './renovation-form/first-room-info/first-room-info.component';
@@ -71,7 +72,8 @@ import { SecondRoomInfoComponent } from './renovation-form/second-room-info/seco
 import { AvailableTermsComponent } from './renovation-form/available-terms/available-terms.component';
 import { TendersListComponent } from './tenders/tenders-list.component';
 import { TenderProfileComponent } from './tenders/tender-profile/tender-profile.component';
-
+import { LoginComponent } from './components/login/login.component';
+import { JwtInterceptor } from './JWTInterceptor/JwtInterceptor';
 
 @NgModule({
   declarations: [
@@ -129,7 +131,7 @@ import { TenderProfileComponent } from './tenders/tender-profile/tender-profile.
     AvailableTermsComponent,
     TendersListComponent,
     TenderProfileComponent,
-
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -151,8 +153,13 @@ import { TenderProfileComponent } from './tenders/tender-profile/tender-profile.
     MatSelectModule,
     MaterialModule,
     MatDialogModule,
+    ToastrModule.forRoot({timeOut: 3000,
+      positionClass: 'toast-top-right'}),
   ],
-  providers: [HttpClientModule],
+  providers: [HttpClientModule,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+
+  ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

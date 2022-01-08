@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Hospital.Schedule.Service.Interfaces;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HospitalApi.Controllers
 {
@@ -21,24 +22,26 @@ namespace HospitalApi.Controllers
             this._eventsService = eventsService;
             this._mapper = mapper;
         }
-
-        [HttpGet("{userId}")]
-        public IActionResult GetFinishedUserEvents(int userId)
+        [Authorize(Roles = "Patient")]
+        [HttpGet("{userName}")]
+        public IActionResult GetFinishedUserEvents(string userName)
         {
-            var eventsDTOs = _eventsService.GetFinishedUserEvents(userId).Select(e =>
+            var eventsDTOs = _eventsService.GetFinishedUserEvents(userName).Select(e =>
               _mapper.Map<ScheduledEventsDTO>(e)).ToList();
 
             return Ok(eventsDTOs);
         }
-        [HttpGet("{userId}")]
-        public IActionResult GetEventsForSurvey(int userId)
+        [Authorize(Roles = "Patient")]
+        [HttpGet("{userName}")]
+        public IActionResult GetEventsForSurvey(string userName)
         {
-            var eventsForSurveyDTOs = _eventsService.GetEventsForSurvey(userId).Select(e =>
+            var eventsForSurveyDTOs = _eventsService.GetEventsForSurvey(userName).Select(e =>
               _mapper.Map<EventsForSurveyDTO>(e)).ToList();
 
             return Ok(eventsForSurveyDTOs);
         }
 
+        [Authorize(Roles = "Patient")]
         [HttpGet("{eventId}")]
         public IActionResult GetScheduledEvent(int eventId)
         {
@@ -47,24 +50,35 @@ namespace HospitalApi.Controllers
             return Ok(eventsDTOs);
         }
 
-        [HttpGet("{userId}")]
-        public IActionResult GetCanceledUserEvents(int userId)
+        [Authorize(Roles = "Patient")]
+        [HttpGet("{userName}")]
+        public IActionResult GetCanceledUserEvents(string userName)
         {
-            var eventsDTOs = _eventsService.GetCanceledUserEvents(userId).Select(e =>
+            var eventsDTOs = _eventsService.GetCanceledUserEvents(userName).Select(e =>
               _mapper.Map<ScheduledEventsDTO>(e)).ToList();
 
             return Ok(eventsDTOs);
         }
 
-        [HttpGet("{userId}")]
-        public IActionResult GetUpcomingUserEvents(int userId)
+        [Authorize(Roles = "Patient")]
+        [HttpGet("{userName}")]
+        public IActionResult GetUpcomingUserEvents(string userName)
         {
-            var eventsDTOs = _eventsService.GetUpcomingUserEvents(userId).Select(e =>
+            var eventsDTOs = _eventsService.GetUpcomingUserEvents(userName).Select(e =>
                 _mapper.Map<ScheduledEventsDTO>(e)).ToList();
 
             return Ok(eventsDTOs);
         }
+        [Authorize(Roles = "Patient")]
+        [HttpGet("{eventId}")]
+        public IActionResult CancelAppointment(int eventId)
+        {
 
+            _eventsService.CancelAppointment(eventId);
+            return Ok();
+        }
+
+        [Authorize(Roles = "Patient")]
         [HttpGet]
         public IActionResult GetAvailableAppointments([FromQuery(Name = "doctorId")] int doctorId, string preferredDate)
         {

@@ -45,6 +45,7 @@ namespace HospitalApi.AutoMapperProfiles
             CreateMap<AvailableAppointmentDTO, AvailableAppointment>().ReverseMap();
             CreateMap<Patient, UserForBlockingDTO>();
             CreateMap<RoomRenovationEventDto, RoomRenovationEvent>();
+            CreateMap<NewManagerDTO, Manager>();
         }
     }
 }

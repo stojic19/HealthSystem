@@ -8,10 +8,10 @@
     </div>
     <div class="form-control form-control-lg  m-1">
         <input class="m-1" required [(ngModel)]="TenderNameString" placeholder="Tender Name" >
-        <input class="m-1" matInput [matDatepicker]="picker" placeholder="End">
+        <input class="m-1" matInput [matDatepicker]="picker" placeholder="End" #end>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
-        <button class="btn btn-primary m-1" (click)="CreateTender()">Create tender</button>
+        <button class="btn btn-primary m-1" (click)="CreateTender(end)">Create tender</button>
     </div>
     <div class="form-control form-control-lg  m-1">
         <input class="m-1" required [(ngModel)]="MedicineString" placeholder="Medicine" >
@@ -30,19 +30,18 @@
             </thead>
             <tbody>
                 <tr *ngFor='let medicine of medicines'>
-                    <td>{{medicine.name}}</td>
+                    <td>{{medicine.medicineName}}</td>
                     <td>{{medicine.quantity}}</td>
                     <td>
-                        <div><button class="btn btn-primary" (click)="Edit(medicine.name)">Edit</button></div>
+                        <div><button class="btn btn-primary" (click)="Edit(medicine.medicineName, medicine.quantity)" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button></div>
                     </td>
                     <td>
-                        <div><button class="btn btn-primary" (click)="Delete(medicine.name)">Delete</button></div>
+                        <div><button class="btn btn-primary" (click)="Delete(medicine.medicineName)">Delete</button></div>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
-    <button id="openModalButton" [hidden]="true" data-toggle="modal" data-target="#exampleModal">Open Modal</button>
 </div>
 
 <!-- Modal -->
@@ -50,16 +49,16 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Edit medicine</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <input class="m-1" required [(ngModel)]="EditMedicineString" (keyup)="Clear()" placeholder="Medicine" >
-            <input class="m-1" required [(ngModel)]="EditQuantityString" (keyup)="Clear()" placeholder="Quantity" >  
+            <input class="m-1" required [(ngModel)]="EditMedicineString" placeholder="Medicine" >
+            <input class="m-1" required [(ngModel)]="EditQuantityString" placeholder="Quantity" >  
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" (click)="Save()" data-bs-dismiss="modal" class="btn btn-primary">Save changes</button>
         </div>
       </div>
     </div>

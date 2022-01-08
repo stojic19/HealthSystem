@@ -72,6 +72,7 @@ import { SecondRoomInfoComponent } from './renovation-form/second-room-info/seco
 import { AvailableTermsComponent } from './renovation-form/available-terms/available-terms.component';
 import { TendersListComponent } from './tenders/tenders-list.component';
 import { TenderProfileComponent } from './tenders/tender-profile/tender-profile.component';
+import { AddTenderComponent } from './tendering/add-tender/add-tender.component';
 import { LoginComponent } from './components/login/login.component';
 import { JwtInterceptor } from './JWTInterceptor/JwtInterceptor';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
@@ -133,7 +134,8 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     AvailableTermsComponent,
     TendersListComponent,
     TenderProfileComponent,
-    LoginComponent
+    AddTenderComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,

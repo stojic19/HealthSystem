@@ -17,6 +17,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Hospital.Schedule.Model.Wrappers;
 using Hospital.Schedule.Service.Interfaces;
+using Hospital.SharedModel.Model.Wrappers;
 using Hospital.SharedModel.Repository;
 using Microsoft.AspNetCore.Authorization;
 
@@ -40,20 +41,21 @@ namespace HospitalApi.Controllers
         [HttpGet]
         public IActionResult GetRecommendedAppointments([FromQuery(Name = "doctorId")] int doctorId, string dateStart, string dateEnd, bool isDoctorPriority)
         {
-            DateTime startDate = DateTime.ParseExact(dateStart, "M/d/yyyy", CultureInfo.InvariantCulture);
-            DateTime endDate = DateTime.ParseExact(dateEnd, "M/d/yyyy", CultureInfo.InvariantCulture);
-            var availableAppointments = _scheduleAppointmentService.GetAvailableAppointmentsForDoctorAndDateRange(doctorId, startDate, endDate);
+            var startDate = DateTime.ParseExact(dateStart, "M/d/yyyy", CultureInfo.InvariantCulture);
+            var endDate = DateTime.ParseExact(dateEnd, "M/d/yyyy", CultureInfo.InvariantCulture);
+            var timePeriod = new TimePeriod(startDate, endDate);
+            var availableAppointments = _scheduleAppointmentService.GetAvailableAppointmentsForDoctorAndDateRange(doctorId, timePeriod);
             var retVal = new List<AvailableAppointmentDTO>();
             if (availableAppointments.ToList().Count == 0)
             {
                 if (isDoctorPriority)
                 {
-                    ConvertToDtoList(_scheduleAppointmentService.GetAvailableAppointmentsForDoctorPriority(doctorId, startDate, endDate), retVal);
+                    ConvertToDtoList(_scheduleAppointmentService.GetAvailableAppointmentsForDoctorPriority(doctorId, timePeriod), retVal);
                     return Ok(retVal);
                 }
                 else
                 {
-                    ConvertToDtoList(_scheduleAppointmentService.GetAvailableAppointmentsForDatePriority(doctorId, startDate, endDate), retVal);
+                    ConvertToDtoList(_scheduleAppointmentService.GetAvailableAppointmentsForDatePriority(doctorId,timePeriod), retVal);
                     return Ok(retVal);
                 }
             }

@@ -31,10 +31,10 @@ namespace Hospital.Schedule.Service
                 select term.StartTime).ToList();
         }
 
-        public IEnumerable<AvailableAppointment> GetAvailableAppointmentsForDoctorAndDateRange(int doctorId, DateTime startDate, DateTime endDate)
+        public IEnumerable<AvailableAppointment> GetAvailableAppointmentsForDoctorAndDateRange(int doctorId, TimePeriod timePeriod)
         {
             var allAppointments = new List<DateTime>();
-            for (var date = startDate; date <= endDate; date = date.AddDays(1))
+            for (var date = timePeriod.StartTime; date <= timePeriod.EndTime; date = date.AddDays(1))
             {
                 allAppointments.AddRange(GetAvailableTermsForDoctorAndDate(doctorId, date));
             }
@@ -51,23 +51,23 @@ namespace Hospital.Schedule.Service
             }).ToList();
         }
 
-        public IEnumerable<AvailableAppointment> GetAvailableAppointmentsForDoctorPriority(int doctorId, DateTime startDate, DateTime endDate)
+        public IEnumerable<AvailableAppointment> GetAvailableAppointmentsForDoctorPriority(int doctorId, TimePeriod timePeriod)
         {
             var allAppointments = new List<DateTime>();
-            for (var date = startDate.AddDays(-3); date <= endDate.AddDays(3); date = date.AddDays(1))
+            for (var date = timePeriod.StartTime.AddDays(-3); date <= timePeriod.EndTime.AddDays(3); date = date.AddDays(1))
             {
                 allAppointments.AddRange(GetAvailableTermsForDoctorAndDate(doctorId, date));
             }
             return AvailableAppointments(allAppointments, doctorId);
         }
 
-        public IEnumerable<AvailableAppointment> GetAvailableAppointmentsForDatePriority(int doctorId, DateTime startDate, DateTime endDate)
+        public IEnumerable<AvailableAppointment> GetAvailableAppointmentsForDatePriority(int doctorId, TimePeriod timePeriod)
         {
             var doctorRepo = _uow.GetRepository<IDoctorReadRepository>();
             var firstDoctor = doctorRepo.GetById(doctorId);
             var specializationName = firstDoctor.Specialization.Name;
             return doctorRepo.GetSpecializedDoctors(specializationName).ToList().
-                                SelectMany(doctor => GetAvailableAppointmentsForDoctorAndDateRange(doctor.Id, startDate, endDate))
+                                SelectMany(doctor => GetAvailableAppointmentsForDoctorAndDateRange(doctor.Id, timePeriod))
                                 .ToList();
         }
     }

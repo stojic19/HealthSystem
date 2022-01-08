@@ -24,6 +24,7 @@ export class MaliciousPatientsComponent implements OnInit {
   blockPatient(patient: IMaliciousPatient) {
     this._maliciousPatientsService.blockPatient(patient).subscribe({
       next: com => { this.maliciousPatients = com; }});
+      this._snackBar.open("User blocked.", "Dismiss");
   }
-
+  
 }

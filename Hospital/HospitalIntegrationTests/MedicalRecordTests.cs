@@ -21,156 +21,156 @@ namespace HospitalIntegrationTests
         {
         }
 
-        [Fact]
-        public async Task Get_patient_with_medical_record_should_return_200()
-        {
-            ClearUserWithUserName("testUserName");
+        //[Fact]
+        //public async Task Get_patient_with_medical_record_should_return_200()
+        //{
+        //    ClearUserWithUserName("testUserName");
 
-            var doctor = UoW.GetRepository<IDoctorReadRepository>()
-                .GetAll()
-                .FirstOrDefault();
+        //    var doctor = UoW.GetRepository<IDoctorReadRepository>()
+        //        .GetAll()
+        //        .FirstOrDefault();
 
-            if (doctor == null)
-            {
-                doctor = new Doctor()
-                {
-                    UserName = "testDoctor"
-                };
-            }
-            var medRec = new MedicalRecord()
-            {
-                DoctorId = doctor.Id
-            };
+        //    if (doctor == null)
+        //    {
+        //        doctor = new Doctor()
+        //        {
+        //            UserName = "testDoctor"
+        //        };
+        //    }
+        //    var medRec = new MedicalRecord()
+        //    {
+        //        DoctorId = doctor.Id
+        //    };
 
-            var patient = new Patient()
-            {
-                UserName = "testUserName",
-                CityId = 1,
-                MedicalRecord = medRec
-            };
-            UoW.GetRepository<IPatientWriteRepository>().Add(patient);
+        //    var patient = new Patient()
+        //    {
+        //        UserName = "testUserName",
+        //        CityId = 1,
+        //        MedicalRecord = medRec
+        //    };
+        //    UoW.GetRepository<IPatientWriteRepository>().Add(patient);
             
-            var response = await Client.GetAsync(BaseUrl + "api/MedicalRecord/GetPatientWithRecord");
+        //    var response = await Client.GetAsync(BaseUrl + "api/MedicalRecord/GetPatientWithRecord");
 
-            response.StatusCode.ShouldBe(HttpStatusCode.OK);
-            var foundPatient = UoW.GetRepository<IPatientReadRepository>()
-                .GetAll().FirstOrDefault(x => x.UserName.ToUpper().Equals(patient.UserName.ToUpper()));
-            var foundMedicalRecord =
-                UoW.GetRepository<IMedicalRecordReadRepository>().GetById(foundPatient.MedicalRecordId);
-            foundPatient.ShouldNotBeNull();
-            foundPatient.UserName.ShouldBe("testUserName");
-            foundPatient.MedicalRecord.ShouldNotBeNull();
-            foundMedicalRecord.Id.ShouldBe(foundPatient.MedicalRecordId);
+        //    response.StatusCode.ShouldBe(HttpStatusCode.OK);
+        //    var foundPatient = UoW.GetRepository<IPatientReadRepository>()
+        //        .GetAll().FirstOrDefault(x => x.UserName.ToUpper().Equals(patient.UserName.ToUpper()));
+        //    var foundMedicalRecord =
+        //        UoW.GetRepository<IMedicalRecordReadRepository>().GetById(foundPatient.MedicalRecordId);
+        //    foundPatient.ShouldNotBeNull();
+        //    foundPatient.UserName.ShouldBe("testUserName");
+        //    foundPatient.MedicalRecord.ShouldNotBeNull();
+        //    foundMedicalRecord.Id.ShouldBe(foundPatient.MedicalRecordId);
 
-        }
+        //}
 
-        private void ClearUserWithUserName(string testusername)
-        {
-            var user = UoW.GetRepository<IPatientReadRepository>()
-                .GetAll().ToList()
-                .FirstOrDefault(x => x.UserName == "testUserName");
-
-
-            if (user != null)
-            {
-                var medicalRecord = UoW.GetRepository<IMedicalRecordReadRepository>()
-                    .GetAll()
-                    .FirstOrDefault(x => x.Patient.UserName == user.UserName);
-
-                UoW.GetRepository<IPatientWriteRepository>().Delete(user);
-            }
-
-        }
+        //private void ClearUserWithUserName(string testusername)
+        //{
+        //    var user = UoW.GetRepository<IPatientReadRepository>()
+        //        .GetAll().ToList()
+        //        .FirstOrDefault(x => x.UserName == "testUserName");
 
 
-        private Patient InsertUser(string testUserName)
-        {
-            var user = UoW.GetRepository<IPatientReadRepository>()
-                .GetAll()
-                .FirstOrDefault(x => x.UserName == testUserName);
+        //    if (user != null)
+        //    {
+        //        var medicalRecord = UoW.GetRepository<IMedicalRecordReadRepository>()
+        //            .GetAll()
+        //            .FirstOrDefault(x => x.Patient.UserName == user.UserName);
 
-            if (user == null)
-            {
-                var city = UoW.GetRepository<ICityReadRepository>()
-                    .GetAll()
-                    .FirstOrDefault();
+        //        UoW.GetRepository<IPatientWriteRepository>().Delete(user);
+        //    }
 
-                if (city == null)
-                {
-                    var country = UoW.GetRepository<ICountryReadRepository>()
-                        .GetAll()
-                        .FirstOrDefault();
+        //}
 
-                    if (country == null)
-                    {
-                        country = new Country()
-                        {
-                            Name = "Test country"
-                        };
-                        UoW.GetRepository<ICountryWriteRepository>().Add(country);
-                    }
 
-                    city = new City()
-                    {
-                        CountryId = country.Id,
-                        Name = "Test city",
-                        PostalCode = 10
-                    };
-                    UoW.GetRepository<ICityWriteRepository>().Add(city);
-                }
+        //private Patient InsertUser(string testUserName)
+        //{
+        //    var user = UoW.GetRepository<IPatientReadRepository>()
+        //        .GetAll()
+        //        .FirstOrDefault(x => x.UserName == testUserName);
 
-                ;
+        //    if (user == null)
+        //    {
+        //        var city = UoW.GetRepository<ICityReadRepository>()
+        //            .GetAll()
+        //            .FirstOrDefault();
 
-                var medicalRecord = UoW.GetRepository<IMedicalRecordReadRepository>()
-                    .GetAll()
-                    .FirstOrDefault(x => x.Id == user.MedicalRecordId);
+        //        if (city == null)
+        //        {
+        //            var country = UoW.GetRepository<ICountryReadRepository>()
+        //                .GetAll()
+        //                .FirstOrDefault();
 
-                if (medicalRecord == null)
-                {
-                    var doctor = UoW.GetRepository<IDoctorReadRepository>()
-                        .GetAll()
-                        .FirstOrDefault();
+        //            if (country == null)
+        //            {
+        //                country = new Country()
+        //                {
+        //                    Name = "Test country"
+        //                };
+        //                UoW.GetRepository<ICountryWriteRepository>().Add(country);
+        //            }
 
-                    if (doctor == null)
-                    {
-                        var specialization = UoW.GetRepository<ISpecializationReadRepository>()
-                            .GetAll()
-                            .FirstOrDefault(x => x.Name.ToUpper() == "GP");
+        //            city = new City()
+        //            {
+        //                CountryId = country.Id,
+        //                Name = "Test city",
+        //                PostalCode = 10
+        //            };
+        //            UoW.GetRepository<ICityWriteRepository>().Add(city);
+        //        }
 
-                        if (specialization == null)
-                        {
-                            specialization = new Specialization()
-                            {
-                                Name = "GP"
-                            };
-                        }
+        //        ;
 
-                        doctor = new Doctor()
-                        {
-                            UserName = "testDoctor",
-                            SpecializationId = specialization.Id
-                        };
-                    }
+        //        var medicalRecord = UoW.GetRepository<IMedicalRecordReadRepository>()
+        //            .GetAll()
+        //            .FirstOrDefault(x => x.Id == user.MedicalRecordId);
 
-                    medicalRecord = new MedicalRecord()
-                    {
-                        DoctorId = doctor.Id
-                    };
-                }
+        //        if (medicalRecord == null)
+        //        {
+        //            var doctor = UoW.GetRepository<IDoctorReadRepository>()
+        //                .GetAll()
+        //                .FirstOrDefault();
 
-                user = new Patient()
-                {
-                    UserName = "testUserName",
-                    PasswordHash = "Test Passw0rd",
-                    CityId = city.Id,
-                    MedicalRecordId = medicalRecord.Id
-                };
+        //            if (doctor == null)
+        //            {
+        //                var specialization = UoW.GetRepository<ISpecializationReadRepository>()
+        //                    .GetAll()
+        //                    .FirstOrDefault(x => x.Name.ToUpper() == "GP");
 
-            }
+        //                if (specialization == null)
+        //                {
+        //                    specialization = new Specialization()
+        //                    {
+        //                        Name = "GP"
+        //                    };
+        //                }
 
-            return new Patient();
+        //                doctor = new Doctor()
+        //                {
+        //                    UserName = "testDoctor",
+        //                    SpecializationId = specialization.Id
+        //                };
+        //            }
 
-        }
+        //            medicalRecord = new MedicalRecord()
+        //            {
+        //                DoctorId = doctor.Id
+        //            };
+        //        }
+
+        //        user = new Patient()
+        //        {
+        //            UserName = "testUserName",
+        //            PasswordHash = "Test Passw0rd",
+        //            CityId = city.Id,
+        //            MedicalRecordId = medicalRecord.Id
+        //        };
+
+        //    }
+
+        //    return new Patient();
+
+        //}
     }
 }
 

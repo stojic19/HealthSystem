@@ -1,20 +1,19 @@
 ﻿using Hospital.SharedModel.Model.Enumerations;
 using Microsoft.AspNetCore.Identity;
 using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace Hospital.SharedModel.Model
 {
     public class User : IdentityUser<int>
     {
         private const int MaxCanceledEvents = 3;
-        [Required] public string FirstName { get; private set; }
-        [Required] public string MiddleName { get; private set; }
-        [Required] public string LastName { get; private set; }
-        [Required] public DateTime DateOfBirth { get; private set; }
-        [Required] public Gender Gender { get; private set; }
-        [Required] public string Street { get; private set; }
-        [Required] public string StreetNumber { get; private set; }
+        public string FirstName { get; private set; }
+        public string MiddleName { get; private set; }
+        public string LastName { get; private set; }
+        public DateTime DateOfBirth { get; private set; }
+        public Gender Gender { get; private set; }
+        public string Street { get; private set; }
+        public string StreetNumber { get; private set; }
         public City City { get; private set; }
         public bool IsBlocked { get; private set; }
         public string PhotoEncoded { get; private set; }

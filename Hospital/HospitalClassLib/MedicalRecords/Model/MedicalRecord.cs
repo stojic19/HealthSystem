@@ -11,11 +11,8 @@ namespace Hospital.MedicalRecords.Model
     public class MedicalRecord
     {
         public int Id { get; private set; }
-        [Required]
         public Measurements Measurements { get; private set; }
-        [Required]
         public BloodType BloodType { get; private set; }
-        [Required]
         public JobStatus JobStatus { get; private set; }
         [Required]
         public int DoctorId { get; private set; }

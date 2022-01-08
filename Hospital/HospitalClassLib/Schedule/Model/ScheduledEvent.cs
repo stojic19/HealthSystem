@@ -46,6 +46,13 @@ namespace Hospital.Schedule.Model
             Patient = patient;
             //Validate();
         }
+
+        public void ScheduleEventRoom(Room room)
+        {
+            RoomId = room.Id;
+            Room = room;
+            //Validate();
+        }
         public bool IsCanceledThisMonth()
         {
             return CancellationDate > DateTime.Now.AddDays(-30);

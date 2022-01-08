@@ -28,9 +28,7 @@ namespace HospitalApi.Controllers
         public IActionResult GetPatientWithRecord(string userName)
         {
             var patientRepo = _uow.GetRepository<IPatientReadRepository>();
-            var patient = patientRepo.GetAll().Include(p => p.MedicalRecord).ThenInclude(mr => mr.Doctor)
-                .Include(p => p.MedicalRecord).ThenInclude(mr => mr.Allergies)
-                .ThenInclude(a => a.MedicationIngredient).FirstOrDefault(p => p.UserName.Equals(userName));
+            var patient = patientRepo.GetPatient(userName);
             return Ok(_mapper.Map<PatientDTO>(patient));
         }
     }

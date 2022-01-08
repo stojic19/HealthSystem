@@ -6,10 +6,7 @@ using Hospital.SharedModel.Repository.Base;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hospital.Schedule.Service
 {
@@ -75,18 +72,12 @@ namespace Hospital.Schedule.Service
 
         public IEnumerable<AvailableAppointment> GetAvailableAppointmentsForDatePriority(int doctorId, DateTime startDate, DateTime endDate)
         {
-            var availableAppointments = new List<AvailableAppointment>();
             var doctorRepo = _uow.GetRepository<IDoctorReadRepository>();
             var firstDoctor = doctorRepo.GetById(doctorId);
-            //var specializationId = firstDoctor.SpecializationId;
-            //foreach (var doctor in doctorRepo.GetDoctorsBySpecialization(specializationId).ToList())
-            //{
-            //    foreach (var appointment in GetAvailableAppointmentsForDoctorAndDateRange(doctor.Id, startDate, endDate))
-            //    {
-            //        availableAppointments.Add(appointment);
-            //    }
-            //}
-            return availableAppointments;
+            var specializationName = firstDoctor.Specialization.Name;
+            return doctorRepo.GetSpecializedDoctors(specializationName).ToList().
+                                SelectMany(doctor => GetAvailableAppointmentsForDoctorAndDateRange(doctor.Id, startDate, endDate))
+                                .ToList();
         }
     }
 }

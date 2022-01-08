@@ -39,11 +39,6 @@ namespace Hospital.SharedModel.Repository.Implementation
             return retVal.Select(id => doctors.FirstOrDefault(d => d.Id == id)).AsEnumerable();
         }
 
-        public IEnumerable<Doctor> GetDoctorsBySpecialization(int? specializationId)
-        {
-            return GetAll().Include(x => x.Specialization);//.Where(x => x.SpecializationId == specializationId);
-        }
-
         public IEnumerable<Doctor> GetAllDoctorsWithSpecialization()
         {
             return GetAll().Include(x => x.Specialization);
@@ -64,6 +59,10 @@ namespace Hospital.SharedModel.Repository.Implementation
             var scheduledEvents = GetAll().Where(d => d.Id == doctorId).Include(d => d.ScheduledEvents).First()
                 .ScheduledEvents;
             return scheduledEvents.All(se => DateTime.Compare(se.StartDate, date) != 0 || se.IsCanceled);
+        }
+        public Doctor GetDoctor(int id)
+        {
+            return GetAll().Include(r => r.Room).FirstOrDefault(d => d.Id == id);
         }
     }
 }

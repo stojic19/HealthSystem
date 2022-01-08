@@ -12,11 +12,11 @@ export class AvailableAppointmentsService {
   constructor(private _http: HttpClient) { }
 
   getAvailableAppointments(doctorId: number,dateStart: string,dateEnd:string,isDoctorPriority : boolean): Observable<IAvailableAppointment[]>{
-    return this._http.get<IAvailableAppointment[]>('/api/RecommendedAppointment/GetRecommendedAppointments?doctorId='+doctorId+'&dateStart='+dateStart+'&dateEnd='+dateEnd+'&isDoctorPriority='+isDoctorPriority);
+    return this._http.get<IAvailableAppointment[]>('/api/ScheduleAppointment/GetRecommendedAppointments?doctorId='+doctorId+'&dateStart='+dateStart+'&dateEnd='+dateEnd+'&isDoctorPriority='+isDoctorPriority);
   }
 
-  createNewAppointment(newAppointment: IRecommendedAppointment) {
-    return this._http.post('/api/RecommendedAppointment/ScheduleAppointment', newAppointment, {
+  createNewAppointment(newAppointment: IRecommendedAppointment, userName:any) {
+    return this._http.post('/api/ScheduleAppointment/ScheduleRecommendedAppointment/' + userName  , newAppointment, {
       responseType: 'text',
     });
   }

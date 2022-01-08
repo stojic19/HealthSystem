@@ -5,7 +5,6 @@ using Hospital.MedicalRecords.Repository;
 using Hospital.Schedule.Model;
 using Hospital.Schedule.Repository;
 using Hospital.Schedule.Service;
-using Hospital.SharedModel.Repository;
 using Hospital.SharedModel.Repository.Base;
 using HospitalApi.DTOs;
 using Microsoft.AspNetCore.Http;
@@ -18,6 +17,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Hospital.Schedule.Model.Wrappers;
 using Hospital.Schedule.Service.Interfaces;
+using Hospital.SharedModel.Repository;
 using Microsoft.AspNetCore.Authorization;
 
 namespace HospitalApi.Controllers
@@ -69,18 +69,16 @@ namespace HospitalApi.Controllers
 
         private void ConvertToDtoList(IEnumerable<AvailableAppointment> availableAppointments, List<AvailableAppointmentDTO> retVal)
         {
-            foreach (var appointment in availableAppointments)
-            {
-                retVal.Add(_mapper.Map<AvailableAppointmentDTO>(appointment));
-            }
+            retVal.AddRange(availableAppointments.Select(appointment => _mapper.Map<AvailableAppointmentDTO>(appointment)));
         }
 
         [Authorize(Roles = "Patient")]
-        [HttpPost]
-        public IActionResult ScheduleRecommendedAppointment([FromBody] RecommendedAppointmentDTO newAppointment)
+        [HttpPost("{userName}")]
+        public IActionResult ScheduleRecommendedAppointment([FromBody] RecommendedAppointmentDTO newAppointment,string userName)
         {
             var appointmentToCreate = _mapper.Map<ScheduledEvent>(newAppointment);
-            appointmentToCreate.ScheduleEventForPatient(_uow.GetRepository<IPatientReadRepository>().GetAll().First());
+            appointmentToCreate.ScheduleEventForPatient(_uow.GetRepository<IPatientReadRepository>().GetByUsername(userName));
+            appointmentToCreate.ScheduleEventRoom(_uow.GetRepository<IDoctorReadRepository>().GetDoctor(newAppointment.DoctorId).Room);
             var scheduledEvent = _uow.GetRepository<IScheduledEventWriteRepository>().Add(appointmentToCreate);
             return scheduledEvent != null ? Ok(scheduledEvent) : StatusCode(StatusCodes.Status500InternalServerError, "Internal server error!");
 

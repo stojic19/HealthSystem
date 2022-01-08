@@ -13,7 +13,7 @@ export class PharmacyService{
     constructor(private _httpClient: HttpClient) {}
 
     registerPharmacy(val:any){
-        return this._httpClient.post(this._APIUrl +'api/PharmacyCommunication/RegisterPharmacy',val);
+        return this._httpClient.post(this._APIUrl +'api/Registration/RegisterPharmacy',val);
     }
 
     getPharmacies(): Observable<any[]>{

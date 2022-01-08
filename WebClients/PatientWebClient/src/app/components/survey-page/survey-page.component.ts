@@ -57,7 +57,10 @@ export class SurveyPageComponent implements OnInit {
         verticalPosition: 'bottom'
 
       });
-      this._router.navigate(['/record']);
+      
+      this._router.navigate(['/record']).then(() => {
+        window.location.reload();
+      });
       
     } else {
       this.snackBar.open("You need to answer all questions. ", '', {

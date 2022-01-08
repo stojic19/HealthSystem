@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PharmacyService } from 'src/app/services/pharmacy.service';
 
 @Component({
@@ -13,8 +14,12 @@ export class PharmacyProfileComponent implements OnInit {
   id: number = -1;
   imageSrc: SafeStyle  = "./assets/images/no-image.jpg";
   imageFile: File;
+  chartData = [
+    { name: "Tenders entered", value: 10 },
+    { name: "Won", value: 3 }
+  ];
 
-  constructor(private _route: ActivatedRoute, private _pharmacyService: PharmacyService, private sanitizer: DomSanitizer) { }
+  constructor(private _route: ActivatedRoute, private _pharmacyService: PharmacyService, private sanitizer: DomSanitizer, private modalService: NgbModal) { }
 
   ngOnInit(): void {
     let id = Number(this._route.snapshot.paramMap.get('id'));
@@ -56,6 +61,10 @@ export class PharmacyProfileComponent implements OnInit {
     this._pharmacyService.uploadImage(formData).subscribe(res => {},
       (error) => alert(error.error)
       );
+  }
+
+  open(content) {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {});
   }
 
   makeRequest(){

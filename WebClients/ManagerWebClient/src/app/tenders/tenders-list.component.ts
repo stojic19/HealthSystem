@@ -13,17 +13,8 @@ export class TendersListComponent implements OnInit {
   constructor(private _tenderService: TenderService, private router: Router) { }
 
   ngOnInit(): void {
-    //this._tenderService.getTenders()
-     //       .subscribe(tenders => this.tenders = tenders);
-
-  let tender = {
-        id : 1,
-        name: "tender 1",
-        closedTime : new Date("1.1.2022."),
-        active: true
-      }
-
-  this.tenders.push(tender);
+    this._tenderService.getTenders()
+            .subscribe(tenders => this.tenders = tenders);
   }
 
   doubleClickFunction(id: any){

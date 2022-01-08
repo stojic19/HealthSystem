@@ -74,6 +74,8 @@ import { TendersListComponent } from './tenders/tenders-list.component';
 import { TenderProfileComponent } from './tenders/tender-profile/tender-profile.component';
 import { LoginComponent } from './components/login/login.component';
 import { JwtInterceptor } from './JWTInterceptor/JwtInterceptor';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+
 
 @NgModule({
   declarations: [
@@ -153,12 +155,13 @@ import { JwtInterceptor } from './JWTInterceptor/JwtInterceptor';
     MatSelectModule,
     MaterialModule,
     MatDialogModule,
+    NgxChartsModule,
     ToastrModule.forRoot({timeOut: 3000,
       positionClass: 'toast-top-right'}),
   ],
   providers: [HttpClientModule,
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
+    
   ],
   bootstrap: [AppComponent],
 })

@@ -1,20 +1,21 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from "src/environments/environment";
 
 @Injectable()
 export class TenderService{
 
-    private _APIUrl = 'https://localhost:44302/api';  //uneti url za http get zahtev!
+    private _APIUrl = `${environment.baseIntegrationUrl}`;
     
     constructor(private _httpClient: HttpClient) {}
 
     getTenders(): Observable<any[]>{
-        return this._httpClient.get<any[]>(this._APIUrl +'/Tender/GetTenders');
+        return this._httpClient.get<any[]>(this._APIUrl +'api/Tender/GetActiveTenders');
     }
 
     getTenderById(id: number): Observable<any>{
-        return this._httpClient.get<any[]>(this._APIUrl+`/Tender/GetTenderById/${id}`);
+        return this._httpClient.get<any[]>(this._APIUrl+`api/Tender/GetTenderById/${id}`);
     }
     
 }

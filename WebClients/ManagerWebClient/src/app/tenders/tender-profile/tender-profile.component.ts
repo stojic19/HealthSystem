@@ -8,13 +8,7 @@ import { TenderService } from 'src/app/services/tender.service';
   styleUrls: ['./tender-profile.component.css']
 })
 export class TenderProfileComponent implements OnInit {
-  tender: any ={
-    id : 1,
-    name: "tender 1",
-    closedTime : new Date("1.1.2022."),
-    active: true,
-    medicines: ["brufen", "andol"]
-  };
+  tender: any;
   id: number = -1;
   constructor(private _route: ActivatedRoute, private _tenderService: TenderService) { }
 
@@ -22,9 +16,9 @@ export class TenderProfileComponent implements OnInit {
     let id = Number(this._route.snapshot.paramMap.get('id'));
     this.id = id;
 
-    //this._tenderService.getTenderById(id)
-    //.subscribe(tender => {this.tender = tender},
-    //(error) => alert(error.error));
+    this._tenderService.getTenderById(id)
+    .subscribe(tender => {this.tender = tender},
+    (error) => alert(error.error));
   }
 
 }

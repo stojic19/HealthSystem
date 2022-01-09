@@ -1,5 +1,6 @@
+import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Doctor } from '../model/doctor';
+import { Doctor, Vacation } from '../model/doctor';
 import { DoctorsScheduleService } from '../services/doctors-schedule.service';
 
 @Component({
@@ -10,6 +11,7 @@ import { DoctorsScheduleService } from '../services/doctors-schedule.service';
 export class DoctorsScheduleComponent implements OnInit {
 
   isLoading = true;
+  selectedDoctor: Doctor;
   doctors: Doctor[];
 
   constructor(public doctorsScheduleService: DoctorsScheduleService) { }
@@ -25,6 +27,10 @@ export class DoctorsScheduleComponent implements OnInit {
 
   }
 
+  chosenDoctor(doctor: Doctor) {
+    this.selectedDoctor = doctor;
+  }
+
   getStartOfDuty(w, y, m) {
     let d = (1 + (w - 1) * 7); // 1st of January + 7 days for each week
     return new Date(y, m - 1, d);
@@ -32,7 +38,68 @@ export class DoctorsScheduleComponent implements OnInit {
 
   getEndOfDuty(w, y, m) {
     let d = (1 + (w - 1) * 7); // 1st of January + 7 days for each week
-    return new Date(y, m - 1, d + 6);
+    return new Date(y, m - 1, d + 4);
+  }
+
+  displayOnCallDuties(w, y, m) {
+    let start = this.getStartOfDuty(w, y, m);
+    let end = this.getEndOfDuty(w, y, m);
+    let today = new Date();
+    let duties = [] as any;
+
+    let display = formatDate(new Date(start), 'dd.MM.yyy', 'en_US') + " - "
+      + formatDate(new Date(end), 'dd.MM.yyy', 'en_US');
+
+    if (new Date(end) >= today) {
+      duties.push(display);
+    }
+
+    return duties;
+  }
+
+  displayPastOnCallDuties(w, y, m) {
+    let start = this.getStartOfDuty(w, y, m);
+    let end = this.getEndOfDuty(w, y, m);
+    let today = new Date();
+    let duties = [] as any;
+
+    let display = formatDate(new Date(start), 'dd.MM.yyy', 'en_US') + " - "
+      + formatDate(new Date(end), 'dd.MM.yyy', 'en_US');
+
+    if (new Date(end) < today) {
+      console.log(display)
+      duties.push(display);
+    }
+
+    return duties;
+  }
+
+  getOnCallsForDoctor(doctor: Doctor) {
+    return doctor.onCallDuties;
+  }
+
+  getFutureVacations(doctor: Doctor) {
+    let futureVacations = [] as any;
+    for (let vacation of doctor.vacations) {
+      let end = new Date(vacation.endDate)
+      if (end >= new Date()) {
+        futureVacations.push(vacation);
+      }
+    }
+
+    return futureVacations;
+  }
+
+  getPastVacations(doctor: Doctor) {
+    let pastVacations = [] as any;
+    for (let vacation of doctor.vacations) {
+      let end = new Date(vacation.endDate)
+      if (end < new Date()) {
+        pastVacations.push(vacation);
+      }
+    }
+
+    return pastVacations;
   }
 
 }

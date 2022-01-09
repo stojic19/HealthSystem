@@ -6,15 +6,8 @@
   </div>
 
   <div class="col-10">
-    <div
-      style="height: 515px; overflow: auto"
-      id="table"
-      class="table-responsive custom-table-responsive"
-    >
-      <table
-        *ngIf="!isLoading"
-        class="table table-hover justify-content-center equipmentTable equipmentTable"
-      >
+    <div style="height: 515px; overflow: auto" id="table" class="table-responsive custom-table-responsive">
+      <table *ngIf="!isLoading" class="table table-hover justify-content-center equipmentTable equipmentTable">
         <thead>
           <tr>
             <th>Doctor</th>
@@ -31,38 +24,97 @@
               }}<span>:00</span>
             </td>
             <td>
+              <a style="color: darkblue; font-weight: bold; font-style: italic" href="" data-bs-toggle="modal"
+                data-bs-target="#onCallModal" (click)="chosenDoctor(doctor)">
+                Show older
+              </a>
+              <br>
               <span *ngFor="let duty of doctor.onCallDuties">
-                {{
-                  getStartOfDuty(duty.week, 2022, duty.month)
-                    | date: "dd.MM.yyyy"
-                }}
-                <span class="mx-1"> - </span>
-                {{
-                  getEndOfDuty(duty.week, 2022, duty.month) | date: "dd.MM.yyyy"
-                }}
-              </span>
+                {{ displayOnCallDuties(duty.week, 2022, duty.month) }} </span><br>
             </td>
             <td>
-              <div *ngFor="let vacation of doctor.vacations" class="mb-1">
+              <a style="color: darkblue; font-weight: bold; font-style: italic" href="" data-bs-toggle="modal"
+                data-bs-target="#vacationsModal" (click)="chosenDoctor(doctor)">
+                Show older
+              </a>
+              <br>
+              <div *ngFor="let vacation of getFutureVacations(doctor)" class="mb-1">
                 <span *ngIf="vacation.type === 0"> Sick Leave: </span>
                 <span *ngIf="vacation.type === 1"> Vacation: </span>
                 <span>
                   {{ vacation.startDate | date: "dd.MM.yyyy" }}
                 </span>
-                <span class="mx-1">-</span
-                >{{ vacation.endDate | date: "dd.MM.yyyy" }}
+                <span class="mx-1">-</span>{{ vacation.endDate | date: "dd.MM.yyyy" }}
               </div>
             </td>
           </tr>
         </tbody>
       </table>
-      <mat-card
-        *ngIf="isLoading"
-        style="display: flex; justify-content: center; align-items: center"
-      >
+      <mat-card *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center">
         <mat-progress-spinner color="primary" mode="indeterminate">
         </mat-progress-spinner>
       </mat-card>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="vacationsModal" tabindex="-1" aria-labelledby="vacationsModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header mb-3" style="border: none;">
+        <h5 class="modal-title">Past vacations</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body mb-5 mx-4">
+        <table *ngIf="!isLoading" class="table table-hover justify-content-center equipmentTable">
+          <thead>
+            <tr>
+              <th>Vacation type</th>
+              <th>Start</th>
+              <th>End</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let vacation of getPastVacations(selectedDoctor)">
+              <td *ngIf="vacation.type === 0">Sick Leave:</td>
+              <td *ngIf="vacation.type === 1">Vacation:</td>
+              <td>
+                {{ vacation.startDate | date: "dd.MM.yyyy" }}
+              </td>
+              <td>
+                {{ vacation.endDate | date: "dd.MM.yyyy" }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="onCallModal" tabindex="-1" aria-labelledby="onCallLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header mb-3" style="border: none">
+        <h5 class="modal-title">Past on call duties</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body mb-5 mx-4">
+        <table *ngIf="!isLoading" class="table table-hover justify-content-center equipmentTable">
+          <thead>
+            <tr>
+              <th>Duration</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let duty of getOnCallsForDoctor(selectedDoctor)">
+              <td>
+                {{ displayPastOnCallDuties(duty.week, 2022, duty.month) }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>

@@ -26,7 +26,7 @@ namespace HospitalApi.Controllers
             this._uow = uow;
         }
 
-        [Authorize(Roles = "Manager")]
+       // [Authorize(Roles = "Manager")]
         [HttpPost]
         public IEnumerable<Room> AddRooms(IEnumerable<Room> rooms)
         {

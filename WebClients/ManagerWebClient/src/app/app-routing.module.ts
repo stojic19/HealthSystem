@@ -32,11 +32,13 @@ import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from 'src/app/AuthGuard/AuthGuard';
 
 import { environment } from 'src/environments/environment';
+import { OnCallShiftsComponent } from './on-call-shifts/on-call-shifts.component';
 
 const _isProd = environment.production;
 
 const routes: Routes = [
   { path: _isProd? 'manager/overview' : 'overview', component: HospitalOverviewComponent , canActivate: [AuthGuard]},
+  { path: _isProd? 'manager/oncall' : 'oncall', component: OnCallShiftsComponent , canActivate: [AuthGuard]},
   { path: _isProd? 'manager/feedbacks' : 'feedbacks', component: FeedbacksManagerComponent , canActivate: [AuthGuard]},
   { path: _isProd? 'manager/firstBuilding' : 'firstBuilding', component: FirstBuildingComponent , canActivate: [AuthGuard]},
   { path: _isProd? 'manager/secondBuilding' : 'secondBuilding', component: SecondBuildingComponent , canActivate: [AuthGuard]},
@@ -91,5 +93,6 @@ export const routingComponents = [
   SurveysObserveComponent,
   SurveySectionObserveComponent,
   RatingDecimalComponent,
-  MaliciousPatientsComponent
+  MaliciousPatientsComponent,
+  OnCallShiftsComponent
 ];

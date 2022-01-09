@@ -13,7 +13,7 @@ export class RoomPositionService {
 
   getFirstFloorOfFirstBuilding() {
     return this.http
-      .get(`${environment.baseHospitalUrl}` + 'api/RoomPosition/GetRoomsByLocation', {
+      .get('/api/RoomPosition/GetRoomsByLocation', {
         params: {
           floorNumber: 1,
           buildingName: 'Building 1',
@@ -26,7 +26,7 @@ export class RoomPositionService {
 
   getSecondFloorOfFirstBuilding() {
     return this.http
-      .get(`${environment.baseHospitalUrl}` + 'api/RoomPosition/GetRoomsByLocation', {
+      .get('/api/RoomPosition/GetRoomsByLocation', {
         params: {
           floorNumber: 2,
           buildingName: 'Building 1',
@@ -38,7 +38,7 @@ export class RoomPositionService {
 
   getFirstFloorOfSecondBuilding() {
     return this.http
-      .get(`${environment.baseHospitalUrl}` + 'api/RoomPosition/GetRoomsByLocation', {
+      .get('/api/RoomPosition/GetRoomsByLocation', {
         params: {
           floorNumber: 1,
           buildingName: 'Building 2',
@@ -50,7 +50,7 @@ export class RoomPositionService {
 
   getSecondFloorOfSecondBuilding() {
     return this.http
-      .get(`${environment.baseHospitalUrl}` + 'api/RoomPosition/GetRoomsByLocation', {
+      .get('/api/RoomPosition/GetRoomsByLocation', {
         params: {
           floorNumber: 2,
           buildingName: 'Building 2',

@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Hospital.SharedModel.Model;
 using Hospital.SharedModel.Repository;
 using Hospital.SharedModel.Repository.Base;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HospitalApi.Controllers
 {
@@ -65,6 +68,13 @@ namespace HospitalApi.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error! Failed loading doctors!");
             }
+        }
+
+        [HttpPost]
+        public IEnumerable<Doctor> AddDoctors(IEnumerable<Doctor> doctors)
+        {
+            var roomRepo = _uow.GetRepository<IDoctorWriteRepository>();
+            return roomRepo.AddRange(doctors);
         }
     }
 }

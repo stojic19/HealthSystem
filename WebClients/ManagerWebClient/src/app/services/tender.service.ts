@@ -11,11 +11,15 @@ export class TenderService{
     constructor(private _httpClient: HttpClient) {}
 
     getTenders(): Observable<any[]>{
-        return this._httpClient.get<any[]>(this._APIUrl +'api/Tender/GetActiveTenders');
+        return this._httpClient.get<any[]>(this._APIUrl + 'api/Tender/GetActiveTenders');
     }
 
     getTenderById(id: number): Observable<any>{
-        return this._httpClient.get<any[]>(this._APIUrl+`api/Tender/GetTenderById/${id}`);
+        return this._httpClient.get<any[]>(this._APIUrl + `api/Tender/GetTenderById/${id}`);
+    }
+
+    getTenderStatsForPharmacy(id: number): any{
+        return this._httpClient.get<any>(this._APIUrl + `api/Tender/GetTenderStatsForPharmacy/${id}`)
     }
     
 }

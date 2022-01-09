@@ -135,6 +135,22 @@ namespace IntegrationAPI.Controllers.Tenders
             return null;
         }
 
+        [HttpGet("{id:int}")]
+        public PharmacyStatsDTO GetTenderStatsForPharmacy(int id)
+        {
+            PharmacyStatsDTO stats = new PharmacyStatsDTO();
+            Pharmacy pharmacy = _unitOfWork.GetRepository<IPharmacyReadRepository>().GetById(id);
+            var tenders = _unitOfWork.GetRepository<ITenderReadRepository>().GetAll()
+                            .Include(t => t.TenderOffers).Include(t => t.MedicationRequests);
+            foreach (var tender in tenders.AsEnumerable())
+            {
+                stats.Offers += tender.NumberOfPharmacyOffers(pharmacy);
+                if (tender.DidPharmacyWin(pharmacy))
+                    stats.Won += 1;     
+            }
+            return stats;
+        }
+
         [HttpPost]
         public IActionResult ChooseWinningOffer(WinningOfferDto dto)
         {

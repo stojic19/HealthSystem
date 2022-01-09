@@ -35,7 +35,7 @@ export class PharmacyProfileComponent implements OnInit {
     this._tenderService.getTenderStatsForPharmacy(id)
     .subscribe(stats => {this.tenderStats = stats,
       this.chartData = [
-        { name: "Tenders entered", value: this.tenderStats.offers },
+        { name: "Tender offers", value: this.tenderStats.offers },
         { name: "Won", value: this.tenderStats.won }
       ], console.log(this.chartData)},
       (error) => alert(error.error));

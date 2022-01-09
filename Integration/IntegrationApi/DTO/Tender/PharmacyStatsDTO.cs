@@ -1,4 +1,4 @@
-﻿namespace IntegrationAPI.Controllers.Tenders
+﻿namespace IntegrationAPI.DTO.Tender
 {
     public class PharmacyStatsDTO
     {

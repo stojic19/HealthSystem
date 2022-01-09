@@ -24,7 +24,7 @@ namespace Hospital.Schedule.Service
         {
             List<ScheduledEvent> foundAppointments = CountAppointmentsForTimePeriod(timePeriod, doctorsId);
             int numOfPatients = CountPatients(foundAppointments);
-            int numOfOnCallDuties = CountOnCallDuties(doctorsId);
+            int numOfOnCallDuties = CountOnCallDuties(doctorsId, timePeriod);
 
             DoctorsScheduleReport doctorsReport =
                 new DoctorsScheduleReport(foundAppointments.Count(), numOfOnCallDuties, numOfPatients, timePeriod.StartTime, timePeriod.EndTime);
@@ -62,7 +62,7 @@ namespace Hospital.Schedule.Service
             return AllPatients.Distinct().Count();
         }
 
-        private int CountOnCallDuties(int doctorsId)
+        private int CountOnCallDuties(int doctorsId, TimePeriod timePeriod)
         {
             var doctor = uow.GetRepository<IDoctorReadRepository>()
                 .GetById(doctorsId);
@@ -71,7 +71,18 @@ namespace Hospital.Schedule.Service
                 .GetAll()
                 .Where(d => d.DoctorsOnDuty.Contains(doctor));
 
-            return duties.Count();
+            List<OnCallDuty> foundDuties = new List<OnCallDuty>();
+            foreach (var duty in duties)
+            {
+                var day = (1 + ( duty.Week - 1) * 7);
+                DateTime startOfDuty = new DateTime(2022, duty.Month, day);
+                DateTime endOfDuty = new DateTime(2022, duty.Month, day + 5);
+                if (timePeriod.OverlapsWith(new TimePeriod(startOfDuty, endOfDuty))) {
+                    foundDuties.Add(duty);
+                }
+            }
+
+            return foundDuties.Count();
         }
     }
 }

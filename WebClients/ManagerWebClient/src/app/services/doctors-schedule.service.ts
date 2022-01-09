@@ -13,7 +13,7 @@ export class DoctorsScheduleService {
   constructor(private http: HttpClient) { }
 
   getAllDoctors() {
-    return this.http.get('api/Doctor/GetAllDoctorsWithShifts');
+    return this.http.get('/api/Doctor/GetAllDoctorsWithShifts');
   }
 
   getReportInformation(id: number, start: Date, end: Date): Observable<DoctorsReport> {
@@ -22,6 +22,6 @@ export class DoctorsScheduleService {
       start: start,
       end: end
     }
-    return this.http.post<DoctorsReport>('api/DoctorsReport/GetReportInformation', dto)
+    return this.http.post<DoctorsReport>('/api/DoctorsReport/GetReportInformation', dto)
   }
 }

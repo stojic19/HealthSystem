@@ -12,8 +12,8 @@
           <tr>
             <th>Doctor</th>
             <th>Working hours</th>
-            <th>Planned on-call shift</th>
-            <th>Planned vacation</th>
+            <th>On-call shifts</th>
+            <th>Vacation</th>
           </tr>
         </thead>
         <tbody>
@@ -29,8 +29,9 @@
                 Show older
               </a>
               <br>
-              <span *ngFor="let duty of doctor.onCallDuties">
-                {{ displayOnCallDuties(duty.week, 2022, duty.month) }} </span><br>
+              <div *ngFor="let duty of doctor.onCallDuties">
+                {{ displayOnCallDuties(duty.week, 2022, duty.month) }}
+              </div>
             </td>
             <td>
               <a style="color: darkblue; font-weight: bold; font-style: italic" href="" data-bs-toggle="modal"

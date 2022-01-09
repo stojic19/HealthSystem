@@ -43,11 +43,11 @@ export class DoctorsScheduleReportComponent implements OnInit {
     let start = new Date(year, month, 1);
     let end = new Date(year, month + 1, 0);
 
-
     this.doctorsScheduleService.getReportInformation(this.chosenDoctor,
       start, end)
       .subscribe((res) => {
         this.reportForDoctor = res;
+        console.log(this.reportForDoctor)
         this.setupData()
       });
   }
@@ -58,8 +58,8 @@ export class DoctorsScheduleReportComponent implements OnInit {
         data: [
           this.reportForDoctor.numOfPatients,
           this.reportForDoctor.numOfAppointments,
-          this.reportForDoctor.numOfOnCallDuties,
-          this.reportForDoctor.numOfAppointments + 5,
+          this.reportForDoctor.numOfOnCallShifts,
+          this.reportForDoctor.numOfAppointments + 5
         ],
         label: 'Doctors workload report',
         backgroundColor: ['#efd3d7', '#dee2ff', '#cbc0d3', '#feeafa', '#8e9aaf'],

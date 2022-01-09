@@ -40,6 +40,7 @@ import { HospitalShiftsComponent } from './hospital-shifts/hospital-shifts.compo
 import { CreateShiftComponent } from './create-shift/create-shift.component';
 import { UpdateShiftComponent } from './update-shift/update-shift.component';
 import { DoctorShiftComponent } from './doctor-shift/doctor-shift.component';
+import { OnCallShiftsComponent } from './on-call-shifts/on-call-shifts.component';
 
 const _isProd = environment.production;
 
@@ -49,6 +50,8 @@ const routes: Routes = [
     component: HospitalOverviewComponent,
     canActivate: [AuthGuard],
   },
+  { path: _isProd? 'manager/oncall' : 'oncall', component: OnCallShiftsComponent , canActivate: [AuthGuard]},
+
   {
     path: _isProd ? 'manager/feedbacks' : 'feedbacks',
     component: FeedbacksManagerComponent,
@@ -234,4 +237,5 @@ export const routingComponents = [
   MaliciousPatientsComponent,
   HospitalShiftsComponent,
   DoctorShiftComponent,
+  OnCallShiftsComponent
 ];

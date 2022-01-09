@@ -1,37 +1,64 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
+using SeleniumTests.Base;
 using System;
 using System.Collections.ObjectModel;
+using System.Threading;
 
 namespace SeleniumTests.Pages
 {
-    class CancelAppointmentPage
+    class CancelAppointmentPage : BasePage
     {
         private readonly IWebDriver driver;
-        public readonly string URI = "http://localhost:4200/record";
-        private IWebElement CancelButton => driver.FindElement(By.Id("1b"));      
-        private IWebElement MatTable => driver.FindElement(By.Id("futureAppointmentsMatTab"));
-        private ReadOnlyCollection<IWebElement> Rows => driver.FindElements(By.XPath("//table[@id='futureAppointmentsMatTable']/tbody/tr"));
-        private readonly int InitialRowCount;
-        private TimeSpan timeOutInSeconds = new(0,0,20);
 
-        public CancelAppointmentPage(IWebDriver driver)
+        public readonly string URI;
+
+        private int InitialRowCount;
+
+        private TimeSpan timeOutInSeconds = new(0, 0, 20);
+        private readonly string _rowsPath = "/html/body/app-root/app-main/app-patient-medical-record/div/mat-card[3]/mat-tab-group/div/mat-tab-body[1]/div/mat-card/div/div[2]/table/tbody/tr";
+        
+        private IWebElement CancelButton => driver.FindElement(By.Id("1b"));
+     
+        private IWebElement MatTable => driver.FindElement(By.Id("futureAppointmentsMatTab"));
+        private ReadOnlyCollection<IWebElement> Rows => driver.FindElements(By.XPath(_rowsPath));
+        private IWebElement FirstRow => driver.FindElement(By.XPath(_rowsPath + "[1]"));
+        private IWebElement LastRow => driver.FindElement(By.XPath(_rowsPath + "[last()]"));
+        private IWebElement TestCancelButton => driver.FindElement(By.XPath(_rowsPath + "[last()]" + "/td[7]/button"));
+
+        public CancelAppointmentPage(IWebDriver driver) : base(driver)
         {
             this.driver = driver;
-            this.InitialRowCount = RowCount();
+            this.URI = base._baseUrl + "/record";
+
         }
         #region Display
         public bool MatTablelementDisplayed()
         {
             return MatTable.Displayed;
         }
-
+        public bool LastRowDisplayed()
+        {
+            return LastRow.Displayed;
+        }
+        public bool FirstRowDisplayed()
+        {
+            return FirstRow.Displayed;
+        }
+        public bool TableRowsDisplayed()
+        {
+            return Rows.Count > 0;
+        }
         public bool CancelButtonDisplayed()
         {
           //Sta ako nema nista ?
-           return CancelButton.Displayed;
-            
+           return CancelButton.Displayed;           
+        }
+        public bool TestCancelButtonDisplayed()
+        {
+            //Sta ako nema nista ?
+            return TestCancelButton.Displayed;
+
         }
         #endregion
 
@@ -42,12 +69,14 @@ namespace SeleniumTests.Pages
 
         internal void EnsurePageIsDisplayed()
         {
+
             var wait = new WebDriverWait(driver, new TimeSpan(0, 0, 30));
             wait.Until(condition =>
             {
                 try
                 {
-                    return MatTablelementDisplayed();
+                    return MatTablelementDisplayed() && FirstRowDisplayed() && TableRowsDisplayed()
+                             && LastRowDisplayed() && TestCancelButtonDisplayed();
                 }
                 catch (StaleElementReferenceException)
                 {
@@ -99,10 +128,13 @@ namespace SeleniumTests.Pages
         }
         internal void CancelAppointment()
         {
+            InitialRowCount = Rows.Count;
             EnsureCancelButtonIsDisplayed();
-            WebDriverWait wait = new WebDriverWait(driver, timeOutInSeconds);
             CancelButton.SendKeys(Keys.Return);
+            Thread.Sleep(5000);
             EnsureMatTableIsDisplayed();
+            
+            
         }
 
         public bool ElementNumberChanged()
@@ -111,7 +143,6 @@ namespace SeleniumTests.Pages
             System.Diagnostics.Debug.WriteLine(RowCount());
            if (InitialRowCount - RowCount() == 1)
             {
-
                 return true;
             }
             else

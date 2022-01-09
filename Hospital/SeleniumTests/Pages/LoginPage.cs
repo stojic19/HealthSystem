@@ -1,22 +1,21 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using SeleniumTests.Base;
 using System;
 
 namespace SeleniumTests.Pages
 {
-    public class LoginPage
+    public class LoginPage : BasePage
     {
         private readonly IWebDriver driver;
-        private readonly string LoginUri = "http://localhost:4200/login";
-        public readonly string FirstPage = "http://localhost:4200/record";
         private IWebElement UsernameElement => driver.FindElement(By.Id("loginUsername"));
         private IWebElement PasswordElement => driver.FindElement(By.Id("loginPassword"));
         private IWebElement SubmitButtonElement => driver.FindElement(By.Id("login"));
 
-        public LoginPage(IWebDriver driver, string uri)
+        public LoginPage(IWebDriver driver) : base(driver)
         {
             this.driver = driver;
-            this.LoginUri = uri;
+           
         }
 
         #region Display
@@ -80,7 +79,7 @@ namespace SeleniumTests.Pages
             {
                 try
                 {
-                    return driver.Url.Equals(FirstPage);
+                    return driver.Url.Equals(_baseUrl + "/record");
                 }
                 catch (StaleElementReferenceException)
                 {
@@ -93,6 +92,6 @@ namespace SeleniumTests.Pages
             });
         }
 
-        public void Navigate() => driver.Navigate().GoToUrl(LoginUri);
+        public void Navigate() => driver.Navigate().GoToUrl(_baseUrl + "/login");
     }
 }

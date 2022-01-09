@@ -67,7 +67,6 @@ export class DoctorsScheduleComponent implements OnInit {
       + formatDate(new Date(end), 'dd.MM.yyy', 'en_US');
 
     if (new Date(end) < today) {
-      console.log(display)
       duties.push(display);
     }
 
@@ -75,7 +74,16 @@ export class DoctorsScheduleComponent implements OnInit {
   }
 
   getOnCallsForDoctor(doctor: Doctor) {
-    return doctor.onCallDuties;
+    let pastDuties = [] as any
+    for (let d of doctor.onCallDuties) {
+      let end = this.getEndOfDuty(d.week, 2022, d.month);
+      let today = new Date();
+      if (new Date(end) < today) {
+        pastDuties.push(d);
+      }
+    }
+
+    return pastDuties;
   }
 
   getFutureVacations(doctor: Doctor) {

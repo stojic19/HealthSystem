@@ -59,7 +59,7 @@ const routes: Routes = [
   { path: _isProd? 'manager/pharmacy-list' : 'pharmacy-list', component: PharmaciesListComponent , canActivate: [AuthGuard]},
   { path: _isProd? 'manager/benefit-list' : 'benefit-list', component: BenefitListComponent , canActivate: [AuthGuard]},
   { path: _isProd? 'manager/benefit/:id' : 'benefit/:id', component: BenefitDetailsComponent , canActivate: [AuthGuard]},
-  { path: _isProd? 'manager/home' : 'home', component: HomePageComponent },
+  { path: _isProd? 'manager' : '', component: HomePageComponent },
   {
     path: _isProd? 'manager/medication-consumption-report' : 'medication-consumption-report',
     component: MedicationReportsComponent, canActivate: [AuthGuard]
@@ -74,7 +74,7 @@ const routes: Routes = [
   },
   { path: _isProd? 'manager/roomRenovation' : 'roomRenovation', component: RenovationFormComponent, canActivate: [AuthGuard]},
   { path: _isProd? 'manager/blocking' : 'blocking', component: MaliciousPatientsComponent, canActivate: [AuthGuard]},
-  { path: _isProd? 'manager' : '', redirectTo: _isProd? 'manager/home' : 'home', pathMatch: 'full' },
+  { path: _isProd? 'manager' : '', redirectTo: _isProd? 'manager' : '', pathMatch: 'full' },
   { path: _isProd? 'manager/add-tender' : 'add-tender', component: AddTenderComponent },
   { path: _isProd? 'manager/moveEquipment/:id' : 'moveEquipment/:id', component: EquipmentFormComponent , canActivate: [AuthGuard]},
   { path: _isProd? 'manager/surveys' : 'surveys', component: SurveysObserveComponent , canActivate: [AuthGuard]},

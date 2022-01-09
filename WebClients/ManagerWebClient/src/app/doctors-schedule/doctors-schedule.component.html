@@ -5,7 +5,7 @@
     </h4>
   </div>
 
-  <div class="col-10">
+  <div class="col-9">
     <div style="height: 515px; overflow: auto" id="table" class="table-responsive custom-table-responsive">
       <table *ngIf="!isLoading" class="table table-hover justify-content-center equipmentTable equipmentTable">
         <thead>
@@ -77,8 +77,8 @@
           </thead>
           <tbody>
             <tr *ngFor="let vacation of getPastVacations(selectedDoctor)">
-              <td *ngIf="vacation.type === 0">Sick Leave:</td>
-              <td *ngIf="vacation.type === 1">Vacation:</td>
+              <td *ngIf="vacation.type === 0">Sick Leave</td>
+              <td *ngIf="vacation.type === 1">Vacation</td>
               <td>
                 {{ vacation.startDate | date: "dd.MM.yyyy" }}
               </td>

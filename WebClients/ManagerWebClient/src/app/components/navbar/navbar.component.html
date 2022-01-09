@@ -12,44 +12,75 @@
           <a class="nav-link" routerLink="/manager/home" *ngIf="isProd">Home</a>
         </li>
         <li class="nav-item active">
-          <a class="nav-link" routerLink="/overview" *ngIf="!isProd">Map</a>
-          <a class="nav-link" routerLink="/manager/overview" *ngIf="isProd">Map</a>
+          <div class="dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuLink" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Doctors
+            </a>
+
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <li>
+                <a class="nav-link" routerLink="/doctorShifts" *ngIf="!isProd">Doctor Shifts</a>
+                <a class="nav-link" routerLink="/manager/doctorShifts" *ngIf="isProd">Doctor Shifts</a>
+              </li>
+              <li>
+                <a class="nav-link" routerLink="/hospitalShifts" *ngIf="!isProd">Shifts</a>
+                <a class="nav-link" routerLink="/manager/hospitalShifts" *ngIf="isProd">Shifts</a>
+              </li>
+            </ul>
+          </div>
         </li>
         <li class="nav-item active">
-            <a class="nav-link" routerLink="/hospitalEquipment" *ngIf="!isProd">Equipment</a>
-            <a class="nav-link" routerLink="/manager/hospitalEquipment" *ngIf="isProd">Equipment</a>
+          <div class="dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuLink" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Rooms
+            </a>
+
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <li>
+                <a class="nav-link" routerLink="/overview" *ngIf="!isProd">Map</a>
+                <a class="nav-link" routerLink="/manager/overview" *ngIf="isProd">Map</a>
+              </li>
+              <li>
+                <a class="nav-link" routerLink="/roomRenovation" *ngIf="!isProd">Renovation</a>
+                <a class="nav-link" routerLink="/manager/roomRenovation" *ngIf="isProd">Renovation</a>
+              </li>
+            </ul>
+          </div>
         </li>
         <li class="nav-item active">
-          <a class="nav-link" routerLink="/roomRenovation" *ngIf="!isProd">Renovation</a>
-          <a class="nav-link" routerLink="/manager/roomRenovation" *ngIf="isProd">Renovation</a>
+          <a class="nav-link" routerLink="/hospitalEquipment" *ngIf="!isProd">Equipment</a>
+          <a class="nav-link" routerLink="/manager/hospitalEquipment" *ngIf="isProd">Equipment</a>
         </li>
         <li class="nav-item active">
-            <a class="nav-link" routerLink="/feedbacks" *ngIf="!isProd">Feedbacks</a>
-            <a class="nav-link" routerLink="/manager/feedbacks" *ngIf="isProd">Feedbacks</a>
+          <a class="nav-link" routerLink="/feedbacks" *ngIf="!isProd">Feedbacks</a>
+          <a class="nav-link" routerLink="/manager/feedbacks" *ngIf="isProd">Feedbacks</a>
         </li>
         <li class="nav-item active">
-            <a class="nav-link" routerLink="/complaints" *ngIf="!isProd">Complaints</a>
-            <a class="nav-link" routerLink="/manager/complaints" *ngIf="isProd">Complaints</a>
+          <a class="nav-link" routerLink="/complaints" *ngIf="!isProd">Complaints</a>
+          <a class="nav-link" routerLink="/manager/complaints" *ngIf="isProd">Complaints</a>
         </li>
         <li class="nav-item active">
-            <a class="nav-link" routerLink="/pharmacy-list" *ngIf="!isProd">Pharmacies</a>
-            <a class="nav-link" routerLink="/manager/pharmacy-list" *ngIf="isProd">Pharmacies</a>
+          <a class="nav-link" routerLink="/pharmacy-list" *ngIf="!isProd">Pharmacies</a>
+          <a class="nav-link" routerLink="/manager/pharmacy-list" *ngIf="isProd">Pharmacies</a>
         </li>
         <li class="nav-item active">
-            <a class="nav-link" routerLink="/benefit-list" *ngIf="!isProd">Benefits</a>
-            <a class="nav-link" routerLink="/manager/benefit-list" *ngIf="isProd">Benefits</a>
+          <a class="nav-link" routerLink="/benefit-list" *ngIf="!isProd">Benefits</a>
+          <a class="nav-link" routerLink="/manager/benefit-list" *ngIf="isProd">Benefits</a>
         </li>
         <li class="nav-item active">
-            <a class="nav-link" routerLink="/medication-consumption-report" *ngIf="!isProd">Reports</a>
-            <a class="nav-link" routerLink="/manager/medication-consumption-report" *ngIf="isProd">Reports</a>
+          <a class="nav-link" routerLink="/medication-consumption-report" *ngIf="!isProd">Reports</a>
+          <a class="nav-link" routerLink="/manager/medication-consumption-report" *ngIf="isProd">Reports</a>
         </li>
         <li class="nav-item active">
-            <a class="nav-link" routerLink="/medicine-specification-requests" *ngIf="!isProd">Medicine Specification</a>
-            <a class="nav-link" routerLink="/manager/medicine-specification-requests" *ngIf="isProd">Medicine Specification</a>
+          <a class="nav-link" routerLink="/medicine-specification-requests" *ngIf="!isProd">Medicine Specification</a>
+          <a class="nav-link" routerLink="/manager/medicine-specification-requests" *ngIf="isProd">Medicine
+            Specification</a>
         </li>
         <li class="nav-item active">
-            <a class="nav-link" routerLink="/surveys" *ngIf="!isProd">Surveys</a>
-            <a class="nav-link" routerLink="/manager/surveys" *ngIf="isProd">Surveys</a>
+          <a class="nav-link" routerLink="/surveys" *ngIf="!isProd">Surveys</a>
+          <a class="nav-link" routerLink="/manager/surveys" *ngIf="isProd">Surveys</a>
         </li>
         <li class="nav-item active">
           <a class="nav-link" routerLink="/blocking" >Blocking</a>

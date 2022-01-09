@@ -35,6 +35,10 @@ import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from 'src/app/AuthGuard/AuthGuard';
 
 import { environment } from 'src/environments/environment';
+import { HospitalShiftsComponent } from './hospital-shifts/hospital-shifts.component';
+import { CreateShiftComponent } from './create-shift/create-shift.component';
+import { UpdateShiftComponent } from './update-shift/update-shift.component';
+import { DoctorShiftComponent } from './doctor-shift/doctor-shift.component';
 
 const _isProd = environment.production;
 
@@ -80,7 +84,12 @@ const routes: Routes = [
   { path: _isProd? 'manager/moveEquipment/:id' : 'moveEquipment/:id', component: EquipmentFormComponent , canActivate: [AuthGuard]},
   { path: _isProd? 'manager/surveys' : 'surveys', component: SurveysObserveComponent , canActivate: [AuthGuard]},
   { path: _isProd? 'manager/schedule/:id' : 'schedule/:id', component: RoomScheduleComponent , canActivate: [AuthGuard]},
-  { path: _isProd? 'manager/login' : 'login', component: LoginComponent}
+  { path: _isProd? 'manager/login' : 'login', component: LoginComponent},
+  { path: _isProd? 'manager/hospitalShifts' : 'hospitalShifts', component: HospitalShiftsComponent, canActivate: [AuthGuard]},
+  { path: _isProd? 'manager/createNewShift' : 'createNewShift', component: CreateShiftComponent, canActivate: [AuthGuard]},
+  { path: _isProd? 'manager/updateShift/:id' : 'updateShift/:id', component: UpdateShiftComponent, canActivate: [AuthGuard]},
+  { path: _isProd? 'manager/doctorShifts' : 'doctorShifts', component: DoctorShiftComponent, canActivate: [AuthGuard]},
+
 ];
 
 @NgModule({
@@ -98,5 +107,7 @@ export const routingComponents = [
   SurveysObserveComponent,
   SurveySectionObserveComponent,
   RatingDecimalComponent,
-  MaliciousPatientsComponent
+  MaliciousPatientsComponent,
+  HospitalShiftsComponent,
+  DoctorShiftComponent
 ];

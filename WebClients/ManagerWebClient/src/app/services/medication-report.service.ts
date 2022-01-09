@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class MedicationReportService {
-  private _APIUrl = `${environment.baseHospitalUrl}`;
+  private _APIUrl = `${environment.baseIntegrationUrl}`;
   constructor(private _httpClient: HttpClient) { }
   getReport(val:any): Observable<object>{
     return this._httpClient.post<object>(this._APIUrl+'api/Report/CreateConsumptionReport',val);

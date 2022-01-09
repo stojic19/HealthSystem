@@ -28,6 +28,7 @@ import { PharmacyProfileComponent } from './pharmacies/pharmacy-profile/pharmacy
 import { RenovationFormComponent } from './renovation-form/renovation-form.component';
 import { RoomScheduleComponent } from './room-schedule/room-schedule.component';
 import { MaliciousPatientsComponent } from './components/malicious-patients/malicious-patients.component';
+import { AddTenderComponent } from './tendering/add-tender/add-tender.component';
 import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from 'src/app/AuthGuard/AuthGuard';
 
@@ -70,6 +71,7 @@ const routes: Routes = [
   { path: _isProd? 'manager/roomRenovation' : 'roomRenovation', component: RenovationFormComponent, canActivate: [AuthGuard]},
   { path: _isProd? 'manager/blocking' : 'blocking', component: MaliciousPatientsComponent, canActivate: [AuthGuard]},
   { path: _isProd? 'manager' : '', redirectTo: _isProd? 'manager/home' : 'home', pathMatch: 'full' },
+  { path: _isProd? 'manager/add-tender' : 'add-tender', component: AddTenderComponent },
   { path: _isProd? 'manager/moveEquipment/:id' : 'moveEquipment/:id', component: EquipmentFormComponent , canActivate: [AuthGuard]},
   { path: _isProd? 'manager/surveys' : 'surveys', component: SurveysObserveComponent , canActivate: [AuthGuard]},
   { path: _isProd? 'manager/schedule/:id' : 'schedule/:id', component: RoomScheduleComponent , canActivate: [AuthGuard]},

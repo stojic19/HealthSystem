@@ -13,7 +13,7 @@ namespace IntegrationAPI.Controllers.Base
 
         protected BaseIntegrationController(IUnitOfWork uow)
         {
-            var ipAdr = "192.168.0.13";
+            var ipAdr = "127.0.0.1";
             _unitOfWork = uow;
             _sftpCredentials = new SftpCredentialsDTO
             {

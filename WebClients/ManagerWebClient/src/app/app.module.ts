@@ -76,6 +76,12 @@ import { JwtInterceptor } from './JWTInterceptor/JwtInterceptor';
 import { DoctorsScheduleComponent } from './doctors-schedule/doctors-schedule.component';
 import { DoctorsScheduleReportComponent } from './doctors-schedule-report/doctors-schedule-report.component';
 import { ChartsModule } from 'ng2-charts';
+import { HospitalShiftsComponent } from './hospital-shifts/hospital-shifts.component';
+import { CreateShiftComponent } from './create-shift/create-shift.component';
+import { UpdateShiftComponent } from './update-shift/update-shift.component';
+import { DoctorShiftComponent } from './doctor-shift/doctor-shift.component';
+import { ShiftListComponent } from './doctor-shift/shift-list/shift-list.component';
+import { ShiftUpdateComponent } from './doctor-shift/shift-update/shift-update.component';
 
 @NgModule({
   declarations: [
@@ -135,7 +141,12 @@ import { ChartsModule } from 'ng2-charts';
     LoginComponent,
     DoctorsScheduleComponent,
     DoctorsScheduleReportComponent,
-
+    HospitalShiftsComponent,
+    CreateShiftComponent,
+    UpdateShiftComponent,
+    DoctorShiftComponent,
+    ShiftListComponent,
+    ShiftUpdateComponent,
   ],
   imports: [
     BrowserModule,

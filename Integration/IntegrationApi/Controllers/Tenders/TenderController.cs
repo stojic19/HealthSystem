@@ -139,7 +139,11 @@ namespace IntegrationAPI.Controllers.Tenders
         public PharmacyStatsDTO GetTenderStatsForPharmacy(int id)
         {
             PharmacyStatsDTO stats = new PharmacyStatsDTO();
-            Pharmacy pharmacy = _unitOfWork.GetRepository<IPharmacyReadRepository>().GetById(id);
+            Pharmacy pharmacy = _unitOfWork.GetRepository<IPharmacyReadRepository>().GetAll()
+                .Include(x => x.City)
+                .ThenInclude(x => x.Country)
+                .Include(x => x.Complaints)
+                .FirstOrDefault(x => x.Id == id);
             var tenders = _unitOfWork.GetRepository<ITenderReadRepository>().GetAll()
                             .Include(t => t.TenderOffers).Include(t => t.MedicationRequests);
             foreach (var tender in tenders.AsEnumerable())

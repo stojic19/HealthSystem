@@ -1,4 +1,6 @@
-﻿using Hospital.MedicalRecords.Model;
+﻿using AutoMapper;
+using AutoMapper.Configuration;
+using Hospital.MedicalRecords.Model;
 using Hospital.MedicalRecords.Repository;
 using Hospital.RoomsAndEquipment.Model;
 using Hospital.RoomsAndEquipment.Repository;
@@ -7,6 +9,8 @@ using Hospital.Schedule.Repository;
 using Hospital.SharedModel.Model;
 using Hospital.SharedModel.Model.Enumerations;
 using Hospital.SharedModel.Repository;
+using HospitalApi.DTOs;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -47,9 +51,9 @@ namespace SeleniumTests
         }
 
         [Fact]
-        public void BlockPatient()
+        public async Task BlockPatientAsync()
         {
-            ArrangeDatabase();
+            await ArrangeDatabaseAsync();
             InsertCredentials();
             loginPage.EnsureAdminIsLoggedIn();
             _blockMaliciousPatientsPage.Navigate();
@@ -63,7 +67,7 @@ namespace SeleniumTests
         }
         private void InsertCredentials()
         {
-            loginPage.InsertUsername("manager");
+            loginPage.InsertUsername("testManager");
             loginPage.InsertPassword("111111aA");
             loginPage.Submit();
         }
@@ -72,7 +76,7 @@ namespace SeleniumTests
             _driver.Quit();
             _driver.Dispose();
         }
-        private void ArrangeDatabase()
+        private async Task ArrangeDatabaseAsync()
         {
             
             var country = UoW.GetRepository<ICountryReadRepository>().GetAll()
@@ -261,9 +265,39 @@ namespace SeleniumTests
                     };
                     UoW.GetRepository<IScheduledEventWriteRepository>().Add(scheduledEvent4);
                 }
+
+                
+            }
+            var managerReadRepo = UoW.GetRepository<IManagerReadRepository>();
+            var manager = managerReadRepo.GetAll().Where(x => x.UserName.Equals("testManager")).FirstOrDefault();
+            if (manager == null)
+            {
+
+                await RegisterManagerAsync(city.Id);
+                manager = managerReadRepo.GetAll().Where(x => x.UserName.Equals("testManager")).FirstOrDefault();
             }
 
         }
+
+        private async Task RegisterManagerAsync(int cityId)
+        {
+            var managerDto = new NewManagerDTO()
+            {
+                FirstName = "TestManager",
+                LastName = "TestManagerLastName",
+                MiddleName = "TestMnagerMiddleName",
+                DateOfBirth =  new DateTime(),
+                Gender = Gender.Female,
+                Street = "TestManagerStreet",
+                UserName = "testManager",
+                Email = "testManager@gmail.com",
+                CityId = cityId,
+                Password = "111111aA"
+            };
+            var content = GetContent(managerDto);
+            var response = await Client.PostAsync(BaseUrl + "api/Registration/RegisterManager", content);
+        }
+
         private void ClearDatabase()
         {
             var patient = UoW.GetRepository<IPatientReadRepository>().GetAll()

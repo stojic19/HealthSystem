@@ -7,7 +7,6 @@ using Hospital.Schedule.Model;
 using Hospital.SharedModel.Model.Enumerations;
 using Hospital.Schedule.Repository;
 
-;
 namespace HospitalUnitTests
 {
     public class PatientSurveyTest : BaseTest

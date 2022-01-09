@@ -69,6 +69,14 @@ namespace HospitalApi.Controllers
 
             return Ok(eventsDTOs);
         }
+        [Authorize(Roles = "Patient")]
+        [HttpGet("{eventId}")]
+        public IActionResult CancelAppointment(int eventId)
+        {
+
+            _eventsService.CancelAppointment(eventId);
+            return Ok();
+        }
 
         [Authorize(Roles = "Patient")]
         [HttpGet("{eventId}")]

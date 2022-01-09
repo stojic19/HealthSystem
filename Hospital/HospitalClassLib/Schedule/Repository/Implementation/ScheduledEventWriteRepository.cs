@@ -27,7 +27,6 @@ namespace Hospital.Schedule.Repository.Implementation
                 scheduledEvent.IsCanceled = true;
                 Update(scheduledEvent, true);
             }
-
         }
     }
 }

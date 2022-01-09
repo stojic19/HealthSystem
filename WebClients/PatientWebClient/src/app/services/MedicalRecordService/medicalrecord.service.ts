@@ -9,30 +9,29 @@ import { IPatient } from 'src/app/interfaces/patient-feedback/patient-interface'
   providedIn: 'root'
 })
 export class MedicalRecordService {
-
   patient!: IPatient;
 
-  constructor(private _http: HttpClient) {}
+  constructor(private _http: HttpClient) { }
 
-  get(userName:any): any {
+  get(userName: any): any {
     return this._http.get<IPatient>('api/MedicalRecord/GetPatientWithRecord/' + userName);
   }
-  getFutureAppointments(userName:any): any {
-  
+  getFutureAppointments(userName: any): any {
+
     return this._http.get<IAppointment[]>('api/ScheduledEvent/GetUpcomingUserEvents/' + userName);
   }
 
-  getfinishedAppointments(userName:any): any {
-  
+  getfinishedAppointments(userName: any): any {
+
     return this._http.get<IFinishedAppointment[]>('api/ScheduledEvent/GetEventsForSurvey/' + userName);
   }
 
-  getCanceledAppointments(userName:any): any {
-   
+  getCanceledAppointments(userName: any): any {
+
     return this._http.get<IAppointment[]>('api/ScheduledEvent/GetCanceledUserEvents/' + userName);
   }
-  cancelAppointments(id: number) : any {
-    
-   return this._http.get<any>('api/ScheduledEvent/CancelAppointment/' + id);
+  cancelAppointments(id: number): any {
+
+    return this._http.get<any>('api/ScheduledEvent/CancelAppointment/' + id);
   }
 }

@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { IAppointment } from 'src/app/interfaces/appointment';
 import { IFinishedAppointment } from 'src/app/interfaces/finished-appoinment';
 import { MedicalRecordService } from 'src/app/services/MedicalRecordService/medicalrecord.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AsyncKeyword } from 'typescript';
 import { IPatient } from 'src/app/interfaces/patient-feedback/patient-interface';
@@ -30,18 +29,16 @@ export class PatientMedicalRecordComponent implements OnInit {
   canceledAppointments!: MatTableDataSource<IAppointment>;
   message!: String;
   imagePath!: any;
-  userName!:ICurrentUser;
+  userName!: ICurrentUser;
   constructor(
     private _sanitizer: DomSanitizer,
-    private snackBar: MatSnackBar,
     private _service: MedicalRecordService,
     private _router: Router,
-    private _activeRoute: ActivatedRoute
   ) {
 
     this.futureAppointments = new MatTableDataSource<IAppointment>();
-    this.finishedAppointments = new  MatTableDataSource<IFinishedAppointment>();
-    this.canceledAppointments = new  MatTableDataSource<IAppointment>();
+    this.finishedAppointments = new MatTableDataSource<IFinishedAppointment>();
+    this.canceledAppointments = new MatTableDataSource<IAppointment>();
 
     this.userName = JSON.parse((localStorage.getItem('currentUser'))!)
 
@@ -64,14 +61,14 @@ export class PatientMedicalRecordComponent implements OnInit {
     this.sub = this._service.get(this.userName.userName).subscribe({
       next: (patient: IPatient) => {
         this.patient = patient;
-    
+
       },
     });
-   
+
     this.sub = this._service.getFutureAppointments(this.userName.userName).subscribe({
       next: (futureAppointments: IAppointment[]) => {
         this.futureAppointments.data = futureAppointments;
-      },
+      }
     });
     this.sub = this._service.getfinishedAppointments(this.userName.userName).subscribe({
       next: (finishedAppointments: IFinishedAppointment[]) => {
@@ -89,9 +86,9 @@ export class PatientMedicalRecordComponent implements OnInit {
     var str = id.toString();
     this._router.navigate(['/survey', str]);
     this.refresh();
-    
+
   }
-  cancelAppointment(id:number){
+  cancelAppointment(id: number) {
     this._service.cancelAppointments(id).subscribe();
     this.refresh();
   }

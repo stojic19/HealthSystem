@@ -62,6 +62,11 @@ namespace HospitalUnitTests
                 Id = 2,
                 UserName = "testDoctor",
             };
+            Doctor secondDoctor = new Doctor()
+            {
+                Id = 3,
+                UserName = "testDoctor",
+            };
             Context.Rooms.Add(new Room()
             {
                 Id = 1,
@@ -77,6 +82,7 @@ namespace HospitalUnitTests
             DoctorsOnDuty.Add(doctor);
 
             Context.OnCallDuties.Add(new OnCallDuty(12, 2, DoctorsOnDuty));
+            Context.OnCallDuties.Add(new OnCallDuty(2, 1, DoctorsOnDuty));
 
             Context.ScheduledEvents.Add(new ScheduledEvent()
             {

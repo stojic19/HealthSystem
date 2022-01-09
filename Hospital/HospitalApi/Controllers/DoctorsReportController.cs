@@ -1,5 +1,6 @@
 ﻿using Hospital.Schedule.Model;
 using Hospital.Schedule.Repository;
+using Hospital.Schedule.Service;
 using Hospital.SharedModel.Model.Wrappers;
 using Hospital.SharedModel.Repository;
 using Hospital.SharedModel.Repository.Base;
@@ -32,6 +33,24 @@ namespace HospitalApi.Controllers
                 .GetAll().Include(d => d.DoctorsOnDuty);
 
             return duties;
+        }
+
+        [HttpPost]
+        public IActionResult GetReportInformation(ReportDTO reportDto)
+        {
+            try
+            {
+                TimePeriod timePeriod = new TimePeriod(reportDto.Start, reportDto.End);
+                var reportService = new GeneratingDoctorsReportService(_uow);
+                var report = reportService.GetReportInformation(timePeriod, reportDto.DoctorsId);
+                return Ok(report);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error!Failed loading doctors!");
+            }
+
+
         }
     }
 }

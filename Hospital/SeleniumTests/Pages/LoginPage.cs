@@ -12,7 +12,7 @@ namespace SeleniumTests.Pages
 
         private IWebElement UsernameElement => driver.FindElement(By.Id("loginUsername"));
         private IWebElement PasswordElement => driver.FindElement(By.Id("loginPassword"));
-        private IWebElement SubmitButtonElement => driver.FindElement(By.Id("login"));
+        private IWebElement SubmitButtonElement => driver.FindElement(By.Id("submitButton"));
 
         public LoginPage(IWebDriver driver,string uri)
         {

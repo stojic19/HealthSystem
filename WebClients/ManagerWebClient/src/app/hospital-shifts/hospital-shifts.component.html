@@ -1,0 +1,72 @@
+<div style="height: 100%">
+    <div class="d-flex justify-content-center mt-5">
+        <h6 class="text-muted subtitle" style="font-size: 20px;">
+            Hospital Shifts
+        </h6>
+    </div>
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6"></div>
+        <div class="col-md-3">
+            <button type="button" class="btn btn-primary" (click)="createNewShift()">Create</button>
+        </div>
+    </div>
+    <div class="row mb-3 mt-5 d-flex justify-content-center">
+        <div class="col-11">
+            <div style="height: 270px; overflow: auto" id="table">
+                <table class="table table-hover shiftTable">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Name</th>
+                            <th scope="col">From - To</th>
+                            <th scope="col">Update</th>
+                            <th scope="col">Delete</th>
+
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="!isLoading">
+                        <tr *ngFor="let shift of shifts">
+                            <th scope="row" *ngIf="shift.name != null"></th>
+                            <td data-label="Name" *ngIf="shift.name != null">
+                                {{shift.name}}
+                            </td>
+                            <td data-label="From-To" *ngIf="shift.name != null">
+                                {{shift.from}}:00 - {{shift.to}}:00
+                            </td>
+                            <td data-label="Update" *ngIf="shift.name != null">
+                                <button type="button" class="btn btn-primary"
+                                    (click)="updateShift(shift.id)">Update</button>
+                            </td>
+                            <td data-label="Delete" *ngIf="shift.name != null">
+                                <button type="button" class="btn btn-primary" (click)="deleteShift(shift.id)"
+                                    data-bs-toggle="modal" data-bs-target="#exampleModal">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <mat-card *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center">
+                    <mat-progress-spinner color="primary" mode="indeterminate">
+                    </mat-progress-spinner>
+                </mat-card>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="exampleModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: 0 none">
+                <h1 mat-dialog-title>Shift is deleted!</h1>
+            </div>
+            <div mat-dialog-actions class="justify-content-center align-items-center modal-footer"
+                style="border-top: 0 none">
+                <button mat-raised-button color="accent" data-bs-dismiss="modal" (click)="goBack()">
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

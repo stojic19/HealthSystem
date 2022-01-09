@@ -35,6 +35,7 @@ services:
       - hospitaldb
     environment:
       HOSPITAL_DB_PATH: "host=hospitaldb;port=5432;database=HOSPITAL;username=postgres;password=/run/secrets/postgres_password"
+      #HOSPITAL_DB_PATH: "host=hospitaldb;port=5432;database=HOSPITAL;username=postgres;password=postgres"
 
   pharmacyapi:
     image: srdjansukovic/psw_pharmacyapi
@@ -48,7 +49,7 @@ services:
       - pharmacydb
       - rabbitmq
     environment:
-      PHARMACY_DB_PATH: "host=pharmacydb;port=5432;database=PHARMACY;username=postgres;password=postgres"
+      PHARMACY_DB_PATH: "host=pharmacydb;port=5432;database=PHARMACY;username=postgres;password=/run/secrets/postgres_password"
       RABBITMQ_HOST: "rabbitmq"
 
   integrationapi:
@@ -63,7 +64,7 @@ services:
       - integrationdb
       - rabbitmq
     environment:
-      INTEGRATION_DB_PATH: "host=integrationdb;port=5432;database=INTEGRATION;username=postgres;password=postgres"
+      INTEGRATION_DB_PATH: "host=integrationdb;port=5432;database=INTEGRATION;username=postgres;password=/run/secrets/postgres_password"
       RABBITMQ_HOST: "rabbitmq"
 
   patient-ui:
@@ -97,7 +98,7 @@ services:
     image: postgres:13
     restart: always
     environment:
-      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_PASSWORD: /run/secrets/postgres_password
       POSTGRES_USER: "postgres"
       POSTGRES_DB: "HOSPITAL"
     ports:
@@ -107,7 +108,7 @@ services:
     image: postgres:13
     restart: always
     environment:
-      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_PASSWORD: /run/secrets/postgres_password
       POSTGRES_USER: "postgres"
       POSTGRES_DB: "PHARMACY"
     ports:
@@ -117,7 +118,7 @@ services:
     image: postgres:13
     restart: always
     environment:
-      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_PASSWORD: /run/secrets/postgres_password
       POSTGRES_USER: "postgres"
       POSTGRES_DB: "INTEGRATION"
     ports:

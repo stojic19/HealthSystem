@@ -24,7 +24,6 @@ namespace SeleniumTests
     {
         private readonly IWebDriver driver;
         private ApproveFeedbackPage approveFeedbackPage;
-        public readonly string LoginUri = "http://localhost:4200/login";
         private LoginPage loginPage;
 
         public ApproveFeedbackTests(BaseFixture fixture) : base(fixture) {
@@ -37,7 +36,7 @@ namespace SeleniumTests
             options.AddArguments("--no-sandbox");               
             options.AddArguments("--disable-notifications");    
             driver = new ChromeDriver(options);
-            loginPage = new LoginPage(driver,LoginUri);
+            loginPage = new LoginPage(driver);
             loginPage.Navigate();
             loginPage.EnsureLoginFormForAdminIsDisplayed();
             approveFeedbackPage = new ApproveFeedbackPage(driver);
@@ -53,7 +52,7 @@ namespace SeleniumTests
             approveFeedbackPage.Approve();
             Assert.True(approveFeedbackPage.UnapproveButtonDisplayed());
             Assert.True(approveFeedbackPage.IsSnackBarDisplayed());
-            Assert.Equal(driver.Url, approveFeedbackPage.URI);
+            Assert.Equal(driver.Url, approveFeedbackPage.GetUrl());
             ClearDatabase();
         }
 

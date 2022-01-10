@@ -2,27 +2,35 @@
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
+using SeleniumTests.Base;
 
 namespace SeleniumTests.Pages
 {
-    public class ApproveFeedbackPage
+    public class ApproveFeedbackPage : BasePage
     {
         private readonly IWebDriver driver;
-        public readonly string URI= "http://localhost:4200/feedbacks";
+        private readonly string _uri;
         private IWebElement ApproveButton => driver.FindElement(By.Name("approve"));
 
         private IWebElement UnapproveButton => driver.FindElement(By.Name("unapprove"));
 
-        public ApproveFeedbackPage(IWebDriver driver)
+        public ApproveFeedbackPage(IWebDriver driver) : base(driver)
         {
             this.driver = driver;
+            this._uri = _baseUrl + "/feedbacks";
         }
+
+        public string GetUrl()
+        {
+            return _baseUrl + "/feedbacks";
+        }
+
         public void Approve()
         {
            ApproveButton.Click();
            EnsureUnapproveButtonIsDisplayed();
         }
-        public void Navigate() => driver.Navigate().GoToUrl(URI);
+        public void Navigate() => driver.Navigate().GoToUrl(_uri);
         
         public bool UnapproveButtonDisplayed()
         {

@@ -34,6 +34,29 @@ namespace Pharmacy.Migrations
                     b.ToTable("MedicineSubstance");
                 });
 
+            modelBuilder.Entity("Pharmacy.Model.Advertisement", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<int>("MedicineId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MedicineId");
+
+                    b.ToTable("Advertisement");
+                });
+
             modelBuilder.Entity("Pharmacy.Model.Benefit", b =>
                 {
                     b.Property<int>("Id")
@@ -379,6 +402,17 @@ namespace Pharmacy.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Pharmacy.Model.Advertisement", b =>
+                {
+                    b.HasOne("Pharmacy.Model.Medicine", "Medicine")
+                        .WithMany("Advertisements")
+                        .HasForeignKey("MedicineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Medicine");
+                });
+
             modelBuilder.Entity("Pharmacy.Model.City", b =>
                 {
                     b.HasOne("Pharmacy.Model.Country", "Country")
@@ -606,6 +640,8 @@ namespace Pharmacy.Migrations
 
             modelBuilder.Entity("Pharmacy.Model.Medicine", b =>
                 {
+                    b.Navigation("Advertisements");
+
                     b.Navigation("TenderOffers");
                 });
 #pragma warning restore 612, 618

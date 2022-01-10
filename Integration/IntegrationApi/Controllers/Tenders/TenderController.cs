@@ -47,7 +47,7 @@ namespace IntegrationAPI.Controllers.Tenders
             {
                 return BadRequest("Invalid tender name.");
             }
-            if(DateTime.Compare(createTenderDto.EndDate, createTenderDto.StartDate)<0)
+            if (DateTime.Compare(createTenderDto.EndDate, createTenderDto.StartDate) < 0)
             {
                 return BadRequest("Start date must be before end date.");
             }
@@ -67,7 +67,7 @@ namespace IntegrationAPI.Controllers.Tenders
                 }
             }
             Tender tender = new Tender(createTenderDto.Name, new TimeRange(createTenderDto.StartDate, createTenderDto.EndDate));
-            foreach(MedicineRequestDto medicineRequestDto in createTenderDto.MedicineRequests)
+            foreach (MedicineRequestDto medicineRequestDto in createTenderDto.MedicineRequests)
             {
                 tender.AddMedicationRequest(new MedicationRequest(medicineRequestDto.MedicineName, medicineRequestDto.Quantity));
             }
@@ -75,7 +75,7 @@ namespace IntegrationAPI.Controllers.Tenders
             var pharmacies = _unitOfWork.GetRepository<IPharmacyReadRepository>().GetAll();
             try
             {
-                var factory = new ConnectionFactory() {HostName = Environment.GetEnvironmentVariable("RABBITMQ_HOST")};
+                var factory = new ConnectionFactory() { HostName = Environment.GetEnvironmentVariable("RABBITMQ_HOST") };
                 using (var connection = factory.CreateConnection())
                 {
                     foreach (var pharmacyApiKey in pharmacies.Select(x => x.ApiKey))
@@ -127,6 +127,38 @@ namespace IntegrationAPI.Controllers.Tenders
 
             return retVal;
         }
+        [HttpGet("{id:int}")]
+        public Tender GetTenderById(int id)
+        {
+            var tenders = _unitOfWork.GetRepository<ITenderReadRepository>().GetAll()
+                            .Include(t => t.TenderOffers).Include(t => t.MedicationRequests);
+            foreach (var tender in tenders.AsEnumerable().Where(t => t.IsActive()))
+            {
+                if (tender.Id.Equals(id))
+                    return tender;
+            }
+            return null;
+        }
+
+        [HttpGet("{id:int}")]
+        public PharmacyStatsDTO GetTenderStatsForPharmacy(int id)
+        {
+            PharmacyStatsDTO stats = new PharmacyStatsDTO();
+            Pharmacy pharmacy = _unitOfWork.GetRepository<IPharmacyReadRepository>().GetAll()
+                .Include(x => x.City)
+                .ThenInclude(x => x.Country)
+                .Include(x => x.Complaints)
+                .FirstOrDefault(x => x.Id == id);
+            var tenders = _unitOfWork.GetRepository<ITenderReadRepository>().GetAll()
+                            .Include(t => t.TenderOffers).Include(t => t.MedicationRequests);
+            foreach (var tender in tenders.AsEnumerable())
+            {
+                stats.Offers += tender.NumberOfPharmacyOffers(pharmacy);
+                if (tender.DidPharmacyWin(pharmacy))
+                    stats.Won += 1;     
+            }
+            return stats;
+        }
 
         [HttpPost]
         public IActionResult ChooseWinningOffer(WinningOfferDto dto)
@@ -168,7 +200,7 @@ namespace IntegrationAPI.Controllers.Tenders
             return Ok();
         }
         [HttpPost]
-        public IActionResult CloseTender(int tenderId)
+        public IActionResult CloseTender([FromBody]int tenderId)
         {
             var tender = _unitOfWork.GetRepository<ITenderReadRepository>().GetById(tenderId);
             if (tender == null) return NotFound("Tender does not exist");
@@ -185,7 +217,7 @@ namespace IntegrationAPI.Controllers.Tenders
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error while sending closed tender via rabbitmq!");
             }
-            return Ok();
+            return Ok("Tender closed.");
         }
 
         [HttpPost]

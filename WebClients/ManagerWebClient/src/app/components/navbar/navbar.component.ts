@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { AuthService } from 'src/app/services/auth.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -7,12 +10,19 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-    
-  constructor() {}
-
+  loginStatus$: Observable<boolean>;
+  constructor(private authService: AuthService, private router: Router) {
+    this.loginStatus$ = this.authService.isLoggedIn;
+  }
+  
     isProd = environment.production;
 
   ngOnInit(): void {
+  }
+
+  onLogout() {
+    this.authService.logout();
+    this.router.navigate(['']);
   }
 
 }

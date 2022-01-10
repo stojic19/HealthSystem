@@ -1,4 +1,3 @@
-﻿
 using Hospital.SharedModel.Repository.Base;
 using Newtonsoft.Json;
 using System.Net;

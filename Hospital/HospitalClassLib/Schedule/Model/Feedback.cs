@@ -39,6 +39,7 @@ namespace Hospital.Schedule.Model
         {
             if (string.IsNullOrEmpty(Text) || string.IsNullOrWhiteSpace(Text)) throw new Exception();
             //TODO: add validations
+            //mzd razlicite validate metode da bi proverili da li je status feedbacka ok 
         }
 
         public void Publish()

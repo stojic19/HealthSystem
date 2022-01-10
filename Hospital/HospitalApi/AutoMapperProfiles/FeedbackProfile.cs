@@ -9,6 +9,7 @@ namespace HospitalApi.AutoMapperProfiles
         public FeedbackProfile()
         {
             CreateMap<NewFeedbackDTO, Feedback>();
+            CreateMap<Feedback, FeedbackDTO>();
         }
     }
 }

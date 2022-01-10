@@ -72,19 +72,19 @@ namespace HospitalApi.Controllers
         
         [Authorize(Roles = "Manager")]
         [HttpPut("publish")]
-        public IActionResult ApproveFeedback(Feedback feedback)
+        public IActionResult ApproveFeedback(FeedbackDTO feedback)
         {
             try
             {
                 if(feedback == null)
                     return BadRequest("Feedback format is wrong!");
-                
+                var feedbackFromDb = (_uow.GetRepository<IFeedbackReadRepository>().GetAll().Where(x => x.Id == feedback.Id).Include(x => x.Patient)).FirstOrDefault();
                 var feedbackWriteRepo = _uow.GetRepository<IFeedbackWriteRepository>();
-                feedback.Publish();
-                var approvedFeedback = feedbackWriteRepo.Update(feedback);
-
-                return approvedFeedback == null ? StatusCode(StatusCodes.Status500InternalServerError, "Couldn't update feedback!")
-                    : Ok(approvedFeedback);
+                feedbackFromDb.Publish();
+                var approvedFeedback = feedbackWriteRepo.Update(feedbackFromDb);
+                var approvedFeedbackDto = _mapper.Map<FeedbackDTO>(approvedFeedback);
+                return approvedFeedbackDto == null ? StatusCode(StatusCodes.Status500InternalServerError, "Couldn't update feedback!")
+                    : Ok(approvedFeedbackDto);
             }
             catch(Exception)
             {
@@ -103,20 +103,19 @@ namespace HospitalApi.Controllers
 
         [Authorize(Roles = "Manager")]
         [HttpPut("unpublish")]
-        public IActionResult UnapproveFeedback(Feedback feedback)
+        public IActionResult UnapproveFeedback(FeedbackDTO feedback)
         {
             try
             {
                 if (feedback == null)
                     return BadRequest("Feedback format is wrong!");
-                
-
+                var feedbackFromDb = (_uow.GetRepository<IFeedbackReadRepository>().GetAll().Where(x => x.Id == feedback.Id).Include(x => x.Patient)).FirstOrDefault();
                 var feedbackWriteRepo = _uow.GetRepository<IFeedbackWriteRepository>();
-                feedback.Unpublish();
-                var approvedFeedback = feedbackWriteRepo.Update(feedback);
-
-                return approvedFeedback == null ? StatusCode(StatusCodes.Status500InternalServerError, "Couldn't update feedback!")
-                    : Ok(approvedFeedback);
+                feedbackFromDb.Unpublish();
+                var unapprovedFeedback = feedbackWriteRepo.Update(feedbackFromDb);
+                var unapprovedFeedbackDto = _mapper.Map<FeedbackDTO>(unapprovedFeedback);
+                return unapprovedFeedbackDto == null ? StatusCode(StatusCodes.Status500InternalServerError, "Couldn't update feedback!")
+                    : Ok(unapprovedFeedbackDto);
             }
             catch (Exception)
             {

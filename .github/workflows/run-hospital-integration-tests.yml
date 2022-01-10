@@ -42,7 +42,6 @@ jobs:
           HOSPITAL_DB_PATH: ${{ env.DB_PATH }}
           INTEGRATION_DB_PATH: ${{ env.DB_PATH_INTEGRATION }}
           RABBITMQ_HOST: "rabbitmq"
-        shell: pwsh
         run: | 
           start powershell -NoExit -Command "dotnet run --project Hospital/HospitalApi/ --urls=http://localhost:44303"
           start powershell -NoExit -Command "dotnet run --project Integration/IntegrationApi/ --urls=http://localhost:44302"

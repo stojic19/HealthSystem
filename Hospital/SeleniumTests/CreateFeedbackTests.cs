@@ -30,8 +30,7 @@ namespace SeleniumTests
             _createFeedbackPage = new Pages.CreateFeedbackPage(driver);
             _createFeedbackPage.Navigate();
         }
-
-        [Fact]
+        
         public void Dispose()
         {
             driver.Quit();

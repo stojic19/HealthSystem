@@ -33,8 +33,9 @@ import { TenderProfileComponent } from './tenders/tender-profile/tender-profile.
 import { AddTenderComponent } from './tendering/add-tender/add-tender.component';
 import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from 'src/app/AuthGuard/AuthGuard';
-
 import { environment } from 'src/environments/environment';
+import { DoctorsScheduleComponent } from './doctors-schedule/doctors-schedule.component';
+import { DoctorsScheduleReportComponent } from './doctors-schedule-report/doctors-schedule-report.component';
 import { HospitalShiftsComponent } from './hospital-shifts/hospital-shifts.component';
 import { CreateShiftComponent } from './create-shift/create-shift.component';
 import { UpdateShiftComponent } from './update-shift/update-shift.component';
@@ -210,13 +211,16 @@ const routes: Routes = [
     component: DoctorShiftComponent,
     canActivate: [AuthGuard],
   },
+  { path: _isProd ? 'manager/doctorsSchedule' : 'doctorsSchedule', component: DoctorsScheduleComponent, canActivate: [AuthGuard] },
+  { path: _isProd ? 'manager/doctorsReport' : 'doctorsReport', component: DoctorsScheduleReportComponent, canActivate: [AuthGuard] }
+
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes), CommonModule, MaterialModule],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
 export const routingComponents = [
   HospitalOverviewComponent,
   FirstBuildingComponent,

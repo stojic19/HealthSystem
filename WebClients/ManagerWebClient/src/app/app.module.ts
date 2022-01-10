@@ -76,6 +76,9 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AddTenderComponent } from './tendering/add-tender/add-tender.component';
 import { LoginComponent } from './components/login/login.component';
 import { JwtInterceptor } from './JWTInterceptor/JwtInterceptor';
+import { DoctorsScheduleComponent } from './doctors-schedule/doctors-schedule.component';
+import { DoctorsScheduleReportComponent } from './doctors-schedule-report/doctors-schedule-report.component';
+import { ChartsModule } from 'ng2-charts';
 import { HospitalShiftsComponent } from './hospital-shifts/hospital-shifts.component';
 import { CreateShiftComponent } from './create-shift/create-shift.component';
 import { UpdateShiftComponent } from './update-shift/update-shift.component';
@@ -141,14 +144,14 @@ import { ShiftUpdateComponent } from './doctor-shift/shift-update/shift-update.c
     TenderProfileComponent,
     AddTenderComponent,
     LoginComponent,
+    DoctorsScheduleComponent,
+    DoctorsScheduleReportComponent,
     HospitalShiftsComponent,
     CreateShiftComponent,
     UpdateShiftComponent,
     DoctorShiftComponent,
     ShiftListComponent,
     ShiftUpdateComponent,
-
-
   ],
   imports: [
     BrowserModule,
@@ -170,13 +173,16 @@ import { ShiftUpdateComponent } from './doctor-shift/shift-update/shift-update.c
     MatSelectModule,
     MaterialModule,
     MatDialogModule,
+    ChartsModule,
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      positionClass: 'toast-top-right'
+    }),
     NgxChartsModule,
-    ToastrModule.forRoot({timeOut: 3000,
-      positionClass: 'toast-top-right'}),
   ],
   providers: [HttpClientModule,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
-    
+
   ],
   bootstrap: [AppComponent],
 })

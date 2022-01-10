@@ -1,7 +1,7 @@
 <svg height="500" width="900" style="border:1px solid rgb(14, 13, 13); margin-left:auto; margin-right:auto; display:block;">
-  <g *ngFor="let r of service.roomPositions">
-      <rect (click)="selectRoom(r.room)" [ngStyle]="roomForDisplay==r.room.name?{'fill':selectedRoomColor} : {'fill': roomColor}" attr.x = {{r.dimensionX}} attr.y = {{r.dimensionY}} attr.width={{r.width}} attr.height={{r.height}} attr.fill={{roomColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}} />
-      <text [attr.x] = "calculateX(r)" [attr.y] = "calculateY(r)" text-anchor="middle" fill="black" font-size="16" >{{r.room.name}}</text>   
+  <g *ngFor="let r of service.rooms">
+      <rect (click)="selectRoom(r)" [ngStyle]="roomForDisplay==r.name?{'fill':selectedRoomColor} : {'fill': roomColor}" attr.x = {{r.roomPosition.dimensionX}} attr.y = {{r.roomPosition.dimensionY}} attr.width={{r.roomPosition.width}} attr.height={{r.roomPosition.height}} attr.fill={{roomColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}} />
+      <text [attr.x] = "calculateX(r)" [attr.y] = "calculateY(r)" text-anchor="middle" fill="black" font-size="16" >{{r.name}}</text>   
   </g>
   
   <rect  x="810" y="172" width="90" height="76"  attr.fill={{roomColor}} attr.stroke={{borderColor}} attr.strokeWidth={{borderWidth}}/>

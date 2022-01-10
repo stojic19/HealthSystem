@@ -46,9 +46,9 @@ namespace IntegrationAPI.Controllers.Pharmacies
             {
                 Name = pharmacyDto.PharmacyName,
                 BaseUrl = pharmacyDto.BaseUrl,
-                StreetName = pharmacyDto.StreetName,
-                StreetNumber = pharmacyDto.StreetNumber,
-                City = new City { PostalCode = pharmacyDto.PostalCode, Name = pharmacyDto.CityName, Country = new Country { Name = pharmacyDto.CountryName } },
+                StreetName = location.GetStreetName(),
+                StreetNumber = location.GetHouseNumber(),
+                City = location.GetCity(),
                 ApiKey = pharmacyDto.ApiKey,
                 GrpcSupported = pharmacyDto.GrpcSupported,
                 Location = new Location(pharmacyDto.Latitude, pharmacyDto.Longitude)

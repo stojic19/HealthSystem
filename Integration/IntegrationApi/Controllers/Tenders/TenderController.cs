@@ -15,12 +15,17 @@ using System.Threading.Tasks;
 using Integration.Pharmacies.Model;
 using Integration.Pharmacies.Repository;
 using IntegrationAPI.Controllers.Base;
+using IntegrationApi.DTO.Shared;
+using IntegrationAPI.DTO.Shared;
+using IntegrationApi.DTO.Tender;
 using IntegrationAPI.HttpRequestSenders;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RestSharp;
+using IntegrationAPI.Adapters.PDF;
+using IntegrationAPI.Adapters.PDF.Implementation;
 
 namespace IntegrationAPI.Controllers.Tenders
 {
@@ -219,6 +224,65 @@ namespace IntegrationAPI.Controllers.Tenders
                     }
                 }
             }
+        }
+
+        //[HttpGet("{startTime:string},{endTime:string}")]
+        [HttpGet]
+        public TenderStatisticsDto GetTenderStatistics(DateTime startTime, DateTime endTime)
+        {
+            TimeRange timeRange = new TimeRange(startTime, endTime);
+            TenderStatisticsDto tenderStatisticsDto = new TenderStatisticsDto()
+            {
+                PharmacyStatistics = new List<PharmacyTenderStatisticsDto>()
+            };
+            var pharmacies = _unitOfWork.GetRepository<IPharmacyReadRepository>().GetAll().ToList();
+            var tenders = _unitOfWork.GetRepository<ITenderReadRepository>()
+                .GetAll()
+                .Include(x => x.TenderOffers)
+                .ThenInclude(x => x.Pharmacy)
+                .ThenInclude(x => x.City)
+                .ThenInclude(x => x.Country)
+                .Include(x => x.MedicationRequests)
+                .ToList();
+            foreach (var pharmacy in pharmacies)
+            {
+                double profitAmount = 0;
+                int tendersEntered = 0;
+                int tenderOffersMade = 0;
+                int tendersWon = 0;
+                foreach (var tender in tenders)
+                {
+                    if(!tender.ActiveRange.OverlapsWith(timeRange))
+                        continue;
+                    int pharmacyOffers = tender.NumberOfPharmacyOffers(pharmacy);
+                    if (pharmacyOffers > 0)
+                    {
+                        tendersEntered++;
+                        tenderOffersMade += pharmacyOffers;
+                    }
+                    if (tender.DidPharmacyWin(pharmacy))
+                    {
+                        tendersWon++;
+                        profitAmount += tender.WinningOffer.Cost.Amount;
+                    }
+                }
+                tenderStatisticsDto.PharmacyStatistics.Add(new PharmacyTenderStatisticsDto()
+                {
+                    PharmacyId = pharmacy.Id,
+                    PharmacyName = pharmacy.Name,
+                    Profit = new MoneyDto()
+                    {
+                        Amount = profitAmount,
+                        Currency = 0
+                    },
+                    TendersEntered = tendersEntered,
+                    TendersWon = tendersWon,
+                    TenderOffersMade = tenderOffersMade
+                });
+            }
+            IPDFAdapter adapter = new DynamicPDFAdapter();
+            string filename = adapter.MakeTenderStatisticsPdf(tenderStatisticsDto, timeRange);
+            return tenderStatisticsDto;
         }
     }
 }

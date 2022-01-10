@@ -154,20 +154,22 @@ export class AddTenderComponent implements OnInit {
       return;
     }
     var endDate;
+    var startDate;
     if(end.value !== "")
     {
       endDate = new Date(end.value);
+      startDate = new Date();
     }
     var request = 
     {
       name : this.TenderNameString,
+      startDate : startDate,
       endDate : endDate,
       medicineRequests : this.nonFilteredMedicines
     }
     this._tenderingService.createTender(request).subscribe(res =>
       {
         this.toastr.success(res.toString());
-      },(error) => console.log(console.error()
-      ));
+      },(error) => this.toastr.error(error.error, "Error!"));
   }
 }

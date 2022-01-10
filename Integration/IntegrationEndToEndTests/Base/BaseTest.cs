@@ -42,7 +42,6 @@ namespace IntegrationEndToEndTests.Base
         {
             _driver.Quit();
             _driver.Dispose();
-            _fixture.Dispose();
         }
     }
 }

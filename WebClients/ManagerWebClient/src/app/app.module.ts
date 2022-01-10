@@ -72,10 +72,10 @@ import { SecondRoomInfoComponent } from './renovation-form/second-room-info/seco
 import { AvailableTermsComponent } from './renovation-form/available-terms/available-terms.component';
 import { TendersListComponent } from './tenders/tenders-list.component';
 import { TenderProfileComponent } from './tenders/tender-profile/tender-profile.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AddTenderComponent } from './tendering/add-tender/add-tender.component';
 import { LoginComponent } from './components/login/login.component';
 import { JwtInterceptor } from './JWTInterceptor/JwtInterceptor';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { HospitalShiftsComponent } from './hospital-shifts/hospital-shifts.component';
 import { CreateShiftComponent } from './create-shift/create-shift.component';
 import { UpdateShiftComponent } from './update-shift/update-shift.component';

@@ -6,8 +6,8 @@ on:
 env:
   PROJECT_PATH_HOSPITAL: './Hospital'
   PROJECT_PATH_INTEGRATION: './Integration'
-  DB_PATH: 'Host=localhost;Database=HOSPITAL;Username=postgres;Password=postgres'
-  DB_PATH_INTEGRATION: 'Host=localhost;Database=INTEGRATION;Username=postgres;Password=postgres'
+  DB_PATH: 'Host=postgres;Database=HOSPITAL;Username=postgres;Password=postgres'
+  DB_PATH_INTEGRATION: 'Host=postgres;Database=INTEGRATION;Username=postgres;Password=postgres'
 
 jobs:
   build:

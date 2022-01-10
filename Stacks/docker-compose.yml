@@ -16,7 +16,7 @@ services:
         - HOSPITAL_API_URL=hospitalapi:80
         - INTEGRATION_API_URL=integrationapi:80
     restart: on-failure
-    ports:
+    ports: 
       - 8080:8080
     depends_on:
       - hospitalapi

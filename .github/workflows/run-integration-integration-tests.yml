@@ -50,7 +50,7 @@ jobs:
         run: | 
           dotnet run --project Hospital/HospitalApi/ --urls=http://localhost:44303 &
           dotnet run --project Integration/IntegrationApi/ --urls=http://localhost:44302 &
-          dotnet run --project Pharmacy/PharamcyApi/ --urls=http://localhost:44304 &
+          dotnet run --project Pharmacy/PharmacyApi/ --urls=http://localhost:44304 &
 
       - name: Sleep for 15 seconds
         run: sleep 15s

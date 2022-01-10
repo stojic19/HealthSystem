@@ -28,6 +28,8 @@ import { PharmacyProfileComponent } from './pharmacies/pharmacy-profile/pharmacy
 import { RenovationFormComponent } from './renovation-form/renovation-form.component';
 import { RoomScheduleComponent } from './room-schedule/room-schedule.component';
 import { MaliciousPatientsComponent } from './components/malicious-patients/malicious-patients.component';
+import { TendersListComponent } from './tenders/tenders-list.component';
+import { TenderProfileComponent } from './tenders/tender-profile/tender-profile.component';
 import { AddTenderComponent } from './tendering/add-tender/add-tender.component';
 import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from 'src/app/AuthGuard/AuthGuard';
@@ -41,50 +43,173 @@ import { DoctorShiftComponent } from './doctor-shift/doctor-shift.component';
 const _isProd = environment.production;
 
 const routes: Routes = [
-  { path: _isProd? 'manager/overview' : 'overview', component: HospitalOverviewComponent , canActivate: [AuthGuard]},
-  { path: _isProd? 'manager/feedbacks' : 'feedbacks', component: FeedbacksManagerComponent , canActivate: [AuthGuard]},
-  { path: _isProd? 'manager/firstBuilding' : 'firstBuilding', component: FirstBuildingComponent , canActivate: [AuthGuard]},
-  { path: _isProd? 'manager/secondBuilding' : 'secondBuilding', component: SecondBuildingComponent , canActivate: [AuthGuard]},
-  { path: _isProd? 'manager/roomInventory/:id' : 'roomInventory/:id', component: RoomInventoryComponent , canActivate: [AuthGuard]},
-  { path: _isProd? 'manager/hospitalEquipment' : 'hospitalEquipment', component: HospitalEquipmentComponent , canActivate: [AuthGuard]},
-  { path: _isProd? 'manager/firstBuilding/:roomName/:floor' : 'firstBuilding/:roomName/:floor', component: FirstBuildingComponent , canActivate: [AuthGuard]},
   {
-    path: _isProd? 'manager/secondBuilding/:roomName/:floor' : 'secondBuilding/:roomName/:floor',
-    component: SecondBuildingComponent , canActivate: [AuthGuard]
-  },
-  { path: _isProd? 'manager/complaints' : 'complaints', component: ComplaintsListComponent, canActivate: [AuthGuard]},
-  { path: _isProd? 'manager/complaints/:id' : 'complaints/:id', component: ComplaintDetailsComponent , canActivate: [AuthGuard]},
-  { path: _isProd? 'manager/complaint-add' : 'complaint-add', component: AddComplaintComponent , canActivate: [AuthGuard]},
-  { path: _isProd? 'manager/pharmacy-register' : 'pharmacy-register', component: RegisterPharmacyComponent , canActivate: [AuthGuard]},
-  { path: _isProd? 'manager/pharmacy-list' : 'pharmacy-list', component: PharmaciesListComponent , canActivate: [AuthGuard]},
-  { path: _isProd? 'manager/benefit-list' : 'benefit-list', component: BenefitListComponent , canActivate: [AuthGuard]},
-  { path: _isProd? 'manager/benefit/:id' : 'benefit/:id', component: BenefitDetailsComponent , canActivate: [AuthGuard]},
-  { path: _isProd? 'manager' : '', component: HomePageComponent },
-  {
-    path: _isProd? 'manager/medication-consumption-report' : 'medication-consumption-report',
-    component: MedicationReportsComponent, canActivate: [AuthGuard]
+    path: _isProd ? 'manager/overview' : 'overview',
+    component: HospitalOverviewComponent,
+    canActivate: [AuthGuard],
   },
   {
-    path: _isProd? 'manager/medicine-specification-requests' : 'medicine-specification-requests',
-    component: MedicineSpecificationListComponent, canActivate: [AuthGuard]
+    path: _isProd ? 'manager/feedbacks' : 'feedbacks',
+    component: FeedbacksManagerComponent,
+    canActivate: [AuthGuard],
   },
   {
-    path: _isProd? 'manager/new-medicine-specification-request' : 'new-medicine-specification-request',
-    component: MedicineSpecificationRequestsComponent, canActivate: [AuthGuard]
+    path: _isProd ? 'manager/firstBuilding' : 'firstBuilding',
+    component: FirstBuildingComponent,
+    canActivate: [AuthGuard],
   },
-  { path: _isProd? 'manager/roomRenovation' : 'roomRenovation', component: RenovationFormComponent, canActivate: [AuthGuard]},
-  { path: _isProd? 'manager/blocking' : 'blocking', component: MaliciousPatientsComponent, canActivate: [AuthGuard]},
-  { path: _isProd? 'manager' : '', redirectTo: _isProd? 'manager' : '', pathMatch: 'full' },
-  { path: _isProd? 'manager/add-tender' : 'add-tender', component: AddTenderComponent },
-  { path: _isProd? 'manager/moveEquipment/:id' : 'moveEquipment/:id', component: EquipmentFormComponent , canActivate: [AuthGuard]},
-  { path: _isProd? 'manager/surveys' : 'surveys', component: SurveysObserveComponent , canActivate: [AuthGuard]},
-  { path: _isProd? 'manager/schedule/:id' : 'schedule/:id', component: RoomScheduleComponent , canActivate: [AuthGuard]},
-  { path: _isProd? 'manager/login' : 'login', component: LoginComponent},
-  { path: _isProd? 'manager/hospitalShifts' : 'hospitalShifts', component: HospitalShiftsComponent, canActivate: [AuthGuard]},
-  { path: _isProd? 'manager/createNewShift' : 'createNewShift', component: CreateShiftComponent, canActivate: [AuthGuard]},
-  { path: _isProd? 'manager/updateShift/:id' : 'updateShift/:id', component: UpdateShiftComponent, canActivate: [AuthGuard]},
-  { path: _isProd? 'manager/doctorShifts' : 'doctorShifts', component: DoctorShiftComponent, canActivate: [AuthGuard]},
-
+  {
+    path: _isProd ? 'manager/secondBuilding' : 'secondBuilding',
+    component: SecondBuildingComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: _isProd ? 'manager/roomInventory/:id' : 'roomInventory/:id',
+    component: RoomInventoryComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: _isProd ? 'manager/hospitalEquipment' : 'hospitalEquipment',
+    component: HospitalEquipmentComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: _isProd
+      ? 'manager/firstBuilding/:roomName/:floor'
+      : 'firstBuilding/:roomName/:floor',
+    component: FirstBuildingComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: _isProd
+      ? 'manager/secondBuilding/:roomName/:floor'
+      : 'secondBuilding/:roomName/:floor',
+    component: SecondBuildingComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: _isProd ? 'manager/complaints' : 'complaints',
+    component: ComplaintsListComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: _isProd ? 'manager/complaints/:id' : 'complaints/:id',
+    component: ComplaintDetailsComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: _isProd ? 'manager/complaint-add' : 'complaint-add',
+    component: AddComplaintComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: _isProd ? 'manager/pharmacy-register' : 'pharmacy-register',
+    component: RegisterPharmacyComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: _isProd ? 'manager/pharmacy-list' : 'pharmacy-list',
+    component: PharmaciesListComponent,
+  },
+  {
+    path: _isProd ? 'manager/pharmacy-profile/:id' : 'pharmacy-profile/:id',
+    component: PharmacyProfileComponent,
+  },
+  {
+    path: _isProd ? 'manager/benefit-list' : 'benefit-list',
+    component: BenefitListComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: _isProd ? 'manager/benefit/:id' : 'benefit/:id',
+    component: BenefitDetailsComponent,
+    canActivate: [AuthGuard],
+  },
+  { path: _isProd ? 'manager' : '', component: HomePageComponent },
+  {
+    path: _isProd ? 'manager/tenders' : 'tenders',
+    component: TendersListComponent,
+  },
+  {
+    path: _isProd ? 'manager/tender-profile/:id' : 'tender-profile/:id',
+    component: TenderProfileComponent,
+  },
+  {
+    path: _isProd
+      ? 'manager/medication-consumption-report'
+      : 'medication-consumption-report',
+    component: MedicationReportsComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: _isProd
+      ? 'manager/medicine-specification-requests'
+      : 'medicine-specification-requests',
+    component: MedicineSpecificationListComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: _isProd
+      ? 'manager/new-medicine-specification-request'
+      : 'new-medicine-specification-request',
+    component: MedicineSpecificationRequestsComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: _isProd ? 'manager/roomRenovation' : 'roomRenovation',
+    component: RenovationFormComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: _isProd ? 'manager/blocking' : 'blocking',
+    component: MaliciousPatientsComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: _isProd ? 'manager' : '',
+    redirectTo: _isProd ? 'manager' : '',
+    pathMatch: 'full',
+  },
+  {
+    path: _isProd ? 'manager/add-tender' : 'add-tender',
+    component: AddTenderComponent,
+  },
+  {
+    path: _isProd ? 'manager/moveEquipment/:id' : 'moveEquipment/:id',
+    component: EquipmentFormComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: _isProd ? 'manager/surveys' : 'surveys',
+    component: SurveysObserveComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: _isProd ? 'manager/schedule/:id' : 'schedule/:id',
+    component: RoomScheduleComponent,
+    canActivate: [AuthGuard],
+  },
+  { path: _isProd ? 'manager/login' : 'login', component: LoginComponent },
+  {
+    path: _isProd ? 'manager/hospitalShifts' : 'hospitalShifts',
+    component: HospitalShiftsComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: _isProd ? 'manager/createNewShift' : 'createNewShift',
+    component: CreateShiftComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: _isProd ? 'manager/updateShift/:id' : 'updateShift/:id',
+    component: UpdateShiftComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: _isProd ? 'manager/doctorShifts' : 'doctorShifts',
+    component: DoctorShiftComponent,
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({
@@ -104,5 +229,5 @@ export const routingComponents = [
   RatingDecimalComponent,
   MaliciousPatientsComponent,
   HospitalShiftsComponent,
-  DoctorShiftComponent
+  DoctorShiftComponent,
 ];

@@ -22,7 +22,21 @@ namespace IntegrationEndToEndTests.Pages
         public void WaitForDisplay()
         {
             var wait = new WebDriverWait(_driver, new TimeSpan(0, 0, 10));
-            wait.Until(condition => LoginUsername.Displayed && LoginPassword.Displayed && Button.Displayed);
+            wait.Until(condition =>
+            {
+                try
+                {
+                    return LoginUsername.Displayed && LoginPassword.Displayed && Button.Displayed;
+                }
+                catch (StaleElementReferenceException)
+                {
+                    return false;
+                }
+                catch (NoSuchElementException)
+                {
+                    return false;
+                }
+            });
         }
 
         public void InsertUsername(string userName)

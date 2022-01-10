@@ -2,25 +2,28 @@
 using System.Threading;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using SeleniumTests.Base;
 
 namespace SeleniumTests.Pages
 {
-    public class CreateFeedbackPage
+    public class CreateFeedbackPage : BasePage
     {
         private readonly IWebDriver _driver;
-        public readonly string Uri = "http://localhost:4200/feedbacks";
+        public readonly string _uri;
         private IWebElement OpenModalElement => _driver.FindElement(By.Id("openModal"));
         private IWebElement FeedbackTextElement => _driver.FindElement(By.Id("text"));
         private IWebElement StayAnonymousElement => _driver.FindElement(By.Id("stayAnonymous"));
         private IWebElement IsPublishableElement => _driver.FindElement(By.Id("isPublishable"));
         private IWebElement SubmitElement => _driver.FindElement(By.Id("submitFeedback"));
 
-        public CreateFeedbackPage(IWebDriver driver)
+        public CreateFeedbackPage(IWebDriver driver) : base(driver)
         {
             this._driver = driver;
+            this._uri = base._baseUrl + "/feedbacks";
+
         }
 
-        public void Navigate() => _driver.Navigate().GoToUrl(Uri);
+        public void Navigate() => _driver.Navigate().GoToUrl(_uri);
 
         public void OpenModal() => OpenModalElement.Click();
 

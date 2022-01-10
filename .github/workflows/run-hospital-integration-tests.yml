@@ -4,32 +4,44 @@ on:
     branches: [master, development, feature/integration-tests]
 
 env:
-  DOTNET_VERSION: '3.1.x'
-  PROJECT_PATH: './Hospital'
+  PROJECT_PATH_HOSPITAL: './Hospital'
+  PROJECT_PATH_INTEGRATION: './Integration'
+  DB_PATH: 'Host=localhost;Database=HOSPITAL;Username=postgres;Password=postgres'
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    container: mcr.microsoft.com/dotnet/sdk:5.0
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+
     steps:
       - name: Check out code
         uses: actions/checkout@v2
 
-      - name: Start dependencies (docker-compose)
-        run: |
-          cd Stacks 
-          ls
-          docker-compose -f docker-compose-test.yml up
-
-      - name: Install .NET Core SDKs
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '3.1.x'
-
       - name: Restore NuGet packages
-        run: dotnet restore ${{ env.PROJECT_PATH }}
+        run: | 
+          dotnet restore ${{ env.PROJECT_PATH_HOSPITAL }}
+          dotnet restore ${{ env.env.PROJECT_PATH_INTEGRATION }}
 
       - name: Build
-        run: dotnet build -c Release --no-restore ${{ env.PROJECT_PATH }}
+        run: |
+          dotnet build ${{ env.PROJECT_PATH_HOSPITAL }}
+          dotnet build ${{ env.PROJECT_PATH_INTEGRATION }}
+
+      - name: Start
+        env:
+          HOSPITAL_DB_PATH: ${{ DB_PATH }}
+        run: | 
+          dotnet run --project ${{ env.PROJECT_PATH_HOSPITAL }}/HospitalApi/ --urls=http://localhost:44303
+          dotnet run --project ${{ env.PROJECT_PATH_INTEGRATION }}/IntegrationApi/ --urls=http://localhost:44302
 
       - name: Test
-        run: dotnet test -c Release --no-build ${{ env.PROJECT_PATH }}/HospitalIntegrationTests
+        env:
+          HOSPITAL_DB_PATH: ${{ DB_PATH }}
+        run: dotnet test ${{ env.PROJECT_PATH_HOSPITAL }}/HospitalIntegrationTests

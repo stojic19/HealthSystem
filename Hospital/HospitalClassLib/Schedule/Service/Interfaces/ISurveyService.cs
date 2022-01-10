@@ -10,6 +10,6 @@ namespace Hospital.Schedule.Service.ServiceInterface
         public void createSurvey(Survey survey);
         public SurveySection getSurveySection(int id, SurveyCategory category);
         public IEnumerable<Survey> getAll();
-
+        Survey getActiveSurvey();
     }
 }

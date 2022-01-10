@@ -31,8 +31,7 @@ namespace HospitalApi.Controllers
         {
             return surveyService.getAll();
         }
-
-        //TODO : Vidi mapperom
+     
         [Authorize(Roles = "Patient")]
         [HttpGet("{SurveyId}")]
         public CategoriesSurvey getSurveyByCategories(int SurveyId)
@@ -51,6 +50,7 @@ namespace HospitalApi.Controllers
         [HttpPost]
         public IActionResult CreateSurvey(SurveyDTO surveyDTO)
         {
+            
             surveyService.createSurvey(_mapper.Map<Survey>(surveyDTO));
             return Ok("Success");
 

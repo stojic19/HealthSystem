@@ -8,8 +8,10 @@ import { ISurvey } from 'src/app/interfaces/isurvey';
   providedIn: 'root'
 })
 export class SurveyService {
+  
   constructor(private _http: HttpClient) { }
   answerSurvey(answeredSurvey: IAnsweredSurvey): Observable<IAnsweredSurvey> {
+  
     return this._http.post<IAnsweredSurvey>('/api/AnsweredSurvey/CreateAnsweredSurvey', answeredSurvey);
   }
   getSurvey(): any {

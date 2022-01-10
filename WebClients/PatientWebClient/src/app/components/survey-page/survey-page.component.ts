@@ -1,11 +1,10 @@
 import { SurveyService } from './../../services/SurveyService/survey.service';
 import { IAnsweredQuestion } from 'src/app/interfaces/answered-question';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ISurvey } from 'src/app/interfaces/isurvey';
-import { IScheduledEvent } from 'src/app/interfaces/scheduled-event';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { IAnsweredSurvey } from 'src/app/interfaces/answered-survey';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { IAppointment } from 'src/app/interfaces/appointment';
 import { AppointmentService } from 'src/app/services/AppointmentService/appointment.service';
 
@@ -25,10 +24,12 @@ export class SurveyPageComponent implements OnInit {
   totalQuestions!: number;
   answeredSurvey!: IAnsweredSurvey;
   appointmentId: any;
+  userName!:String;
 
   constructor(private snackBar: MatSnackBar,private appointmentService:AppointmentService, private surveyService: SurveyService, private route: ActivatedRoute,
     private _router: Router) {
     this.answeredQuestions = [];
+    this.userName = JSON.parse((localStorage.getItem('currentUser'))!)
 
   }
 
@@ -48,8 +49,10 @@ export class SurveyPageComponent implements OnInit {
 
       this.answeredSurvey = {
         surveyId: this.survey.surveyId,
+        userName : this.userName,
         questions: this.answeredQuestions,
         scheduledEventId: this.scheduledEvent.id
+        
       }
       this.surveyService.answerSurvey(this.answeredSurvey).subscribe();
       this.snackBar.open("Thank you for answering our Survey . ", '', {

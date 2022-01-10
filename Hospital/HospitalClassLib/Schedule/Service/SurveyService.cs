@@ -22,6 +22,15 @@ namespace Hospital.Schedule.Service
             UoW.GetRepository<ISurveyWriteRepository>().Add(survey);
         }
 
+        public Survey getActiveSurvey()
+        {
+            return UoW.GetRepository<ISurveyReadRepository>()
+                                .GetAll()
+                                .Where(x => x.IsActiveSurvey())
+                                .FirstOrDefault();
+                                                                       
+        }
+
         public IEnumerable<Survey> getAll()
         {
             return UoW.GetRepository<ISurveyReadRepository>().GetAll();

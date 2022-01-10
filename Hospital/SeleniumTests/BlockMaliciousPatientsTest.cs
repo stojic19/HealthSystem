@@ -29,7 +29,6 @@ namespace SeleniumTests
     {
         private readonly IWebDriver _driver;
         private readonly Pages.BlockMaliciousPatientsPage _blockMaliciousPatientsPage;
-        public readonly string LoginUri = "http://localhost:4200/login";
         private LoginPage loginPage;
         private int patientCount = 0;
 
@@ -44,7 +43,7 @@ namespace SeleniumTests
             options.AddArguments("--no-sandbox");
             options.AddArguments("--disable-notifications");
             _driver = new ChromeDriver(options);
-            loginPage = new LoginPage(_driver, LoginUri);
+            loginPage = new LoginPage(_driver);
             loginPage.Navigate();
             loginPage.EnsureLoginFormForAdminIsDisplayed();
             _blockMaliciousPatientsPage = new Pages.BlockMaliciousPatientsPage(_driver);
@@ -348,6 +347,14 @@ namespace SeleniumTests
             if (room != null)
             {
                 UoW.GetRepository<IRoomWriteRepository>().Delete(room);
+            }
+            var shift = UoW.GetRepository<IShiftReadRepository>()
+                .GetAll().ToList()
+                .FirstOrDefault(x => x.Name == "prva");
+
+            if (shift != null)
+            {
+                UoW.GetRepository<IShiftWriteRepository>().Delete(shift);
             }
         }
     }

@@ -25,7 +25,21 @@ namespace IntegrationEndToEndTests.Pages
         public void WaitForDisplay()
         {
             var wait = new WebDriverWait(_driver, new TimeSpan(0, 0, 10));
-            wait.Until(condition => SubmitButton.Displayed && BaseUrl.Displayed);
+            wait.Until(condition =>
+            {
+                try
+                {
+                    return SubmitButton.Displayed && BaseUrl.Displayed;
+                }
+                catch (StaleElementReferenceException)
+                {
+                    return false;
+                }
+                catch (NoSuchElementException)
+                {
+                    return false;
+                }
+            });
         }
 
         public void InsertName(string name)

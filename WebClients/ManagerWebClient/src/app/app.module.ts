@@ -70,6 +70,9 @@ import { TimeInfoComponent } from './renovation-form/time-info/time-info.compone
 import { FirstRoomInfoComponent } from './renovation-form/first-room-info/first-room-info.component';
 import { SecondRoomInfoComponent } from './renovation-form/second-room-info/second-room-info.component';
 import { AvailableTermsComponent } from './renovation-form/available-terms/available-terms.component';
+import { TendersListComponent } from './tenders/tenders-list.component';
+import { TenderProfileComponent } from './tenders/tender-profile/tender-profile.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AddTenderComponent } from './tendering/add-tender/add-tender.component';
 import { LoginComponent } from './components/login/login.component';
 import { JwtInterceptor } from './JWTInterceptor/JwtInterceptor';
@@ -137,6 +140,8 @@ import { ShiftUpdateComponent } from './doctor-shift/shift-update/shift-update.c
     FirstRoomInfoComponent,
     SecondRoomInfoComponent,
     AvailableTermsComponent,
+    TendersListComponent,
+    TenderProfileComponent,
     AddTenderComponent,
     LoginComponent,
     DoctorsScheduleComponent,
@@ -173,9 +178,10 @@ import { ShiftUpdateComponent } from './doctor-shift/shift-update/shift-update.c
       timeOut: 3000,
       positionClass: 'toast-top-right'
     }),
+    NgxChartsModule,
   ],
   providers: [HttpClientModule,
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
 
   ],
   bootstrap: [AppComponent],

@@ -103,5 +103,17 @@ namespace HospitalApi.Controllers
                                         !scheduledEvent.IsDone &&
                                         scheduledEvent.RoomId == roomId);
         }
+
+        [Authorize(Roles = "Manager")]
+        [HttpGet]
+        public IEnumerable<Room> GetRoomsByLocation([FromQuery(Name = "floorNumber")] int floorNumber, [FromQuery(Name = "buildingName")] string buildingName)
+        {
+            var renovationService = new RenovatingRoomsService(_uow);
+            renovationService.StartRoomRenovations();
+            var roomRepo = _uow.GetRepository<IRoomReadRepository>();
+            return roomRepo.GetAll()
+                           .Where(r => r.FloorNumber == floorNumber &&
+                                    r.BuildingName == buildingName);
+        }
     }
 }

@@ -28,6 +28,8 @@ import { PharmacyProfileComponent } from './pharmacies/pharmacy-profile/pharmacy
 import { RenovationFormComponent } from './renovation-form/renovation-form.component';
 import { RoomScheduleComponent } from './room-schedule/room-schedule.component';
 import { MaliciousPatientsComponent } from './components/malicious-patients/malicious-patients.component';
+import { TendersListComponent } from './tenders/tenders-list.component';
+import { TenderProfileComponent } from './tenders/tender-profile/tender-profile.component';
 import { AddTenderComponent } from './tendering/add-tender/add-tender.component';
 import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from 'src/app/AuthGuard/AuthGuard';
@@ -57,10 +59,13 @@ const routes: Routes = [
   { path: _isProd ? 'manager/complaints/:id' : 'complaints/:id', component: ComplaintDetailsComponent, canActivate: [AuthGuard] },
   { path: _isProd ? 'manager/complaint-add' : 'complaint-add', component: AddComplaintComponent, canActivate: [AuthGuard] },
   { path: _isProd ? 'manager/pharmacy-register' : 'pharmacy-register', component: RegisterPharmacyComponent, canActivate: [AuthGuard] },
-  { path: _isProd ? 'manager/pharmacy-list' : 'pharmacy-list', component: PharmaciesListComponent, canActivate: [AuthGuard] },
+  { path: _isProd ? 'manager/pharmacy-list' : 'pharmacy-list', component: PharmaciesListComponent },
+  { path: _isProd ? 'manager/pharmacy-profile/:id' : 'pharmacy-profile/:id', component: PharmacyProfileComponent },
   { path: _isProd ? 'manager/benefit-list' : 'benefit-list', component: BenefitListComponent, canActivate: [AuthGuard] },
   { path: _isProd ? 'manager/benefit/:id' : 'benefit/:id', component: BenefitDetailsComponent, canActivate: [AuthGuard] },
   { path: _isProd ? 'manager/home' : 'home', component: HomePageComponent },
+  { path: _isProd ? 'manager/tenders' : 'tenders', component: TendersListComponent },
+  { path: _isProd ? 'manager/tender-profile/:id' : 'tender-profile/:id', component: TenderProfileComponent },
   {
     path: _isProd ? 'manager/medication-consumption-report' : 'medication-consumption-report',
     component: MedicationReportsComponent, canActivate: [AuthGuard]

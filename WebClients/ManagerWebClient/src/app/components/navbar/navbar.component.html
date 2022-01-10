@@ -37,7 +37,6 @@
               >
                 Doctors
               </a>
-
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <li *ngIf="loginStatus$ | async as LoginStatus">
                   <a class="nav-link" routerLink="/doctorShifts" *ngIf="!isProd"
@@ -103,6 +102,10 @@
                     >Workload report</a
                   >
                 </li>
+                <li *ngIf="loginStatus$ | async as LoginStatus">
+                  <a class="nav-link" routerLink="/doctorVacations" *ngIf="!isProd">Doctor Vacations</a>
+                  <a class="nav-link" routerLink="/manager/doctorVacations" *ngIf="isProd">Doctor Vacations</a>
+                </li>
               </ul>
             </div>
           </li>
@@ -121,7 +124,6 @@
               >
                 Rooms
               </a>
-
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <li *ngIf="loginStatus$ | async as LoginStatus">
                   <a class="nav-link" routerLink="/overview" *ngIf="!isProd"

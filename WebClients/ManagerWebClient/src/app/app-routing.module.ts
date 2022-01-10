@@ -211,11 +211,12 @@ const routes: Routes = [
     component: DoctorShiftComponent,
     canActivate: [AuthGuard],
   },
-  { path: _isProd? 'manager/tendering-statistics' : 'tendering-statistics', 
-    component: TenderingStatisticsComponent, 
-    canActivate: [AuthGuard]},
- }
-];
+  {
+    path: _isProd ? 'manager/tendering-statistics' : 'tendering-statistics',
+    component: TenderingStatisticsComponent,
+    canActivate: [AuthGuard],
+  },
+]
 
 @NgModule({
   imports: [RouterModule.forRoot(routes), CommonModule, MaterialModule],

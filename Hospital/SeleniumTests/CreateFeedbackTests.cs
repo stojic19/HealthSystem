@@ -8,7 +8,7 @@ namespace SeleniumTests
 {
     public class CreateFeedbackTests :  BaseTest
     {
-        private readonly IWebDriver _driver;
+        private readonly IWebDriver driver;
         private readonly Pages.CreateFeedbackPage _createFeedbackPage;
         public readonly LoginPage LoginPage;
 
@@ -22,18 +22,20 @@ namespace SeleniumTests
             options.AddArguments("--disable-dev-shm-usage");    // overcome limited resource problems
             options.AddArguments("--no-sandbox");               // Bypass OS security model
             options.AddArguments("--disable-notifications");    // disable notifications
-            _driver = new ChromeDriver(options);
+            driver = new ChromeDriver(options);
 
-            LoginPage = new LoginPage(_driver);
+            LoginPage = new LoginPage(driver);
             LoginPage.Navigate();
             LoginPage.EnsureLoginFormForUserIsDisplayed();
-            _createFeedbackPage = new Pages.CreateFeedbackPage(_driver);
+            _createFeedbackPage = new Pages.CreateFeedbackPage(driver);
             _createFeedbackPage.Navigate();
         }
+
+        [Fact]
         public void Dispose()
         {
-            _driver.Quit();
-            _driver.Dispose();
+            driver.Quit();
+            driver.Dispose();
         }
 
         [Fact]
@@ -50,7 +52,7 @@ namespace SeleniumTests
             _createFeedbackPage.SubmitForm();
             _createFeedbackPage.WaitForFormSubmitted();
             Assert.True(_createFeedbackPage.IsSnackbarDisplayed());
-            Assert.Equal(_createFeedbackPage._uri, _driver.Url);
+            Assert.Equal(_createFeedbackPage._uri, driver.Url);
         }
 
         [Fact]
@@ -65,7 +67,7 @@ namespace SeleniumTests
             _createFeedbackPage.InsertIsPublishable(true);
             _createFeedbackPage.SubmitForm();
             Assert.False(_createFeedbackPage.IsSnackbarDisplayed());
-            Assert.Equal(_createFeedbackPage._uri, _driver.Url);
+            Assert.Equal(_createFeedbackPage._uri, driver.Url);
         }
 
         private void InsertCredentials()

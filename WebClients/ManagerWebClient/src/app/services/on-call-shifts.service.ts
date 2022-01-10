@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { OnCallDuty } from '../model/on-call-duty';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +17,8 @@ export class OnCallShiftsService {
     );
   }
 
-  getOnCallShift(month: number, week: number) {
-    return this.http.get(
+  getOnCallShift(month: number, week: number) : Observable<OnCallDuty> {
+    return this.http.get<OnCallDuty>(
       '/api/OnCallShifts/FindByMonthAndWeek',
       {
         params: {

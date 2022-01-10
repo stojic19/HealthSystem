@@ -38,8 +38,8 @@ namespace HospitalApi.Controllers
 
             var shiftsRepo = _uow.GetRepository<IOnCallDutyReadRepository>();
             return Ok(shiftsRepo.GetAll()
-                .Include(x => x.DoctorsOnDuty)
-                .Where(shift => shift.Month == month && shift.Week == week));
+                .Include(x => x.DoctorsOnDuty).ThenInclude(x => x.Specialization)
+                .Where(shift => shift.Month == month && shift.Week == week).FirstOrDefault());
         }
 
         [Authorize(Roles = "Manager")]
@@ -63,7 +63,13 @@ namespace HospitalApi.Controllers
             var doctor = doctorsReadRepo.GetById(doctorId);
             shift.AddDoctor(doctor);
 
-            return Ok(shiftsWriteRepo.Update(shift));
+            shiftsWriteRepo.Update(shift);
+
+            shift = shiftsReadRepo.GetAll()
+                .Include(x => x.DoctorsOnDuty).ThenInclude(x => x.Specialization)
+                .Where(shift => shift.Id == shiftId).FirstOrDefault();
+
+            return Ok(shift);
         }
 
         [Authorize(Roles = "Manager")]
@@ -81,12 +87,17 @@ namespace HospitalApi.Controllers
             var doctorsReadRepo = _uow.GetRepository<IDoctorReadRepository>();
 
             var shift = shiftsReadRepo.GetAll()
-                .Include(x => x.DoctorsOnDuty)
+                .Include(x => x.DoctorsOnDuty).ThenInclude(x => x.Specialization)
                 .Where(shift => shift.Id == shiftId).FirstOrDefault();
-
             var doctor = doctorsReadRepo.GetById(doctorId);
             shift.RemoveDoctor(doctor);
-            return Ok(shiftsWriteRepo.Update(shift));
+            shiftsWriteRepo.Update(shift);
+
+            shift = shiftsReadRepo.GetAll()
+                .Include(x => x.DoctorsOnDuty).ThenInclude(x => x.Specialization)
+                .Where(shift => shift.Id == shiftId).FirstOrDefault();
+
+            return Ok(shift);
         }
 
 

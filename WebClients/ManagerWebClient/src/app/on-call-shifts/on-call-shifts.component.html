@@ -80,7 +80,11 @@
         <div class="d-flex justify-content-center">
           <button
             class="btn btn-danger me-2"
-            [disabled]="selectedOldDoctor == undefined"
+            [disabled]="
+              selectedOldDoctor == undefined ||
+              selectedOldDoctor.firstName == '' ||
+              isInThePast()
+            "
             (click)="removeDoctorFromShift()"
           >
             Remove
@@ -89,6 +93,7 @@
             class="btn btn-success ms-2"
             data-bs-toggle="modal"
             data-bs-target="#addDoctorModal"
+            [disabled]="isInThePast()"
           >
             Add
           </button>
@@ -154,7 +159,11 @@
           type="button"
           class="btn btn-primary"
           data-bs-dismiss="modal"
-          [disabled]="selectedNewDoctor == undefined"
+          [disabled]="
+            selectedNewDoctor == undefined ||
+            selectedNewDoctor.firstName == '' ||
+            isAlreadyOnCall()
+          "
           (click)="addDoctorToShift()"
         >
           Add

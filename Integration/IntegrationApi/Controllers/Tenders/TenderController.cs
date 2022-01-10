@@ -195,7 +195,7 @@ namespace IntegrationAPI.Controllers.Tenders
             return Ok();
         }
         [HttpPost]
-        public IActionResult CloseTender(int tenderId)
+        public IActionResult CloseTender([FromBody]int tenderId)
         {
             var tender = _unitOfWork.GetRepository<ITenderReadRepository>().GetById(tenderId);
             if (tender == null) return NotFound("Tender does not exist");
@@ -212,7 +212,7 @@ namespace IntegrationAPI.Controllers.Tenders
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error while sending closed tender via rabbitmq!");
             }
-            return Ok();
+            return Ok("Tender closed.");
         }
 
         [HttpPost]

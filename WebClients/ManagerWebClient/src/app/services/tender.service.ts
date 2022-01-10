@@ -26,8 +26,8 @@ export class TenderService{
         return this._httpClient.post<any[]>(this._APIUrl + 'api/Tender/ChooseWinningOffer', val);
     }
 
-    closeTender(val: any): any{
-        return this._httpClient.post<any>(this._APIUrl + 'api/Tender/CloseTender', val);
+    closeTender(tenderId: number): any{
+        return this._httpClient.post<any>(this._APIUrl + 'api/Tender/CloseTender', tenderId);
     }
     
 }

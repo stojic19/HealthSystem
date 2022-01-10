@@ -35,7 +35,8 @@ export class TenderProfileComponent implements OnInit {
     var val = {
       tenderId: this.id
     }
-    this._tenderService.closeTender(val)
+    var tenderId = this.id
+    this._tenderService.closeTender(tenderId)
     .subscribe((error) => alert(error));
   }
 

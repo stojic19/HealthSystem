@@ -26,13 +26,13 @@ jobs:
 
       - name: Restore NuGet packages
         run: | 
-          dotnet restore ${{ env.PROJECT_PATH_HOSPITAL }}/Hospital.sln
-          dotnet restore ${{ env.env.PROJECT_PATH_INTEGRATION }}/Integration.sln
+          dotnet restore ${{ env.PROJECT_PATH_HOSPITAL }}
+          dotnet restore ${{ env.PROJECT_PATH_INTEGRATION }}
 
       - name: Build
         run: |
-          dotnet build ${{ env.PROJECT_PATH_HOSPITAL }}/Hospital.sln
-          dotnet build ${{ env.PROJECT_PATH_INTEGRATION }}/Integration.sln
+          dotnet build ${{ env.PROJECT_PATH_HOSPITAL }}
+          dotnet build ${{ env.PROJECT_PATH_INTEGRATION }}
 
       - name: Start
         env:

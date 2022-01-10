@@ -26,7 +26,7 @@ namespace Hospital.Schedule.Repository.Implementation
 
         public List<ScheduledEvent> GetNumberOfCanceledEventsForPatient(int id)
         {
-            return GetAll().Where(x => x.IsUserCanceled() && x.Patient.Id == id).ToList();
+            return GetAll().Where(x => x.IsCanceled  && x.Patient.Id == id).ToList();
         }
 
         public List<ScheduledEvent> GetCanceledUserEvents(string userName)

@@ -96,7 +96,9 @@
         <li class="nav-item active" *ngIf="loginStatus$ | async as LoginStatus">
           <a class="nav-link" routerLink="/blocking">Blocking</a>
         </li>
+        <div style="width: 16px;"></div>
         <form
+        style="align-items: center;"
           *ngIf="loginStatus$ | async as LoginStatus"
           class="form-inline"
         >

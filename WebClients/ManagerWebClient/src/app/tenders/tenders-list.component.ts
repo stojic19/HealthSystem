@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 import { TenderService } from '../services/tender.service';
 
 @Component({
@@ -9,6 +10,7 @@ import { TenderService } from '../services/tender.service';
 })
 export class TendersListComponent implements OnInit {
   tenders: any[] = [];
+  isProd: boolean = environment.production;
 
   constructor(private _tenderService: TenderService, private router: Router) { }
 

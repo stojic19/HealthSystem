@@ -11,6 +11,8 @@
         <li class="list-group-item text-center m-3" *ngFor='let request of tender.medicationRequests'>{{request.medicineName}} : {{request.quantity}}</li>
       </ul>
 
+      <button class="btn btn-primary m-3" (click)="closeTender()">Close Tender</button>
+
       <div class="table-responsive m-3">
         <h5>Offers:</h5>
         <table class="table table-bordered table-striped table-hover">
@@ -29,7 +31,7 @@
                 <td>{{offer.pharmacy.name}}</td>
                 <td>{{offer.createdDate | date: "dd-MM-yyyy, hh:mm"}}</td>
                 <td>{{offer.cost.amount}}</td>
-                <td><button>Winner</button></td>
+                <td><button class="btn btn-primary" (click)="winner(offer.id)">Winner</button></td>
             </tr>
             </tbody>
         </table>

@@ -9,34 +9,34 @@
 <div class="container mb-3">
   <div class="form-group mb-3">
     <label class="form-label">Pharmacy Name:</label>
-    <input type="text" class="form-control mb-1" [(ngModel)]="pharmacy.name">
+    <input type="text" class="form-control mb-1" [(ngModel)]="pharmacy.name" id="name">
   </div>
   <div class="form-group mb-3">
     <label class="form-label">Street Number:</label>
-    <input type="text" class="form-control"[(ngModel)]="pharmacy.streetNumber">
+    <input type="text" id="streetNumber" class="form-control"  [(ngModel)]="pharmacy.streetNumber">
   </div>
   <div class="form-group mb-3">
     <label class="form-label">Street Name:</label>
-    <input type="text" class="form-control mb-1" [(ngModel)]="pharmacy.streetName">
+    <input type="text" id="streetName" class="form-control mb-1" [(ngModel)]="pharmacy.streetName">
   </div>
   <div class="form-group mb-3">
     <label class="form-label">City Name:</label>
-    <input type="text" class="form-control" [(ngModel)]="pharmacy.city.name">
+    <input type="text" id="cityName" class="form-control" [(ngModel)]="pharmacy.city.name">
   </div>
     <div class="form-group mb-3">
       <label class="form-label">Postal Code:</label>
-      <input type="text" class="form-control" [(ngModel)]="pharmacy.city.postalCode">
+      <input type="text" id="postalCode" class="form-control"  [(ngModel)]="pharmacy.city.postalCode">
     </div>
     <div class="form-group mb-3">
       <label class="form-label">Country:</label>
-      <input type="text" class="form-control" [(ngModel)]="pharmacy.city.country.name">
+      <input type="text" id="country" class="form-control"  [(ngModel)]="pharmacy.city.country.name">
     </div>
     <div class="form-group mb-3">
       <label class="form-label">Description:</label>
-      <textarea type="text" class="form-control" [(ngModel)]="pharmacy.description" rows="5"></textarea>
+      <textarea type="text" class="form-control" id="description" [(ngModel)]="pharmacy.description" rows="5"></textarea>
     </div>
     <div class="form-group mb-5">
-      <button (click)="UpdatePharmacy()" class="btn btn-primary">
+      <button (click)="UpdatePharmacy()" id="updateButton" class="btn btn-primary">
         <strong>Update</strong>
       </button>
     </div>

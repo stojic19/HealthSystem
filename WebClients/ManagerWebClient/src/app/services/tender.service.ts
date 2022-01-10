@@ -19,7 +19,15 @@ export class TenderService{
     }
 
     getTenderStatsForPharmacy(id: number): any{
-        return this._httpClient.get<any>(this._APIUrl + `api/Tender/GetTenderStatsForPharmacy/${id}`)
+        return this._httpClient.get<any>(this._APIUrl + `api/Tender/GetTenderStatsForPharmacy/${id}`);
+    }
+
+    postWinner(val: any){
+        return this._httpClient.post<any[]>(this._APIUrl + 'api/Tender/ChooseWinningOffer', val);
+    }
+
+    closeTender(val: any): any{
+        return this._httpClient.post<any>(this._APIUrl + 'api/Tender/CloseTender', val);
     }
     
 }

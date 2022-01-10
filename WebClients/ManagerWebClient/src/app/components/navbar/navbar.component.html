@@ -37,7 +37,6 @@
               >
                 Doctors
               </a>
-
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <li *ngIf="loginStatus$ | async as LoginStatus">
                   <a class="nav-link" routerLink="/doctorShifts" *ngIf="!isProd"
@@ -64,6 +63,49 @@
                     >Shifts</a
                   >
                 </li>
+                <li>
+                  <a class="nav-link" routerLink="/oncall" *ngIf="!isProd"
+                    >On Call Shifts</a
+                  >
+                  <a
+                    class="nav-link"
+                    routerLink="/manager/oncall"
+                    *ngIf="isProd"
+                    >On Call Shifts</a
+                  >
+                </li>
+                <li *ngIf="loginStatus$ | async as LoginStatus">
+                  <a
+                    class="nav-link"
+                    routerLink="/doctorsSchedule"
+                    *ngIf="!isProd"
+                    >Schedule overview</a
+                  >
+                  <a
+                    class="nav-link"
+                    routerLink="/manager/doctorsSchedule"
+                    *ngIf="isProd"
+                    >Schedule overview</a
+                  >
+                </li>
+                <li *ngIf="loginStatus$ | async as LoginStatus">
+                  <a
+                    class="nav-link"
+                    routerLink="/doctorsReport"
+                    *ngIf="!isProd"
+                    >Workload report</a
+                  >
+                  <a
+                    class="nav-link"
+                    routerLink="/manager/doctorsReport"
+                    *ngIf="isProd"
+                    >Workload report</a
+                  >
+                </li>
+                <li *ngIf="loginStatus$ | async as LoginStatus">
+                  <a class="nav-link" routerLink="/doctorVacations" *ngIf="!isProd">Doctor Vacations</a>
+                  <a class="nav-link" routerLink="/manager/doctorVacations" *ngIf="isProd">Doctor Vacations</a>
+                </li>
               </ul>
             </div>
           </li>
@@ -82,7 +124,6 @@
               >
                 Rooms
               </a>
-
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <li *ngIf="loginStatus$ | async as LoginStatus">
                   <a class="nav-link" routerLink="/overview" *ngIf="!isProd"

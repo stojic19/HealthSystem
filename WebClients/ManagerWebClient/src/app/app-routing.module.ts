@@ -33,13 +33,18 @@ import { TenderProfileComponent } from './tenders/tender-profile/tender-profile.
 import { AddTenderComponent } from './tendering/add-tender/add-tender.component';
 import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from 'src/app/AuthGuard/AuthGuard';
-
 import { environment } from 'src/environments/environment';
+import { DoctorsScheduleComponent } from './doctors-schedule/doctors-schedule.component';
+import { DoctorsScheduleReportComponent } from './doctors-schedule-report/doctors-schedule-report.component';
 import { HospitalShiftsComponent } from './hospital-shifts/hospital-shifts.component';
 import { CreateShiftComponent } from './create-shift/create-shift.component';
 import { UpdateShiftComponent } from './update-shift/update-shift.component';
 import { DoctorShiftComponent } from './doctor-shift/doctor-shift.component';
 import { TenderingStatisticsComponent } from './tendering/tendering-statistics/tendering-statistics.component';
+import { DoctorVacationsComponent } from './doctor-vacations/doctor-vacations.component';
+import { CreateVacationComponent } from './create-vacation/create-vacation.component';
+import { UpdateVacationComponent } from './update-vacation/update-vacation.component';
+import { OnCallShiftsComponent } from './on-call-shifts/on-call-shifts.component';
 
 const _isProd = environment.production;
 
@@ -49,6 +54,8 @@ const routes: Routes = [
     component: HospitalOverviewComponent,
     canActivate: [AuthGuard],
   },
+  { path: _isProd? 'manager/oncall' : 'oncall', component: OnCallShiftsComponent , canActivate: [AuthGuard]},
+
   {
     path: _isProd ? 'manager/feedbacks' : 'feedbacks',
     component: FeedbacksManagerComponent,
@@ -216,13 +223,18 @@ const routes: Routes = [
     component: TenderingStatisticsComponent,
     canActivate: [AuthGuard],
   },
-]
+  { path: _isProd ? 'manager/doctorsSchedule' : 'doctorsSchedule', component: DoctorsScheduleComponent, canActivate: [AuthGuard] },
+  { path: _isProd ? 'manager/doctorsReport' : 'doctorsReport', component: DoctorsScheduleReportComponent, canActivate: [AuthGuard] },
+  { path: _isProd? 'manager/doctorVacations' : 'doctorVacations', component: DoctorVacationsComponent, canActivate: [AuthGuard]},
+  { path: _isProd? 'manager/createVacation/:id' : 'createVacation/:id', component: CreateVacationComponent, canActivate: [AuthGuard]},
+  { path: _isProd? 'manager/updateVacation/:id' : 'updateVacation/:id', component: UpdateVacationComponent, canActivate: [AuthGuard]}
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes), CommonModule, MaterialModule],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
 export const routingComponents = [
   HospitalOverviewComponent,
   FirstBuildingComponent,
@@ -236,4 +248,6 @@ export const routingComponents = [
   MaliciousPatientsComponent,
   HospitalShiftsComponent,
   DoctorShiftComponent,
+  DoctorVacationsComponent,
+  OnCallShiftsComponent
 ];

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumTests.Base;
@@ -94,4 +94,3 @@ namespace SeleniumTests.Pages
         public void Navigate() => driver.Navigate().GoToUrl(LoginUri);
     }
 }
-

@@ -212,11 +212,7 @@ namespace SeleniumTests
                         IsPublishable = true
                     };
                     UoW.GetRepository<IFeedbackWriteRepository>().Add(feedback);
-
-                    
                 }
-
-
             }
             var managerReadRepo = UoW.GetRepository<IManagerReadRepository>();
             var manager = managerReadRepo.GetAll().Where(x => x.UserName.Equals("testAdmin")).FirstOrDefault();
@@ -239,7 +235,7 @@ namespace SeleniumTests
                 DateOfBirth = new DateTime(),
                 Gender = Gender.Female,
                 Street = "TestManagerStreet",
-                UserName = "testManager",
+                UserName = "testAdmin",
                 Email = "testManager@gmail.com",
                 CityId = cityId,
                 Password = "Admin123."

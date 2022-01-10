@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ISurveyStatistic } from '../interfaces/survey-statistic';
 
@@ -13,4 +13,5 @@ export class SurveyObserveService {
 
     return  this.http.get<ISurveyStatistic>('api/SurveyStatistics/GetSurveyStatistics');
   }
+
 }

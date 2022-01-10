@@ -9,9 +9,11 @@ namespace IntegrationAPI.Controllers.Base
         protected readonly IUnitOfWork _unitOfWork;
         protected readonly SftpCredentialsDTO _sftpCredentials;
         protected readonly HospitalDTO _hospitalInfo;
+        protected readonly string _hospitalBaseUrl;
+
         protected BaseIntegrationController(IUnitOfWork uow)
         {
-            var ipAdr = "192.168.0.13";
+            var ipAdr = "127.0.0.1";
             _unitOfWork = uow;
             _sftpCredentials = new SftpCredentialsDTO
             {
@@ -26,6 +28,7 @@ namespace IntegrationAPI.Controllers.Base
                 StreetNumber = "14",
                 CityName = "Novi Sad"
             };
+            _hospitalBaseUrl = "https://localhost:44303";
         }
     }
 }

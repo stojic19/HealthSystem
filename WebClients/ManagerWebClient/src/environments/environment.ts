@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  baseUrl : 'https://localhost:44303/'
+  baseHospitalUrl : 'https://localhost:44303/',
+  baseIntegrationUrl : 'https://localhost:44302/'
 };
 
 /*

@@ -37,7 +37,7 @@ namespace Integration.Partnership.Service
 
         private void InitRabbitMQ()
         {
-            var factory = new ConnectionFactory { HostName = "localhost" };
+            var factory = new ConnectionFactory { HostName = Environment.GetEnvironmentVariable("RABBITMQ_HOST") }; //localhost
 
             _connection = factory.CreateConnection();
 

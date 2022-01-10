@@ -1,7 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { Room } from 'src/app/interfaces/room';
-import { RoomPosition } from 'src/app/model/room-position.model';
-import { RoomPositionService } from 'src/app/services/room-position.service';
+import { RoomsService } from 'src/app/services/rooms.service';
 
 
 @Component({
@@ -20,7 +19,7 @@ export class FloorSecondComponent implements OnInit {
   selectedRoom = new EventEmitter();
   @Input() public roomForDisplay = '';
 
-  constructor(public service: RoomPositionService) {
+  constructor(public service: RoomsService) {
     this.service.getSecondFloorOfSecondBuilding();
   }
 
@@ -31,12 +30,12 @@ export class FloorSecondComponent implements OnInit {
     this.selectedRoom.emit(room);
   }
 
-  calculateX(roomPosition: RoomPosition) {
-    return roomPosition.dimensionX + roomPosition.width / 2;
+  calculateX(room: Room) {
+    return room.roomPosition.dimensionX + room.roomPosition.width / 2;
   }
 
-  calculateY(roomPosition: RoomPosition) {
-    return roomPosition.dimensionY + roomPosition.height / 2;
+  calculateY(room: Room) {
+    return room.roomPosition.dimensionY + room.roomPosition.height / 2;
   }
 
 

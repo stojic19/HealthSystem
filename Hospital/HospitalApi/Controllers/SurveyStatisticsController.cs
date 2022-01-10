@@ -7,6 +7,7 @@ using Hospital.Schedule.Service;
 using Hospital.SharedModel.Repository.Base;
 using HospitalApi.AutoMapperProfiles;
 using HospitalApi.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HospitalApi.Controllers
 {
@@ -22,13 +23,15 @@ namespace HospitalApi.Controllers
             _uow = uow;
             _mapper = mapper;
         }
-
+        [Authorize(Roles = "Manager")]
         [HttpGet]
         public IActionResult GetSurveyStatistics()
         {
             var myMapper = new SurveyStatisticsMapper();
             var service = new SurveyStatisticsService(_uow);
-            var survey = _uow.GetRepository<ISurveyReadRepository>().GetAll().First();
+            var surveys = _uow.GetRepository<ISurveyReadRepository>().GetAll();
+            if (!surveys.Any()) return NoContent();
+            var survey = surveys.First();
             var questionRepo = _uow.GetRepository<IQuestionReadRepository>();
             var surveyQuestions = questionRepo.GetAll().Where(x => x.SurveyId.Equals(survey.Id)).ToList();
             var questionStatistics = service.GetAverageQuestionRatingForAllSurveyQuestions();

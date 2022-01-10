@@ -1,6 +1,8 @@
-﻿using Integration.Partnership.Model;
+﻿using Integration.EventStoring.Model;
+using Integration.Partnership.Model;
 using Integration.Pharmacies.Model;
 using Integration.Shared.Model;
+using Integration.Tendering.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace Integration.Database.EfStructures
@@ -18,9 +20,19 @@ namespace Integration.Database.EfStructures
         public DbSet<Benefit> Benefits { get; set; }
         public DbSet<MedicineSpecificationFile> MedicineSpecificationFiles { get; set; }
         public DbSet<MedicineInventory> MedicineInventory { get; set; }
-
+        public DbSet<Tender> Tenders { get; set; }
+        public DbSet<StoredEvent> StoredEvents { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Tender>().OwnsMany(t => t.MedicationRequests);
+            modelBuilder.Entity<Tender>().OwnsOne(t => t.ActiveRange);
+            modelBuilder.Entity<TenderOffer>().OwnsMany(t => t.MedicationRequests);
+            modelBuilder.Entity<TenderOffer>().OwnsOne(t => t.Cost);
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

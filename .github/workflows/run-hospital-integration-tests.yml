@@ -36,12 +36,12 @@ jobs:
 
       - name: Start
         env:
-          HOSPITAL_DB_PATH: ${{ DB_PATH }}
+          HOSPITAL_DB_PATH: ${{ env.DB_PATH }}
         run: | 
           dotnet run --project ${{ env.PROJECT_PATH_HOSPITAL }}/HospitalApi/ --urls=http://localhost:44303
           dotnet run --project ${{ env.PROJECT_PATH_INTEGRATION }}/IntegrationApi/ --urls=http://localhost:44302
 
       - name: Test
         env:
-          HOSPITAL_DB_PATH: ${{ DB_PATH }}
+          HOSPITAL_DB_PATH: ${{ env.DB_PATH }}
         run: dotnet test ${{ env.PROJECT_PATH_HOSPITAL }}/HospitalIntegrationTests

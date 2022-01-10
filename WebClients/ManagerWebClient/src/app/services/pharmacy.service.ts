@@ -21,19 +21,19 @@ export class PharmacyService{
     }
 
     getPharmacyById(id: number): Observable<any>{
-        return this._httpClient.get<any[]>(this._APIUrl+`/Pharmacy/GetPharmacyById/${id}`);
+        return this._httpClient.get<any[]>(this._APIUrl+`api/Pharmacy/GetPharmacyById/${id}`);
     }
 
     updatePharmacy(val: any){
-        return this._httpClient.post<any[]>(this._APIUrl + '/Pharmacy/UpdatePharmacy', val);
+        return this._httpClient.post<any[]>(this._APIUrl + 'api/Pharmacy/UpdatePharmacy', val);
     }
 
     uploadImage(val: any){
-        return this._httpClient.post<any[]>(this._APIUrl + '/Pharmacy/UploadImage', val);
+        return this._httpClient.post<any[]>(this._APIUrl + 'api/Pharmacy/UploadImage', val);
     }
 
     getImage(val: any){
-        return this._httpClient.post<any>(this._APIUrl + '/Pharmacy/GetImage', val);
+        return this._httpClient.post<any>(this._APIUrl + 'api/Pharmacy/GetImage', val);
     }
 
     checkMedicine(val: any): Observable<IMedicineResponse>{

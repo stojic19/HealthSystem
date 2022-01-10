@@ -1,0 +1,19 @@
+<div class="panel panel-primary">
+    <div class="panel-heading m-3">
+        <h2>Tendering Statistics</h2>
+    </div>
+    <div class="form-control form-control-lg">
+        <mat-form-field appearance="outline" [style.width.%]="20">
+            <mat-label>Enter a date range</mat-label>
+            <mat-date-range-input [rangePicker]="picker">
+                <input matStartDate placeholder="Start date" #start>
+                <input matEndDate placeholder="End date" #end>
+            </mat-date-range-input>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+        <button class="btn btn-primary m-3" (click)="GetStatistics(start, end)"><strong>Get statistics</strong></button>
+    </div>
+    
+</div>

@@ -13,6 +13,10 @@ export class TenderingService {
 
   createTender(val:any){
     return this._httpClient.post(this._APIUrl +'api/Tender/CreateTender',val);
-}
+  }
+
+  getStatistics(timeRange:any){
+    return this._httpClient.post(this._APIUrl +'api/Tender/GetTenderStatistics',timeRange);
+  }
 
 }

@@ -226,11 +226,10 @@ namespace IntegrationAPI.Controllers.Tenders
             }
         }
 
-        //[HttpGet("{startTime:string},{endTime:string}")]
-        [HttpGet]
-        public TenderStatisticsDto GetTenderStatistics(DateTime startTime, DateTime endTime)
+        [HttpPost]
+        public TenderStatisticsDto GetTenderStatistics(TimePeriodDTO timePeriodDto)
         {
-            TimeRange timeRange = new TimeRange(startTime, endTime);
+            TimeRange timeRange = new TimeRange(timePeriodDto.StartTime, timePeriodDto.EndTime);
             TenderStatisticsDto tenderStatisticsDto = new TenderStatisticsDto()
             {
                 PharmacyStatistics = new List<PharmacyTenderStatisticsDto>()

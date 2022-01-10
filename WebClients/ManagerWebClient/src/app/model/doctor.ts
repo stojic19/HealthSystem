@@ -1,6 +1,6 @@
 import { Gender } from '../interfaces/patient';
 
-export interface Doctor {
+export class Doctor {
   id: number;
   username: string;
   password: string;

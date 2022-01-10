@@ -1,4 +1,4 @@
-name: Run Integration Tests Hospital
+name: Run Integration Tests Integration
 on:
   push:
     branches: [master, development, feature/integration-tests]
@@ -6,8 +6,10 @@ on:
 env:
   PROJECT_PATH_HOSPITAL: './Hospital'
   PROJECT_PATH_INTEGRATION: './Integration'
+  PROJECT_PATH_PHARMACY: './Pharmacy'
   DB_PATH: 'Host=postgres;Database=HOSPITAL;Username=postgres;Password=postgres'
   DB_PATH_INTEGRATION: 'Host=postgres;Database=INTEGRATION;Username=postgres;Password=postgres'
+  DB_PATH_PHARMACY: 'Host=postgres;Database=PHARMACY;Username=postgres;Password=postgres'
 
 jobs:
   build:
@@ -31,20 +33,24 @@ jobs:
         run: | 
           dotnet restore ${{ env.PROJECT_PATH_HOSPITAL }}
           dotnet restore ${{ env.PROJECT_PATH_INTEGRATION }}
+          dotnet restore ${{ env.PROJECT_PATH_PHARMACY }}
 
       - name: Build
         run: |
           dotnet build ${{ env.PROJECT_PATH_HOSPITAL }}
           dotnet build ${{ env.PROJECT_PATH_INTEGRATION }}
+          dotnet build ${{ env.PROJECT_PATH_PHARMACY }}
 
       - name: Start
         env:
           HOSPITAL_DB_PATH: ${{ env.DB_PATH }}
           INTEGRATION_DB_PATH: ${{ env.DB_PATH_INTEGRATION }}
+          PHARMACY_DB_PATH: ${{ env.DB_PATH_PHARMACY }}
           RABBITMQ_HOST: "rabbitmq"
         run: | 
           dotnet run --project Hospital/HospitalApi/ --urls=http://localhost:44303 &
           dotnet run --project Integration/IntegrationApi/ --urls=http://localhost:44302 &
+          dotnet run --project Pharmacy/PharamcyApi/ --urls=http://localhost:44304 &
 
       - name: Sleep for 15 seconds
         run: sleep 15s
@@ -53,4 +59,5 @@ jobs:
         env:
           HOSPITAL_DB_PATH: ${{ env.DB_PATH }}
           INTEGRATION_DB_PATH: ${{ env.DB_PATH_INTEGRATION }}
-        run: dotnet test ${{ env.PROJECT_PATH_HOSPITAL }}/HospitalIntegrationTests
+          PHARMACY_DB_PATH: ${{ env.DB_PATH_PHARMACY }}
+        run: dotnet test ${{ env.PROJECT_PATH_INTEGRATION }}/IntegrationIntegrationTests

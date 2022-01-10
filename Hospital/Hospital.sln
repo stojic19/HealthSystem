@@ -11,9 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hospital", "HospitalClassLi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HospitalApi", "HospitalApi\HospitalApi.csproj", "{5288384E-845E-4497-9D19-05A4DD778966}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HospitalIntegrationTests", "HospitalIntegrationTests\HospitalIntegrationTests.csproj", "{F0AD2C7E-62EE-4E9E-B3C4-854FA665C2B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HospitalIntegrationTests", "HospitalIntegrationTests\HospitalIntegrationTests.csproj", "{F0AD2C7E-62EE-4E9E-B3C4-854FA665C2B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HospitalUnitTests", "HospitalUnitTests\HospitalUnitTests.csproj", "{897C4D8D-3A29-4A6C-A92C-AC582EF4DAC6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HospitalUnitTests", "HospitalUnitTests\HospitalUnitTests.csproj", "{897C4D8D-3A29-4A6C-A92C-AC582EF4DAC6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeleniumTests", "SeleniumTests\SeleniumTests.csproj", "{BD04ED02-6994-4DEA-9CAD-B12DDFB46410}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +39,10 @@ Global
 		{897C4D8D-3A29-4A6C-A92C-AC582EF4DAC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{897C4D8D-3A29-4A6C-A92C-AC582EF4DAC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{897C4D8D-3A29-4A6C-A92C-AC582EF4DAC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD04ED02-6994-4DEA-9CAD-B12DDFB46410}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD04ED02-6994-4DEA-9CAD-B12DDFB46410}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD04ED02-6994-4DEA-9CAD-B12DDFB46410}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD04ED02-6994-4DEA-9CAD-B12DDFB46410}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

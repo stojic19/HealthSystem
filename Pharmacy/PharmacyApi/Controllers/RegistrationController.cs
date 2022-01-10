@@ -65,7 +65,9 @@ namespace PharmacyApi.Controllers
                 StreetNumber = PharmacyDetails.StreetNumber,
                 CountryName = PharmacyDetails.CountryName,
                 PostalCode = PharmacyDetails.PostalCode,
-                GrpcSupported = true
+                GrpcSupported = true,
+                Latitude = PharmacyDetails.Latitude,
+                Longitude = PharmacyDetails.Longitude
             };
         }
     }

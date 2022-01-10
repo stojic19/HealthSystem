@@ -18,20 +18,20 @@ namespace Hospital.Schedule.Service
             this.UoW = UoW;
         }
 
-        public List<ScheduledEvent> GetCanceledUserEvents(int userId)
+        public List<ScheduledEvent> GetCanceledUserEvents(string userName)
         {
-            return UoW.GetRepository<IScheduledEventReadRepository>().GetCanceledUserEvents(userId);
+            return UoW.GetRepository<IScheduledEventReadRepository>().GetCanceledUserEvents(userName);
         }
 
-        public List<ScheduledEvent> GetFinishedUserEvents(int userId)
+        public List<ScheduledEvent> GetFinishedUserEvents(string userName)
         {
 
-            return UoW.GetRepository<IScheduledEventReadRepository>().GetFinishedUserEvents(userId);        
+            return UoW.GetRepository<IScheduledEventReadRepository>().GetFinishedUserEvents(userName);        
 
         }
-        public List<EventForSurvey> GetEventsForSurvey(int userId)
+        public List<EventForSurvey> GetEventsForSurvey(string userName)
         {
-            var finishedEvents = UoW.GetRepository<IScheduledEventReadRepository>().GetFinishedUserEvents(userId);
+            var finishedEvents = UoW.GetRepository<IScheduledEventReadRepository>().GetFinishedUserEvents(userName);
             var ansveredSurveyRepo = UoW.GetRepository<IAnsweredSurveyReadRepository>();
            
             List<EventForSurvey> eventsForSurveys = new();
@@ -57,9 +57,9 @@ namespace Hospital.Schedule.Service
             return UoW.GetRepository<IScheduledEventReadRepository>().GetScheduledEvent(eventId);
         }
 
-        public List<ScheduledEvent> GetUpcomingUserEvents(int userId)
+        public List<ScheduledEvent> GetUpcomingUserEvents(string userName)
         {
-            return UoW.GetRepository<IScheduledEventReadRepository>().GetUpcomingUserEvents(userId);
+            return UoW.GetRepository<IScheduledEventReadRepository>().GetUpcomingUserEvents(userName);
         }
 
         public void UpdateFinishedUserEvents()
@@ -81,6 +81,11 @@ namespace Hospital.Schedule.Service
                         availableTerms.Add(date);
             }
             return availableTerms;
+        }
+
+        public void CancelAppointment(int eventId)
+        {
+            UoW.GetRepository<IScheduledEventWriteRepository>().CancelEvent(eventId);
         }
     }
 }

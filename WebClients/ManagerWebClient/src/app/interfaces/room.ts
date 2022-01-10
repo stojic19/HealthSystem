@@ -1,3 +1,5 @@
+import { RoomPosition } from "../model/room-position.model";
+
 export enum RoomType {
   AppointmentRoom,
   OperationRoom,
@@ -18,4 +20,5 @@ export class Room {
     roomInventories! : [];
     scheduledEvents! : [];
     roomType: number;
+    roomPosition: RoomPosition;
 }

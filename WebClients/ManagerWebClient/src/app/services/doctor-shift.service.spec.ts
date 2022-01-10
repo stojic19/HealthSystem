@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { RoomPositionService } from './room-position.service';
+import { DoctorShiftService } from './doctor-shift.service';
 
-describe('RoomPositionService', () => {
-  let service: RoomPositionService;
+describe('DoctorShiftService', () => {
+  let service: DoctorShiftService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(RoomPositionService);
+    service = TestBed.inject(DoctorShiftService);
   });
 
   it('should be created', () => {

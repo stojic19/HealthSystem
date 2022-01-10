@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HospitalApi.DTOs
+namespace PharmacyApi.DTO
 {
     public class MedicineDTO
     {

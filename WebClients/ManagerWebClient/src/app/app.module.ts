@@ -14,7 +14,7 @@ import { SecondFloorComponent } from './first-building/second-floor/second-floor
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FeedbacksManagerComponent } from './components/feedbacks-manager/feedbacks-manager.component';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SecondBuildingComponent } from './second-building/second-building.component';
 import { FloorFirstComponent } from './second-building/floor-first/floor-first.component';
@@ -70,6 +70,18 @@ import { TimeInfoComponent } from './renovation-form/time-info/time-info.compone
 import { FirstRoomInfoComponent } from './renovation-form/first-room-info/first-room-info.component';
 import { SecondRoomInfoComponent } from './renovation-form/second-room-info/second-room-info.component';
 import { AvailableTermsComponent } from './renovation-form/available-terms/available-terms.component';
+import { TendersListComponent } from './tenders/tenders-list.component';
+import { TenderProfileComponent } from './tenders/tender-profile/tender-profile.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { AddTenderComponent } from './tendering/add-tender/add-tender.component';
+import { LoginComponent } from './components/login/login.component';
+import { JwtInterceptor } from './JWTInterceptor/JwtInterceptor';
+import { HospitalShiftsComponent } from './hospital-shifts/hospital-shifts.component';
+import { CreateShiftComponent } from './create-shift/create-shift.component';
+import { UpdateShiftComponent } from './update-shift/update-shift.component';
+import { DoctorShiftComponent } from './doctor-shift/doctor-shift.component';
+import { ShiftListComponent } from './doctor-shift/shift-list/shift-list.component';
+import { ShiftUpdateComponent } from './doctor-shift/shift-update/shift-update.component';
 
 @NgModule({
   declarations: [
@@ -125,6 +137,17 @@ import { AvailableTermsComponent } from './renovation-form/available-terms/avail
     FirstRoomInfoComponent,
     SecondRoomInfoComponent,
     AvailableTermsComponent,
+    TendersListComponent,
+    TenderProfileComponent,
+    AddTenderComponent,
+    LoginComponent,
+    HospitalShiftsComponent,
+    CreateShiftComponent,
+    UpdateShiftComponent,
+    DoctorShiftComponent,
+    ShiftListComponent,
+    ShiftUpdateComponent,
+
 
   ],
   imports: [
@@ -147,10 +170,14 @@ import { AvailableTermsComponent } from './renovation-form/available-terms/avail
     MatSelectModule,
     MaterialModule,
     MatDialogModule,
+    NgxChartsModule,
     ToastrModule.forRoot({timeOut: 3000,
       positionClass: 'toast-top-right'}),
   ],
-  providers: [HttpClientModule],
+  providers: [HttpClientModule,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
+    
+  ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

@@ -1,0 +1,41 @@
+<div class="m-5"></div>
+<div class="card mx-auto" style="width: 100rem;" *ngIf='id'>
+    <div class="card-header">
+        <div>Tender ID:  {{id}}</div>
+        <div>Closing Date: {{tender.activeRange.endDate | date: "dd-MM-yyyy, hh:mm"}}</div>
+        <div>Active: true</div>
+    </div>
+    <div class="card-body">
+      <h3 class="card-title text-center m-3">{{tender.name}}</h3>
+      <ul class="list-group">
+        <li class="list-group-item text-center m-3" *ngFor='let request of tender.medicationRequests'>{{request.medicineName}} : {{request.quantity}}</li>
+      </ul>
+
+      <button class="btn btn-primary m-3" (click)="closeTender()">Close Tender</button>
+
+      <div class="table-responsive m-3">
+        <h5>Offers:</h5>
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Pharmacy Name</th>
+                    <th>Date</th>
+                    <th>Cost</th>
+                    <th>Choose Winner</th>
+                </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor='let offer of tender.tenderOffers'>
+                <td>{{offer.id}}</td>
+                <td>{{offer.pharmacy.name}}</td>
+                <td>{{offer.createdDate | date: "dd-MM-yyyy, hh:mm"}}</td>
+                <td>{{offer.cost.amount}}</td>
+                <td><button class="btn btn-primary" (click)="winner(offer.id)">Winner</button></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    </div>
+  </div>

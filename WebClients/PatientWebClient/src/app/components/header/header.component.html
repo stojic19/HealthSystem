@@ -1,28 +1,78 @@
 <div class="container">
   <div class="navbar-inner">
-    <nav class="navbar navbar-expand-lg bg-light fixed-top shadow-lg">
-      <a class="navbar-brand ml-3 ">H O S P I T A L</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <nav
+      class="navbar navbar-expand-lg bg-light fixed-top shadow-lg"
+      style="height: 70px"
+    >
+      <a class="navbar-brand ml-3" href="/"
+        ><img
+          src="../../assets/images/LogoMakr-2KfMiMdva.png"
+          style="height: 70px"
+      /></a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" routerLinkActive='active' routerLink='/'>Home <span
-                class="sr-only">(current)</span></a>
+          <li
+            *ngIf="loginStatus$ | async as LoginStatus"
+            class="nav-item active"
+          >
+            <a
+              *ngIf="!LoginStatus"
+              class="nav-link"
+              routerLinkActive="active"
+              [routerLink]="['']"
+              >Welcome<span class="sr-only">(current)</span></a
+            >
           </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLinkActive='active' routerLink='/feedbacks'>User Reviews</a>
+          <li *ngIf="loginStatus$ | async as LoginStatus" class="nav-item">
+            <a
+              *ngIf="LoginStatus"
+              class="nav-link"
+              routerLinkActive="active"
+              [routerLink]="['/feedbacks']"
+              >User Reviews</a
+            >
           </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLinkActive='active' routerLink='/record'>Medical record</a>
+          <li *ngIf="loginStatus$ | async as LoginStatus" class="nav-item">
+            <a
+              *ngIf="LoginStatus"
+              class="nav-link"
+              routerLinkActive="active"
+              [routerLink]="['/record']"
+              >Medical record</a
+            >
           </li>
-          
         </ul>
-        <!--<form class=" form-inline ">
-          <button class=" btn btn-primary btn-lg ">Login</button>
-        </form>-->
+        <form
+          *ngIf="loginStatus$ | async as LoginStatus; else showLogIn"
+          class="form-inline"
+        >
+          <button
+            mat-button
+            *ngIf="LoginStatus"
+            class="btn btn-primary btn-md"
+            (click)="onLogout()"
+          >
+            Log out
+          </button>
+        </form>
+        <ng-template #showLogIn>
+          <form class="form-inline">
+            <button class="btn btn-primary btn-md" [routerLink]="['/login']">
+              Log in
+            </button>
+          </form></ng-template
+        >
       </div>
     </nav>
   </div>

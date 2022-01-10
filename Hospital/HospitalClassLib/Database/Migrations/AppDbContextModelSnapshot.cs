@@ -1024,6 +1024,13 @@ namespace Hospital.Migrations
                     b.HasDiscriminator().HasValue("Patient");
                 });
 
+            modelBuilder.Entity("Hospital.SharedModel.Model.Manager", b =>
+                {
+                    b.HasBaseType("Hospital.SharedModel.Model.User");
+
+                    b.HasDiscriminator().HasValue("Manager");
+                });
+
             modelBuilder.Entity("Hospital.SharedModel.Model.Staff", b =>
                 {
                     b.HasBaseType("Hospital.SharedModel.Model.User");

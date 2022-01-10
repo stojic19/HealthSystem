@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HospitalApi.Controllers
 {
@@ -25,6 +26,7 @@ namespace HospitalApi.Controllers
             this._uow = uow;
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpPost]
         public IEnumerable<Room> AddRooms(IEnumerable<Room> rooms)
         {
@@ -32,6 +34,7 @@ namespace HospitalApi.Controllers
             return roomRepo.AddRange(rooms);
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpPut]
         public Room UpdateRoom(Room room)
         {
@@ -39,7 +42,7 @@ namespace HospitalApi.Controllers
             return roomRepo.Update(room);
         }
 
-
+        [Authorize(Roles = "Manager")]
         [HttpGet]
         public IActionResult FindByNameAndBuildingName([FromQuery(Name = "name")] string name, [FromQuery(Name = "buildingName")] string buildingName)
         {
@@ -54,6 +57,7 @@ namespace HospitalApi.Controllers
             return Ok(roomRepo.GetAll().Where(room => room.Name.ToLower().Contains(name.ToLower()) && room.BuildingName.Contains(buildingName)));
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpGet]
         public IEnumerable<Room> GetAllRooms()
         {
@@ -63,6 +67,7 @@ namespace HospitalApi.Controllers
             return roomRepo.GetAll();
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpGet]
         public IEnumerable<ScheduledEvent> GetScheduledEventsByRoom(int roomId)
         {
@@ -97,6 +102,18 @@ namespace HospitalApi.Controllers
                 .Where(scheduledEvent => !scheduledEvent.IsCanceled &&
                                         !scheduledEvent.IsDone &&
                                         scheduledEvent.RoomId == roomId);
+        }
+
+        [Authorize(Roles = "Manager")]
+        [HttpGet]
+        public IEnumerable<Room> GetRoomsByLocation([FromQuery(Name = "floorNumber")] int floorNumber, [FromQuery(Name = "buildingName")] string buildingName)
+        {
+            var renovationService = new RenovatingRoomsService(_uow);
+            renovationService.StartRoomRenovations();
+            var roomRepo = _uow.GetRepository<IRoomReadRepository>();
+            return roomRepo.GetAll()
+                           .Where(r => r.FloorNumber == floorNumber &&
+                                    r.BuildingName == buildingName);
         }
     }
 }

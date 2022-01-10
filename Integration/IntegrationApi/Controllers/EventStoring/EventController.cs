@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Integration.EventStoring.Model;
+using Integration.EventStoring.Repository;
 using Integration.Shared.Repository.Base;
+using IntegrationApi.DTO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IntegrationApi.Controllers.EventStoring

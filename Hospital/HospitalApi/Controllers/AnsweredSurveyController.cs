@@ -5,6 +5,7 @@ using Hospital.Schedule.Service.ServiceInterface;
 using Hospital.Schedule.Model;
 using HospitalApi.DTOs;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HospitalApi.Controllers
 {
@@ -22,12 +23,14 @@ namespace HospitalApi.Controllers
             this.mapper = mapper;
         }
 
+        [Authorize(Roles = "Patient")]
         [HttpGet]
         public IEnumerable<AnsweredSurvey> GetAllAnsweredSurvey()
         {
             return surveyService.getAllAnsweredSurvey();
         }
 
+        [Authorize(Roles = "Patient")]
         [HttpPost]
         public IActionResult CreateAnsweredSurvey(AnsweredSurveyDTO answeredSurveyDTO)
         {

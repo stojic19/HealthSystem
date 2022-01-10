@@ -31,35 +31,56 @@ export class OnCallShiftsComponent implements OnInit {
     });
 
     this.service
-    .getOnCallShift(1, 2)
+    .getOnCallShift(this.selectedMonth, this.selectedWeek)
     .toPromise()
     .then((res) => {
-      this.shift = res as OnCallDuty;
-      this.selectedOnCallShift = this.shift;
-      console.log( this.selectedOnCallShift);
-    });
+      this.selectedOnCallShift = res as OnCallDuty;});
   }
 
   selectionChanged(){
     this.service
     .getOnCallShift(this.selectedMonth, this.selectedWeek)
-    .toPromise()
-    .then((res) => {
+    .subscribe((res) => {
       this.selectedOnCallShift = res as OnCallDuty;
-    });
+      this.selectedOldDoctor = new Doctor;
+      this.selectedOldDoctor.firstName = ''});
   }
 
   addDoctorToShift(){
-    this.service.addDoctorToShift(2, this.selectedNewDoctor.id)
+    this.service.addDoctorToShift(this.selectedOnCallShift.id, this.selectedNewDoctor.id)
     .toPromise()
-    .then((res) => { this.selectedOnCallShift = res as OnCallDuty});
+    .then((res) => { this.selectedOnCallShift = res as OnCallDuty;
+                    this.selectedNewDoctor = new Doctor;
+                    this.selectedNewDoctor.firstName = ''});
     window.location.reload;
   }
 
   removeDoctorFromShift(){
-    this.service.removeDoctorFromShift(this.selectedOnCallShift.id, this.selectedNewDoctor.id)
+    this.service.removeDoctorFromShift(this.selectedOnCallShift.id, this.selectedOldDoctor.id)
     .toPromise()
-    .then((res) => { this.selectedOnCallShift = res as OnCallDuty});
+    .then((res) => { this.selectedOnCallShift = res as OnCallDuty;
+                    this.selectedOldDoctor = new Doctor;
+                    this.selectedOldDoctor.firstName = ''});
     window.location.reload;
+  }
+
+  isAlreadyOnCall(): boolean{
+    let flag = false;
+    this.selectedOnCallShift.doctorsOnDuty.forEach(element => {
+      if(element.id === this.selectedNewDoctor.id)
+        flag = true;
+    });
+    return flag;
+  }
+
+  isInThePast(): boolean{
+    let currentDate = new Date();
+    let d = (1 + (this.selectedWeek - 1) * 7); 
+    let selectedDate = new Date(2022, this.selectedMonth - 1, d + 6);
+
+    if(currentDate > selectedDate)
+      return true;
+      
+    return false;
   }
 }

@@ -18,21 +18,27 @@ namespace IntegrationEndToEndTests
     {
         private readonly PharmacyRegistrationPage _registrationPage;
         private readonly LoginPage _loginPage;
+        private readonly PharmacyListPage _pharmaciesPage;
 
         public RegisterPharmacyTest(BaseFixture fixture) : base(fixture)
         {
             _registrationPage = new PharmacyRegistrationPage(_driver);
             _loginPage = new LoginPage(_driver);
+            _pharmaciesPage = new PharmacyListPage(_driver);
         }
 
         [Fact]
         public void Register_success()
         {
             _loginPage.Navigate();
+            _loginPage.WaitForDisplay();
             _loginPage.InsertUsername("Rade");
             _loginPage.InsertPassword("RadeRade654#@!");
             _loginPage.Submit();
             var beforeTest = UoW.GetRepository<IPharmacyReadRepository>().GetAll().ToList();
+            _pharmaciesPage.Navigate();
+            _pharmaciesPage.WaitForDisplay();
+            int countBeforeRegistration = _pharmaciesPage.PharmaciesCount();
             _registrationPage.Navigate();
             _registrationPage.WaitForDisplay();
             _registrationPage.InsertName("Apoteka");
@@ -44,6 +50,9 @@ namespace IntegrationEndToEndTests
             _registrationPage.InsertStreetNumber("14");
             _registrationPage.Submit();
             Thread.Sleep(5000);
+            _pharmaciesPage.Navigate();
+            _pharmaciesPage.WaitForDisplay();
+            int countAfterRegistration = _pharmaciesPage.PharmaciesCount();
             var afterTest = UoW.GetRepository<IPharmacyReadRepository>().GetAll().ToList();
             int difference = afterTest.Count - beforeTest.Count;
             foreach (var pharmacy1 in afterTest)
@@ -61,6 +70,7 @@ namespace IntegrationEndToEndTests
                 }
             }
             difference.ShouldBe(1);
+            (countAfterRegistration - countBeforeRegistration).ShouldBe(1);
         }
     }
 }

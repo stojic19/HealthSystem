@@ -24,5 +24,6 @@ jobs:
             docker system prune -f
             curl https://raw.githubusercontent.com/healthSystemPSW/mainrepo/feature/docker-security/Stacks/docker-compose.yml >> docker-compose.yml
             docker stack deploy --compose-file=docker-compose.yml stack
+            
 
 

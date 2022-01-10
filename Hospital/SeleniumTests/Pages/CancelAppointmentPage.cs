@@ -130,7 +130,7 @@ namespace SeleniumTests.Pages
         {
             InitialRowCount = Rows.Count;
             EnsureCancelButtonIsDisplayed();
-            CancelButton.SendKeys(Keys.Return);
+            TestCancelButton.SendKeys(Keys.Return);
             Thread.Sleep(5000);
             EnsureMatTableIsDisplayed();
             

@@ -89,6 +89,7 @@ namespace HospitalApi.Controllers
             var shift = shiftsReadRepo.GetAll()
                 .Include(x => x.DoctorsOnDuty).ThenInclude(x => x.Specialization)
                 .Where(shift => shift.Id == shiftId).FirstOrDefault();
+
             var doctor = doctorsReadRepo.GetById(doctorId);
             shift.RemoveDoctor(doctor);
             shiftsWriteRepo.Update(shift);

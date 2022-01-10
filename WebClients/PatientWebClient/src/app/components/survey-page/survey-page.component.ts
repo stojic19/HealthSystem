@@ -8,8 +8,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { IAppointment } from 'src/app/interfaces/appointment';
 import { AppointmentService } from 'src/app/services/AppointmentService/appointment.service';
 
-
-
 @Component({
   selector: 'app-survey-page',
   templateUrl: './survey-page.component.html',

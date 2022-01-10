@@ -1,10 +1,7 @@
-﻿using AutoMapper;
-using Hospital.Schedule.Model;
+﻿using Hospital.Schedule.Model;
 using Hospital.Schedule.Model.Wrappers;
 using Hospital.Schedule.Service.ServiceInterface;
 using Hospital.SharedModel.Model.Enumerations;
-using HospitalApi.DTOs;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -17,41 +14,38 @@ namespace HospitalApi.Controllers
     public class SurveyController : ControllerBase
     {
 
-        private readonly IMapper _mapper;
         private readonly ISurveyService surveyService;
 
-        public SurveyController(IMapper mapper, ISurveyService surveyService)
+        public SurveyController( ISurveyService surveyService)
         {
 
-            _mapper = mapper;
             this.surveyService = surveyService;
         }
         [HttpGet]
         public IEnumerable<Survey> GetSurveys()
         {
-            return surveyService.getAll();
+            return surveyService.GetAll();
         }
      
-        [Authorize(Roles = "Patient")]
+        //[Authorize(Roles = "Patient")]
         [HttpGet("{SurveyId}")]
         public CategoriesSurvey getSurveyByCategories(int SurveyId)
         {
             CategoriesSurvey categoriesSurvey = new CategoriesSurvey()
             {
                 SurveyId = SurveyId,
-                DoctorSection = surveyService.getSurveySection(SurveyId, SurveyCategory.DoctorSurvey),
-                MedicalStaffSection = surveyService.getSurveySection(SurveyId, SurveyCategory.StaffSurvey),
-                HospitalSection = surveyService.getSurveySection(SurveyId, SurveyCategory.HospitalSurvey)
+                DoctorSection = surveyService.GetSurveySection(SurveyId, SurveyCategory.DoctorSurvey),
+                MedicalStaffSection = surveyService.GetSurveySection(SurveyId, SurveyCategory.StaffSurvey),
+                HospitalSection = surveyService.GetSurveySection(SurveyId, SurveyCategory.HospitalSurvey)
             };
             return categoriesSurvey;
         }
 
-        [Authorize(Roles = "Patient")]
+        //[Authorize(Roles = "Patient")]
         [HttpPost]
-        public IActionResult CreateSurvey(SurveyDTO surveyDTO)
+        public IActionResult CreateSurvey()
         {
-            
-            surveyService.createSurvey(_mapper.Map<Survey>(surveyDTO));
+            surveyService.CreateSurvey(new Survey(true));
             return Ok("Success");
 
         }

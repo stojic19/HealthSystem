@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hospital.MedicalRecords.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,10 +17,10 @@ namespace Hospital.Schedule.Model
         {
 
         }
-        public Survey(IEnumerable<Question> questions, bool isActive)
+        public Survey(bool isActive)
         {
             this.CreatedDate = DateTime.Now;
-            this.Questions = questions;
+            this.Questions = new List<Question>();
             this.AnsweredSurveys = new List<AnsweredSurvey>();
             this.isActive = isActive;
             
@@ -30,9 +31,10 @@ namespace Hospital.Schedule.Model
         {
         }
 
-        public void CreateAnsweredSurvey(AnsweredSurvey answeredSurvey)
+        public void CreateAnsweredSurvey(AnsweredSurvey answeredSurvey, Patient patient)
         {
             //UoW.GetRepository<IAnsweredSurveyWriteRepository>()
+            answeredSurvey.SetPatient(patient);
             AnsweredSurveys.ToList().Add(answeredSurvey);
         }
 

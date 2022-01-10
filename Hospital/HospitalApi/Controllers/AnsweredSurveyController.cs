@@ -5,7 +5,6 @@ using Hospital.Schedule.Service.ServiceInterface;
 using Hospital.Schedule.Model;
 using HospitalApi.DTOs;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Authorization;
 using Hospital.SharedModel.Repository.Base;
 using Hospital.MedicalRecords.Repository;
 
@@ -29,22 +28,21 @@ namespace HospitalApi.Controllers
             this._uow = uow;
         }
 
-        [Authorize(Roles = "Patient")]
+        //[Authorize(Roles = "Patient")]
         [HttpGet]
         public IEnumerable<AnsweredSurvey> GetAllAnsweredSurvey()
         {
             return surveyService.getAllAnsweredSurvey();
         }
 
-        [Authorize(Roles = "Patient")]
+        //[Authorize(Roles = "Patient")]
         [HttpPost]
         public IActionResult CreateAnsweredSurvey(AnsweredSurveyDTO answeredSurveyDTO)
         {
-            Survey activeSurvey = _surveyService.getActiveSurvey();
-            var patientRepo = _uow.GetRepository<IPatientReadRepository>();
-            var patient = patientRepo.GetPatient(answeredSurveyDTO.UserName);
-           //TODO:
-            // activeSurvey.CreateAnsweredSurvey(mapper.Map<AnsweredSurvey>(answeredSurveyDTO),patient.Id);
+            Survey activeSurvey = _surveyService.GetActiveSurvey();
+            var patient = _uow.GetRepository<IPatientReadRepository>().GetPatient(answeredSurveyDTO.UserName);
+            activeSurvey.CreateAnsweredSurvey(mapper.Map<AnsweredSurvey>(answeredSurveyDTO),patient);
+            _surveyService.Save(activeSurvey);
 
             //var temp = mapper.Map<AnsweredSurvey>(answeredSurveyDTO);
             //return Ok(surveyService.createAnsweredSurvey(temp));

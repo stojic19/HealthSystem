@@ -32,6 +32,12 @@ namespace Hospital.Schedule.Model
             ScheduledEvent = scheduledEvent;
             Validate();
         }
+
+        public void SetPatient(Patient patient)
+        {
+            Patient = patient;
+        }
+
         private void Validate()
         {
             if (SurveyId <= 0 || ScheduledEventId <= 0 || PatientId <= 0 ) throw new Exception();

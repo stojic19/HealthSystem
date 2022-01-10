@@ -7,6 +7,7 @@ env:
   PROJECT_PATH_HOSPITAL: './Hospital'
   PROJECT_PATH_INTEGRATION: './Integration'
   DB_PATH: 'Host=localhost;Database=HOSPITAL;Username=postgres;Password=postgres'
+  DB_PATH_INTEGRATION: 'Host=localhost;Database=INTEGRATION;Username=postgres;Password=postgres'
 
 jobs:
   build:
@@ -39,6 +40,7 @@ jobs:
       - name: Start
         env:
           HOSPITAL_DB_PATH: ${{ env.DB_PATH }}
+          INTEGRATION_DB_PATH: ${{ env.DB_PATH_INTEGRATION }}
           RABBITMQ_HOST: "rabbitmq"
         run: | 
           dotnet run --project ${{ env.PROJECT_PATH_HOSPITAL }}/HospitalApi/ --urls=http://localhost:44303
@@ -47,4 +49,5 @@ jobs:
       - name: Test
         env:
           HOSPITAL_DB_PATH: ${{ env.DB_PATH }}
+          INTEGRATION_DB_PATH: ${{ env.DB_PATH_INTEGRATION }}
         run: dotnet test ${{ env.PROJECT_PATH_HOSPITAL }}/HospitalIntegrationTests

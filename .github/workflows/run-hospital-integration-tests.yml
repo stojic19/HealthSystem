@@ -19,6 +19,8 @@ jobs:
         env:
           POSTGRES_PASSWORD: postgres
           POSTGRES_USER: postgres
+      rabbitmq:
+        image: rabbitmq:3-management-alpine
 
     steps:
       - name: Check out code
@@ -37,6 +39,7 @@ jobs:
       - name: Start
         env:
           HOSPITAL_DB_PATH: ${{ env.DB_PATH }}
+          RABBITMQ_HOST: "rabbitmq"
         run: | 
           dotnet run --project ${{ env.PROJECT_PATH_HOSPITAL }}/HospitalApi/ --urls=http://localhost:44303
           dotnet run --project ${{ env.PROJECT_PATH_INTEGRATION }}/IntegrationApi/ --urls=http://localhost:44302

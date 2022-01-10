@@ -76,6 +76,7 @@ services:
       - "8081:8081"
     container_name: patient-ui
 
+<<<<<<< HEAD
   manager-ui:
     image: srdjansukovic/psw_managerui
     build:
@@ -93,6 +94,23 @@ services:
     ports:
       - "8083:8083"
     container_name: integration-ui
+=======
+  #manager-ui:
+  #  build:
+  #    context: ../
+  #    dockerfile: Stacks/Build/ManagerUi/Dockerfile
+  #  ports:
+  #    - "8082:8082"
+  #  container_name: manager-ui
+
+  #integration-ui:
+  #  build:
+  #    context: ../
+  #    dockerfile: Stacks/Build/IntegrationUi/Dockerfile
+  #  ports:
+  #    - "8083:8083"
+  #  container_name: integration-ui
+>>>>>>> 4c82b69d (feat: Update docker-compose.yml)
 
   hospitaldb:
     image: postgres:13

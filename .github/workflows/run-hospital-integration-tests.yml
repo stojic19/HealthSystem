@@ -43,8 +43,8 @@ jobs:
           INTEGRATION_DB_PATH: ${{ env.DB_PATH_INTEGRATION }}
           RABBITMQ_HOST: "rabbitmq"
         run: | 
-          powershell -NoExit -Command "dotnet run --project Hospital/HospitalApi/ --urls=http://localhost:44303" &
-          powershell -NoExit -Command "dotnet run --project Integration/IntegrationApi/ --urls=http://localhost:44302" &
+          dotnet run --project Hospital/HospitalApi/ --urls=http://localhost:44303 &
+          dotnet run --project Integration/IntegrationApi/ --urls=http://localhost:44302 &
 
       - name: Sleep for 15 seconds
         run: sleep 15s

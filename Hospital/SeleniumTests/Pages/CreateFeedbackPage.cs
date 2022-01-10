@@ -70,7 +70,7 @@ namespace SeleniumTests.Pages
 
         public void WaitForFormSubmitted()
         {
-            var wait = new WebDriverWait(_driver, new TimeSpan(0, 0, 10));
+            var wait = new WebDriverWait(_driver, new TimeSpan(0, 0, 20));
             wait.Until(condition => IsSnackbarDisplayed());
         }
     }

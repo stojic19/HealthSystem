@@ -1,4 +1,5 @@
 using AutoMapper;
+using Hospital.MedicalRecords.Repository;
 using Hospital.Schedule.Model;
 using Hospital.Schedule.Repository;
 using Hospital.SharedModel.Model.Enumerations;
@@ -59,17 +60,12 @@ namespace HospitalApi.Controllers
         [HttpPost]
         public IActionResult InsertFeedback(NewFeedbackDTO feedbackDTO)
         {
-            try
-            {
-                var feedbackWriteRepo = _uow.GetRepository<IFeedbackWriteRepository>();
-                Feedback addedFeedback = feedbackWriteRepo.Add(_mapper.Map<Feedback>(feedbackDTO));
-                return Ok(addedFeedback);
-
-            }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Could not insert feedback in the database.");
-            }
+            var feedbackWriteRepo = _uow.GetRepository<IFeedbackWriteRepository>();
+            var loggedInPatient = _uow.GetRepository<IPatientReadRepository>().GetAll().Where(x => x.UserName.Equals(feedbackDTO.PatientUsername)).First();
+            feedbackDTO.PatientId = loggedInPatient.Id;
+            var newFeedback = _mapper.Map<Feedback>(feedbackDTO);
+            return feedbackWriteRepo.Add(newFeedback) == null ? StatusCode(StatusCodes.Status500InternalServerError, "Could not insert feedback in the database.")
+                : Ok("Your feedback has been submitted.");
 
         }
 

@@ -297,6 +297,15 @@ namespace SeleniumTests
             {
                 UoW.GetRepository<IRoomWriteRepository>().Delete(room);
             }
+
+            var shift = UoW.GetRepository<IShiftReadRepository>()
+                .GetAll().ToList()
+                .FirstOrDefault(x => x.Name == "prva");
+
+            if (shift != null)
+            {
+                UoW.GetRepository<IShiftWriteRepository>().Delete(shift);
+            }
         }
     }
 }

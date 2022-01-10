@@ -16,7 +16,7 @@ namespace HospitalUnitTests
         {
         }
 
-        [Fact]
+        /*[Fact]
         public void Send_Test_Email_Should_Be_True()
         {
             var emailAddress = "testsemailpsw@gmail.com";
@@ -26,6 +26,6 @@ namespace HospitalUnitTests
             bool sent = es.SendEmail(emailAddress, confirmationLink);
 
             sent.ShouldBe(true);
-        }
+        }*/
     }
 }

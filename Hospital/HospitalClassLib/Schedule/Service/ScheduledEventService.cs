@@ -82,5 +82,10 @@ namespace Hospital.Schedule.Service
             }
             return availableTerms;
         }
+
+        public void CancelAppointment(int eventId)
+        {
+            UoW.GetRepository<IScheduledEventWriteRepository>().CancelEvent(eventId);
+        }
     }
 }

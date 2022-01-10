@@ -32,6 +32,7 @@ namespace SeleniumTests.Base
             {
                 CookieContainer = CookieContainer
             };
+            handler.ServerCertificateCustomValidationCallback = (message, cert, chain, sslPolicyErrors) => true;
             Client = new HttpClient(handler);
         }
 

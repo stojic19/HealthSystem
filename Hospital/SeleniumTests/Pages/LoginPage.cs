@@ -1,7 +1,7 @@
-﻿using OpenQA.Selenium;
+﻿using System;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumTests.Base;
-using System;
 
 namespace SeleniumTests.Pages
 {
@@ -15,10 +15,7 @@ namespace SeleniumTests.Pages
         public LoginPage(IWebDriver driver) : base(driver)
         {
             this.driver = driver;
-
         }
-
-        #region Display
 
         public bool UsernameElementDisplayed()
         {
@@ -35,10 +32,6 @@ namespace SeleniumTests.Pages
             return SubmitButtonElement.Displayed;
         }
 
-        #endregion
-
-        #region Insert
-
         public void InsertUsername(string username)
         {
             UsernameElement.SendKeys(username);
@@ -48,8 +41,6 @@ namespace SeleniumTests.Pages
         {
             PasswordElement.SendKeys(password);
         }
-
-        #endregion
 
         public void Submit()
         {
@@ -76,14 +67,33 @@ namespace SeleniumTests.Pages
             });
         }
 
-        public void EnsureUserIsLogged()
-        {
+        public void EnsureUserIsLogged(){
             var wait = new WebDriverWait(driver, new TimeSpan(0, 0, 40));
             wait.Until(condition =>
             {
                 try
                 {
                     return driver.Url.Equals(_baseUrl + "/record");
+                }
+                catch (StaleElementReferenceException)
+                {
+                    return false;
+                }
+                catch (NoSuchElementException)
+                {
+                    return false;
+                }
+            });
+        }
+
+        public void EnsureAdminIsLoggedIn()
+        {
+            var wait = new WebDriverWait(driver, new TimeSpan(0, 0, 40));
+            wait.Until(condition =>
+            {
+                try
+                {
+                    return driver.Url.Equals(_baseUrl + "/overview");
                 }
                 catch (StaleElementReferenceException)
                 {

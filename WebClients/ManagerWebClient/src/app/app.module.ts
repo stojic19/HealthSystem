@@ -70,8 +70,15 @@ import { TimeInfoComponent } from './renovation-form/time-info/time-info.compone
 import { FirstRoomInfoComponent } from './renovation-form/first-room-info/first-room-info.component';
 import { SecondRoomInfoComponent } from './renovation-form/second-room-info/second-room-info.component';
 import { AvailableTermsComponent } from './renovation-form/available-terms/available-terms.component';
+import { AddTenderComponent } from './tendering/add-tender/add-tender.component';
 import { LoginComponent } from './components/login/login.component';
 import { JwtInterceptor } from './JWTInterceptor/JwtInterceptor';
+import { HospitalShiftsComponent } from './hospital-shifts/hospital-shifts.component';
+import { CreateShiftComponent } from './create-shift/create-shift.component';
+import { UpdateShiftComponent } from './update-shift/update-shift.component';
+import { DoctorShiftComponent } from './doctor-shift/doctor-shift.component';
+import { ShiftListComponent } from './doctor-shift/shift-list/shift-list.component';
+import { ShiftUpdateComponent } from './doctor-shift/shift-update/shift-update.component';
 
 @NgModule({
   declarations: [
@@ -127,7 +134,15 @@ import { JwtInterceptor } from './JWTInterceptor/JwtInterceptor';
     FirstRoomInfoComponent,
     SecondRoomInfoComponent,
     AvailableTermsComponent,
+    AddTenderComponent,
     LoginComponent,
+    HospitalShiftsComponent,
+    CreateShiftComponent,
+    UpdateShiftComponent,
+    DoctorShiftComponent,
+    ShiftListComponent,
+    ShiftUpdateComponent,
+
 
   ],
   imports: [

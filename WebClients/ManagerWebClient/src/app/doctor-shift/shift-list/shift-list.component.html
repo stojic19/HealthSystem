@@ -1,0 +1,16 @@
+<div class="row mb-4 mt-2 d-flex justify-content-center">
+    <ul *ngFor="let shift of shifts" class="list-group">
+        <li *ngIf="shift.name != null" class="list-group-item  text-black py-2 w-75 p-3 h-auto d-inline-block"
+            [ngClass]="shiftDisplay == shift.name ? 'selected' : 'notSelected'" (click)="chooseShift(shift)">
+            {{shift.name}}</li>
+    </ul>
+
+</div>
+<div class="container">
+    <div class="row ">
+        <div class="col text-center">
+            <button type="button" class="btn btn-primary" [disabled]="isButtonDisabled()"
+                (click)="addShiftToDoctor()">Add</button>
+        </div>
+    </div>
+</div>

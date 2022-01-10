@@ -312,7 +312,7 @@ namespace IntegrationAPI.Controllers.Tenders
                 });
             }
             IPDFAdapter adapter = new DynamicPDFAdapter();
-            string filename = adapter.MakeTenderStatisticsPdf(tenderStatisticsDto, timeRange);
+            adapter.MakeTenderStatisticsPdf(tenderStatisticsDto, timeRange);
             return tenderStatisticsDto;
         }
     }

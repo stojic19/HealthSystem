@@ -234,12 +234,12 @@ namespace IntegrationAPI.Adapters.PDF.Implementation
             Title title1 = new Title(title);
             chart.HeaderTitles.Add(title1);
 
-            IndexedColumnSeries firstColumn = null;
+            IndexedColumnSeries firstColumn = new IndexedColumnSeries("");
 
             for (int i = 0; i < labels.Count; i++)
             {
                 IndexedColumnSeries columnSeries = new IndexedColumnSeries(labels.ElementAt(i));
-                if (firstColumn == null)
+                if (firstColumn.Name == "")
                     firstColumn = columnSeries;
                 columnSeries.Values.Add(new float[] { values.ElementAt(i) });
 

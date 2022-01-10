@@ -18,6 +18,9 @@ namespace Integration.Shared.Model
         public string Country { get; set; }
         public string Postcode { get; set; }
         public string Formatted { get; set; }
+        public string Street { get; set; }
+        public string Housenumber { get; set; }
+
     }
 
     public class LocationResults
@@ -31,6 +34,10 @@ namespace Integration.Shared.Model
         private double Latitude { get; }
 
         private double Longitude { get; }
+
+        private Location()
+        {
+        }
 
         public Location(double lat, double lon)
         {
@@ -58,8 +65,56 @@ namespace Integration.Shared.Model
             return new City
             {
                 Name = result.City,
+                PostalCode = Int32.Parse(result.Postcode),
                 Country = new Country {Name = result.Country }
             };
+        }
+
+        public Country GetCountry()
+        {
+            RestClient client = new RestClient();
+            string targetUrl = "https://api.geoapify.com/v1/geocode/reverse?lat=" + Latitude.ToString().Replace(",", ".") + "&lon=" + Longitude.ToString().Replace(",", ".") +
+                               "&format=json&apiKey=" + geoapify_api_key;
+            RestRequest request = new RestRequest(targetUrl);
+            IRestResponse response = client.Get(request);
+            LocationInfo result = JsonConvert.DeserializeObject<LocationResults>(response.Content).Results.First();
+            return new Country
+            {
+                Name = result.Country
+            };
+        }
+
+        public string GetFullAddress()
+        {
+            RestClient client = new RestClient();
+            string targetUrl = "https://api.geoapify.com/v1/geocode/reverse?lat=" + Latitude.ToString().Replace(",", ".") + "&lon=" + Longitude.ToString().Replace(",", ".") +
+                               "&format=json&apiKey=" + geoapify_api_key;
+            RestRequest request = new RestRequest(targetUrl);
+            IRestResponse response = client.Get(request);
+            LocationInfo result = JsonConvert.DeserializeObject<LocationResults>(response.Content).Results.First();
+            return result.Formatted;
+        }
+
+        public string GetStreetName()
+        {
+            RestClient client = new RestClient();
+            string targetUrl = "https://api.geoapify.com/v1/geocode/reverse?lat=" + Latitude.ToString().Replace(",", ".") + "&lon=" + Longitude.ToString().Replace(",", ".") +
+                               "&format=json&apiKey=" + geoapify_api_key;
+            RestRequest request = new RestRequest(targetUrl);
+            IRestResponse response = client.Get(request);
+            LocationInfo result = JsonConvert.DeserializeObject<LocationResults>(response.Content).Results.First();
+            return result.Street;
+        }
+
+        public string GetHouseNumber()
+        {
+            RestClient client = new RestClient();
+            string targetUrl = "https://api.geoapify.com/v1/geocode/reverse?lat=" + Latitude.ToString().Replace(",", ".") + "&lon=" + Longitude.ToString().Replace(",", ".") +
+                               "&format=json&apiKey=" + geoapify_api_key;
+            RestRequest request = new RestRequest(targetUrl);
+            IRestResponse response = client.Get(request);
+            LocationInfo result = JsonConvert.DeserializeObject<LocationResults>(response.Content).Results.First();
+            return result.Housenumber;
         }
     }
 }

@@ -41,15 +41,17 @@ namespace IntegrationAPI.Controllers.Pharmacies
             request.AddJsonBody(dto);
             var pharmacyString = client.Post(request).Content;
             PharmacyDTO pharmacyDto = JsonConvert.DeserializeObject<PharmacyDTO>(pharmacyString);
+            Location location = new Location(pharmacyDto.Latitude, pharmacyDto.Longitude);
             Pharmacy newPaPharmacy = new Pharmacy
             {
                 Name = pharmacyDto.PharmacyName,
                 BaseUrl = pharmacyDto.BaseUrl,
                 StreetName = pharmacyDto.StreetName,
                 StreetNumber = pharmacyDto.StreetNumber,
-                City = new City { PostalCode = pharmacyDto.PostalCode, Name = pharmacyDto.CityName, Country = new Country { Name = pharmacyDto.CountryName } },//TODO:POSTAL CODE
+                City = new City { PostalCode = pharmacyDto.PostalCode, Name = pharmacyDto.CityName, Country = new Country { Name = pharmacyDto.CountryName } },
                 ApiKey = pharmacyDto.ApiKey,
-                GrpcSupported = pharmacyDto.GrpcSupported
+                GrpcSupported = pharmacyDto.GrpcSupported,
+                Location = new Location(pharmacyDto.Latitude, pharmacyDto.Longitude)
             };
             _pharmacyMasterService.SavePharmacy(newPaPharmacy);
             return Ok();

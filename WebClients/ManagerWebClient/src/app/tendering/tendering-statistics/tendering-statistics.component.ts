@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ITenderingStatistics } from 'src/app/interfaces/tendering-statistics';
 import { TenderingService } from 'src/app/services/tendering.service';
 
 @Component({
@@ -8,10 +10,16 @@ import { TenderingService } from 'src/app/services/tendering.service';
 })
 export class TenderingStatisticsComponent implements OnInit {
 
-  constructor(private _TenderingService : TenderingService) { }
+  constructor(private _TenderingService : TenderingService, private modalService: NgbModal) { }
   ngOnInit(): void {
   }
-  GetStatistics(start: HTMLInputElement, end: HTMLInputElement)
+  stats : ITenderingStatistics
+  tendersEnteredChartData = [{ name: "Placeholder", value: 10 }];
+  tendersWonChartData = [{ name: "Placeholder", value: 10 }];
+  tenderOffersMadeChartData = [{ name: "Placeholder", value: 10 }];
+  profitMadeChartData = [{ name: "Placeholder", value: 10 }];
+
+  GetStatistics(start: HTMLInputElement, end: HTMLInputElement, myModal)
   {
     if(start.value == "" || end.value == "")
     {
@@ -28,6 +36,18 @@ export class TenderingStatisticsComponent implements OnInit {
     var timeRange = {startTime: startDate, endTime: endDate};
     this._TenderingService.getStatistics(timeRange).subscribe(data => {
       console.log(data);
+      this.stats = data
+      this.tendersEnteredChartData = []
+      this.tendersWonChartData = []
+      this.tenderOffersMadeChartData = []
+      this.profitMadeChartData = []
+      this.stats.pharmacyStatistics.forEach(pharmacyStatistic => {
+        this.tendersEnteredChartData.push({ name: pharmacyStatistic.pharmacyName, value: pharmacyStatistic.tendersEntered })
+        this.tendersWonChartData.push({ name: pharmacyStatistic.pharmacyName, value: pharmacyStatistic.tendersWon })
+        this.tenderOffersMadeChartData.push({ name: pharmacyStatistic.pharmacyName, value: pharmacyStatistic.tenderOffersMade })
+        this.profitMadeChartData.push({ name: pharmacyStatistic.pharmacyName, value: pharmacyStatistic.profit.amount })
+      });
+      this.modalService.open(myModal, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {});
     });
   }
 

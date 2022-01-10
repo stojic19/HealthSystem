@@ -19,9 +19,12 @@ jobs:
           username: 'student'
           key: ${{ secrets.SSH_KEY }}
           port: 22207
-          script: |
+          script: | 
             cd psw
             docker system prune -f
+            docker swarm leave --force
+            docker swarm init
+            echo ${{ secrets.POSTGRES_PASSWORD }} | docker secret create postgres_password -
             curl https://raw.githubusercontent.com/healthSystemPSW/mainrepo/feature/docker-security/Stacks/docker-compose.yml >> docker-compose.yml
             docker stack deploy --compose-file=docker-compose.yml stack
 

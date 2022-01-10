@@ -1,12 +1,8 @@
-﻿using Hospital.SharedModel.Repository.Base;
+using Hospital.SharedModel.Repository.Base;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace SeleniumTests.Base
@@ -24,7 +20,6 @@ namespace SeleniumTests.Base
         public HttpClient Client => _fixture.Client;
         public CookieContainer CookieContainer => _fixture.CookieContainer;
         public string BaseUrl => "https://localhost:44303/";
-        public string IntegrationBaseUrl => "https://localhost:44302/";
 
         public void AddCookie(string name, string value, string domain)
         {

@@ -1,0 +1,20 @@
+.form-control {
+    height: 35px;
+    width: 350px;
+    font-size: 14px;
+    border-radius: 15px;
+    
+
+}
+  
+.updateShiftForm {
+    width: 70%;
+    height: 50%;
+    
+}
+  
+.label {
+    width: 300px;
+    font-size: 20px;
+    
+}

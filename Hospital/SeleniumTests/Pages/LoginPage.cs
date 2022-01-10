@@ -1,27 +1,25 @@
-﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using SeleniumTests.Base;
 
 namespace SeleniumTests.Pages
 {
-    public class LoginPage
+    public class LoginPage : BasePage
     {
         private readonly IWebDriver driver;
-        public readonly string LoginUri = "http://localhost:4200/login";
-        public readonly string FirstPage = "http://localhost:4200/overview";
+        public readonly string LoginUri;
+        public readonly string FirstPage;
 
         private IWebElement UsernameElement => driver.FindElement(By.Id("loginUsername"));
         private IWebElement PasswordElement => driver.FindElement(By.Id("loginPassword"));
         private IWebElement SubmitButtonElement => driver.FindElement(By.Id("submitButton"));
 
-        public LoginPage(IWebDriver driver, string uri)
+        public LoginPage(IWebDriver driver) : base(driver)
         {
             this.driver = driver;
-            LoginUri = uri;
+            LoginUri = _baseUrl + "/login";
+            FirstPage = _baseUrl + "/overview";
         }
 
         public bool UsernameElementDisplayed()

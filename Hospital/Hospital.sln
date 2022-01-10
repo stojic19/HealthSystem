@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HospitalIntegrationTests", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HospitalUnitTests", "HospitalUnitTests\HospitalUnitTests.csproj", "{897C4D8D-3A29-4A6C-A92C-AC582EF4DAC6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeleniumTests", "SeleniumTests\SeleniumTests.csproj", "{ADA9B899-6C28-430B-92FB-61F3BF4318A7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeleniumTests", "SeleniumTests\SeleniumTests.csproj", "{BD04ED02-6994-4DEA-9CAD-B12DDFB46410}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,10 +39,10 @@ Global
 		{897C4D8D-3A29-4A6C-A92C-AC582EF4DAC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{897C4D8D-3A29-4A6C-A92C-AC582EF4DAC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{897C4D8D-3A29-4A6C-A92C-AC582EF4DAC6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ADA9B899-6C28-430B-92FB-61F3BF4318A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ADA9B899-6C28-430B-92FB-61F3BF4318A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ADA9B899-6C28-430B-92FB-61F3BF4318A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ADA9B899-6C28-430B-92FB-61F3BF4318A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD04ED02-6994-4DEA-9CAD-B12DDFB46410}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD04ED02-6994-4DEA-9CAD-B12DDFB46410}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD04ED02-6994-4DEA-9CAD-B12DDFB46410}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD04ED02-6994-4DEA-9CAD-B12DDFB46410}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

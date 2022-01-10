@@ -40,6 +40,9 @@ import { HospitalShiftsComponent } from './hospital-shifts/hospital-shifts.compo
 import { CreateShiftComponent } from './create-shift/create-shift.component';
 import { UpdateShiftComponent } from './update-shift/update-shift.component';
 import { DoctorShiftComponent } from './doctor-shift/doctor-shift.component';
+import { DoctorVacationsComponent } from './doctor-vacations/doctor-vacations.component';
+import { CreateVacationComponent } from './create-vacation/create-vacation.component';
+import { UpdateVacationComponent } from './update-vacation/update-vacation.component';
 
 const _isProd = environment.production;
 
@@ -212,8 +215,10 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   { path: _isProd ? 'manager/doctorsSchedule' : 'doctorsSchedule', component: DoctorsScheduleComponent, canActivate: [AuthGuard] },
-  { path: _isProd ? 'manager/doctorsReport' : 'doctorsReport', component: DoctorsScheduleReportComponent, canActivate: [AuthGuard] }
-
+  { path: _isProd ? 'manager/doctorsReport' : 'doctorsReport', component: DoctorsScheduleReportComponent, canActivate: [AuthGuard] },
+  { path: _isProd? 'manager/doctorVacations' : 'doctorVacations', component: DoctorVacationsComponent, canActivate: [AuthGuard]},
+  { path: _isProd? 'manager/createVacation/:id' : 'createVacation/:id', component: CreateVacationComponent, canActivate: [AuthGuard]},
+  { path: _isProd? 'manager/updateVacation/:id' : 'updateVacation/:id', component: UpdateVacationComponent, canActivate: [AuthGuard]}
 ];
 
 @NgModule({
@@ -234,4 +239,5 @@ export const routingComponents = [
   MaliciousPatientsComponent,
   HospitalShiftsComponent,
   DoctorShiftComponent,
+  DoctorVacationsComponent
 ];

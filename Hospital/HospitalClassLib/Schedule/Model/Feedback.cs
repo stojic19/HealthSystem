@@ -28,30 +28,37 @@ namespace Hospital.Schedule.Model
             Text = text;
             IsPublishable = isPublishable;
             IsAnonymous = isAnonymous;
-            Validate();
+            ValidateOnCreate();
         }
 
         public Feedback()
         {
         }
 
-        private void Validate()
+        private void ValidateOnCreate()
         {
             if (string.IsNullOrEmpty(Text) || string.IsNullOrWhiteSpace(Text)) throw new Exception();
-            //TODO: add validations
-            //mzd razlicite validate metode da bi proverili da li je status feedbacka ok 
+            if (FeedbackStatus != FeedbackStatus.NotApproved) throw new Exception();
+        }
+        private void ValidateOnPublish()
+        {
+            if (FeedbackStatus == FeedbackStatus.Approved) throw new Exception();
+        }
+        private void ValidateOnUnpublish()
+        {
+            if (FeedbackStatus == FeedbackStatus.NotApproved) throw new Exception();
         }
 
         public void Publish()
         {
             this.FeedbackStatus = FeedbackStatus.Approved;
-            Validate();
+            ValidateOnPublish();
         }
 
         public void Unpublish()
         {
             this.FeedbackStatus = FeedbackStatus.NotApproved;
-            Validate();
+            ValidateOnUnpublish();
         }
 
         public bool IsApproved()

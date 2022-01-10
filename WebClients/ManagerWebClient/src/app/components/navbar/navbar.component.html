@@ -61,12 +61,30 @@
           </div>
         </li>
         <li class="nav-item active" *ngIf="loginStatus$ | async as LoginStatus">
-          <a class="nav-link" routerLink="/hospitalEquipment" *ngIf="!isProd">Equipment</a>
-          <a class="nav-link" routerLink="/manager/hospitalEquipment" *ngIf="isProd">Equipment</a>
+          <div class="dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuLink" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Patients
+            </a>
+
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <li *ngIf="loginStatus$ | async as LoginStatus">
+                <a class="nav-link" routerLink="/feedbacks" *ngIf="!isProd">Feedbacks</a>
+                <a class="nav-link" routerLink="/manager/feedbacks" *ngIf="isProd">Feedbacks</a>
+              </li>
+              <li *ngIf="loginStatus$ | async as LoginStatus">
+                <a class="nav-link" routerLink="/surveys" *ngIf="!isProd">Surveys</a>
+                <a class="nav-link" routerLink="/manager/surveys" *ngIf="isProd">Surveys</a>
+              </li>
+              <li class="nav-item active" *ngIf="loginStatus$ | async as LoginStatus">
+                <a class="nav-link" routerLink="/blocking">Blocking</a>
+              </li>
+            </ul>
+          </div>
         </li>
         <li class="nav-item active" *ngIf="loginStatus$ | async as LoginStatus">
-          <a class="nav-link" routerLink="/feedbacks" *ngIf="!isProd">Feedbacks</a>
-          <a class="nav-link" routerLink="/manager/feedbacks" *ngIf="isProd">Feedbacks</a>
+          <a class="nav-link" routerLink="/hospitalEquipment" *ngIf="!isProd">Equipment</a>
+          <a class="nav-link" routerLink="/manager/hospitalEquipment" *ngIf="isProd">Equipment</a>
         </li>
         <li class="nav-item active" *ngIf="loginStatus$ | async as LoginStatus">
           <a class="nav-link" routerLink="/complaints" *ngIf="!isProd">Complaints</a>
@@ -88,13 +106,6 @@
           <a class="nav-link" routerLink="/medicine-specification-requests" *ngIf="!isProd">Medicine Specification</a>
           <a class="nav-link" routerLink="/manager/medicine-specification-requests" *ngIf="isProd">Medicine
             Specification</a>
-        </li>
-        <li class="nav-item active" *ngIf="loginStatus$ | async as LoginStatus">
-          <a class="nav-link" routerLink="/surveys" *ngIf="!isProd">Surveys</a>
-          <a class="nav-link" routerLink="/manager/surveys" *ngIf="isProd">Surveys</a>
-        </li>
-        <li class="nav-item active" *ngIf="loginStatus$ | async as LoginStatus">
-          <a class="nav-link" routerLink="/blocking">Blocking</a>
         </li>
         <div style="width: 16px;"></div>
         <form

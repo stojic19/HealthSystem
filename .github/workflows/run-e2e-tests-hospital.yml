@@ -28,12 +28,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Setup chrome
-        run: |
-          apt-get -y update 
-          apt-get -y install gnupg
-          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - 
-          sh -c 'echo "deb https://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-          apt -y update && apt install google-chrome-stable -y
+        uses: browser-actions/setup-chrome@latest
 
       - name: Run front
         run: |

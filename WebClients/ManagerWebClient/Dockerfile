@@ -1,4 +1,4 @@
-FROM node:16-bullseye as buildManager
+FROM node:14.15.0-alpine as buildManager
 COPY ./ ./WebClient
 RUN cd WebClient && \
     npm update && \

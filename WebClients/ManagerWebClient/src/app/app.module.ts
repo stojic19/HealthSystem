@@ -85,6 +85,7 @@ import { UpdateShiftComponent } from './update-shift/update-shift.component';
 import { DoctorShiftComponent } from './doctor-shift/doctor-shift.component';
 import { ShiftListComponent } from './doctor-shift/shift-list/shift-list.component';
 import { ShiftUpdateComponent } from './doctor-shift/shift-update/shift-update.component';
+import { TenderingStatisticsComponent } from './tendering/tendering-statistics/tendering-statistics.component';
 import { DoctorVacationsComponent } from './doctor-vacations/doctor-vacations.component';
 import { CreateVacationComponent } from './create-vacation/create-vacation.component';
 import { UpdateVacationComponent } from './update-vacation/update-vacation.component';
@@ -156,11 +157,11 @@ import { OnCallShiftsComponent } from './on-call-shifts/on-call-shifts.component
     DoctorShiftComponent,
     ShiftListComponent,
     ShiftUpdateComponent,
+    TenderingStatisticsComponent,
     DoctorVacationsComponent,
     CreateVacationComponent,
     UpdateVacationComponent,
     OnCallShiftsComponent,
-
   ],
   imports: [
     BrowserModule,

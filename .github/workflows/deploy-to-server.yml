@@ -23,8 +23,8 @@ jobs:
       - name : Dockerize gateway
         run: |
           cd Gateway
-          docker image build -t ${{DOCKER_REPO_PATH}}:gateway .
-          docker push ${{DOCKER_REPO_PATH}}:gateway
+          docker image build -t ${{env.DOCKER_REPO_PATH}}:gateway .
+          docker push ${{env.DOCKER_REPO_PATH}}:gateway
 
   deploy:
     runs-on : ubuntu-latest

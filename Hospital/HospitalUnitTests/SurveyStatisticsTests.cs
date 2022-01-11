@@ -16,134 +16,115 @@ namespace HospitalUnitTests
         {
 
         }
-        /*
-        [Fact]
-        public void Correct_average_rating_for_questions()
-        {
-            #region
+        //[Fact]
+        //public void Correct_average_rating_for_questions()
+        //{
+        //    #region
 
-            ClearDbContext();
-            Context.Surveys.Add(new Survey()
-            {
-                Id = 1,
-                CreatedDate = new DateTime()
+        //    ClearDbContext();
+        //    var survey = new Survey(true);
+        //    Context.Surveys.Add(survey);
+        //    Context.Questions.Add(new Question()
+        //    {
+        //        Id = 1,
+        //        SurveyId = 1,
+        //        Category = SurveyCategory.DoctorSurvey,
+        //        Text = "Pitanje 1"
+        //    });
+        //    Context.Questions.Add(new Question()
+        //    {
+        //        Id = 2,
+        //        SurveyId = 1,
+        //        Category = SurveyCategory.StaffSurvey,
+        //        Text = "Pitanje 2"
+        //    });
+        //    Context.Questions.Add(new Question()
+        //    {
+        //        Id = 3,
+        //        SurveyId = 1,
+        //        Category = SurveyCategory.DoctorSurvey,
+        //        Text = "Pitanje 3"
+        //    });
+        //    //Context.Questions.Add(new Question()
+        //    //{
+        //    //    Id = 4,
+        //    //    SurveyId = 1,
+        //    //    Category = SurveyCategory.HospitalSurvey,
+        //    //    Text = "Pitanje 4"
+        //    //});
 
-            });
-            Context.Questions.Add(new Question()
-            {
-                Id = 1,
-                SurveyId = 1,
-                Category = SurveyCategory.DoctorSurvey,
-                Text = "Pitanje 1"
-            });
-            Context.Questions.Add(new Question()
-            {
-                Id = 2,
-                SurveyId = 1,
-                Category = SurveyCategory.StaffSurvey,
-                Text = "Pitanje 2"
-            });
-            Context.Questions.Add(new Question()
-            {
-                Id = 3,
-                SurveyId = 1,
-                Category = SurveyCategory.DoctorSurvey,
-                Text = "Pitanje 3"
-            });
-            Context.Questions.Add(new Question()
-            {
-                Id = 4,
-                SurveyId = 1,
-                Category = SurveyCategory.HospitalSurvey,
-                Text = "Pitanje 4"
-            });
 
-            Context.AnsweredSurveys.Add(new AnsweredSurvey()
-            {
-                Id = 1,
-                SurveyId = 1,
-                PatientId = 1,
-                AnsweredDate = new DateTime()
+        //    var aQuestion1 = new AnsweredQuestion()
+        //    {
+        //        Id = 1,
+        //        Category = SurveyCategory.DoctorSurvey,
+        //        QuestionId = 1,
+        //        AnsweredSurveyId = 1,
+        //        Rating = 2
+        //    };
+        //    var aQuestion2 = new AnsweredQuestion()
+        //    {
+        //        Id = 2,
+        //        Category = SurveyCategory.DoctorSurvey,
+        //        QuestionId = 1,
+        //        AnsweredSurveyId = 2,
+        //        Rating = 4
+        //    };
+        //    var aQuestion3 = new AnsweredQuestion()
+        //    {
+        //        Id = 3,
+        //        Category = SurveyCategory.StaffSurvey,
+        //        QuestionId = 2,
+        //        AnsweredSurveyId = 1,
+        //        Rating = 3
+        //    };
+        //    var aQuestion4 = new AnsweredQuestion()
+        //    {
+        //        Id = 4,
+        //        Category = SurveyCategory.StaffSurvey,
+        //        QuestionId = 2,
+        //        AnsweredSurveyId = 2,
+        //        Rating = 4
+        //    };
+        //    var aQuestion5 = new AnsweredQuestion()
+        //    {
+        //        Id = 5,
+        //        Category = SurveyCategory.DoctorSurvey,
+        //        QuestionId = 3,
+        //        AnsweredSurveyId = 1,
+        //        Rating = 5
+        //    };
+        //    var aQuestion6 = new AnsweredQuestion()
+        //    {
+        //        Id = 6,
+        //        Category = SurveyCategory.DoctorSurvey,
+        //        QuestionId = 3,
+        //        AnsweredSurveyId = 2,
+        //        Rating = 1
+        //    };
+        //    //var aQuestion7 = new AnsweredQuestion()
+        //    //{
+        //    //    Id = 7,
+        //    //    Category = SurveyCategory.HospitalSurvey,
+        //    //    QuestionId = 4,
+        //    //    AnsweredSurveyId = 1,
+        //    //    Rating = 4
+        //    //};
 
-            });
+        //    Context.AnsweredSurveys.Add(new AnsweredSurvey(UoW.GetRepository<IAnsweredQuestionReadRepository>().GetAll().Where(x => x.AnsweredSurveyId == 1).ToList(),new DateTime(),1,survey,1,null,1,null));
 
-            Context.AnsweredSurveys.Add(new AnsweredSurvey()
-            {
-                Id = 2,
-                SurveyId = 1,
-                PatientId = 1,
-                AnsweredDate = new DateTime()
-
-            });
-
-            Context.AnsweredQuestions.Add(new AnsweredQuestion()
-            {
-                Id = 1,
-                Category = SurveyCategory.DoctorSurvey,
-                QuestionId = 1,
-                AnsweredSurveyId = 1,
-                Rating = 2
-            });
-            Context.AnsweredQuestions.Add(new AnsweredQuestion()
-            {
-                Id = 2,
-                Category = SurveyCategory.DoctorSurvey,
-                QuestionId = 1,
-                AnsweredSurveyId = 2,
-                Rating = 4
-            });
-            Context.AnsweredQuestions.Add(new AnsweredQuestion()
-            {
-                Id = 3,
-                Category = SurveyCategory.StaffSurvey,
-                QuestionId = 2,
-                AnsweredSurveyId = 1,
-                Rating = 3
-            });
-            Context.AnsweredQuestions.Add(new AnsweredQuestion()
-            {
-                Id = 4,
-                Category = SurveyCategory.StaffSurvey,
-                QuestionId = 2,
-                AnsweredSurveyId = 2,
-                Rating = 4
-            });
-            Context.AnsweredQuestions.Add(new AnsweredQuestion()
-            {
-                Id = 5,
-                Category = SurveyCategory.DoctorSurvey,
-                QuestionId = 3,
-                AnsweredSurveyId = 1,
-                Rating = 5
-            });
-            Context.AnsweredQuestions.Add(new AnsweredQuestion()
-            {
-                Id = 6,
-                Category = SurveyCategory.DoctorSurvey,
-                QuestionId = 3,
-                AnsweredSurveyId = 2,
-                Rating = 1
-            });
-            Context.AnsweredQuestions.Add(new AnsweredQuestion()
-            {
-                Id = 7,
-                Category = SurveyCategory.HospitalSurvey,
-                QuestionId = 4,
-                AnsweredSurveyId = 1,
-                Rating = 4
-            });
-
-            Context.SaveChanges();
-            #endregion
-            SurveyStatisticsService service = new SurveyStatisticsService(UoW);
-            var temp = service.GetAverageQuestionRatingForAllSurveyQuestions().OrderBy(o => o.QuestionId).ToList();
-            double avg1 = temp[0].AverageRating;
-            double avg2 = temp[1].AverageRating;
-            avg1.ShouldBe(3);
-            avg2.ShouldBe(3.5);
+        //    Context.AnsweredSurveys.Add(new AnsweredSurvey(UoW.GetRepository<IAnsweredQuestionReadRepository>().GetAll().Where(x => x.AnsweredSurveyId == 2), new DateTime(), 1, survey, 1, null, 1, null));
+        //    Context.SaveChanges();
+        //    #endregion
+        //    SurveyStatisticsService service = new SurveyStatisticsService(UoW);
+        //    var temp = service.GetAverageQuestionRatingForAllSurveyQuestions().OrderBy(o => o.QuestionId).ToList();
+        //    double avg1 = temp[0].AverageRating;
+        //    double avg2 = temp[1].AverageRating;
+        //    avg1.ShouldBe(3);
+        //    avg2.ShouldBe(3.5);
             
-        }
-
+        //}
+        /*
         [Fact]
         public void Incorrect_average_rating_for_questions()
         {

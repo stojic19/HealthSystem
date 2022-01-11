@@ -22,6 +22,16 @@ namespace Hospital.MedicalRecords.Model
             ScheduledEvents = new List<ScheduledEvent>();
             //TODO: add validate method
         }
+        public Patient(int id,string username, MedicalRecord medicalRecord)
+        {
+            UserName = username;
+            Id = id;
+            MedicalRecordId = medicalRecord.Id;
+            MedicalRecord = medicalRecord;
+            ScheduledEvents = new List<ScheduledEvent>();
+            //TODO: add validate method
+        }
+        
 
         public IEnumerable<ScheduledEvent> GetScheduledEvents()
         {

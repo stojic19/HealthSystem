@@ -29,7 +29,9 @@ jobs:
 
       - name: Installing libs
         run: |
-          apt-get -y install zip
+          apt-get update
+          apt-get upgrade
+          apt-get -y install unzip
           apt -y install npm
           npm install -g npm@latest
           npm install -g n

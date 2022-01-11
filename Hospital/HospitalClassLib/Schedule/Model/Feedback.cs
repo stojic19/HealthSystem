@@ -42,11 +42,11 @@ namespace Hospital.Schedule.Model
         }
         private void ValidateOnPublish()
         {
-            if (FeedbackStatus == FeedbackStatus.Approved) throw new Exception();
+            if (FeedbackStatus != FeedbackStatus.Approved) throw new Exception();
         }
         private void ValidateOnUnpublish()
         {
-            if (FeedbackStatus == FeedbackStatus.NotApproved) throw new Exception();
+            if (FeedbackStatus != FeedbackStatus.NotApproved) throw new Exception();
         }
 
         public void Publish()

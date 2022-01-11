@@ -20,11 +20,29 @@ jobs:
       - name : Docker login
         run: |
           docker login -u ${{secrets.DOCKERHUB_USERNAME}} -p ${{secrets.DOCKERHUB_PASSWORD}}
+      - name: Clear docker system
+        run: docker system prune -f
       - name : Dockerize gateway
         run: |
           cd Gateway
           docker image build -t ${{env.DOCKER_REPO_PATH}}:gateway .
           docker push ${{env.DOCKER_REPO_PATH}}:gateway
+      - name : Dockerize hospital
+        run: |
+          cd Hospital
+          docker image build -t ${{env.DOCKER_REPO_PATH}}:hospital .
+          docker push ${{env.DOCKER_REPO_PATH}}:hospital
+      - name : Dockerize pharmacy
+        run: |
+          cd Pharmacy
+          docker image build -t ${{env.DOCKER_REPO_PATH}}:pharmacy .
+          docker push ${{env.DOCKER_REPO_PATH}}:pharmacy
+      - name : Dockerize integration
+        run: |
+          cd Integration
+          docker image build -t ${{env.DOCKER_REPO_PATH}}:integration .
+          docker push ${{env.DOCKER_REPO_PATH}}:integration
+      
 
   deploy:
     runs-on : ubuntu-latest

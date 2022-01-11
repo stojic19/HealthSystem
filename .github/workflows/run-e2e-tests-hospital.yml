@@ -29,10 +29,9 @@ jobs:
 
       - name: Setup chrome
         run: |
-          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-          dpkg-reconfigure --all
-          apt install -f
-          dpkg -i google-chrome-stable_current_amd64.deb
+          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add - 
+          sh -c 'echo "deb https://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+          apt update && apt install google-chrome-stable -y
 
       - name: Run front
         run: |

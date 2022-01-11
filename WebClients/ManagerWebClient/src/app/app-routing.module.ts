@@ -40,6 +40,7 @@ import { HospitalShiftsComponent } from './hospital-shifts/hospital-shifts.compo
 import { CreateShiftComponent } from './create-shift/create-shift.component';
 import { UpdateShiftComponent } from './update-shift/update-shift.component';
 import { DoctorShiftComponent } from './doctor-shift/doctor-shift.component';
+import { TenderingStatisticsComponent } from './tendering/tendering-statistics/tendering-statistics.component';
 import { DoctorVacationsComponent } from './doctor-vacations/doctor-vacations.component';
 import { CreateVacationComponent } from './create-vacation/create-vacation.component';
 import { UpdateVacationComponent } from './update-vacation/update-vacation.component';
@@ -215,6 +216,11 @@ const routes: Routes = [
   {
     path: _isProd ? 'manager/doctorShifts' : 'doctorShifts',
     component: DoctorShiftComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: _isProd ? 'manager/tendering-statistics' : 'tendering-statistics',
+    component: TenderingStatisticsComponent,
     canActivate: [AuthGuard],
   },
   { path: _isProd ? 'manager/doctorsSchedule' : 'doctorsSchedule', component: DoctorsScheduleComponent, canActivate: [AuthGuard] },

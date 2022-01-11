@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Integration.Shared.Model;
+using IntegrationApi.DTO.Tender;
 using IntegrationAPI.DTO;
 using IntegrationAPI.DTO.MedicineConsumption;
 using IntegrationAPI.DTO.Prescription;
@@ -15,6 +17,7 @@ namespace IntegrationAPI.Adapters.PDF
         public void SaveDocument(string destination);
         public void SetFontSize(float size);
         public string MakeMedicineConsumptionReportPdf(MedicineConsumptionReportToPdfDTO dto);
+        public string MakeTenderStatisticsPdf(TenderStatisticsDto tenderStatisticsDto, TimeRange timeRange);
         public string MakePrescriptionPdf(PrescriptionDTO dto, string requestType);
         public void MakeTitle(string text);
     }

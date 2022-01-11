@@ -16,5 +16,7 @@ namespace PharmacyApi.DTO
         public string CountryName { get; set; }
         public string PostalCode { get; set; }
         public bool GrpcSupported { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
     }
 }

@@ -42,6 +42,22 @@ jobs:
           cd Integration
           docker image build -t ${{env.DOCKER_REPO_PATH}}:integration .
           docker push ${{env.DOCKER_REPO_PATH}}:integration
+      - name : Dockerize integration UI
+        run: |
+          cd WebClients/IntegrationWebClient
+          docker image build -t ${{env.DOCKER_REPO_PATH}}:integrationUi .
+          docker push ${{env.DOCKER_REPO_PATH}}:integrationUi
+      - name : Dockerize patient UI
+        run: |
+          cd WebClients/PatientWebClient
+          docker image build -t ${{env.DOCKER_REPO_PATH}}:patientUi .
+          docker push ${{env.DOCKER_REPO_PATH}}:patientUi
+      - name : Dockerize manager UI
+        run: |
+          cd WebClients/ManagerWebClient
+          docker image build -t ${{env.DOCKER_REPO_PATH}}:managerUi .
+          docker push ${{env.DOCKER_REPO_PATH}}:managerUi
+      
       
 
   deploy:

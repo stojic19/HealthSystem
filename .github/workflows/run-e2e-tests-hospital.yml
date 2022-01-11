@@ -1,7 +1,7 @@
-name: Run Integration Tests Hospital
+name: Run E2E Tests Hospital
 on:
   push:
-    branches: [master, development ]
+    branches: [master, development, feature/integration-tests]
 
 env:
   PROJECT_PATH_HOSPITAL: './Hospital'
@@ -26,6 +26,19 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v2
+
+      - name: Setup chrome
+        run: |
+          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          dpkg -i google-chrome-stable_current_amd64.deb
+
+      - name: Run front
+        run: |
+          cd WebClient/PatientWebClient
+          npm update
+          npm install
+          npm run ng serve &
+          cd ../..
 
       - name: Restore NuGet packages
         run: | 
@@ -53,4 +66,4 @@ jobs:
         env:
           HOSPITAL_DB_PATH: ${{ env.DB_PATH }}
           INTEGRATION_DB_PATH: ${{ env.DB_PATH_INTEGRATION }}
-        run: dotnet test ${{ env.PROJECT_PATH_HOSPITAL }}/HospitalIntegrationTests
+        run: dotnet test ${{ env.PROJECT_PATH_HOSPITAL }}/SeleniumTests

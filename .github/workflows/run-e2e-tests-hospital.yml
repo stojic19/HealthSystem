@@ -40,7 +40,8 @@ jobs:
           apt -y install npm
           npm install -g npm@latest
           npm install -g n
-          n latest
+          n 16.13.0
+          hash -r
           cd WebClients/PatientWebClient
           npm update
           npm install

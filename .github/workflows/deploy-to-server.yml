@@ -9,7 +9,7 @@ on:
       - 'feature/publish-docker-img-automation'
 
 env:
-  DOCKER_REPO_PATH : 'nikolaaleksic/psw'
+  DOCKER_REPO_PATH : 'nikolaaleksic'
 
 jobs:
   dockerize:
@@ -25,40 +25,40 @@ jobs:
       - name : Dockerize gateway
         run: |
           cd Gateway
-          docker image build -t ${{env.DOCKER_REPO_PATH}}:gateway .
-          docker push ${{env.DOCKER_REPO_PATH}}:gateway
+          docker image build -t ${{env.DOCKER_REPO_PATH}}/gateway .
+          docker push ${{env.DOCKER_REPO_PATH}}/gateway
       - name : Dockerize hospital
         run: |
           cd Hospital
-          docker image build -t ${{env.DOCKER_REPO_PATH}}:hospital .
-          docker push ${{env.DOCKER_REPO_PATH}}:hospital
+          docker image build -t ${{env.DOCKER_REPO_PATH}}/hospital .
+          docker push ${{env.DOCKER_REPO_PATH}}/hospital
       - name : Dockerize pharmacy
         run: |
           cd Pharmacy
-          docker image build -t ${{env.DOCKER_REPO_PATH}}:pharmacy .
-          docker push ${{env.DOCKER_REPO_PATH}}:pharmacy
+          docker image build -t ${{env.DOCKER_REPO_PATH}}/pharmacy .
+          docker push ${{env.DOCKER_REPO_PATH}}/pharmacy
       - name : Dockerize integration
         run: |
           cd Integration
-          docker image build -t ${{env.DOCKER_REPO_PATH}}:integration .
-          docker push ${{env.DOCKER_REPO_PATH}}:integration
+          docker image build -t ${{env.DOCKER_REPO_PATH}}/integration .
+          docker push ${{env.DOCKER_REPO_PATH}}/integration
       - name : Dockerize integration UI
         run: |
           cd WebClients/IntegrationWebClient
-          docker image build -t ${{env.DOCKER_REPO_PATH}}:integrationUi .
-          docker push ${{env.DOCKER_REPO_PATH}}:integrationUi
+          docker image build -t ${{env.DOCKER_REPO_PATH}}/integrationUi .
+          docker push ${{env.DOCKER_REPO_PATH}}/integrationUi
       - name : Dockerize patient UI
         run: |
           cd WebClients/PatientWebClient
-          docker image build -t ${{env.DOCKER_REPO_PATH}}:patientUi .
-          docker push ${{env.DOCKER_REPO_PATH}}:patientUi
+          docker image build -t ${{env.DOCKER_REPO_PATH}}/patientUi .
+          docker push ${{env.DOCKER_REPO_PATH}}/patientUi
       - name : Dockerize manager UI
         run: |
           cd WebClients/ManagerWebClient
           npm update
           npm install
-          docker image build -t ${{env.DOCKER_REPO_PATH}}:managerUi .
-          docker push ${{env.DOCKER_REPO_PATH}}:managerUi
+          docker image build -t ${{env.DOCKER_REPO_PATH}}/managerUi .
+          docker push ${{env.DOCKER_REPO_PATH}}/managerUi
   deploy:
     runs-on : ubuntu-latest
     needs: ["dockerize"]

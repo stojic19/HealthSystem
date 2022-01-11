@@ -27,16 +27,20 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
 
-      - name: Setup chrome
-        uses: browser-actions/setup-chrome@latest
-
-      - name: Run front
+      - name: Installing libs
         run: |
+          apt-get -y install zip
           apt -y install npm
           npm install -g npm@latest
           npm install -g n
           n 16.13.0
           hash -r
+
+      - name: Setup chrome
+        uses: browser-actions/setup-chrome@latest
+
+      - name: Run front
+        run: |
           cd WebClients/PatientWebClient
           npm update
           npm install

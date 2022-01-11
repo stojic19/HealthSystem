@@ -25,6 +25,8 @@ jobs:
       - name : Dockerize manager UI
         run: |
           cd WebClients/ManagerWebClient
+          npm update
+          npm install
           docker image build -t ${{env.DOCKER_REPO_PATH}}:managerUi .
           docker push ${{env.DOCKER_REPO_PATH}}:managerUi
       - name : Dockerize gateway

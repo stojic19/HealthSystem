@@ -37,6 +37,7 @@ jobs:
 
       - name: Run front
         run: |
+          ls 
           cd WebClient/PatientWebClient
           npm update
           npm install

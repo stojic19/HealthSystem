@@ -11,6 +11,6 @@
         <select id="pharmacy" [(ngModel)]="Pharmacy" class="form-select" aria-label="Default select example">
             <option *ngFor='let dataItem of PharmacyList' [ngValue]="dataItem"> {{dataItem.name}} </option>
         </select>
-        <button class="btn btn-primary m-3" (click)="SendRequest()"><strong>Send request</strong></button>
+        <button class="btn btn-primary m-3" (click)="SendRequest()" id="requestButton"><strong>Send request</strong></button>
     </div>
 </div>

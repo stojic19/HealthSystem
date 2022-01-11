@@ -8,6 +8,9 @@ on:
       - 'feature/docker-security'
       - 'feature/publish-docker-img-automation'
 
+env:
+  DOCKER_REPO_PATH : 'nikolaaleksic/psw'
+
 jobs:
   dockerize:
     runs-on: ubuntu-latest
@@ -20,8 +23,8 @@ jobs:
       - name : Dockerize gateway
         run: |
           cd Gateway
-          docker image build -t nikolaaleksic/psw:gateway .
-          docker push nikolaaleksic/psw:gateway
+          docker image build -t ${{DOCKER_REPO_PATH}}:gateway .
+          docker push ${{DOCKER_REPO_PATH}}:gateway
 
   deploy:
     runs-on : ubuntu-latest

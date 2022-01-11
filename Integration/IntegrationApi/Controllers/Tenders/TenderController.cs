@@ -131,7 +131,8 @@ namespace IntegrationAPI.Controllers.Tenders
         public Tender GetTenderById(int id)
         {
             var tenders = _unitOfWork.GetRepository<ITenderReadRepository>().GetAll()
-                            .Include(t => t.TenderOffers).Include(t => t.MedicationRequests);
+                            .Include(t => t.TenderOffers).ThenInclude(to => to.Pharmacy)
+                            .Include(t => t.MedicationRequests);
             foreach (var tender in tenders.AsEnumerable().Where(t => t.IsActive()))
             {
                 if (tender.Id.Equals(id))

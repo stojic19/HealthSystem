@@ -37,7 +37,7 @@ jobs:
 
       - name: Run front
         run: |
-          apt install npm
+          apt -y install npm
           cd WebClients/PatientWebClient
           npm update
           npm install

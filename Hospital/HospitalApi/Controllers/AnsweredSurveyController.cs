@@ -41,7 +41,8 @@ namespace HospitalApi.Controllers
         {
             Survey activeSurvey = _surveyService.GetActiveSurvey();
             var patient = _uow.GetRepository<IPatientReadRepository>().GetPatient(answeredSurveyDTO.UserName);
-            activeSurvey.CreateAnsweredSurvey(mapper.Map<AnsweredSurvey>(answeredSurveyDTO),patient);
+            answeredSurveyDTO.PatientId = patient.Id;
+            activeSurvey.CreateAnsweredSurvey(mapper.Map<AnsweredSurvey>(answeredSurveyDTO));
             _surveyService.Save(activeSurvey);
 
             //var temp = mapper.Map<AnsweredSurvey>(answeredSurveyDTO);

@@ -7,6 +7,7 @@ import { IAnsweredSurvey } from 'src/app/interfaces/answered-survey';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IAppointment } from 'src/app/interfaces/appointment';
 import { AppointmentService } from 'src/app/services/AppointmentService/appointment.service';
+import { ICurrentUser } from 'src/app/interfaces/current-user';
 
 @Component({
   selector: 'app-survey-page',
@@ -22,12 +23,12 @@ export class SurveyPageComponent implements OnInit {
   totalQuestions!: number;
   answeredSurvey!: IAnsweredSurvey;
   appointmentId: any;
-  userName!:String;
+  currentUser!:ICurrentUser;
 
   constructor(private snackBar: MatSnackBar,private appointmentService:AppointmentService, private surveyService: SurveyService, private route: ActivatedRoute,
     private _router: Router) {
     this.answeredQuestions = [];
-    this.userName = JSON.parse((localStorage.getItem('currentUser'))!)
+    this.currentUser = JSON.parse((localStorage.getItem('currentUser'))!)
 
   }
 
@@ -47,7 +48,7 @@ export class SurveyPageComponent implements OnInit {
 
       this.answeredSurvey = {
         surveyId: this.survey.surveyId,
-        userName : this.userName,
+        userName : this.currentUser.userName,
         questions: this.answeredQuestions,
         scheduledEventId: this.scheduledEvent.id
         

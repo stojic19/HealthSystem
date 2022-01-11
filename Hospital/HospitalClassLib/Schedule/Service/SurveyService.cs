@@ -26,7 +26,7 @@ namespace Hospital.Schedule.Service
         {
             return UoW.GetRepository<ISurveyReadRepository>()
                                 .GetAll()
-                                .Where(x => x.IsActiveSurvey())
+                                .Where(x => x.isActive == true)
                                 .FirstOrDefault();
                                                                        
         }

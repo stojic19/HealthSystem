@@ -36,6 +36,7 @@ namespace Hospital.Schedule.Model
         public void SetPatient(Patient patient)
         {
             Patient = patient;
+            PatientId = patient.Id;
         }
 
         private void Validate()

@@ -1,4 +1,3 @@
-import { Observable } from 'rxjs';
 import { IChosenDoctor } from './chosen-doctor';
 import { IMeasurements } from './imeasurements';
 import { INewAllergy } from './new-allergy';

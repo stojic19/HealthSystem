@@ -29,13 +29,17 @@ namespace Hospital.Schedule.Model
 
         private void Validate()
         {
+            if (this.AnsweredSurveys == null)
+            {
+                AnsweredSurveys = new List<AnsweredSurvey>();
+            }
         }
 
-        public void CreateAnsweredSurvey(AnsweredSurvey answeredSurvey, Patient patient)
+        public void CreateAnsweredSurvey(AnsweredSurvey answeredSurvey)
         {
-            //UoW.GetRepository<IAnsweredSurveyWriteRepository>()
-            answeredSurvey.SetPatient(patient);
-            AnsweredSurveys.ToList().Add(answeredSurvey);
+          
+            Validate();
+            AnsweredSurveys.Append(answeredSurvey);
         }
 
         internal bool IsActiveSurvey()

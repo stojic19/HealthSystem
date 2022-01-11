@@ -1,0 +1,88 @@
+name: Run E2E Tests Integration
+on:
+  push:
+    branches: [master, development, feature/integration-tests]
+
+env:
+  PROJECT_PATH_HOSPITAL: './Hospital'
+  PROJECT_PATH_INTEGRATION: './Integration'
+  PROJECT_PATH_PHARMACY: './Pharmacy'
+  DB_PATH: 'Host=postgres;Database=HOSPITAL;Username=postgres;Password=postgres'
+  DB_PATH_INTEGRATION: 'Host=postgres;Database=INTEGRATION;Username=postgres;Password=postgres'
+  DB_PATH_PHARMACY: 'Host=postgres;Database=PHARMACY;Username=postgres;Password=postgres'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: mcr.microsoft.com/dotnet/sdk:5.0
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+      rabbitmq:
+        image: rabbitmq:3-management-alpine
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Installing libs
+        run: |
+          apt-get update
+          apt-get upgrade
+          apt-get -y install unzip
+          apt -y install npm
+          npm install -g npm@latest
+          npm install -g n
+          n 16.13.0
+          hash -r
+
+      - name: Setup chrome
+        run: |
+          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          apt -y install ./google-chrome-stable_current_amd64.deb
+
+      - name: Run front
+        run: |
+          cd WebClients/IntegrationWebClient
+          npm update
+          npm install
+          npm run ng serve &
+          cd ../..
+
+      - name: Restore NuGet packages
+        run: | 
+          dotnet restore ${{ env.PROJECT_PATH_HOSPITAL }}
+          dotnet restore ${{ env.PROJECT_PATH_INTEGRATION }}
+          dotnet restore ${{ env.PROJECT_PATH_PHARMACY }}
+          
+
+      - name: Build
+        run: |
+          dotnet build ${{ env.PROJECT_PATH_HOSPITAL }}
+          dotnet build ${{ env.PROJECT_PATH_INTEGRATION }}
+          dotnet build ${{ env.PROJECT_PATH_PHARMACY }}
+
+      - name: Start
+        env:
+          HOSPITAL_DB_PATH: ${{ env.DB_PATH }}
+          INTEGRATION_DB_PATH: ${{ env.DB_PATH_INTEGRATION }}
+          PHARMACY_DB_PATH: ${{ env.DB_PATH_PHARMACY }}
+          RABBITMQ_HOST: "rabbitmq"
+        run: | 
+          dotnet run --project Hospital/HospitalApi/ --urls=https://localhost:44303 &
+          dotnet run --project Integration/IntegrationApi/ --urls=https://localhost:44302 &
+          dotnet run --project Pharmacy/PharmacyApi/ --urls=https://localhost:44304 &
+
+      - name: Sleep for 15 seconds
+        run: sleep 15s
+
+      - name: Test
+        env:
+          HOSPITAL_DB_PATH: ${{ env.DB_PATH }}
+          INTEGRATION_DB_PATH: ${{ env.DB_PATH_INTEGRATION }}
+          PHARMACY_DB_PATH: ${{ env.DB_PATH_PHARMACY }}
+        run: dotnet test ${{ env.PROJECT_PATH_INTEGRATION }}/IntegrationEndToEndTests

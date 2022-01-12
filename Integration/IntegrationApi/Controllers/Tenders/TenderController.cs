@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -322,14 +323,25 @@ namespace IntegrationAPI.Controllers.Tenders
         [HttpPost, Produces("application/pdf")]
         public IActionResult GetStatisticsPdf([FromQuery(Name = "fileName")] string fileName)
         {
-            try
+            string destDirectory = "TenderStatistics";
+
+            string destFileName = Path.GetFullPath(System.IO.Path.Combine(destDirectory, fileName));
+            string fullDestDirPath = Path.GetFullPath(destDirectory + Path.DirectorySeparatorChar);
+            if (destFileName.StartsWith(fullDestDirPath, StringComparison.Ordinal))
             {
-                var stream = new FileStream("TenderStatistics" + Path.DirectorySeparatorChar + fileName, FileMode.Open);
-                return File(stream, "application/pdf", fileName);
+                try
+                {
+                    var stream = new FileStream(destFileName, FileMode.Open);
+                    return File(stream, "application/pdf", fileName);
+                }
+                catch
+                {
+                    return NotFound("PDF not found");
+                }
             }
-            catch
+            else
             {
-                return NotFound("File not found");
+                return BadRequest("Cannot open PDF");
             }
         }
     }

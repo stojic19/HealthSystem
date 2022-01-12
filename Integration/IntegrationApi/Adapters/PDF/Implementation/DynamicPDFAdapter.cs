@@ -160,8 +160,8 @@ namespace IntegrationAPI.Adapters.PDF.Implementation
         public string MakeTenderStatisticsPdf(TenderStatisticsDto tenderStatisticsDto, TimeRange timeRange)
         {
             MakeTitle("Tender statistics");
-            WriteLine(0, 60, "Start date: " + timeRange.StartDate);
-            WriteLine(0, 20, "End date: " + timeRange.EndDate);
+            WriteLine(0, 60, "Start date: " + timeRange.StartDate.ToShortDateString());
+            WriteLine(0, 20, "End date: " + timeRange.EndDate.ToShortDateString());
 
             List<string> labelsTenderOffers = new List<string>();
             List<float> valuesTenderOffers = new List<float>();

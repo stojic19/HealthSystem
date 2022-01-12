@@ -191,9 +191,10 @@ namespace IntegrationAPI.Adapters.PDF.Implementation
             DrawChart("Tenders won", "Number of tenders won", labelsTendersWon, valuesTendersWon);
             DrawChart("Profit made", "Amount", labelsProfit, valuesProfit);
 
-            string fileName = "TenderStatistics-" + timeRange.StartDate.ToLongDateString()
-                                                  + "-" + timeRange.EndDate.ToLongDateString() + ".pdf";
-            SaveDocument("TenderStatistics" + Path.DirectorySeparatorChar + fileName);
+            string fileName = "TenderStatistics-" + timeRange.StartDate.Ticks.ToString()
+                                                  + "-" + timeRange.EndDate.Ticks.ToString() + ".pdf";
+            string filePath = "TenderStatistics" + Path.DirectorySeparatorChar + fileName;
+            SaveDocument(filePath);
             return fileName;
         }
 

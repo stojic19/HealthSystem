@@ -26,6 +26,8 @@ using RabbitMQ.Client.Events;
 using RestSharp;
 using IntegrationAPI.Adapters.PDF;
 using IntegrationAPI.Adapters.PDF.Implementation;
+using System.IO;
+using System.Threading;
 
 namespace IntegrationAPI.Controllers.Tenders
 {
@@ -313,8 +315,22 @@ namespace IntegrationAPI.Controllers.Tenders
                 });
             }
             IPDFAdapter adapter = new DynamicPDFAdapter();
-            adapter.MakeTenderStatisticsPdf(tenderStatisticsDto, timeRange);
+            tenderStatisticsDto.PdfUrl = adapter.MakeTenderStatisticsPdf(tenderStatisticsDto, timeRange);
             return tenderStatisticsDto;
+        }
+
+        [HttpPost, Produces("application/pdf")]
+        public IActionResult GetStatisticsPdf([FromQuery(Name = "fileName")] string fileName)
+        {
+            try
+            {
+                var stream = new FileStream("TenderStatistics" + Path.DirectorySeparatorChar + fileName, FileMode.Open);
+                return File(stream, "application/pdf", fileName);
+            }
+            catch
+            {
+                return NotFound("File not found");
+            }
         }
     }
 }

@@ -12,8 +12,10 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
 using Integration.Pharmacies.Model;
 using Integration.Pharmacies.Repository;
+using Integration.Shared.Service;
 using IntegrationAPI.Controllers.Base;
 using IntegrationApi.DTO.Shared;
 using IntegrationAPI.DTO.Shared;
@@ -72,7 +74,7 @@ namespace IntegrationAPI.Controllers.Tenders
                 tender.AddMedicationRequest(new MedicationRequest(medicineRequestDto.MedicineName, medicineRequestDto.Quantity));
             }
             _unitOfWork.GetRepository<ITenderWriteRepository>().Add(tender);
-            var pharmacies = _unitOfWork.GetRepository<IPharmacyReadRepository>().GetAll();
+            var pharmacies = _unitOfWork.GetRepository<IPharmacyReadRepository>().GetAll().ToList();
             try
             {
                 var factory = new ConnectionFactory() { HostName = Environment.GetEnvironmentVariable("RABBITMQ_HOST") };
@@ -104,7 +106,7 @@ namespace IntegrationAPI.Controllers.Tenders
                             var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(dto));
                             channel.BasicPublish("new tender", pharmacyApiKey.ToString(), null, body);
                         }
-                        //SendMail
+                        if (pharmacies.Any()) new EmailService().SendNewTenderMail(tender, pharmacies);
                     }
                 }
             }
@@ -191,10 +193,12 @@ namespace IntegrationAPI.Controllers.Tenders
                     var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(msg));
                     channel.BasicPublish("declare winning offer", tender.WinningOffer.Pharmacy.ApiKey.ToString(), null, body);
                 }
-                //Send email winning
+
+                var mailServ = new EmailService();
+                mailServ.SendWinningOfferMail(tender);
                 var pharmacies = _unitOfWork.GetRepository<IPharmacyReadRepository>().GetAll().Where(p => p.Id != tender.WinningOffer.PharmacyId);
                 CloseTenderRmq(factory, pharmacies, tender);
-                //Send email close
+                if(pharmacies.Any()) mailServ.SendCloseTenderMail(tender, pharmacies);
             }
             catch
             {
@@ -212,9 +216,10 @@ namespace IntegrationAPI.Controllers.Tenders
             _unitOfWork.GetRepository<ITenderWriteRepository>().Update(tender);
             try
             {
-                var pharmacies = _unitOfWork.GetRepository<IPharmacyReadRepository>().GetAll();
+                var pharmacies = _unitOfWork.GetRepository<IPharmacyReadRepository>().GetAll().ToList();
                 var factory = new ConnectionFactory() { HostName = Environment.GetEnvironmentVariable("RABBITMQ_HOST") };
                 CloseTenderRmq(factory, pharmacies, tender);
+                if (pharmacies.Any()) new EmailService().SendCloseTenderMail(tender, pharmacies);
             }
             catch
             {
@@ -258,7 +263,6 @@ namespace IntegrationAPI.Controllers.Tenders
                         channel.BasicPublish("close tender", pharmacyApiKey.ToString(), null, body);
                     }
                 }
-                //SendEmail
             }
         }
 

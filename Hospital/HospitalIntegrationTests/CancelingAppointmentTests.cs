@@ -26,7 +26,6 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Appointment_should_be_canceled()
         {
-            //RegisterAndLogin("Patient");
             var events = AddDataToDatabase(isCanceled: false, isDone: false);
             var response = await PatientClient.GetAsync(BaseUrl + "api/ScheduledEvent/CancelAppointment/" + events.Id);
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -87,12 +86,13 @@ namespace HospitalIntegrationTests
             var doctorWiteRepo = UoW.GetRepository<IDoctorWriteRepository>();
             var patientWriteRepo = UoW.GetRepository<IPatientWriteRepository>();
 
-            var testCountry = UoW.GetRepository<ICountryReadRepository>().GetAll().Where(x => x.Name == "TestCountry").FirstOrDefault();
-            var testCity = UoW.GetRepository<ICityReadRepository>().GetAll().Where(x => x.Name == "TestCity").FirstOrDefault();
-            var testRoom = UoW.GetRepository<IRoomReadRepository>().GetAll().Where(x => x.Name == "TestRoom").FirstOrDefault();
-            var testSpecialization = UoW.GetRepository<ISpecializationReadRepository>().GetAll().Where(x => x.Name == "TestSpecialization").FirstOrDefault();
-            var testDoctor = UoW.GetRepository<IDoctorReadRepository>().GetAll().Where(x => x.FirstName == "TestDoctor").FirstOrDefault();
-            var testPatient = UoW.GetRepository<IPatientReadRepository>().GetAll().Where(x => x.FirstName == "TestPatient").FirstOrDefault();
+            var testCountry = UoW.GetRepository<ICountryReadRepository>().GetAll().FirstOrDefault(x => x.Name == "TestCountry");
+            var testCity = UoW.GetRepository<ICityReadRepository>().GetAll()
+                .FirstOrDefault(x => x.Name == "TestCity");
+            var testRoom = UoW.GetRepository<IRoomReadRepository>().GetAll().FirstOrDefault(x => x.Name == "TestRoom");
+            var testSpecialization = UoW.GetRepository<ISpecializationReadRepository>().GetAll().FirstOrDefault(x => x.Name == "TestSpecialization");
+            var testDoctor = UoW.GetRepository<IDoctorReadRepository>().GetAll().FirstOrDefault(x => x.FirstName == "TestDoctor");
+            var testPatient = UoW.GetRepository<IPatientReadRepository>().GetAll().FirstOrDefault(x => x.FirstName == "TestPatient");
             
             if (testCountry == null)
             {
@@ -166,12 +166,15 @@ namespace HospitalIntegrationTests
                 doctorWiteRepo.Add(testDoctor);
             }
             
-                RegisterAndLogin("Patient");
-             
-            
+            RegisterAndLogin("Patient");
+
+
             #endregion
-           
-            ScheduledEvent scheduledEvent = new ScheduledEvent()
+
+            testPatient = UoW.GetRepository<IPatientReadRepository>().GetAll()
+                .FirstOrDefault(x => x.UserName == "testPatientUsername");
+
+            var scheduledEvent = new ScheduledEvent()
             {
 
                 ScheduledEventType = 0,

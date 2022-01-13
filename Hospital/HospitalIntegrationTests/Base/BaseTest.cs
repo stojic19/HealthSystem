@@ -55,15 +55,17 @@ namespace HospitalIntegrationTests.Base
             object user = null;
             if (role == "Patient")
             {
-                user = UoW.GetRepository<IPatientReadRepository>().GetAll().Where(x => x.UserName.Equals("testPatientUsername")).FirstOrDefault();
+                user = UoW.GetRepository<IPatientReadRepository>()
+                    .GetAll().FirstOrDefault(x => x.UserName.Equals("testPatientUsername"));
 
                 if (user == null)
                 {
                   
-                    var testCity = UoW.GetRepository<ICityReadRepository>().GetAll().Where(x => x.Name == "TestCity").FirstOrDefault();
-                    var testDoctor = UoW.GetRepository<IDoctorReadRepository>().GetAll().Where(x => x.FirstName == "TestDoctor").FirstOrDefault();
+                    var testCity = UoW.GetRepository<ICityReadRepository>().GetAll()
+                        .FirstOrDefault(x => x.Name == "TestCity");
+                    var testDoctor = UoW.GetRepository<IDoctorReadRepository>().GetAll().FirstOrDefault(x => x.FirstName == "TestDoctor");
 
-                    NewPatientDTO newPatient = new NewPatientDTO()
+                    var newPatient = new NewPatientDTO()
                     {
                         FirstName = "TestPatient",
                         MiddleName = "TestPatientMiddleName",
@@ -79,13 +81,13 @@ namespace HospitalIntegrationTests.Base
                         Password = "TestProba123",
                       
                         PhoneNumber = "testPatientPhoneNumber",
-                        MedicalRecord =
+                        MedicalRecord = new NewMedicalRecordDTO()
                         {
                             DoctorId = testDoctor.Id,
                             Height = 0,
                             Weight = 0,
                             BloodType = BloodType.Undefined,
-                            JobStatus = JobStatus.Undefined,
+                            JobStatus = JobStatus.Undefined
                          
                         },
                        
@@ -94,9 +96,10 @@ namespace HospitalIntegrationTests.Base
                    PatientClient.PostAsync(BaseUrl + "api/Registration/Register", GetContent(newPatient))
                     .GetAwaiter()
                     .GetResult();
-                    Patient createdPatient = UoW.GetRepository<IPatientReadRepository>().GetAll().Where(x => x.UserName.Equals("testPatientUsername")).FirstOrDefault();
+                    var createdPatient = UoW.GetRepository<IPatientReadRepository>().GetAll().FirstOrDefault(x => x.UserName.Equals("testPatientUsername"));
                     createdPatient.EmailConfirmed = true;
-                    
+                    UoW.GetRepository<IPatientWriteRepository>().Update(createdPatient);
+
                 }
                 var loginDTO = new LoginDTO()
                 {
@@ -104,7 +107,7 @@ namespace HospitalIntegrationTests.Base
                     Password = "TestProba123",
                 };
 
-                var response = PatientClient.PostAsync(BaseUrl + "api/Login/LogIn", GetContent(loginDTO))
+                var response = PatientClient.PostAsync(BaseUrl + "api/Login", GetContent(loginDTO))
                     .GetAwaiter()
                     .GetResult();
 
@@ -117,7 +120,7 @@ namespace HospitalIntegrationTests.Base
             }
             else if (role == "Manager")
             {
-                user = UoW.GetRepository<IManagerReadRepository>().GetAll().Where(x => x.UserName.Equals("testLogInManager")).FirstOrDefault();
+                user = UoW.GetRepository<IManagerReadRepository>().GetAll().FirstOrDefault(x => x.UserName.Equals("testLogInManager"));
                 if (user == null)
                 {
                     user = new NewManagerDTO()

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ComplaintsService } from 'src/app/services/complaints.service';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-complaint',
@@ -8,7 +10,7 @@ import { ComplaintsService } from 'src/app/services/complaints.service';
 })
 export class AddComplaintComponent implements OnInit {
 
-  constructor(private _complaintsService: ComplaintsService) { }
+  constructor(private _complaintsService: ComplaintsService, private toastr: ToastrService, private router:Router) { }
 
   PharmacyList: any[] = [];
 
@@ -28,7 +30,11 @@ export class AddComplaintComponent implements OnInit {
               pharmacyName:this.Pharmacy.name,
               pharmacyId:this.Pharmacy.id
     }
-    this._complaintsService.addComplaint(val).subscribe(res=>{alert(res)});
+    this._complaintsService.addComplaint(val).subscribe(res =>
+      {
+        this.toastr.success(res.toString());
+        this.router.navigate(['/complaints']);
+      },(error) => console.log(error.error, "Error!"));
   }
 
   LoadPharmacyList(){

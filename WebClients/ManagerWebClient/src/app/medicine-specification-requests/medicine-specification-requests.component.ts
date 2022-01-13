@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MedicineSpecificationRequestsService } from 'src/app/services/medicine-specification-requests.service';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-medicine-specification-requests',
@@ -9,7 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class MedicineSpecificationRequestsComponent implements OnInit {
 
-  constructor(private _medicineRequestsService: MedicineSpecificationRequestsService, private toastr: ToastrService) { }
+  constructor(private _medicineRequestsService: MedicineSpecificationRequestsService, private toastr: ToastrService, private router:Router) { }
   medicineName: any;
   Pharmacy: any;
   PharmacyList: any[] = [];
@@ -36,6 +37,7 @@ export class MedicineSpecificationRequestsComponent implements OnInit {
     this._medicineRequestsService.sendRequest(request).subscribe(res =>
       {
         this.toastr.success(res.toString());
+        this.router.navigate(['/medicine-specification-requests']);
       },(error) => this.toastr.error(error.error));
   }
 }

@@ -12,6 +12,7 @@ namespace IntegrationAPI.Controllers.Pharmacies
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Produces("application/json")]
     public class RegistrationController : ControllerBase
     {
         private PharmacyMasterService _pharmacyMasterService;

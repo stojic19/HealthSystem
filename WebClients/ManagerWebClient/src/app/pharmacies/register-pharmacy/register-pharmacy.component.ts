@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PharmacyService } from 'src/app/services/pharmacy.service';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register-pharmacy',
@@ -9,7 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class RegisterPharmacyComponent implements OnInit {
 
-  constructor(private _PharmacyService: PharmacyService, private toastr: ToastrService) { }
+  constructor(private _PharmacyService: PharmacyService, private toastr: ToastrService, private router:Router) { }
 
   name:string="";
   streetNumber:string="";
@@ -37,8 +38,11 @@ export class RegisterPharmacyComponent implements OnInit {
               baseUrl:this.baseUrl,
               grpcSupported:this.grpcSupported
     }
-    this._PharmacyService.registerPharmacy(val).subscribe(res => console.log(res),
-     (error) => this.toastr.error(error.message));
+    this._PharmacyService.registerPharmacy(val).subscribe(res =>
+      {
+        this.toastr.success(res.toString());
+        this.router.navigate(['/pharmacy-list']);
+      },(error) => this.toastr.error(error.error, "Error!"));
   }
 
 }

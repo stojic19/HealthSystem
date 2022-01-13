@@ -18,8 +18,8 @@
         <input id="medicineQuantity" class="m-1" required [(ngModel)]="QuantityString" placeholder="Quantity" >  
         <button id="addMedicineButton" class="btn btn-primary m-1" (click)="Add()">Add medicine to tender</button>
     </div>
-    <div class="table-responsive m-1">
-        <table id="medicinesTable" class="table table-bordered table-striped table-hover">
+    <div *ngIf="medicines?.length" class="table-responsive m-1" >
+        <table  id="medicinesTable" class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -42,6 +42,8 @@
             </tbody>
         </table>
     </div>
+    <div class="d-flex justify-content-center" *ngIf="!medicines?.length">No medicine to show.</div>
+    <div class="d-flex justify-content-center" *ngIf="!nonFilteredMedicines?.length">Add medicine.</div>
 </div>
 
 <!-- Modal -->

@@ -10,7 +10,6 @@
         <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Name</th>
                     <th>Closing time</th>
                     <th>Active</th>
@@ -18,7 +17,6 @@
             </thead>
             <tbody>
                 <tr *ngFor='let tender of tenders' (dblclick)="doubleClickFunction(tender.id)">
-                    <td>{{tender.id}}</td>
                     <td>{{tender.name}}</td>
                     <td>{{tender.activeRange.endDate | date: "dd-MM-yyyy, hh:mm"}}</td>
                     <td>

@@ -17,7 +17,7 @@ namespace Integration.Shared.Service
     {
         private readonly string _hospitalName = "Nasa bolnica";
         private readonly string _hospitalEmail = "psw.company2@gmail.com";
-        private readonly string _emailPassword = "Dont panic!";
+        private readonly string _emailPassword = Environment.GetEnvironmentVariable("HOSPITAL_EMAIL_PASSWORD");
         public EmailService()
         {
 

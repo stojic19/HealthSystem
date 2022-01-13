@@ -104,6 +104,7 @@ namespace IntegrationAPI.Controllers.Tenders
                             var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(dto));
                             channel.BasicPublish("new tender", pharmacyApiKey.ToString(), null, body);
                         }
+                        //SendMail
                     }
                 }
             }
@@ -190,9 +191,10 @@ namespace IntegrationAPI.Controllers.Tenders
                     var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(msg));
                     channel.BasicPublish("declare winning offer", tender.WinningOffer.Pharmacy.ApiKey.ToString(), null, body);
                 }
-
+                //Send email winning
                 var pharmacies = _unitOfWork.GetRepository<IPharmacyReadRepository>().GetAll().Where(p => p.Id != tender.WinningOffer.PharmacyId);
                 CloseTenderRmq(factory, pharmacies, tender);
+                //Send email close
             }
             catch
             {
@@ -256,6 +258,7 @@ namespace IntegrationAPI.Controllers.Tenders
                         channel.BasicPublish("close tender", pharmacyApiKey.ToString(), null, body);
                     }
                 }
+                //SendEmail
             }
         }
 

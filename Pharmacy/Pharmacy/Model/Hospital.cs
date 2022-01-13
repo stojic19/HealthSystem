@@ -19,6 +19,8 @@ namespace Pharmacy.Model
         public int CityId { get; set; }
         public City City { get; set; }
 
+        public string Email { get; set; }
+
         public Guid ApiKey { get; set; }
 
         public IEnumerable<Complaint> Complaints { get; set; }

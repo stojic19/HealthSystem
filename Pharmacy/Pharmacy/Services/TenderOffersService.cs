@@ -79,7 +79,7 @@ namespace Pharmacy.Services
             {
                 throw new RabbitMQNewOfferException();
             }
-
+            //SendMail
         }
 
         public void ConfirmTenderOffer(Guid hospitalApiKey, int tenderOfferId)

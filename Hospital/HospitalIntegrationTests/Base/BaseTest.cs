@@ -4,18 +4,20 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using Hospital.SharedModel.Model;
 using HospitalApi.DTOs;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
-using RestSharp;
 using Xunit;
 using Hospital.MedicalRecords.Repository;
 using Hospital.SharedModel.Repository;
 using System;
 using Hospital.SharedModel.Model.Enumerations;
 using System.Linq;
-using Hospital.MedicalRecords.Model;
+using Hospital.RoomsAndEquipment.Repository;
+using Hospital.SharedModel.Model;
+using Hospital.Schedule.Model;
+using Hospital.RoomsAndEquipment.Model;
+using Microsoft.EntityFrameworkCore;
+using Hospital.Schedule.Repository;
 
 namespace HospitalIntegrationTests.Base
 {
@@ -60,9 +62,8 @@ namespace HospitalIntegrationTests.Base
 
                 if (user == null)
                 {
-                  
-                    var testCity = UoW.GetRepository<ICityReadRepository>().GetAll()
-                        .FirstOrDefault(x => x.Name == "TestCity");
+                    AddDataToDatabase();
+                    var testCity = UoW.GetRepository<ICityReadRepository>().GetAll().FirstOrDefault(x => x.Name == "TestCity");
                     var testDoctor = UoW.GetRepository<IDoctorReadRepository>().GetAll().FirstOrDefault(x => x.FirstName == "TestDoctor");
 
                     var newPatient = new NewPatientDTO()
@@ -157,6 +158,155 @@ namespace HospitalIntegrationTests.Base
 
                 ManagerClient.DefaultRequestHeaders.Authorization =
                     new AuthenticationHeaderValue("Bearer", ManagerToken);
+            }
+        }
+
+        public void AddDataToDatabase()
+        {
+            #region Data
+            var countryWriteRepo = UoW.GetRepository<ICountryWriteRepository>();
+            var cityWriteRepo = UoW.GetRepository<ICityWriteRepository>();
+            var roomWriteRepo = UoW.GetRepository<IRoomWriteRepository>();
+            var specializationWriteRepo = UoW.GetRepository<ISpecializationWriteRepository>();
+            var doctorWiteRepo = UoW.GetRepository<IDoctorWriteRepository>();
+            var patientWriteRepo = UoW.GetRepository<IPatientWriteRepository>();
+
+            var testCountry = UoW.GetRepository<ICountryReadRepository>().GetAll().FirstOrDefault(x => x.Name == "TestCountry");
+            var testCity = UoW.GetRepository<ICityReadRepository>().GetAll().FirstOrDefault(x => x.Name == "TestCity");
+            var testRoom = UoW.GetRepository<IRoomReadRepository>().GetAll().FirstOrDefault(x => x.Name == "TestRoom");
+            var testSpecialization = UoW.GetRepository<ISpecializationReadRepository>().GetAll().FirstOrDefault(x => x.Name == "TestSpecialization");
+            var testDoctor = UoW.GetRepository<IDoctorReadRepository>().GetAll().FirstOrDefault(x => x.FirstName == "TestDoctor");
+            var testPatient = UoW.GetRepository<IPatientReadRepository>().GetAll().FirstOrDefault(x => x.FirstName == "TestPatient");
+
+            if (testCountry == null)
+            {
+                testCountry = new Country()
+                {
+                    Name = "TestCountry"
+                };
+                countryWriteRepo.Add(testCountry);
+            }
+
+            if (testCity == null)
+            {
+                testCity = new City()
+                {
+                    Name = "TestCity",
+                    Country = testCountry,
+                    PostalCode = 00000
+                };
+                cityWriteRepo.Add(testCity);
+            }
+            if (testRoom == null)
+            {
+                testRoom = new Room()
+                {
+                    Name = "TestRoom",
+                    RoomType = RoomType.AppointmentRoom,
+                    FloorNumber = 1,
+                    Description = "TestDescription"
+
+                };
+                roomWriteRepo.Add(testRoom);
+            }
+            if (testSpecialization == null)
+            {
+                testSpecialization = new Specialization()
+                {
+                    Description = "DescriptionSpecialization",
+                    Name = "TestSpecialization"
+                };
+                specializationWriteRepo.Add(testSpecialization);
+            }
+            if (testDoctor == null)
+            {
+                testDoctor = new Doctor()
+                {
+                    FirstName = "TestDoctor",
+                    LastName = "TestDoctorLastName",
+                    MiddleName = "TestDoctorMiddleName",
+                    DateOfBirth = DateTime.Now,
+                    Gender = Gender.Female,
+                    Street = "TestDoctorStreet",
+                    City = testCity,
+                    Room = testRoom,
+                    Specialization = testSpecialization,
+                    UserName = "testDoctorUsername",
+                    Email = "testDoctor@gmail.com",
+                    EmailConfirmed = true,
+                    PhoneNumber = "testDoctorPhoneNumber",
+                    PhoneNumberConfirmed = false,
+                    TwoFactorEnabled = false,
+                    LockoutEnabled = false,
+                    AccessFailedCount = 0,
+                    Shift = new Shift()
+                    {
+                        Name = "testShift",
+                        From = 8,
+                        To = 4
+                    }
+
+                };
+                doctorWiteRepo.Add(testDoctor);
+            }
+            #endregion
+        }
+        public void DeleteDataFromDataBase()
+        {
+            var patient = UoW.GetRepository<IPatientReadRepository>().GetAll().Where(x => x.UserName.Equals("testPatientUsername")).FirstOrDefault();
+            UoW.GetRepository<IPatientWriteRepository>().Delete(patient, true);
+            if (patient == null) return;
+            {
+                var medicalRecord = UoW.GetRepository<IMedicalRecordReadRepository>()
+                    .GetAll().Include(mr => mr.Doctor)
+                    .FirstOrDefault(x => x.Id == patient.MedicalRecordId);
+
+                UoW.GetRepository<IMedicalRecordWriteRepository>().Delete(medicalRecord);
+            }
+
+            var survey = UoW.GetRepository<ISurveyReadRepository>().GetAll()
+                .FirstOrDefault(x => x.CreatedDate == new DateTime());
+            if (survey != null)
+            {
+                UoW.GetRepository<ISurveyWriteRepository>().Delete(survey);
+            }
+            var doctor = UoW.GetRepository<IDoctorReadRepository>().GetAll()
+                .FirstOrDefault(x => x.UserName == "testDoctorUsername");
+            if (doctor != null)
+            {
+                UoW.GetRepository<IDoctorWriteRepository>().Delete(doctor);
+            }
+            var specialization = UoW.GetRepository<ISpecializationReadRepository>().GetAll()
+                .FirstOrDefault(x => x.Name == "TestSpecialization");
+            if (specialization != null)
+            {
+                UoW.GetRepository<ISpecializationWriteRepository>().Delete(specialization);
+            }
+            var city = UoW.GetRepository<ICityReadRepository>()
+                .GetAll().ToList()
+                .FirstOrDefault(x => x.Name == "TestCity");
+
+            if (city != null)
+            {
+                UoW.GetRepository<ICityWriteRepository>().Delete(city);
+            }
+
+            var country = UoW.GetRepository<ICountryReadRepository>()
+                .GetAll().ToList()
+                .FirstOrDefault(x => x.Name == "TestCountry");
+
+            if (country != null)
+            {
+                UoW.GetRepository<ICountryWriteRepository>().Delete(country);
+            }
+
+            var room = UoW.GetRepository<IRoomReadRepository>()
+                    .GetAll().ToList()
+                    .FirstOrDefault(x => x.Name == "TestRoom");
+
+            if (room != null)
+            {
+                UoW.GetRepository<IRoomWriteRepository>().Delete(room);
             }
         }
     }

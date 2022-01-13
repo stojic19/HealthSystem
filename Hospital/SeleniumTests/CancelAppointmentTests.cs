@@ -18,7 +18,7 @@ using Xunit;
 
 namespace SeleniumTests
 {
-    public class CancelAppointmentTests : BaseTest
+    public class CancelAppointmentTests : BaseTest, IDisposable
     {
 
         private readonly IWebDriver driver;
@@ -217,6 +217,12 @@ namespace SeleniumTests
         private void DeleteDataFromDataBase(ScheduledEvent events)
         {
             UoW.GetRepository<IScheduledEventWriteRepository>().Delete(events, true);
+        }
+
+        public void Dispose()
+        {
+            driver.Quit();
+            driver.Dispose();
         }
     }
 }

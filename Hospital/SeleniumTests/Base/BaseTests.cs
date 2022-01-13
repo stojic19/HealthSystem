@@ -27,6 +27,8 @@ namespace SeleniumTests.Base
             CookieContainer.Add(new Cookie(name, value) { Domain = domain });
         }
 
+     
+
         public StringContent GetContent(object content)
         {
             return new StringContent(JsonConvert.SerializeObject(content, settings: new JsonSerializerSettings()

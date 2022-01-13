@@ -34,7 +34,7 @@ export class AddComplaintComponent implements OnInit {
       {
         this.toastr.success(res.toString());
         this.router.navigate(['/complaints']);
-      },(error) => console.log(error.error, "Error!"));
+      },(error) => this.toastr.error(error.error, "Error!"));
   }
 
   LoadPharmacyList(){

@@ -12,18 +12,15 @@ namespace Pharmacy.Services
 {
     public class EmailService
     {
-        private readonly IUnitOfWork _uow;
         private readonly string _pharmacyName = "Psw2Pharmacy";
         private readonly string _hospitalEmail = "psw.company2.pharmacy@gmail.com";
         private readonly string _emailPassword = "SamoSeViIgrajte21@!";
-        public EmailService(IUnitOfWork unitOfWork)
+        public EmailService()
         {
-            _uow = unitOfWork;
         }
 
         public EmailService(IUnitOfWork unitOfWork, string hospitalEmail, string password)
         {
-            _uow = unitOfWork;
             _hospitalEmail = hospitalEmail;
             _emailPassword = password;
         }
@@ -32,25 +29,27 @@ namespace Pharmacy.Services
         public void SendNewTenderOfferMail(TenderOffer tenderOffer)
         {
             string text = "<p>Greetings</p><p>We have sent our tender offer for your tender named " +
-                          tenderOffer.Tender.Name + ". This offer contains:<ul>";
+                          tenderOffer.Tender.Name + ". This offer contains:";
             text = MakeMedicationList(tenderOffer, text);
-
+            text += "</p>";
             text = MakeRegardsText(text);
             SendMail(tenderOffer.Tender.Hospital.Email, "New Tender Offer", text);
         }
 
         private string MakeRegardsText(string text)
         {
-            text += "</ul></p><p>Best regards,</p><p>" + _pharmacyName + "</p>";
+            text += "<p>Best regards,</p><p>" + _pharmacyName + "</p>";
             return text;
         }
 
         private string MakeMedicationList(TenderOffer tenderOffer, string text)
         {
+            text += "<ul>";
             foreach (var medReq in tenderOffer.MedicationRequests)
             {
-                text += "<li>" + medReq.MedicineName + " Amount: " + medReq.Quantity + "</li>";
+                text += "<li>" + medReq.MedicineName + ", Amount: " + medReq.Quantity + "</li>";
             }
+            text += "</ul>";
 
             return text;
         }
@@ -58,9 +57,9 @@ namespace Pharmacy.Services
         public void SendTenderOfferConfirmationMail(TenderOffer tenderOffer)
         {
             string text = "<p>Greetings</p><p>We have sent medication we promised in our tender offer for tender named " +
-                          tenderOffer.Tender.Name + ". These medications include:<ul>";
+                          tenderOffer.Tender.Name + ". These medications include:";
             text = MakeMedicationList(tenderOffer, text);
-
+            text += "</p>";
             text = MakeRegardsText(text);
             SendMail(tenderOffer.Tender.Hospital.Email, "Medication Sent", text);
         }

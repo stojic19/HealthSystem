@@ -34,7 +34,8 @@ namespace PharmacyApi.Controllers
                 Name = newHospital.Name,
                 StreetName = newHospital.StreetName,
                 StreetNumber = newHospital.StreetNumber,
-                BaseUrl = newHospital.BaseUrl
+                BaseUrl = newHospital.BaseUrl,
+                Email = newHospital.Email
             };
 
             var str = Url.Action("Add", "Medicine", Request.Scheme);
@@ -67,7 +68,8 @@ namespace PharmacyApi.Controllers
                 PostalCode = PharmacyDetails.PostalCode,
                 GrpcSupported = true,
                 Latitude = PharmacyDetails.Latitude,
-                Longitude = PharmacyDetails.Longitude
+                Longitude = PharmacyDetails.Longitude,
+                Email = PharmacyDetails.Email
             };
         }
     }

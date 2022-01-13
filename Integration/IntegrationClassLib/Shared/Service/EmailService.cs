@@ -15,18 +15,16 @@ namespace Integration.Shared.Service
 {
     public class EmailService
     {
-        private readonly IUnitOfWork _uow;
         private readonly string _hospitalName = "Nasa bolnica";
         private readonly string _hospitalEmail = "psw.company2@gmail.com";
         private readonly string _emailPassword = "Dont panic!";
-        public EmailService(IUnitOfWork unitOfWork)
+        public EmailService()
         {
-            _uow = unitOfWork;
+
         }
 
-        public EmailService(IUnitOfWork unitOfWork, string hospitalEmail, string password)
+        public EmailService(string hospitalEmail, string password)
         {
-            _uow = unitOfWork;
             _hospitalEmail = hospitalEmail;
             _emailPassword = password;
         }
@@ -42,6 +40,27 @@ namespace Integration.Shared.Service
             SendMail(mail, "New Tender", text);
         }
 
+        public void SendWinningOfferMail(Tender tender)
+        {
+            var mail = tender.WinningOffer.Pharmacy.Email;
+            string text = "<p>Greetings</p><p>We inform you that your tender offer for tender named " +
+                          tender.Name +
+                          " has won. We are looking forward to hearing from you about medication you promised in that offer. Promised medications are listed below:";
+            text = MakeMedicationList(tender, text);
+            text += "</p>";
+            text = MakeRegardsText(text);
+            SendMail(mail, "Winning tender offer", text);
+        }
+
+        public void SendCloseTenderMail(Tender tender, IEnumerable<Pharmacy> pharmacies)
+        {
+            var mail = PrepareMailNames(pharmacies);
+            string text = "<p>Greetings</p><p>We inform you that our tender named " +
+                          tender.Name + " has been closed.</p>";
+            text = MakeRegardsText(text);
+            SendMail(mail, "Tender closed", text);
+        }
+
         private string MakeRegardsText(string text)
         {
             text += "<p>Best regards,</p><p>" + _hospitalName + "</p>";
@@ -53,7 +72,7 @@ namespace Integration.Shared.Service
             text += "<ul>";
             foreach (var medReq in tender.MedicationRequests)
             {
-                text += "<li>" + medReq.MedicineName + " Amount: " + medReq.Quantity + "</li>";
+                text += "<li>" + medReq.MedicineName + ", Amount: " + medReq.Quantity + "</li>";
             }
 
             text += "</ul>";

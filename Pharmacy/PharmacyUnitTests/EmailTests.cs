@@ -19,9 +19,14 @@ namespace PharmacyUnitTests
         [Fact]
         public void Send_new_tender_offer_email_success()
         {
+            Hospital hospital = new Hospital
+            {
+                Email = "psw.company2@gmail.com"
+            };
             Tender tender = new Tender
             {
-                Name = "EMAIL_TENDER_TEST"
+                Name = "EMAIL_TENDER_TEST",
+                Hospital = hospital
             };
             List<MedicationRequest> medReqs = new List<MedicationRequest>();
             medReqs.Add(new MedicationRequest("Aspirin", 5));
@@ -34,7 +39,7 @@ namespace PharmacyUnitTests
             bool exceptionCaught = false;
             try
             {
-                new EmailService(UoW).SendNewTenderOfferMail(tenderOffer);
+                new EmailService().SendNewTenderOfferMail(tenderOffer);
             }
             catch
             {
@@ -46,9 +51,14 @@ namespace PharmacyUnitTests
         [Fact]
         public void Send_tender_offer_confirmed_email_success()
         {
+            Hospital hospital = new Hospital
+            {
+                Email = "psw.company2@gmail.com"
+            };
             Tender tender = new Tender
             {
-                Name = "EMAIL_TENDER_TEST"
+                Name = "EMAIL_TENDER_TEST",
+                Hospital = hospital
             };
             List<MedicationRequest> medReqs = new List<MedicationRequest>();
             medReqs.Add(new MedicationRequest("Aspirin", 5));
@@ -61,7 +71,7 @@ namespace PharmacyUnitTests
             bool exceptionCaught = false;
             try
             {
-                new EmailService(UoW).SendTenderOfferConfirmationMail(tenderOffer);
+                new EmailService().SendTenderOfferConfirmationMail(tenderOffer);
             }
             catch
             {

@@ -42,9 +42,10 @@ namespace SeleniumTests
             approveFeedbackPage = new ApproveFeedbackPage(driver);
         }
         [Fact]
-        public async Task ApproveFeedback()
+        public void ApproveFeedback()
         {
-            await ArrangeDatabaseAsync();
+            RegisterUser("Manager");
+            ArrangeDatabase();
             InsertCredentials();
             loginPage.EnsureAdminIsLoggedIn();
             approveFeedbackPage.Navigate();
@@ -58,8 +59,8 @@ namespace SeleniumTests
 
         private void InsertCredentials()
         {
-            loginPage.InsertUsername("testAdmin");
-            loginPage.InsertPassword("Admin123.");
+            loginPage.InsertUsername("testLogInManager");
+            loginPage.InsertPassword("111111aA");
             loginPage.Submit();
         }
 
@@ -69,7 +70,7 @@ namespace SeleniumTests
             driver.Dispose();
         }
 
-        private async Task ArrangeDatabaseAsync()
+        private void ArrangeDatabase()
         {
 
             var country = UoW.GetRepository<ICountryReadRepository>().GetAll()
@@ -117,13 +118,13 @@ namespace SeleniumTests
             }
 
             var specialization = UoW.GetRepository<ISpecializationReadRepository>().GetAll()
-                .FirstOrDefault(x => x.Name == "TestSpecialization");
+                .FirstOrDefault(x => x.Name == "testSpecialization");
             if (specialization == null)
             {
                 specialization = new Specialization()
                 {
                     Description = "DescriptionSpecialization",
-                    Name = "TestSpecialization"
+                    Name = "testSpecialization"
                 };
                 UoW.GetRepository<ISpecializationWriteRepository>().Add(specialization);
             }
@@ -163,7 +164,7 @@ namespace SeleniumTests
             }
 
             var patient = UoW.GetRepository<IPatientReadRepository>().GetAll()
-                .FirstOrDefault(x => x.UserName == "testUsername");
+                .FirstOrDefault(x => x.UserName == "TestUsername");
 
             if (patient == null)
             {
@@ -184,7 +185,7 @@ namespace SeleniumTests
                     DateOfBirth = DateTime.Now,
                     Gender = Gender.Female,
                     Street = "TesPatientStreet",
-                    UserName = "testUsername",
+                    UserName = "TestUsername",
                     Email = "testPatient@gmail.com",
                     EmailConfirmed = true,
                     PhoneNumber = "testPatientPhoneNumber",
@@ -213,40 +214,12 @@ namespace SeleniumTests
                     UoW.GetRepository<IFeedbackWriteRepository>().Add(feedback);
                 }
             }
-            var managerReadRepo = UoW.GetRepository<IManagerReadRepository>();
-            var manager = managerReadRepo.GetAll().Where(x => x.UserName.Equals("testAdmin")).FirstOrDefault();
-            if (manager == null)
-            {
-
-                await RegisterManagerAsync(city.Id);
-                manager = managerReadRepo.GetAll().Where(x => x.UserName.Equals("testAdmin")).FirstOrDefault();
-            }
-
-        }
-
-        private async Task RegisterManagerAsync(int cityId)
-        {
-            var managerDto = new NewManagerDTO()
-            {
-                FirstName = "TestManager",
-                LastName = "TestManagerLastName",
-                MiddleName = "TestMnagerMiddleName",
-                DateOfBirth = new DateTime(),
-                Gender = Gender.Female,
-                Street = "TestManagerStreet",
-                UserName = "testAdmin",
-                Email = "testManager@gmail.com",
-                CityId = cityId,
-                Password = "Admin123."
-            };
-            var content = GetContent(managerDto);
-            var response = await Client.PostAsync(BaseUrl + "api/Registration/RegisterManager", content);
         }
 
         private void ClearDatabase()
         {
             var patient = UoW.GetRepository<IPatientReadRepository>().GetAll()
-               .FirstOrDefault(x => x.UserName == "testUsername");
+               .FirstOrDefault(x => x.UserName == "TestUsername");
             if (patient == null) return;
 
             {
@@ -266,7 +239,7 @@ namespace SeleniumTests
                 UoW.GetRepository<IDoctorWriteRepository>().Delete(doctor);
             }
             var specialization = UoW.GetRepository<ISpecializationReadRepository>().GetAll()
-                .FirstOrDefault(x => x.Name == "TestSpecialization");
+                .FirstOrDefault(x => x.Name == "testSpecialization");
             if (specialization != null)
             {
                 UoW.GetRepository<ISpecializationWriteRepository>().Delete(specialization);

@@ -20,9 +20,7 @@ namespace Integration.Shared.Model
 
         public bool OverlapsWith(TimeRange timeRange)
         {
-            if (timeRange.Includes(StartDate)) return true;
-            if (Includes(timeRange.StartDate)) return true;
-            return false;
+            return timeRange.Includes(StartDate) || Includes(timeRange.StartDate);
         }
 
         public bool Includes(DateTime dateTime)

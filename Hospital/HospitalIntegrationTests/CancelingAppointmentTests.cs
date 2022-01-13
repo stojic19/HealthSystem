@@ -22,7 +22,6 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Appointment_should_be_canceled()
         {
-            AddDataToDatabase();
             RegisterAndLogin("Patient");
             var events = AddTestDataToDatabase(isCanceled: false, isDone: false);
             var response = await PatientClient.GetAsync(BaseUrl + "api/ScheduledEvent/CancelAppointment/" + events.Id);
@@ -36,7 +35,6 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Finished_appointment_should_not_be_canceled()
         {
-            AddDataToDatabase();
             RegisterAndLogin("Patient");
             var events = AddTestDataToDatabase(isCanceled: false, isDone: true);
             var response = await PatientClient.GetAsync(BaseUrl + "api/ScheduledEvent/CancelAppointment/" + events.Id);
@@ -50,10 +48,9 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Appointment_should_not_be_canceled()
         {
-            AddDataToDatabase();
             RegisterAndLogin("Patient");
             var events = AddTestDataToDatabase(isCanceled: false, isDone: false);
-            updateEventTime(events);
+            UpdateEventTime(events);
             var response = await PatientClient.GetAsync(BaseUrl + "api/ScheduledEvent/CancelAppointment/" + events.Id);
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
             UoW.GetRepository<IScheduledEventReadRepository>().GetCanceledUserEvents(events.Patient.UserName).Count.ShouldBe(0);
@@ -62,7 +59,7 @@ namespace HospitalIntegrationTests
 
         }
 
-        private void updateEventTime(ScheduledEvent events)
+        private void UpdateEventTime(ScheduledEvent events)
         {
             events.StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(-2).Day);
             events.EndDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(-2).Day);

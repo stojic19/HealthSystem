@@ -51,7 +51,7 @@ namespace HospitalIntegrationTests
             };
             UoW.GetRepository<IPatientWriteRepository>().Add(patient);
             
-            var response = await PatientClient.GetAsync(BaseUrl + "api/MedicalRecord/GetPatientWithRecord");
+            var response = await PatientClient.GetAsync(BaseUrl + "api/MedicalRecord/GetPatientWithRecord/" + patient.UserName);
 
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
             var foundPatient = UoW.GetRepository<IPatientReadRepository>()

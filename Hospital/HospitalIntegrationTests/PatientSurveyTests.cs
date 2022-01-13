@@ -23,28 +23,20 @@ namespace HospitalIntegrationTests
         public async Task Create_answered_survey_should_return_200OK()
         {
             RegisterAndLogin("Patient");
-            var survey = UoW.GetRepository<ISurveyReadRepository>().GetAll().FirstOrDefault();
-            if (survey == null)
+            var survey = UoW.GetRepository<ISurveyReadRepository>().GetAll().FirstOrDefault() ?? new Survey()
             {
-                survey = new Survey()
-                {
-                    CreatedDate = DateTime.Now
-                };
-            }
+                CreatedDate = DateTime.Now
+            };
 
 
-            var question = UoW.GetRepository<IQuestionReadRepository>().GetAll().FirstOrDefault();
-            if (question == null)
+            var question = UoW.GetRepository<IQuestionReadRepository>().GetAll().FirstOrDefault() ?? new Question()
             {
-                question = new Question()
-                {
-                    Text = "How did you like our services?",
-                    Category = SurveyCategory.HospitalSurvey,
-                    SurveyId = survey.Id
-                };
-            }
+                Text = "How did you like our services?",
+                Category = SurveyCategory.HospitalSurvey,
+                SurveyId = survey.Id
+            };
 
-            AnsweredQuestionDTO answeredQuestionHospital = new AnsweredQuestionDTO
+            var answeredQuestionHospital = new AnsweredQuestionDTO
             {
                 QuestionId = question.Id,
                 Rating = 5,
@@ -52,7 +44,7 @@ namespace HospitalIntegrationTests
             };
 
 
-            List<AnsweredQuestionDTO> answeredQuestionDTOs = new List<AnsweredQuestionDTO>();
+            var answeredQuestionDTOs = new List<AnsweredQuestionDTO>();
             answeredQuestionDTOs.Add(answeredQuestionHospital);
 
             var scheduled = UoW.GetRepository<IScheduledEventReadRepository>().GetAll().FirstOrDefault();
@@ -70,7 +62,7 @@ namespace HospitalIntegrationTests
             }
 
 
-            AnsweredSurveyDTO answeredSurveyDTO = new AnsweredSurveyDTO()
+            var answeredSurveyDTO = new AnsweredSurveyDTO()
             {
                 questions = answeredQuestionDTOs,
                 AnsweredDate = DateTime.Now,
@@ -88,7 +80,7 @@ namespace HospitalIntegrationTests
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
             answeredSurveyResult.AnsweredQuestions.ToList().Count.ShouldNotBe(0);
 
-            var answeredSurveyDB = UoW.GetRepository<IAnsweredSurveyReadRepository>().GetAll().Where(x => x.ScheduledEventId == scheduled.Id).FirstOrDefault();
+            var answeredSurveyDB = UoW.GetRepository<IAnsweredSurveyReadRepository>().GetAll().FirstOrDefault(x => x.ScheduledEventId == scheduled.Id);
             answeredSurveyDB.ScheduledEvent.Id.ShouldBe(scheduled.Id);
 
         }

@@ -152,6 +152,11 @@ namespace HospitalIntegrationTests
                 UoW.GetRepository<IRoomWriteRepository>().Delete(room);
             }
 
+            var shift = UoW.GetRepository<IShiftReadRepository>()
+                .GetAll()
+                .FirstOrDefault(s => s.Name == "TestShift");
+            if (shift != null) UoW.GetRepository<IShiftWriteRepository>().Delete(shift);
+            
             var firstDoctor = UoW.GetRepository<IDoctorReadRepository>()
                 .GetAll().ToList()
                 .FirstOrDefault(x => x.UserName == "TestDoctor1");
@@ -194,6 +199,15 @@ namespace HospitalIntegrationTests
 
         private Doctor InsertDoctors()
         {
+            var shift = UoW.GetRepository<IShiftReadRepository>()
+                .GetAll()
+                .FirstOrDefault() ?? new Shift()
+            {
+                Name = "TestShift",
+                From = 23,
+                To = 7
+            };
+
             var specialization = UoW.GetRepository<ISpecializationReadRepository>()
                 .GetAll()
                 .FirstOrDefault();
@@ -251,14 +265,16 @@ namespace HospitalIntegrationTests
                     UserName = "TestDoctor1",
                     SpecializationId = specialization.Id,
                     CityId = city.Id,
-                    RoomId = room.Id
+                    RoomId = room.Id,
+                    ShiftId = shift.Id
                 };
                 var doctor2 = new Doctor()
                 {
                     UserName = "TestDoctor2",
                     SpecializationId = specialization.Id,
                     CityId = city.Id,
-                    RoomId = room.Id
+                    RoomId = room.Id,
+                    ShiftId = shift.Id
                 };
 
                 UoW.GetRepository<IDoctorWriteRepository>().Add(doctor1);

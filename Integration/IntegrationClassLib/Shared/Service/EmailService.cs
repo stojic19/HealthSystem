@@ -90,7 +90,7 @@ namespace Integration.Shared.Service
             foreach (string pharmacyMail in pharmacies.Select(x => x.Email))
             {
                 builder.Append(pharmacyMail);
-                builder.Append(",");
+                builder.Append(',');
             }
 
             string mail = builder.ToString();

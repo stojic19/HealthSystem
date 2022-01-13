@@ -15,6 +15,7 @@ using Hospital.SharedModel.Repository;
 using System;
 using Hospital.SharedModel.Model.Enumerations;
 using System.Linq;
+using Hospital.MedicalRecords.Model;
 
 namespace HospitalIntegrationTests.Base
 {
@@ -54,27 +55,53 @@ namespace HospitalIntegrationTests.Base
             object user = null;
             if (role == "Patient")
             {
-                user = UoW.GetRepository<IPatientReadRepository>().GetAll().Where(x => x.UserName.Equals("testLogInPatient")).FirstOrDefault();
+                user = UoW.GetRepository<IPatientReadRepository>().GetAll().Where(x => x.UserName.Equals("testPatientUsername")).FirstOrDefault();
+
                 if (user == null)
                 {
-                    user = new NewPatientDTO()
+                  
+                    var testCity = UoW.GetRepository<ICityReadRepository>().GetAll().Where(x => x.Name == "TestCity").FirstOrDefault();
+                    var testDoctor = UoW.GetRepository<IDoctorReadRepository>().GetAll().Where(x => x.FirstName == "TestDoctor").FirstOrDefault();
+
+                    NewPatientDTO newPatient = new NewPatientDTO()
                     {
-                        Email = "testLogInPatient@nekimejl.com",
-                        Password = "111111aA",
-                        FirstName = "testLogInPatient",
-                        LastName = "testLogInPatient",
-                        UserName = "testLogInPatient"
+                        FirstName = "TestPatient",
+                        MiddleName = "TestPatientMiddleName",
+                        LastName = "TestPatientLastName",
+                       
+                        DateOfBirth = DateTime.Now,
+                        Gender = Gender.Female,
+                        Street = "TesPatientStreet",
+                        StreetNumber = "44",
+                        CityId = testCity.Id,  
+                        Email = "testPatient@gmail.com",
+                        UserName = "testPatientUsername",
+                        Password = "TestProba123",
+                      
+                        PhoneNumber = "testPatientPhoneNumber",
+                        MedicalRecord =
+                        {
+                            DoctorId = testDoctor.Id,
+                            Height = 0,
+                            Weight = 0,
+                            BloodType = BloodType.Undefined,
+                            JobStatus = JobStatus.Undefined,
+                         
+                        },
+                       
 
                     };
-
-                    PatientClient.PostAsync(BaseUrl + "api/Registration/Register", GetContent(user))
+                   PatientClient.PostAsync(BaseUrl + "api/Registration/Register", GetContent(newPatient))
                     .GetAwaiter()
                     .GetResult();
+                    Patient createdPatient = UoW.GetRepository<IPatientReadRepository>().GetAll().Where(x => x.UserName.Equals("testPatientUsername")).FirstOrDefault();
+                    createdPatient.EmailConfirmed = true;
+                    
                 }
                 var loginDTO = new LoginDTO()
                 {
-                    Username = "testLogInPatient",
-                    Password = "111111aA",
+                    Username = "testPatientUsername",
+                    Password = "TestProba123",
                 };
 
                 var response = PatientClient.PostAsync(BaseUrl + "api/Login/LogIn", GetContent(loginDTO))

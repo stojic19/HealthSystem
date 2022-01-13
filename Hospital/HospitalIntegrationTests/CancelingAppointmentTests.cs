@@ -26,7 +26,7 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Appointment_should_be_canceled()
         {
-            RegisterAndLogin("Patient");
+            //RegisterAndLogin("Patient");
             var events = AddDataToDatabase(isCanceled: false, isDone: false);
             var response = await PatientClient.GetAsync(BaseUrl + "api/ScheduledEvent/CancelAppointment/" + events.Id);
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -38,7 +38,7 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Finished_appointment_should_not_be_canceled()
         {
-            RegisterAndLogin("Patient");
+            //RegisterAndLogin("Patient");
             var events = AddDataToDatabase(isCanceled: false, isDone: true);
             var response = await PatientClient.GetAsync(BaseUrl + "api/ScheduledEvent/CancelAppointment/" + events.Id);
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -50,7 +50,8 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Appointment_should_not_be_canceled()
         {
-            RegisterAndLogin("Patient");
+            //RegisterAndLogin("Patient");
+         
             var events = AddDataToDatabase(isCanceled: false, isDone: false);
             updateEventTime(events);
             var response = await PatientClient.GetAsync(BaseUrl + "api/ScheduledEvent/CancelAppointment/" + events.Id);
@@ -71,6 +72,9 @@ namespace HospitalIntegrationTests
         private void DeleteDataFromDataBase(ScheduledEvent events)
         {
             UoW.GetRepository<IScheduledEventWriteRepository>().Delete(events, true);
+            var pat = UoW.GetRepository<IPatientReadRepository>().GetAll().Where(x => x.UserName.Equals("testPatientUsername")).FirstOrDefault();
+            UoW.GetRepository<IPatientWriteRepository>().Delete(pat, true);
+
         }
         private ScheduledEvent AddDataToDatabase(bool isCanceled, bool isDone)
         {
@@ -89,7 +93,7 @@ namespace HospitalIntegrationTests
             var testSpecialization = UoW.GetRepository<ISpecializationReadRepository>().GetAll().Where(x => x.Name == "TestSpecialization").FirstOrDefault();
             var testDoctor = UoW.GetRepository<IDoctorReadRepository>().GetAll().Where(x => x.FirstName == "TestDoctor").FirstOrDefault();
             var testPatient = UoW.GetRepository<IPatientReadRepository>().GetAll().Where(x => x.FirstName == "TestPatient").FirstOrDefault();
-
+            
             if (testCountry == null)
             {
                 testCountry = new Country()
@@ -150,48 +154,23 @@ namespace HospitalIntegrationTests
                     PhoneNumberConfirmed = false,
                     TwoFactorEnabled = false,
                     LockoutEnabled = false,
-                    AccessFailedCount = 0
+                    AccessFailedCount = 0,
+                    Shift = new Shift()
+                    {
+                        Name = "testShift",
+                        From = 8,
+                        To = 4
+                    }
 
                 };
                 doctorWiteRepo.Add(testDoctor);
             }
-            if (testPatient == null)
-            {
-                MedicalRecord medicalRecord = new MedicalRecord
-                {
-                    Doctor = testDoctor,
-                    Height = 0.0,
-                    Weight = 0.0,
-                    BloodType = BloodType.ABNegative,
-                    JobStatus = JobStatus.Student
-
-                };
-
-                testPatient = new Patient()
-                {
-                    FirstName = "TestPatient",
-                    MiddleName = "TestPatientMiddleName",
-                    LastName = "TestPatientLastName",
-                    DateOfBirth = DateTime.Now,
-                    Gender = Gender.Female,
-                    Street = "TesPatientStreet",
-                    City = testCity,
-                    IsBlocked = false,
-                    UserName = "testPatientrUsername",
-                    Email = "testPatient@gmail.com",
-                    EmailConfirmed = true,
-                    PhoneNumber = "testPatientPhoneNumber",
-                    PhoneNumberConfirmed = false,
-                    TwoFactorEnabled = false,
-                    LockoutEnabled = false,
-                    AccessFailedCount = 0,
-                    MedicalRecord = medicalRecord
-
-                };
-                patientWriteRepo.Add(testPatient);
-            }
+            
+                RegisterAndLogin("Patient");
+             
+            
             #endregion
-
+           
             ScheduledEvent scheduledEvent = new ScheduledEvent()
             {
 

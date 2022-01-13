@@ -15,7 +15,7 @@
         <mat-date-range-picker #picker></mat-date-range-picker>
         <button class="btn btn-primary m-3" (click)="GetReport(start, end)"><strong>Get report</strong></button>
     </div>
-    <div *ngIf="report">
+    <div *ngIf="report && report?.medicationExpenditureDTO?.length">
         <div class="table-responsive">
             <table class="table table-bordered table-striped table-hover" *ngIf="report">
                 <thead>
@@ -34,4 +34,6 @@
             <button class="btn btn-primary m-3" (click)="SendReport()"><strong>Send report</strong></button>
         </div>
     </div>
+    <div class="d-flex justify-content-center m-1" *ngIf="!report"><h4>Enter date range and click Get report to see reports.</h4></div>
+    <div class="d-flex justify-content-center m-1" *ngIf="report && !report?.medicationExpenditureDTO?.length"><h4>No reports to show.</h4></div>
 </div>

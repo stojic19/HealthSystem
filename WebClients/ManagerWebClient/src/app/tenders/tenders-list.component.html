@@ -6,7 +6,7 @@
     <button class="btn btn-primary m-3" [routerLink]="[isProd ? 'manager/add-tender' : '../add-tender']"><strong>Create Tender</strong></button>
     <button class="btn btn-primary m-3" [routerLink]="[isProd ? 'manager/tendering-statistics' : '../tendering-statistics']"><strong>Tender Statistics</strong></button>
 
-    <div class="table-responsive m-1">
+    <div *ngIf="tenders?.length" class="table-responsive m-1">
         <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>
@@ -27,4 +27,5 @@
         </table>
     </div>
 
+    <div class="d-flex justify-content-center m-1" *ngIf="!tenders?.length"><h4>No tenders to show.</h4></div>
 </div>

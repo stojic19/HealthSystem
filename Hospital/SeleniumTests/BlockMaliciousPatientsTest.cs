@@ -1,26 +1,14 @@
-﻿using AutoMapper;
-using AutoMapper.Configuration;
-using Hospital.MedicalRecords.Model;
-using Hospital.MedicalRecords.Repository;
-using Hospital.RoomsAndEquipment.Model;
-using Hospital.RoomsAndEquipment.Repository;
+﻿using Hospital.MedicalRecords.Repository;
 using Hospital.Schedule.Model;
 using Hospital.Schedule.Repository;
-using Hospital.SharedModel.Model;
 using Hospital.SharedModel.Model.Enumerations;
-using Hospital.SharedModel.Repository;
-using HospitalApi.DTOs;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using SeleniumTests.Base;
 using SeleniumTests.Pages;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace SeleniumTests
@@ -64,7 +52,6 @@ namespace SeleniumTests
             Assert.True(_blockMaliciousPatientsPage.IsSnackBarDisplayed());
             Assert.Equal(_driver.Url, _blockMaliciousPatientsPage.URI);
             //Assert.Equal(patientCount - 1, _.PatientCount());
-            //ClearDatabase();
             DeleteDataFromDataBase();
         }
         private void InsertCredentials()
@@ -141,68 +128,6 @@ namespace SeleniumTests
                     ScheduledEventType = ScheduledEventType.Appointment
                 };
                 UoW.GetRepository<IScheduledEventWriteRepository>().Add(scheduledEvent4);
-        }
-        
-
-        private void ClearDatabase()
-        {
-            var patient = UoW.GetRepository<IPatientReadRepository>().GetAll()
-               .FirstOrDefault(x => x.UserName == "testUsername");
-            if (patient == null) return;
-
-            {
-                var medicalRecord = UoW.GetRepository<IMedicalRecordReadRepository>()
-                    .GetAll().Include(mr => mr.Doctor)
-                    .FirstOrDefault(x => x.Id == patient.MedicalRecordId);
-
-                UoW.GetRepository<IMedicalRecordWriteRepository>().Delete(medicalRecord);
-            }
-            var doctor = UoW.GetRepository<IDoctorReadRepository>().GetAll()
-                .FirstOrDefault(x => x.UserName == "TestDoctorUsername");
-            if (doctor != null)
-            {
-                UoW.GetRepository<IDoctorWriteRepository>().Delete(doctor);
-            }
-            var specialization = UoW.GetRepository<ISpecializationReadRepository>().GetAll()
-                .FirstOrDefault(x => x.Name == "TestSpecialization");
-            if (specialization != null)
-            {
-                UoW.GetRepository<ISpecializationWriteRepository>().Delete(specialization);
-            }
-            var city = UoW.GetRepository<ICityReadRepository>()
-                .GetAll().ToList()
-                .FirstOrDefault(x => x.Name == "TestCity");
-
-            if (city != null)
-            {
-                UoW.GetRepository<ICityWriteRepository>().Delete(city);
-            }
-
-            var country = UoW.GetRepository<ICountryReadRepository>()
-                .GetAll().ToList()
-                .FirstOrDefault(x => x.Name == "TestCountry");
-
-            if (country != null)
-            {
-                UoW.GetRepository<ICountryWriteRepository>().Delete(country);
-            }
-
-            var room = UoW.GetRepository<IRoomReadRepository>()
-                    .GetAll().ToList()
-                    .FirstOrDefault(x => x.Name == "TestRoom");
-
-            if (room != null)
-            {
-                UoW.GetRepository<IRoomWriteRepository>().Delete(room);
-            }
-            var shift = UoW.GetRepository<IShiftReadRepository>()
-                .GetAll().ToList()
-                .FirstOrDefault(x => x.Name == "prva");
-
-            if (shift != null)
-            {
-                UoW.GetRepository<IShiftWriteRepository>().Delete(shift);
-            }
         }
     }
 }

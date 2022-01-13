@@ -95,7 +95,7 @@ namespace SeleniumTests
         private void ClearDatabase()
         {
             var patient = UoW.GetRepository<IPatientReadRepository>().GetAll()
-               .FirstOrDefault(x => x.UserName == "TestUsername");
+               .FirstOrDefault(x => x.UserName == "testPatientUsername");
             if (patient == null) return;
 
             {

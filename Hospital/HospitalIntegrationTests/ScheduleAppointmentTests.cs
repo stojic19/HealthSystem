@@ -30,9 +30,10 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Should_return_doctors_with_specialization()
         {
+            RegisterAndLogin("Patient");
             var doctor = InsertDoctors();
 
-            var response = await Client.GetAsync(BaseUrl + "api/Doctor/GetDoctorsWithSpecialization?specializationId=" + doctor.SpecializationId);
+            var response = await PatientClient.GetAsync(BaseUrl + "api/Doctor/GetDoctorsWithSpecialization?specializationId=" + doctor.SpecializationId);
             var responseContent = await response.Content.ReadAsStringAsync();
             var doctors = JsonConvert.DeserializeObject<IEnumerable<Doctor>>(responseContent).ToList();
 
@@ -45,10 +46,11 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Should_return_available_appointments()
         {
+            RegisterAndLogin("Patient");
             var preferredDate = new DateTime(2021, 12, 18);
             var doctor = InsertDoctors();
             
-            var response = await Client.GetAsync(BaseUrl + "api/ScheduledEvent/GetAvailableAppointments?specializationId=" + doctor.Specialization.Id +
+            var response = await PatientClient.GetAsync(BaseUrl + "api/ScheduledEvent/GetAvailableAppointments?specializationId=" + doctor.Specialization.Id +
                                                  "&preferredDate=" + preferredDate.ToString());
             var responseContent = await response.Content.ReadAsStringAsync();
             var availableAppointments = JsonConvert.DeserializeObject<IEnumerable<DateTime>>(responseContent).ToList();
@@ -62,6 +64,7 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Schedule_appointment_should_return_200_OK()
         {
+            RegisterAndLogin("Patient");
             var appointmentToSchedule = new ScheduleAppointmentDTO()
             {
                 DoctorId = InsertDoctors().Id,
@@ -70,7 +73,7 @@ namespace HospitalIntegrationTests
             };
 
             var content = GetContent(appointmentToSchedule);
-            var response = await Client.PostAsync(BaseUrl + "api/ScheduleAppointment/ScheduleAppointment", content);
+            var response = await PatientClient.PostAsync(BaseUrl + "api/ScheduleAppointment/ScheduleAppointment", content);
             var responseContent = await response.Content.ReadAsStringAsync();
             var scheduledEvent = JsonConvert.DeserializeObject<ScheduledEvent>(responseContent);
 

@@ -29,8 +29,9 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Get_survey_statistics_code_200OK()
         {
+            RegisterAndLogin("Manager");
             ArrangeDatabase();
-            var response = await Client.GetAsync(BaseUrl + "api/SurveyStatistics/GetSurveyStatistics");
+            var response = await ManagerClient.GetAsync(BaseUrl + "api/SurveyStatistics/GetSurveyStatistics");
             var responseContent = await response.Content.ReadAsStringAsync();
             var surveyStatisticsDTO = JsonConvert.DeserializeObject<SurveyStatisticDTO>(responseContent);
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -182,6 +183,12 @@ namespace HospitalIntegrationTests
                     TwoFactorEnabled = false,
                     LockoutEnabled = false,
                     AccessFailedCount = 0,
+                    Shift = new Shift()
+                    {
+                        From = 8,
+                        To = 4,
+                        Name = "prva"
+                    },
                     Room = room,
                     City = city
 
@@ -228,7 +235,7 @@ namespace HospitalIntegrationTests
                 
             }
 
-            var date = new DateTime();
+            var date = new DateTime().AddDays(1);
             var survey = UoW.GetRepository<ISurveyReadRepository>().GetAll()
                 .FirstOrDefault(x => x.CreatedDate == date);
             if (survey != null) return;
@@ -305,7 +312,7 @@ namespace HospitalIntegrationTests
                     {
                         answeredSurvey = new AnsweredSurvey()
                         {
-                            AnsweredDate = date.AddDays(3),
+                            AnsweredDate = date,
                             PatientId = patient.Id,
                             ScheduledEvent = scheduledEvent,
                             Survey = survey

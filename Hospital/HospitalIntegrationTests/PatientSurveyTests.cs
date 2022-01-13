@@ -22,7 +22,7 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Create_answered_survey_should_return_200OK()
         {
-
+            RegisterAndLogin("Patient");
             var survey = UoW.GetRepository<ISurveyReadRepository>().GetAll().FirstOrDefault();
             if (survey == null)
             {
@@ -81,7 +81,7 @@ namespace HospitalIntegrationTests
 
             var content = GetContent(answeredSurveyDTO);
 
-            var response = await Client.PostAsync(BaseUrl + "api/AnsweredSurvey/CreateAnsweredSurvey", content);
+            var response = await PatientClient.PostAsync(BaseUrl + "api/AnsweredSurvey/CreateAnsweredSurvey", content);
             var responseContent = await response.Content.ReadAsStringAsync();
             var answeredSurveyResult = JsonConvert.DeserializeObject<AnsweredSurvey>(responseContent);
 

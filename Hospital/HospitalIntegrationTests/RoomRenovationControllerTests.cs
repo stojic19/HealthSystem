@@ -23,6 +23,7 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Add_renovation_request_should_return_200()
         {
+            RegisterAndLogin("Manager");
             var room = InsertRoom("Test room 1");
             var surroundingRoom = InsertSurroundingRoom("Test surrounding room");
 
@@ -44,7 +45,7 @@ namespace HospitalIntegrationTests
             };
 
             var content = GetContent(newRequest);
-            var response = await Client.PostAsync(BaseUrl + "api/RoomRenovation/AddNewRoomRenovationEvent", content);
+            var response = await ManagerClient.PostAsync(BaseUrl + "api/RoomRenovation/AddNewRoomRenovationEvent", content);
 
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
             response.ShouldNotBeNull();

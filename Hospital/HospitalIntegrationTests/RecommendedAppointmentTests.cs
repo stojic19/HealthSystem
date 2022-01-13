@@ -32,6 +32,7 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Should_return_200_OK()
         {
+            RegisterAndLogin("Patient");
             var doctor = InsertDoctors();
             var startDate = "2/2/2022";
             var endDate = "3/2/2022";
@@ -39,7 +40,7 @@ namespace HospitalIntegrationTests
             var isDoctorPriority = false;
 
             var response =
-                await Client.GetAsync(BaseUrl + "api/RecommendedAppointment/GetRecommendedAppointments?doctorId=" + doctorId + "&dateStart=" + startDate + "&dateEnd=" + endDate + "&isDoctorPriority=" + isDoctorPriority);
+                await PatientClient.GetAsync(BaseUrl + "api/RecommendedAppointment/GetRecommendedAppointments?doctorId=" + doctorId + "&dateStart=" + startDate + "&dateEnd=" + endDate + "&isDoctorPriority=" + isDoctorPriority);
             var responseContent = await response.Content.ReadAsStringAsync();
             var availableAppointments =
                 JsonConvert.DeserializeObject<IEnumerable<AvailableAppointmentDTO>>(responseContent).ToList();
@@ -52,6 +53,7 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Should_return_available_appointments()
         {
+            RegisterAndLogin("Patient");
             var doctor = InsertDoctors();
             var startDate = "2/2/2022";
             var endDate = "3/2/2022";
@@ -59,7 +61,7 @@ namespace HospitalIntegrationTests
             var isDoctorPriority = false;
 
             var response =
-                await Client.GetAsync(BaseUrl + "api/RecommendedAppointment/GetRecommendedAppointments?doctorId=" + doctorId + "&dateStart=" + startDate + "&dateEnd=" + endDate + "&isDoctorPriority=" + isDoctorPriority);
+                await PatientClient.GetAsync(BaseUrl + "api/RecommendedAppointment/GetRecommendedAppointments?doctorId=" + doctorId + "&dateStart=" + startDate + "&dateEnd=" + endDate + "&isDoctorPriority=" + isDoctorPriority);
             var responseContent = await response.Content.ReadAsStringAsync();
             var availableAppointments =
                 JsonConvert.DeserializeObject<IEnumerable<AvailableAppointmentDTO>>(responseContent).ToList();
@@ -73,7 +75,7 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Should_return_available_appointments_for_doctor_priority()
         {
-
+            RegisterAndLogin("Patient");
             var doctor = InsertDoctors();
             var dateStart = "12/14/2021";
             var dateEnd = "12/15/2022";
@@ -81,7 +83,7 @@ namespace HospitalIntegrationTests
             var isDoctorPriority = true;
 
             var response =
-                await Client.GetAsync(BaseUrl + "api/RecommendedAppointment/GetRecommendedAppointments?doctorId=" + doctorId + "&dateStart=" + dateStart + "&dateEnd=" + dateEnd + "&isDoctorPriority=" + isDoctorPriority);
+                await PatientClient.GetAsync(BaseUrl + "api/RecommendedAppointment/GetRecommendedAppointments?doctorId=" + doctorId + "&dateStart=" + dateStart + "&dateEnd=" + dateEnd + "&isDoctorPriority=" + isDoctorPriority);
             var responseContent = await response.Content.ReadAsStringAsync();
             var availableAppointments =
                 JsonConvert.DeserializeObject<IEnumerable<AvailableAppointmentDTO>>(responseContent).ToList();
@@ -96,6 +98,7 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Should_return_available_appointments_for_date_priority()
         {
+            RegisterAndLogin("Patient");
             var doctor = InsertDoctors();
             var dateStart = "12/14/2021";
             var dateEnd = "12/15/2021";
@@ -103,7 +106,7 @@ namespace HospitalIntegrationTests
             var isDoctorPriority = false;
 
             var response =
-                await Client.GetAsync(BaseUrl + "api/RecommendedAppointment/GetRecommendedAppointments?doctorId=" + doctorId + "&dateStart=" + dateStart + "&dateEnd=" + dateEnd + "&isDoctorPriority=" + isDoctorPriority);
+                await PatientClient.GetAsync(BaseUrl + "api/RecommendedAppointment/GetRecommendedAppointments?doctorId=" + doctorId + "&dateStart=" + dateStart + "&dateEnd=" + dateEnd + "&isDoctorPriority=" + isDoctorPriority);
             var responseContent = await response.Content.ReadAsStringAsync();
             var availableAppointments =
                 JsonConvert.DeserializeObject<IEnumerable<AvailableAppointmentDTO>>(responseContent).ToList();

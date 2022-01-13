@@ -26,8 +26,9 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Appointment_should_be_canceled()
         {
+            RegisterAndLogin("Patient");
             var events = AddDataToDatabase(isCanceled: false, isDone: false);
-            var response = await Client.GetAsync(BaseUrl + "api/ScheduledEvent/CancelAppointment/" + events.Id);
+            var response = await PatientClient.GetAsync(BaseUrl + "api/ScheduledEvent/CancelAppointment/" + events.Id);
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
             UoW.GetRepository<IScheduledEventReadRepository>().GetCanceledUserEvents(events.Patient.UserName).Count.ShouldNotBe(0);
             DeleteDataFromDataBase(events);
@@ -37,8 +38,9 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Finished_appointment_should_not_be_canceled()
         {
+            RegisterAndLogin("Patient");
             var events = AddDataToDatabase(isCanceled: false, isDone: true);
-            var response = await Client.GetAsync(BaseUrl + "api/ScheduledEvent/CancelAppointment/" + events.Id);
+            var response = await PatientClient.GetAsync(BaseUrl + "api/ScheduledEvent/CancelAppointment/" + events.Id);
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
             UoW.GetRepository<IScheduledEventReadRepository>().GetCanceledUserEvents(events.Patient.UserName).Count.ShouldBe(0);
             DeleteDataFromDataBase(events);
@@ -48,9 +50,10 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Appointment_should_not_be_canceled()
         {
+            RegisterAndLogin("Patient");
             var events = AddDataToDatabase(isCanceled: false, isDone: false);
             updateEventTime(events);
-            var response = await Client.GetAsync(BaseUrl + "api/ScheduledEvent/CancelAppointment/" + events.Id);
+            var response = await PatientClient.GetAsync(BaseUrl + "api/ScheduledEvent/CancelAppointment/" + events.Id);
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
             UoW.GetRepository<IScheduledEventReadRepository>().GetCanceledUserEvents(events.Patient.UserName).Count.ShouldBe(0);
             DeleteDataFromDataBase(events);

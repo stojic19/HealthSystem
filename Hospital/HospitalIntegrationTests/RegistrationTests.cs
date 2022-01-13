@@ -32,7 +32,7 @@ namespace HospitalIntegrationTests
 
             var content = GetContent(newPatient);
 
-            var response = await Client.PostAsync(BaseUrl + "api/Registration/Register", content);
+            var response = await PatientClient.PostAsync(BaseUrl + "api/Registration/Register", content);
 
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
 

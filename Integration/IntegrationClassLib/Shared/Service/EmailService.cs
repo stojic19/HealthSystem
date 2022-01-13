@@ -34,7 +34,7 @@ namespace Integration.Shared.Service
             var mail = PrepareMailNames(pharmacies);
             string text = "<p>Greetings</p><p>We have created a new tender named " + tender.Name
                 + ". This tender requires following medications:";
-            text = MakeMedicationList(tender, text);
+            text = MakeMedicationList(tender.MedicationRequests, text);
             text += "</p>";
             text = MakeRegardsText(text);
             SendMail(mail, "New Tender", text);
@@ -46,7 +46,7 @@ namespace Integration.Shared.Service
             string text = "<p>Greetings</p><p>We inform you that your tender offer for tender named " +
                           tender.Name +
                           " has won. We are looking forward to hearing from you about medication you promised in that offer. Promised medications are listed below:";
-            text = MakeMedicationList(tender, text);
+            text = MakeMedicationList(tender.WinningOffer.MedicationRequests, text);
             text += "</p>";
             text = MakeRegardsText(text);
             SendMail(mail, "Winning tender offer", text);
@@ -67,10 +67,10 @@ namespace Integration.Shared.Service
             return text;
         }
 
-        private string MakeMedicationList(Tender tender, string text)
+        private string MakeMedicationList(IEnumerable<MedicationRequest> medicationRequests, string text)
         {
             text += "<ul>";
-            foreach (var medReq in tender.MedicationRequests)
+            foreach (var medReq in medicationRequests)
             {
                 text += "<li>" + medReq.MedicineName + ", Amount: " + medReq.Quantity + "</li>";
             }

@@ -20,9 +20,11 @@ namespace IntegrationUnitTests
             ClearDbContext();
         }
 
-        [Fact]
+        [SkippableFact]
         public void Send_email_success()
         {
+            var env = Environment.GetEnvironmentVariable("PRODUCTION");
+            Skip.If(env == null || env.Equals("1"));
             var eService = new EmailService();
             bool exceptionCaught = false;
             try
@@ -37,9 +39,11 @@ namespace IntegrationUnitTests
             Assert.False(exceptionCaught);
         }
 
-        [Fact]
+        [SkippableFact]
         public void Send_new_tender_email()
         {
+            var env = Environment.GetEnvironmentVariable("PRODUCTION");
+            Skip.If(env == null || env.Equals("1"));
             List<Pharmacy> pharmacies = new List<Pharmacy>();
             pharmacies.Add(new Pharmacy
             {
@@ -65,9 +69,11 @@ namespace IntegrationUnitTests
             Assert.False(exceptionCaught);
         }
 
-        [Fact]
+        [SkippableFact]
         public void Send_winning_offer_email()
         {
+            var env = Environment.GetEnvironmentVariable("PRODUCTION");
+            Skip.If(env == null || env.Equals("1"));
             var pharmacy = new Pharmacy()
             {
                 Email = "psw.company2.pharmacy@gmail.com"
@@ -93,9 +99,11 @@ namespace IntegrationUnitTests
             Assert.False(exceptionCaught);
         }
 
-        [Fact]
+        [SkippableFact]
         public void Send_tender_closed_mail()
         {
+            var env = Environment.GetEnvironmentVariable("PRODUCTION");
+            Skip.If(env == null || env.Equals("1"));
             List<Pharmacy> pharmacies = new List<Pharmacy>();
             pharmacies.Add(new Pharmacy
             {

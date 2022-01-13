@@ -25,6 +25,7 @@ using Xunit;
 
 namespace SeleniumTests
 {
+    [Collection("Sequence")]
     public class BlockMaliciousPatientsTest : BaseTest, IDisposable
     {
         private readonly IWebDriver _driver;
@@ -63,7 +64,8 @@ namespace SeleniumTests
             Assert.True(_blockMaliciousPatientsPage.IsSnackBarDisplayed());
             Assert.Equal(_driver.Url, _blockMaliciousPatientsPage.URI);
             //Assert.Equal(patientCount - 1, _.PatientCount());
-            ClearDatabase();
+            //ClearDatabase();
+            DeleteDataFromDataBase();
         }
         private void InsertCredentials()
         {
@@ -78,148 +80,24 @@ namespace SeleniumTests
         }
         private void ArrangeDatabase()
         {
-            var country = UoW.GetRepository<ICountryReadRepository>().GetAll()
-               .FirstOrDefault(x => x.Name == "TestCountry");
-            if (country == null)
-            {
-                country = new Country()
-                {
-                    Name = "TestCountry",
-                };
-                UoW.GetRepository<ICountryWriteRepository>().Add(country);
-            }
-
-            var city = UoW.GetRepository<ICityReadRepository>().GetAll().FirstOrDefault(x => x.Name == "TestCity");
-            if (city == null)
-            {
-                city = new City()
-                {
-                    Name = "TestCity",
-                    PostalCode = 00000,
-                    Country = country
-
-                };
-                UoW.GetRepository<ICityWriteRepository>().Add(city);
-            }
-
-            var room = UoW.GetRepository<IRoomReadRepository>()
-                .GetAll()
-                .FirstOrDefault(x => x.Name == "TestRoom");
-
-            if (room == null)
-            {
-                room = new Room()
-                {
-                    Name = "TestRoom",
-                    Description = "Room for storage",
-                    Width = 7,
-                    Height = 8.5,
-                    FloorNumber = 1,
-                    BuildingName = "Building 2",
-                    RoomType = RoomType.AppointmentRoom
-                };
-
-                UoW.GetRepository<IRoomWriteRepository>().Add(room);
-            }
-
-            var specialization = UoW.GetRepository<ISpecializationReadRepository>().GetAll()
-                .FirstOrDefault(x => x.Name == "TestSpecialization");
-            if (specialization == null)
-            {
-                specialization = new Specialization()
-                {
-                    Description = "DescriptionSpecialization",
-                    Name = "TestSpecialization"
-                };
-                UoW.GetRepository<ISpecializationWriteRepository>().Add(specialization);
-            }
-
-            var doctor = UoW.GetRepository<IDoctorReadRepository>().GetAll()
-                .FirstOrDefault(x => x.UserName == "TestDoctorUsername");
-            if (doctor == null)
-            {
-                doctor = new Doctor()
-                {
-                    FirstName = "TestDoctor",
-                    LastName = "TestDoctorLastName",
-                    MiddleName = "TestDoctorMiddleName",
-                    DateOfBirth = DateTime.Now,
-                    Gender = Gender.Female,
-                    Street = "TestDoctorStreet",
-                    SpecializationId = specialization.Id,
-                    UserName = "TestDoctorUsername",
-                    Email = "testDoctor@gmail.com",
-                    EmailConfirmed = true,
-                    PhoneNumber = "testDoctorPhoneNumber",
-                    PhoneNumberConfirmed = false,
-                    TwoFactorEnabled = false,
-                    LockoutEnabled = false,
-                    AccessFailedCount = 0,
-                    Shift = new Shift()
-                    {
-                        From = 8,
-                        To = 4,
-                        Name = "prva"
-                    },
-                    Room = room,
-                    City = city
-
-                };
-                UoW.GetRepository<IDoctorWriteRepository>().Add(doctor);
-            }
-
-            var patient = UoW.GetRepository<IPatientReadRepository>().GetAll()
-                .FirstOrDefault(x => x.UserName == "testUsername");
-
-            if (patient == null)
-            {
-                var medicalRecord = new MedicalRecord
-                {
-                    Weight = 70,
-                    Height = 168,
-                    BloodType = BloodType.ABNegative,
-                    JobStatus = JobStatus.Student,
-                    Doctor = doctor
-
-                };
-
-                patient = new Patient()
-                {
-                    FirstName = "TestPatient",
-                    MiddleName = "TestPatientMiddleName",
-                    LastName = "TestPatientLastName",
-                    DateOfBirth = DateTime.Now,
-                    Gender = Gender.Female,
-                    Street = "TesPatientStreet",
-                    UserName = "testUsername",
-                    Email = "testPatient@gmail.com",
-                    EmailConfirmed = true,
-                    PhoneNumber = "testPatientPhoneNumber",
-                    PhoneNumberConfirmed = false,
-                    TwoFactorEnabled = false,
-                    LockoutEnabled = false,
-                    AccessFailedCount = 0,
-                    MedicalRecord = medicalRecord,
-                    City = city,
-                    IsBlocked = false
-
-                };
-                UoW.GetRepository<IPatientWriteRepository>().Add(patient);
+            RegisterUser("Patient");
+            var patient = UoW.GetRepository<IPatientReadRepository>().GetAll().Include(p => p.MedicalRecord).ThenInclude(mr => mr.Doctor)
+                .FirstOrDefault(p => p.UserName == "testPatientUsername");
 
                 var date = new DateTime();
                 var scheduledEvent = UoW.GetRepository<IScheduledEventReadRepository>().GetAll()
-                    .FirstOrDefault(x => x.StartDate == date && x.Patient.Id == patient.Id && x.Doctor.Id == doctor.Id);
+                    .FirstOrDefault(x => x.StartDate == date && x.Patient.Id == patient.Id && x.Doctor.Id == patient.MedicalRecord.DoctorId);
                 if (scheduledEvent != null) return;
                 scheduledEvent = new ScheduledEvent()
                 {
                     StartDate = DateTime.Now.AddDays(-100),
                     EndDate = DateTime.Now.AddDays(-100),
                     CancellationDate = DateTime.Now.AddDays(-110),
-                    Doctor = doctor,
+                    Doctor = patient.MedicalRecord.Doctor,
                     IsCanceled = true,
                     IsDone = false,
                     Patient = patient,
-                    Room = doctor.Room,
+                    Room = patient.MedicalRecord.Doctor.Room,
                     ScheduledEventType = ScheduledEventType.Appointment
                 };
                 UoW.GetRepository<IScheduledEventWriteRepository>().Add(scheduledEvent);
@@ -229,11 +107,11 @@ namespace SeleniumTests
                     StartDate = DateTime.Now.AddDays(-22),
                     EndDate = DateTime.Now.AddDays(-22),
                     CancellationDate = DateTime.Now.AddDays(-27),
-                    Doctor = doctor,
+                    Doctor = patient.MedicalRecord.Doctor,
                     IsCanceled = true,
                     IsDone = false,
                     Patient = patient,
-                    Room = doctor.Room,
+                    Room = patient.MedicalRecord.Doctor.Room,
                     ScheduledEventType = ScheduledEventType.Appointment
                 };
                 UoW.GetRepository<IScheduledEventWriteRepository>().Add(scheduledEvent2);
@@ -242,11 +120,11 @@ namespace SeleniumTests
                     StartDate = DateTime.Now.AddDays(-4),
                     EndDate = DateTime.Now.AddDays(-4),
                     CancellationDate = DateTime.Now.AddDays(-14),
-                    Doctor = doctor,
+                    Doctor = patient.MedicalRecord.Doctor,
                     IsCanceled = true,
                     IsDone = false,
                     Patient = patient,
-                    Room = doctor.Room,
+                    Room = patient.MedicalRecord.Doctor.Room,
                     ScheduledEventType = ScheduledEventType.Appointment
                 };
                 UoW.GetRepository<IScheduledEventWriteRepository>().Add(scheduledEvent3);
@@ -255,16 +133,16 @@ namespace SeleniumTests
                     StartDate = DateTime.Now.AddDays(7),
                     EndDate = DateTime.Now.AddDays(7),
                     CancellationDate = DateTime.Now.AddDays(-1),
-                    Doctor = doctor,
+                    Doctor = patient.MedicalRecord.Doctor,
                     IsCanceled = true,
                     IsDone = false,
                     Patient = patient,
-                    Room = doctor.Room,
+                    Room = patient.MedicalRecord.Doctor.Room,
                     ScheduledEventType = ScheduledEventType.Appointment
                 };
                 UoW.GetRepository<IScheduledEventWriteRepository>().Add(scheduledEvent4);
-            }
         }
+        
 
         private void ClearDatabase()
         {

@@ -20,6 +20,7 @@ using Xunit;
 
 namespace SeleniumTests
 {
+    [Collection("Sequence")]
     public class ApproveFeedbackTests : BaseTest,IDisposable
     {
         private readonly IWebDriver driver;
@@ -55,6 +56,7 @@ namespace SeleniumTests
             Assert.True(approveFeedbackPage.IsSnackBarDisplayed());
             Assert.Equal(driver.Url, approveFeedbackPage.GetUrl());
             ClearDatabase();
+            DeleteDataFromDataBase();
         }
 
         private void InsertCredentials()
@@ -73,147 +75,21 @@ namespace SeleniumTests
         private void ArrangeDatabase()
         {
 
-            var country = UoW.GetRepository<ICountryReadRepository>().GetAll()
-               .FirstOrDefault(x => x.Name == "TestCountry");
-            if (country == null)
-            {
-                country = new Country()
-                {
-                    Name = "TestCountry",
-                };
-                UoW.GetRepository<ICountryWriteRepository>().Add(country);
-            }
-
-            var city = UoW.GetRepository<ICityReadRepository>().GetAll().FirstOrDefault(x => x.Name == "TestCity");
-            if (city == null)
-            {
-                city = new City()
-                {
-                    Name = "TestCity",
-                    PostalCode = 00000,
-                    Country = country
-
-                };
-                UoW.GetRepository<ICityWriteRepository>().Add(city);
-            }
-
-            var room = UoW.GetRepository<IRoomReadRepository>()
-                .GetAll()
-                .FirstOrDefault(x => x.Name == "TestRoom");
-
-            if (room == null)
-            {
-                room = new Room()
-                {
-                    Name = "TestRoom",
-                    Description = "Room for storage",
-                    Width = 7,
-                    Height = 8.5,
-                    FloorNumber = 1,
-                    BuildingName = "Building 2",
-                    RoomType = RoomType.AppointmentRoom
-                };
-
-                UoW.GetRepository<IRoomWriteRepository>().Add(room);
-            }
-
-            var specialization = UoW.GetRepository<ISpecializationReadRepository>().GetAll()
-                .FirstOrDefault(x => x.Name == "testSpecialization");
-            if (specialization == null)
-            {
-                specialization = new Specialization()
-                {
-                    Description = "DescriptionSpecialization",
-                    Name = "testSpecialization"
-                };
-                UoW.GetRepository<ISpecializationWriteRepository>().Add(specialization);
-            }
-
-            var doctor = UoW.GetRepository<IDoctorReadRepository>().GetAll()
-                .FirstOrDefault(x => x.UserName == "testDoctorUsername");
-            if (doctor == null)
-            {
-                doctor = new Doctor()
-                {
-                    FirstName = "TestDoctor",
-                    LastName = "TestDoctorLastName",
-                    MiddleName = "TestDoctorMiddleName",
-                    DateOfBirth = DateTime.Now,
-                    Gender = Gender.Female,
-                    Street = "TestDoctorStreet",
-                    SpecializationId = specialization.Id,
-                    UserName = "testDoctorUsername",
-                    Email = "testDoctor@gmail.com",
-                    EmailConfirmed = true,
-                    PhoneNumber = "testDoctorPhoneNumber",
-                    PhoneNumberConfirmed = false,
-                    TwoFactorEnabled = false,
-                    LockoutEnabled = false,
-                    AccessFailedCount = 0,
-                    Shift = new Shift()
-                    {
-                        From = 8,
-                        To = 4,
-                        Name = "prva"
-                    },
-                    Room = room,
-                    City = city
-
-                };
-                UoW.GetRepository<IDoctorWriteRepository>().Add(doctor);
-            }
-
+            RegisterUser("Patient");
             var patient = UoW.GetRepository<IPatientReadRepository>().GetAll()
-                .FirstOrDefault(x => x.UserName == "TestUsername");
+                .FirstOrDefault(p => p.UserName == "testPatientUsername");
 
-            if (patient == null)
-            {
-                var medicalRecord = new MedicalRecord
-                {
-                    Weight = 70,
-                    Height = 168,
-                    BloodType = BloodType.ABNegative,
-                    JobStatus = JobStatus.Student,
-                    Doctor = doctor
-
-                };
-                patient = new Patient()
-                {
-                    FirstName = "TestPatient",
-                    MiddleName = "TestPatientMiddleName",
-                    LastName = "TestPatientLastName",
-                    DateOfBirth = DateTime.Now,
-                    Gender = Gender.Female,
-                    Street = "TesPatientStreet",
-                    UserName = "TestUsername",
-                    Email = "testPatient@gmail.com",
-                    EmailConfirmed = true,
-                    PhoneNumber = "testPatientPhoneNumber",
-                    PhoneNumberConfirmed = false,
-                    TwoFactorEnabled = false,
-                    LockoutEnabled = false,
-                    AccessFailedCount = 0,
-                    MedicalRecord = medicalRecord,
-                    City = city,
-                    IsBlocked = false
-
-                };
-                UoW.GetRepository<IPatientWriteRepository>().Add(patient);
-
-                var feedback = UoW.GetRepository<IFeedbackReadRepository>().GetAll()
+            var feedback = UoW.GetRepository<IFeedbackReadRepository>().GetAll()
                     .FirstOrDefault(x => x.Patient.Id == patient.Id);
-                if (feedback == null)
+            if (feedback != null) return;
+            feedback = new Feedback()
                 {
-                    feedback = new Feedback()
-                    {
-                        Patient = patient,
-                        Text = "Osoblje je ljubazno.Sve pohvale.",
-                        CreatedDate = new DateTime(2021,12,12,12,30,0),
-                        IsPublishable = true
-                    };
-                    UoW.GetRepository<IFeedbackWriteRepository>().Add(feedback);
-                }
-            }
+                    Patient = patient,
+                    Text = "Osoblje je ljubazno.Sve pohvale.",
+                    CreatedDate = new DateTime(2021,12,12,12,30,0),
+                    IsPublishable = true
+                };
+                UoW.GetRepository<IFeedbackWriteRepository>().Add(feedback);
         }
 
         private void ClearDatabase()
@@ -226,58 +102,6 @@ namespace SeleniumTests
                 var feedback = UoW.GetRepository<IFeedbackReadRepository>().GetAll()
                     .FirstOrDefault(x => x.Patient == patient);
                 if (feedback != null) UoW.GetRepository<IFeedbackWriteRepository>().Delete(feedback);
-                var medicalRecord = UoW.GetRepository<IMedicalRecordReadRepository>()
-                    .GetAll().Include(mr => mr.Doctor)
-                    .FirstOrDefault(x => x.Id == patient.MedicalRecordId);
-
-                UoW.GetRepository<IMedicalRecordWriteRepository>().Delete(medicalRecord);
-            }
-            var doctor = UoW.GetRepository<IDoctorReadRepository>().GetAll()
-                .FirstOrDefault(x => x.UserName == "testDoctorUsername");
-            if (doctor != null)
-            {
-                UoW.GetRepository<IDoctorWriteRepository>().Delete(doctor);
-            }
-            var specialization = UoW.GetRepository<ISpecializationReadRepository>().GetAll()
-                .FirstOrDefault(x => x.Name == "testSpecialization");
-            if (specialization != null)
-            {
-                UoW.GetRepository<ISpecializationWriteRepository>().Delete(specialization);
-            }
-            var city = UoW.GetRepository<ICityReadRepository>()
-                .GetAll().ToList()
-                .FirstOrDefault(x => x.Name == "TestCity");
-
-            if (city != null)
-            {
-                UoW.GetRepository<ICityWriteRepository>().Delete(city);
-            }
-
-            var country = UoW.GetRepository<ICountryReadRepository>()
-                .GetAll().ToList()
-                .FirstOrDefault(x => x.Name == "TestCountry");
-
-            if (country != null)
-            {
-                UoW.GetRepository<ICountryWriteRepository>().Delete(country);
-            }
-
-            var room = UoW.GetRepository<IRoomReadRepository>()
-                    .GetAll().ToList()
-                    .FirstOrDefault(x => x.Name == "TestRoom");
-
-            if (room != null)
-            {
-                UoW.GetRepository<IRoomWriteRepository>().Delete(room);
-            }
-
-            var shift = UoW.GetRepository<IShiftReadRepository>()
-                .GetAll().ToList()
-                .FirstOrDefault(x => x.Name == "prva");
-
-            if (shift != null)
-            {
-                UoW.GetRepository<IShiftWriteRepository>().Delete(shift);
             }
         }
     }

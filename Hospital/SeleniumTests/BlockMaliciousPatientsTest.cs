@@ -33,8 +33,8 @@ namespace SeleniumTests
             options.AddArguments("--disable-notifications");
             _driver = new ChromeDriver(options);
             loginPage = new LoginPage(_driver);
-            loginPage.Navigate();
-            loginPage.EnsureLoginFormForAdminIsDisplayed();
+            loginPage.NavigateMan();
+            loginPage.EnsureLoginFormForUserIsDisplayed();
             _blockMaliciousPatientsPage = new Pages.BlockMaliciousPatientsPage(_driver);
         }
 

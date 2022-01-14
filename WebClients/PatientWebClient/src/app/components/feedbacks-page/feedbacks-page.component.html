@@ -1,4 +1,10 @@
-<br>
+<br />
 <h2 class="text-center mb-lg-2 mb-2">Our Patients Reviews</h2>
-<app-patient-feedback [allFeedbacks]='allFeedbacks'></app-patient-feedback>
-<br>
+<app-patient-feedback [allFeedbacks]="allFeedbacks"></app-patient-feedback>
+<br />
+<br />
+<div class="col-md-12 text-center dialog">
+  <button id="openModal" mat-raised-button (click)="openModal($event)">
+    Leave feedback
+  </button>
+</div>

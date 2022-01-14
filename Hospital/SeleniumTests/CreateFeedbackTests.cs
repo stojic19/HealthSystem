@@ -1,3 +1,7 @@
+using System;
+using System.Linq;
+using Hospital.MedicalRecords.Repository;
+using Hospital.Schedule.Repository;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using SeleniumTests.Base;
@@ -6,7 +10,8 @@ using Xunit;
 
 namespace SeleniumTests
 {
-    public class CreateFeedbackTests :  BaseTest
+    [Collection("Sequence")]
+    public class CreateFeedbackTests :  BaseTest, IDisposable
     {
         private readonly IWebDriver driver;
         private readonly Pages.CreateFeedbackPage _createFeedbackPage;
@@ -40,6 +45,7 @@ namespace SeleniumTests
         [Fact]
         public void NewFeedbackCreated()
         {
+            RegisterUser("Patient");
             InsertCredentials();
             LoginPage.EnsureUserIsLogged();
             _createFeedbackPage.Navigate();
@@ -52,11 +58,14 @@ namespace SeleniumTests
             _createFeedbackPage.WaitForFormSubmitted();
             Assert.True(_createFeedbackPage.IsSnackbarDisplayed());
             Assert.Equal(_createFeedbackPage._uri, driver.Url);
+            DeleteInsertedFeedback();
+            DeleteDataFromDataBase();
         }
 
         [Fact]
         public void FeedbackSubmitFailed()
         {
+            RegisterUser("Patient");
             InsertCredentials();
             LoginPage.EnsureUserIsLogged();
             _createFeedbackPage.Navigate();
@@ -67,13 +76,27 @@ namespace SeleniumTests
             _createFeedbackPage.SubmitForm();
             Assert.False(_createFeedbackPage.IsSnackbarDisplayed());
             Assert.Equal(_createFeedbackPage._uri, driver.Url);
+            DeleteInsertedFeedback();
+            DeleteDataFromDataBase();
         }
 
         private void InsertCredentials()
         {
-            LoginPage.InsertUsername("markgut1");
-            LoginPage.InsertPassword("markGut1");
+            LoginPage.InsertUsername("testPatientUsername");
+            LoginPage.InsertPassword("TestProba123");
             LoginPage.Submit();
         }
+
+        private void DeleteInsertedFeedback()
+        {
+            var patient = UoW.GetRepository<IPatientReadRepository>().GetAll()
+                .FirstOrDefault(p => p.UserName == "testPatientUsername");
+
+            var insertedFeedback = UoW.GetRepository<IFeedbackReadRepository>().GetAll()
+                .FirstOrDefault(f => f.Patient.Id == patient.Id);
+
+            if (insertedFeedback != null) UoW.GetRepository<IFeedbackWriteRepository>().Delete(insertedFeedback); 
+        }
+
     }
 }

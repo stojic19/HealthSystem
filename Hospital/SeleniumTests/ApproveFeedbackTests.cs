@@ -21,7 +21,7 @@ using Xunit;
 namespace SeleniumTests
 {
     [Collection("Sequence")]
-    public class ApproveFeedbackTests : BaseTest
+    public class ApproveFeedbackTests : BaseTest, IDisposable
     {
         private readonly IWebDriver driver;
         private ApproveFeedbackPage approveFeedbackPage;
@@ -38,7 +38,7 @@ namespace SeleniumTests
             options.AddArguments("--disable-notifications");    
             driver = new ChromeDriver(options);
             loginPage = new LoginPage(driver);
-            loginPage.Navigate();
+            loginPage.NavigateMan();
             loginPage.EnsureLoginFormForUserIsDisplayed();
             approveFeedbackPage = new ApproveFeedbackPage(driver);
         }
@@ -80,7 +80,7 @@ namespace SeleniumTests
                 .FirstOrDefault(p => p.UserName == "testPatientUsername");
 
             var feedback = UoW.GetRepository<IFeedbackReadRepository>().GetAll()
-                    .FirstOrDefault(x => x.Patient.Id == patient.Id);
+                    .FirstOrDefault(x => x.Patient.UserName == "testPatientUsername");
             if (feedback != null) return;
             feedback = new Feedback()
                 {

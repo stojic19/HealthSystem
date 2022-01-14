@@ -61,9 +61,10 @@ namespace HospitalApi.Controllers
         public IActionResult InsertFeedback(NewFeedbackDTO feedbackDTO)
         {
             var feedbackWriteRepo = _uow.GetRepository<IFeedbackWriteRepository>();
-            var loggedInPatient = _uow.GetRepository<IPatientReadRepository>().GetAll().Where(x => x.UserName.Equals(feedbackDTO.PatientUsername)).First();
+            var loggedInPatient = _uow.GetRepository<IPatientReadRepository>().GetAll().First(x => x.UserName.Equals(feedbackDTO.PatientUsername));
             feedbackDTO.PatientId = loggedInPatient.Id;
             var newFeedback = _mapper.Map<Feedback>(feedbackDTO);
+            newFeedback.Patient = loggedInPatient;
             return feedbackWriteRepo.Add(newFeedback) == null ? StatusCode(StatusCodes.Status500InternalServerError, "Could not insert feedback in the database.")
                 : Ok("Your feedback has been submitted.");
 

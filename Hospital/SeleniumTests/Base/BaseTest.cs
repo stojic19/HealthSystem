@@ -4,7 +4,6 @@ using Hospital.SharedModel.Repository.Base;
 using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
 using Hospital.MedicalRecords.Repository;
 using Hospital.RoomsAndEquipment.Model;
@@ -62,15 +61,13 @@ namespace SeleniumTests.Base
                     var roomWriteRepo = UoW.GetRepository<IRoomWriteRepository>();
                     var specializationWriteRepo = UoW.GetRepository<ISpecializationWriteRepository>();
                     var doctorWiteRepo = UoW.GetRepository<IDoctorWriteRepository>();
-                    var patientWriteRepo = UoW.GetRepository<IPatientWriteRepository>();
 
                     var testCountry = UoW.GetRepository<ICountryReadRepository>().GetAll().FirstOrDefault(x => x.Name == "TestCountry");
                     var testCity = UoW.GetRepository<ICityReadRepository>().GetAll().FirstOrDefault(x => x.Name == "TestCity");
                     var testRoom = UoW.GetRepository<IRoomReadRepository>().GetAll().FirstOrDefault(x => x.Name == "TestRoom");
                     var testSpecialization = UoW.GetRepository<ISpecializationReadRepository>().GetAll().FirstOrDefault(x => x.Name == "TestSpecialization");
                     var testDoctor = UoW.GetRepository<IDoctorReadRepository>().GetAll().FirstOrDefault(x => x.FirstName == "TestDoctor");
-                    var testPatient = UoW.GetRepository<IPatientReadRepository>().GetAll().FirstOrDefault(x => x.FirstName == "TestPatient");
-
+                    
                     if (testCountry == null)
                     {
                         testCountry = new Country()
@@ -90,6 +87,7 @@ namespace SeleniumTests.Base
                         };
                         cityWriteRepo.Add(testCity);
                     }
+
                     if (testRoom == null)
                     {
                         testRoom = new Room()
@@ -102,6 +100,7 @@ namespace SeleniumTests.Base
                         };
                         roomWriteRepo.Add(testRoom);
                     }
+
                     if (testSpecialization == null)
                     {
                         testSpecialization = new Specialization()
@@ -111,6 +110,7 @@ namespace SeleniumTests.Base
                         };
                         specializationWriteRepo.Add(testSpecialization);
                     }
+
                     if (testDoctor == null)
                     {
                         testDoctor = new Doctor()

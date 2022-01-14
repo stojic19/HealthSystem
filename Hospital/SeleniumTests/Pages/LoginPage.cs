@@ -93,7 +93,7 @@ namespace SeleniumTests.Pages
             {
                 try
                 {
-                    return driver.Url.Equals(_baseUrl + "/overview");
+                    return driver.Url.Equals(_baseUrlMan + "/overview");
                 }
                 catch (StaleElementReferenceException)
                 {
@@ -107,5 +107,6 @@ namespace SeleniumTests.Pages
         }
 
         public void Navigate() => driver.Navigate().GoToUrl(_baseUrl + "/login");
+        public void NavigateMan() => driver.Navigate().GoToUrl(_baseUrlMan + "/login");
     }
 }

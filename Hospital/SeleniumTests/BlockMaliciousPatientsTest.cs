@@ -14,7 +14,7 @@ using Xunit;
 namespace SeleniumTests
 {
     [Collection("Sequence")]
-    public class BlockMaliciousPatientsTest : BaseTest
+    public class BlockMaliciousPatientsTest : BaseTest, IDisposable
     {
         private readonly IWebDriver _driver;
         private readonly Pages.BlockMaliciousPatientsPage _blockMaliciousPatientsPage;
@@ -33,7 +33,7 @@ namespace SeleniumTests
             options.AddArguments("--disable-notifications");
             _driver = new ChromeDriver(options);
             loginPage = new LoginPage(_driver);
-            loginPage.Navigate();
+            loginPage.NavigateMan();
             loginPage.EnsureLoginFormForUserIsDisplayed();
             _blockMaliciousPatientsPage = new Pages.BlockMaliciousPatientsPage(_driver);
         }

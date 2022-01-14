@@ -14,7 +14,7 @@ export class RoomsService {
 
   getRoomsByNameFirstBuilding(roomName: string) {
     return this.http.get(
-      'api/Room/FindByNameAndBuildingName',
+      '/api/Room/FindByNameAndBuildingName',
       {
         params: {
           name: roomName,
@@ -26,7 +26,7 @@ export class RoomsService {
 
   getRoomsByNameSecondBuilding(roomName: string) {
     return this.http.get(
-      'api/Room/FindByNameAndBuildingName',
+      '/api/Room/FindByNameAndBuildingName',
       {
         params: {
           name: roomName,
@@ -42,12 +42,12 @@ export class RoomsService {
   }
 
   getAllRooms() {
-    return this.http.get('api/Room/GetAllRooms');
+    return this.http.get('/api/Room/GetAllRooms');
   }
 
   getFirstFloorOfFirstBuilding() {
     return this.http
-      .get('api/Room/GetRoomsByLocation', {
+      .get('/api/Room/GetRoomsByLocation', {
         params: {
           floorNumber: 1,
           buildingName: 'Building 1',
@@ -60,7 +60,7 @@ export class RoomsService {
 
   getSecondFloorOfFirstBuilding() {
     return this.http
-      .get('api/Room/GetRoomsByLocation', {
+      .get('/api/Room/GetRoomsByLocation', {
         params: {
           floorNumber: 2,
           buildingName: 'Building 1',
@@ -72,7 +72,7 @@ export class RoomsService {
 
   getFirstFloorOfSecondBuilding() {
     return this.http
-      .get('api/Room/GetRoomsByLocation', {
+      .get('/api/Room/GetRoomsByLocation', {
         params: {
           floorNumber: 1,
           buildingName: 'Building 2',
@@ -84,7 +84,7 @@ export class RoomsService {
 
   getSecondFloorOfSecondBuilding() {
     return this.http
-      .get('api/Room/GetRoomsByLocation', {
+      .get('/api/Room/GetRoomsByLocation', {
         params: {
           floorNumber: 2,
           buildingName: 'Building 2',

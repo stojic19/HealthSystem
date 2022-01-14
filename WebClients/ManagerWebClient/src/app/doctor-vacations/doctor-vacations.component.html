@@ -1,0 +1,66 @@
+<div style="height: 100%">
+    <div class="d-flex justify-content-center mt-5">
+        <h6 class="text-muted subtitle" style="font-size: 20px;">
+            Doctor Vacations
+        </h6>
+    </div>
+    <div class="row mb-3 mt-5 d-flex justify-content-center">
+        <div class="col-9">
+            <div style="height: 270px; overflow: auto" id="table">
+                <table class="table table-hover vacationsTable">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Doctor</th>
+                            <th scope="col">Add</th>
+                            <th scope="col">Update</th>
+                            <th scope="col">Delete</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let doctor of doctors">
+                            <th scope="row"></th>
+                            <td data-label="Doctor">
+                                {{ doctor.firstName }} {{ doctor.lastName }}
+                            </td>
+                            <td data-label="Add">
+                                <button type="button" class="btn btn-primary" (click)="addVacation(doctor.id)"
+                                    [disabled]="checkAddOperation(doctor.id)">Add</button>
+                            </td>
+                            <td data-label="Update">
+                                <button type="button" class="btn btn-primary"
+                                    [disabled]="checkUpdateOrDeleteOperation(doctor.id)"
+                                    (click)="updateVacation(doctor.id)">Update</button>
+                            </td>
+                            <td data-label="Delete">
+                                <button type="button" [disabled]="checkUpdateOrDeleteOperation(doctor.id)"
+                                    (click)="deleteVacation(doctor.id)" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal">Delete</button>
+                            </td>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="exampleModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: 0 none">
+                <ng-container *ngFor="let doctor of doctorVacations">
+                    <h1 mat-dialog-title>Vacation {{ doctor.vacations[0].startDate | date: "dd.MM.yyyy" }} - {{
+                        doctor.vacations[0].endDate | date: "dd.MM.yyyy" }} is deleted!</h1>
+                </ng-container>
+            </div>
+            <div mat-dialog-actions class="justify-content-center align-items-center modal-footer"
+                style="border-top: 0 none">
+                <button mat-raised-button color="accent" data-bs-dismiss="modal" (click)="goBack()">
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

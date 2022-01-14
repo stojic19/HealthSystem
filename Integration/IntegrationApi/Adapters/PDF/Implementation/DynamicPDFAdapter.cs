@@ -2,10 +2,17 @@
 using ceTe.DynamicPDF;
 using ceTe.DynamicPDF.PageElements;
 using ceTe.DynamicPDF.PageElements.BarCoding;
+using Integration.Shared.Model;
 using IntegrationAPI.DTO.MedicineConsumption;
 using IntegrationAPI.DTO.Prescription;
 using IntegrationAPI.DTO.Shared;
+using IntegrationApi.DTO.Tender;
 using Path = System.IO.Path;
+using ceTe.DynamicPDF.PageElements.Charting;
+using ceTe.DynamicPDF.PageElements.Charting.Series;
+using ceTe.DynamicPDF.PageElements.Charting.Axes;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace IntegrationAPI.Adapters.PDF.Implementation
 {
@@ -150,6 +157,46 @@ namespace IntegrationAPI.Adapters.PDF.Implementation
             return fileName;
         }
 
+        public string MakeTenderStatisticsPdf(TenderStatisticsDto tenderStatisticsDto, TimeRange timeRange)
+        {
+            MakeTitle("Tender statistics");
+            WriteLine(0, 60, "Start date: " + timeRange.StartDate);
+            WriteLine(0, 20, "End date: " + timeRange.EndDate);
+
+            List<string> labelsTenderOffers = new List<string>();
+            List<float> valuesTenderOffers = new List<float>();
+            List<string> labelsTendersEntered = new List<string>();
+            List<float> valuesTendersEntered = new List<float>();
+            List<string> labelsTendersWon = new List<string>();
+            List<float> valuesTendersWon = new List<float>();
+            List<string> labelsProfit = new List<string>();
+            List<float> valuesProfit = new List<float>();
+
+            foreach (var pharmacyStatistic in tenderStatisticsDto.PharmacyStatistics)
+            {
+                valuesTenderOffers.Add((float)pharmacyStatistic.TenderOffersMade);
+                valuesTendersEntered.Add((float)pharmacyStatistic.TendersEntered);
+                valuesTendersWon.Add((float)pharmacyStatistic.TendersWon);
+                valuesProfit.Add((float)pharmacyStatistic.Profit.Amount);
+
+                labelsTenderOffers.Add(pharmacyStatistic.PharmacyName);
+                labelsTendersEntered.Add(pharmacyStatistic.PharmacyName);
+                labelsTendersWon.Add(pharmacyStatistic.PharmacyName);
+                labelsProfit.Add(pharmacyStatistic.PharmacyName);
+            }
+
+            DrawChart("Tender offers made", "Number of offers", labelsTenderOffers, valuesTenderOffers); 
+            DrawChart("Tenders entered", "Number of tenders entered", labelsTendersEntered, valuesTendersEntered);
+            AddNewPage();
+            DrawChart("Tenders won", "Number of tenders won", labelsTendersWon, valuesTendersWon);
+            DrawChart("Profit made", "Amount", labelsProfit, valuesProfit);
+
+            string fileName = "TenderStatistics-" + timeRange.StartDate.ToLongDateString()
+                                                  + "-" + timeRange.EndDate.ToLongDateString() + ".pdf";
+            SaveDocument("TenderStatistics" + Path.DirectorySeparatorChar + fileName);
+            return fileName;
+        }
+
         public void MakeTitle(string text)
         {
             Label naslov = new Label(text, _currentY, 0, 512, 16, Font.HelveticaBold, 16, TextAlign.Center, RgbColor.Black);
@@ -175,6 +222,51 @@ namespace IntegrationAPI.Adapters.PDF.Implementation
             text += hospDto.Name + ";";
             text += hospDto.StreetName + " " + hospDto.StreetNumber + ", " + hospDto.CityName + ";";
             return text;
+        }
+
+        private void DrawChart(string title, string label, List<string> labels, List<float> values)
+        {
+            _currentY = _currentY + 50;
+            Chart chart = new Chart(0, _currentY, 500, 250);
+            _currentY = _currentY + 250;
+            PlotArea plotArea = chart.PrimaryPlotArea;
+
+            Title title1 = new Title(title);
+            chart.HeaderTitles.Add(title1);
+
+            IndexedColumnSeries firstColumn = new IndexedColumnSeries("");
+
+            for (int i = 0; i < labels.Count; i++)
+            {
+                IndexedColumnSeries columnSeries = new IndexedColumnSeries(labels.ElementAt(i));
+                if (firstColumn.Name == "")
+                    firstColumn = columnSeries;
+                columnSeries.Values.Add(new float[] { values.ElementAt(i) });
+
+                AutoGradient autogradient = null;
+                switch (i % 3)
+                {
+                    case 0: 
+                        autogradient = new AutoGradient(180f, CmykColor.Red, CmykColor.IndianRed);
+                        break;
+                    case 1: 
+                        autogradient = new AutoGradient(180f, CmykColor.Green, CmykColor.YellowGreen);
+                        break;
+                    case 2: 
+                        autogradient = new AutoGradient(180f, CmykColor.Blue, CmykColor.LightBlue);
+                        break;
+                }
+                columnSeries.Color = autogradient;
+
+                plotArea.Series.Add(columnSeries);
+
+                firstColumn.XAxis.Labels.Add(new IndexedXAxisLabel(labels.ElementAt(i), i));
+            }
+            Title lTitle = new Title(label);
+            if (labels.Count > 0)
+                firstColumn.YAxis.Titles.Add(lTitle);
+
+            _lastPage.Elements.Add(chart);
         }
     }
 }

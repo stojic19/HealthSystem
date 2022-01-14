@@ -14,7 +14,7 @@ export class RoomInventoriesService {
 
   getRoomInventory(roomId: number) {
     return this.http.get(
-      `${environment.baseHospitalUrl}` + 'api/RoomInventory/GetRoomInventory',
+      '/api/RoomInventory/GetRoomInventory',
       {
         params: {
           roomId: roomId,
@@ -25,13 +25,13 @@ export class RoomInventoriesService {
 
   getHospitalInventory() {
     return this.http.get(
-      `${environment.baseHospitalUrl}` + 'api/RoomInventory/GetHospitalInventory'
+      '/api/RoomInventory/GetHospitalInventory'
     );
   }
 
   getEquipmentByName(equipmentName: string) {
     return this.http.get(
-      `${environment.baseHospitalUrl}` + 'api/RoomInventory/FindByInventoryItemName',
+      '/api/RoomInventory/FindByInventoryItemName',
       {
         params: {
           inventoryItemName: equipmentName,
@@ -43,7 +43,7 @@ export class RoomInventoriesService {
   getItemById(itemId: number) {
     return this.http
       .get(
-        `${environment.baseHospitalUrl}` + 'api/RoomInventory/GetRoomInventoryById',
+        '/api/RoomInventory/GetRoomInventoryById',
         {
           params: {
             id: itemId,
@@ -61,7 +61,7 @@ export class RoomInventoriesService {
 
   getItemAmount(roomId: number, itemId: number) {
     return this.http.get<number>(
-      `${environment.baseHospitalUrl}` + 'api/RoomInventory/GetRoomInventoryAmount',
+      '/api/RoomInventory/GetRoomInventoryAmount',
       {
         params: {
           itemId: itemId,

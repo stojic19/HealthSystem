@@ -31,7 +31,6 @@ namespace SeleniumTests.Pages
         {
             return SubmitButtonElement.Displayed;
         }
-
         public void InsertUsername(string username)
         {
             UsernameElement.SendKeys(username);

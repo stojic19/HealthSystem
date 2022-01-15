@@ -25,7 +25,7 @@ namespace SeleniumTests.Pages
 
         public void Navigate() => _driver.Navigate().GoToUrl(_uri);
 
-        public void OpenModal() => OpenModalElement.Click();
+        public void OpenModal() => OpenModalElement.SendKeys(Keys.Return);
 
         public void InsertFeedback(string text) => FeedbackTextElement.SendKeys(text);
 

@@ -2,18 +2,9 @@
 using OpenQA.Selenium.Chrome;
 using System;
 using System.Linq;
-using System.Threading.Tasks;
-using Hospital.MedicalRecords.Model;
 using Hospital.MedicalRecords.Repository;
-using Hospital.RoomsAndEquipment.Model;
-using Hospital.RoomsAndEquipment.Repository;
 using Hospital.Schedule.Model;
 using Hospital.Schedule.Repository;
-using Hospital.SharedModel.Model;
-using Hospital.SharedModel.Model.Enumerations;
-using Hospital.SharedModel.Repository;
-using HospitalApi.DTOs;
-using Microsoft.EntityFrameworkCore;
 using SeleniumTests.Base;
 using SeleniumTests.Pages;
 using Xunit;
@@ -27,7 +18,8 @@ namespace SeleniumTests
         private ApproveFeedbackPage approveFeedbackPage;
         private LoginPage loginPage;
 
-        public ApproveFeedbackTests(BaseFixture fixture) : base(fixture) {
+        public ApproveFeedbackTests(BaseFixture fixture) : base(fixture)
+        {
             var options = new ChromeOptions();
             options.AddArguments("start-maximized");            
             options.AddArguments("disable-infobars");           

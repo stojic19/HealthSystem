@@ -201,6 +201,27 @@ namespace HospitalIntegrationTests.Base
             }
             else if (role == "Manager")
             {
+                var city = UoW.GetRepository<ICityReadRepository>().GetAll().FirstOrDefault(x => x.Name.Equals("TestCity"));
+                if(city == null)
+                {
+                    var country = UoW.GetRepository<ICountryReadRepository>().GetAll().FirstOrDefault(x => x.Name.Equals("TestCountry"));
+                    if (country == null)
+                    {
+                        country = new Country()
+                        {
+                            Name = "TestCountry"
+                        };
+                        UoW.GetRepository<ICountryWriteRepository>().Add(country);
+                    }
+                    city = new City()
+                    {
+                        Country = country,
+                        Name = "TestCity",
+                        PostalCode = 00000
+                    };
+                    UoW.GetRepository<ICityWriteRepository>().Add(city);
+                }
+
                 user = UoW.GetRepository<IManagerReadRepository>().GetAll().FirstOrDefault(x => x.UserName.Equals("testLogInManager"));
                 if (user == null)
                 {
@@ -213,7 +234,7 @@ namespace HospitalIntegrationTests.Base
                         Gender = Gender.Female,
                         Street = "TestManagerStreet",
                         UserName = "testLogInManager",
-                        CityId = 1,
+                        CityId = city.Id,
                         Email = "testManager@gmail.com",
                         Password = "111111aA"
 

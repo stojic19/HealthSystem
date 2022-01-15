@@ -42,11 +42,12 @@ namespace HospitalIntegrationTests
             {
                 DoctorId = doctor.Id
             };
+            var city = UoW.GetRepository<ICityReadRepository>().GetAll().FirstOrDefault(x => x.Name.Equals("TestCity"));
 
             var patient = new Patient()
             {
                 UserName = "testUserName",
-                CityId = 1,
+                CityId = city.Id,
                 MedicalRecord = medRec
             };
             UoW.GetRepository<IPatientWriteRepository>().Add(patient);

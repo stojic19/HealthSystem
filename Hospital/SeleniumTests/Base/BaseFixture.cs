@@ -1,15 +1,14 @@
-﻿using System;
+﻿using Autofac;
+using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Autofac;
 using Hospital.Database.Infrastructure;
 using Hospital.SharedModel.Repository.Base;
 using Hospital.SharedModel.Repository.Implementation;
+using IContainer = Autofac.IContainer;
 
 namespace SeleniumTests.Base
 {
@@ -26,7 +25,6 @@ namespace SeleniumTests.Base
             ResolveUnitOfWork();
             ConfigureHttpClient();
         }
-
         private void ConfigureHttpClient()
         {
             CookieContainer = new CookieContainer();
@@ -34,10 +32,7 @@ namespace SeleniumTests.Base
             {
                 CookieContainer = CookieContainer
             };
-            handler.ServerCertificateCustomValidationCallback = (message, cert, chain, sslPolicyErrors) =>
-            {
-                return true;
-            };
+            handler.ServerCertificateCustomValidationCallback = (message, cert, chain, sslPolicyErrors) => true;
             Client = new HttpClient(handler);
         }
 
@@ -63,7 +58,6 @@ namespace SeleniumTests.Base
 
             container = builder.Build();
         }
-
         public void Dispose()
         {
             container.Dispose();

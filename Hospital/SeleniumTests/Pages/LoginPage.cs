@@ -8,18 +8,13 @@ namespace SeleniumTests.Pages
     public class LoginPage : BasePage
     {
         private readonly IWebDriver driver;
-        public readonly string LoginUri;
-        public readonly string FirstPage;
-
         private IWebElement UsernameElement => driver.FindElement(By.Id("loginUsername"));
         private IWebElement PasswordElement => driver.FindElement(By.Id("loginPassword"));
-        private IWebElement SubmitButtonElement => driver.FindElement(By.Id("submitButton"));
+        private IWebElement SubmitButtonElement => driver.FindElement(By.Id("login"));
 
         public LoginPage(IWebDriver driver) : base(driver)
         {
             this.driver = driver;
-            LoginUri = _baseUrl + "/login";
-            FirstPage = _baseUrl + "/overview";
         }
 
         public bool UsernameElementDisplayed()
@@ -52,7 +47,7 @@ namespace SeleniumTests.Pages
             SubmitButtonElement.Submit();
         }
 
-        public void EnsureLoginFormForAdminIsDisplayed()
+        public void EnsureLoginFormForUserIsDisplayed()
         {
             var wait = new WebDriverWait(driver, new TimeSpan(0, 0, 40));
             wait.Until(condition =>
@@ -72,14 +67,13 @@ namespace SeleniumTests.Pages
             });
         }
 
-        public void EnsureAdminIsLoggedIn()
-        {
+        public void EnsureUserIsLogged(){
             var wait = new WebDriverWait(driver, new TimeSpan(0, 0, 40));
             wait.Until(condition =>
             {
                 try
                 {
-                    return driver.Url.Equals(FirstPage);
+                    return driver.Url.Equals(_baseUrl + "/record");
                 }
                 catch (StaleElementReferenceException)
                 {
@@ -91,6 +85,28 @@ namespace SeleniumTests.Pages
                 }
             });
         }
-        public void Navigate() => driver.Navigate().GoToUrl(LoginUri);
+
+        public void EnsureAdminIsLoggedIn()
+        {
+            var wait = new WebDriverWait(driver, new TimeSpan(0, 0, 40));
+            wait.Until(condition =>
+            {
+                try
+                {
+                    return driver.Url.Equals(_baseUrlMan + "/overview");
+                }
+                catch (StaleElementReferenceException)
+                {
+                    return false;
+                }
+                catch (NoSuchElementException)
+                {
+                    return false;
+                }
+            });
+        }
+
+        public void Navigate() => driver.Navigate().GoToUrl(_baseUrl + "/login");
+        public void NavigateMan() => driver.Navigate().GoToUrl(_baseUrlMan + "/login");
     }
 }

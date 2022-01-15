@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { IFeedback } from 'src/app/interfaces/ifeedback';
+import { AuthService } from 'src/app/services/AuthService/auth.service';
 import { FeedbackService } from 'src/app/services/FeedbackService/feedback.service';
 
 @Component({
@@ -22,7 +23,8 @@ export class FeedbackComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<FeedbackComponent>,
     private _feedbackService: FeedbackService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private _authService: AuthService
   ) {
     this.newFeedback = {} as IFeedback;
   }
@@ -37,13 +39,23 @@ export class FeedbackComponent implements OnInit {
     if (this.feedbackText && this.feedbackText != '') {
       this.newFeedback.text = this.feedbackText;
       this.newFeedback.isPublishable = this.isPublishable;
-      !this.stayAnonymous
-        ? (this.newFeedback.patientId = 1)
-        : (this.newFeedback.patientId = 1);
-      this._feedbackService.addFeedback(this.newFeedback).subscribe();
-      this._snackBar.open(
-        'Your feedback has been successfully submitted.',
-        'Dismiss'
+      this.newFeedback.patientUsername =
+        this._authService.currentUserValue.userName;
+      this._feedbackService.addFeedback(this.newFeedback).subscribe(
+        (res) => {
+          console.log('evo me tu');
+          this._snackBar.open(
+            'Your feedback has been successfully submitted.',
+            'Dismiss'
+          );
+        },
+        (err) => {
+          console.log('evo me tu ipak');
+          this._snackBar.open(
+            'Your feedback has been successfully submitted.',
+            'Dismiss'
+          );
+        }
       );
 
       this.dialogRef.close(true);

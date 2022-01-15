@@ -14,7 +14,7 @@ export class RoomRenovationService {
 
   getSurroundingRooms(roomId: number) {
     return this.http.get(
-      `${environment.baseHospitalUrl}` + 'api/RoomRenovation/GetSurroundingRoomsForRoom',
+      '/api/RoomRenovation/GetSurroundingRoomsForRoom',
       {
         params: {
           roomId: roomId,         

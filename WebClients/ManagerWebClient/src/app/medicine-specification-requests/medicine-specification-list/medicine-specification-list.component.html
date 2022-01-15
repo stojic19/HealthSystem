@@ -3,10 +3,10 @@
         <h2>Medicine Specification List</h2>
     </div>
     
-    <button class="btn btn-primary m-3" [routerLink]="[isProd ? '/manager/new-medicine-specification-request' : '/new-medicine-specification-request']">Get new specification</button>
+    <button id="getNewSpecification" class="btn btn-primary m-3" [routerLink]="[isProd ? '/manager/new-medicine-specification-request' : '/new-medicine-specification-request']">Get new specification</button>
 
     <div class="table-responsive">
-        <table class="table table-bordered table-striped table-hover">
+        <table class="table table-bordered table-striped table-hover" id="specificationsTable">
             <thead>
                 <tr>
                     <th>Medicine name</th>

@@ -1,12 +1,14 @@
 ﻿using Autofac;
-using Hospital.Database.Infrastructure;
-using Hospital.SharedModel.Repository.Base;
-using Hospital.SharedModel.Repository.Implementation;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
+using Hospital.Database.Infrastructure;
+using Hospital.SharedModel.Repository.Base;
+using Hospital.SharedModel.Repository.Implementation;
+using IContainer = Autofac.IContainer;
 
 namespace SeleniumTests.Base
 {
@@ -30,6 +32,7 @@ namespace SeleniumTests.Base
             {
                 CookieContainer = CookieContainer
             };
+            handler.ServerCertificateCustomValidationCallback = (message, cert, chain, sslPolicyErrors) => true;
             Client = new HttpClient(handler);
         }
 

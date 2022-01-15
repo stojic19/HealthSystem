@@ -19,7 +19,8 @@ export class AuthService {
   public currentUser: Observable<LogedManager>;
   private user: LogedManager;
   private router: Router;
-  constructor(private http: HttpClient) {
+  private loginStatus = new BehaviorSubject<boolean>(false);
+  constructor(private http: HttpClient,private _router: Router) {
     this.currentUserSubject = new BehaviorSubject<LogedManager>(JSON.parse((localStorage.getItem('currentUser'))!));
     this.currentUser = this.currentUserSubject.asObservable();
   }
@@ -28,10 +29,11 @@ export class AuthService {
     return this.http.post('api/Login', model).pipe(
       map((response: any) => {
         if (response && response.token) {
+          this.loginStatus.next(true);
           localStorage.setItem('token', response.token);
           localStorage.setItem('currentUser', JSON.stringify(response));
           this.currentUserSubject.next(response);
-          window.location.href = "http://localhost:4200/overview";
+          this._router.navigate(['/overview']);;
         }
         return this.user;
 
@@ -44,14 +46,22 @@ export class AuthService {
     return true;
   }
 
-  logout() {
-    this.user = {
-      userName: null,
-      email: null,
-    };
-    localStorage.removeItem('token');
-    localStorage.removeItem('currentUser');
+  get isLoggedIn() {
+    return this.loginStatus.asObservable();
   }
+
+
+  logout() {
+      this.user = {
+        userName: null,
+        email: null,
+      };
+      this.loginStatus.next(false);
+      localStorage.removeItem('token');
+      localStorage.removeItem('currentUser');
+      localStorage.setItem('loginStatus', '0');
+    }
+  
 
   public get currentUserValue(): LogedManager {
     return this.currentUserSubject.value;

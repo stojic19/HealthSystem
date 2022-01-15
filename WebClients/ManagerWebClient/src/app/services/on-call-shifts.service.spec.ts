@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { RoomPositionService } from './room-position.service';
+import { OnCallShiftsService } from './on-call-shifts.service';
 
-describe('RoomPositionService', () => {
-  let service: RoomPositionService;
+describe('OnCallShiftsService', () => {
+  let service: OnCallShiftsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(RoomPositionService);
+    service = TestBed.inject(OnCallShiftsService);
   });
 
   it('should be created', () => {

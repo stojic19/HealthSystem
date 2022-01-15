@@ -8,12 +8,11 @@ import { RoomRenovationEvent } from '../model/room-renovation-event';
   providedIn: 'root',
 })
 export class RoomScheduleService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getTransferEventsByRoom(roomId: number) {
     return this.http.get(
-      `${environment.baseHospitalUrl}` +
-        'api/EquipmentTransferEvent/GetTransferEventsByRoom',
+        '/api/EquipmentTransferEvent/GetTransferEventsByRoom',
       {
         params: {
           roomId: roomId,
@@ -24,7 +23,7 @@ export class RoomScheduleService {
 
   getRenovationsByRoom(roomId: number) {
     return this.http.get(
-      `${environment.baseHospitalUrl}` + 'api/RoomRenovation/GetRenovationsByRoom',
+      '/api/RoomRenovation/GetRenovationsByRoom',
       {
         params: {
           roomId: roomId,
@@ -35,7 +34,7 @@ export class RoomScheduleService {
 
   getAppointmentsByRoom(roomId: number) {
     return this.http.get(
-      `${environment.baseHospitalUrl}` + 'api/Room/GetScheduledEventsByRoom',
+      '/api/Room/GetScheduledEventsByRoom',
       {
         params: {
           roomId: roomId,

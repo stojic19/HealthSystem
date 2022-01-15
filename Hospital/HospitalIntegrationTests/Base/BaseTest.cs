@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using HospitalApi.DTOs;
-using Microsoft.AspNetCore.Identity;
 using Xunit;
 using Hospital.MedicalRecords.Repository;
 using Hospital.SharedModel.Repository;

@@ -8,6 +8,7 @@ import { IAnsweredSurvey } from 'src/app/interfaces/answered-survey';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { IAppointment } from 'src/app/interfaces/appointment';
 import { AppointmentService } from 'src/app/services/AppointmentService/appointment.service';
+import { ICurrentUser } from 'src/app/interfaces/current-user';
 
 
 
@@ -25,10 +26,12 @@ export class SurveyPageComponent implements OnInit {
   totalQuestions!: number;
   answeredSurvey!: IAnsweredSurvey;
   appointmentId: any;
+  userName!:ICurrentUser;
 
   constructor(private snackBar: MatSnackBar,private appointmentService:AppointmentService, private surveyService: SurveyService, private route: ActivatedRoute,
     private _router: Router) {
     this.answeredQuestions = [];
+    this.userName = JSON.parse((localStorage.getItem('currentUser'))!)
 
   }
 
@@ -51,7 +54,7 @@ export class SurveyPageComponent implements OnInit {
         questions: this.answeredQuestions,
         scheduledEventId: this.scheduledEvent.id
       }
-      this.surveyService.answerSurvey(this.answeredSurvey).subscribe();
+      this.surveyService.answerSurvey(this.answeredSurvey,this.userName.userName).subscribe();
       this.snackBar.open("Thank you for answering our Survey . ", '', {
         duration: 3000,
         verticalPosition: 'bottom'

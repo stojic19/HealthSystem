@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hospital.MedicalRecords.Model;
+using System;
 using System.Collections.Generic;
 
 namespace HospitalApi.DTOs
@@ -8,7 +9,7 @@ namespace HospitalApi.DTOs
 
         public IEnumerable<AnsweredQuestionDTO> questions { get; set; }
         public DateTime AnsweredDate { get; set; }
-
+        public int PatientId { get; set; }
         public int SurveyId { get; set; }
         public int ScheduledEventId { get; set; }
     }

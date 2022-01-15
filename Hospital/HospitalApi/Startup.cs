@@ -12,9 +12,6 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Autofac;
-using System.Reflection;
-using Autofac.Extensions.DependencyInjection;
 using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -110,22 +107,6 @@ namespace HospitalApi
                 };
             });
             services.AddHostedService<ConsumeScopedServiceHostedService>();
-            services.AddAuthentication(cfg =>
-            {
-                cfg.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                cfg.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
-            {
-                options.RequireHttpsMetadata = false;
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Token:Key"])),
-                    ValidIssuer = Configuration["Token:Issuer"],
-                    ValidateIssuer = true,
-                    ValidateAudience = false,
-                };
-            });
             services.AddScoped<IPatientSurveyService, PatientSurveyService>();
             services.AddScoped<IScheduledEventService, ScheduledEventService>();
             services.AddScoped<ISurveyService, SurveyService>();

@@ -1,0 +1,53 @@
+<div class="d-flex justify-content-center">
+  <h6 class="text-muted subtitle mt-5" style="font-size: 20;">Add a new doctor vacation</h6>
+</div>
+
+<div class="row d-flex justify-content-center" style="height: 100%">
+  <div class="col-8">
+    <div style="height: 280px; overflow: auto" class="d-flex justify-content-center mt-5">
+      <table class="createVacationForm">
+        <tr>
+          <td class="label">
+            Vacation type: <span style="color: red">*</span>
+          </td>
+          <td>
+            <select [(ngModel)]="vacationType" class="form-control text-start" name="typeVacations" id="typeVacation">
+              <option value="SickLeave">Sick Leave</option>
+              <option value="Vacation">Vacation</option>
+            </select>
+
+          </td>
+        </tr>
+        <tr>
+          <td class="label">
+            From: <span style="color: red">*</span>
+          </td>
+          <td>
+            <input [(ngModel)]="fromTime" class="form-control text-start" type="date" name="fromTime" />
+          </td>
+        </tr>
+        <tr>
+          <td class="label">
+            To: <span style="color: red">*</span>
+          </td>
+          <td>
+            <input [(ngModel)]="toTime" class="form-control text-start" type="date" name="toTime" />
+          </td>
+        </tr>
+        <tr *ngIf="!isEnteredDataCorrect()">
+          <td colspan="2" style="text-align: center">
+            <p style="color: red">
+              {{ errorMessage }}
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" style="text-align: center">
+            <button type="button" class="btn btn-primary mt-5" [disabled]="isButtonDisabled()"
+              (click)="createVacation()">Create</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>

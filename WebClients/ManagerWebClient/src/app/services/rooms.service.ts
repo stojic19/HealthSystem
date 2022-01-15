@@ -8,11 +8,13 @@ import { RenovationTermsRequest } from '../model/renovation-terms-request.model'
   providedIn: 'root',
 })
 export class RoomsService {
+
+  public rooms: Room[];
   constructor(private http: HttpClient) { }
 
   getRoomsByNameFirstBuilding(roomName: string) {
     return this.http.get(
-      `${environment.baseHospitalUrl}` + 'api/Room/FindByNameAndBuildingName',
+      '/api/Room/FindByNameAndBuildingName',
       {
         params: {
           name: roomName,
@@ -24,7 +26,7 @@ export class RoomsService {
 
   getRoomsByNameSecondBuilding(roomName: string) {
     return this.http.get(
-      `${environment.baseHospitalUrl}` + 'api/Room/FindByNameAndBuildingName',
+      '/api/Room/FindByNameAndBuildingName',
       {
         params: {
           name: roomName,
@@ -40,7 +42,56 @@ export class RoomsService {
   }
 
   getAllRooms() {
-    return this.http.get(`${environment.baseHospitalUrl}` + 'api/Room/GetAllRooms');
+    return this.http.get('/api/Room/GetAllRooms');
+  }
+
+  getFirstFloorOfFirstBuilding() {
+    return this.http
+      .get('/api/Room/GetRoomsByLocation', {
+        params: {
+          floorNumber: 1,
+          buildingName: 'Building 1',
+        },
+      })
+      .toPromise()
+      .then((res) => (this.rooms = res as Room[]));
+
+  }
+
+  getSecondFloorOfFirstBuilding() {
+    return this.http
+      .get('/api/Room/GetRoomsByLocation', {
+        params: {
+          floorNumber: 2,
+          buildingName: 'Building 1',
+        },
+      })
+      .toPromise()
+      .then((res) => (this.rooms = res as Room[]));
+  }
+
+  getFirstFloorOfSecondBuilding() {
+    return this.http
+      .get('/api/Room/GetRoomsByLocation', {
+        params: {
+          floorNumber: 1,
+          buildingName: 'Building 2',
+        },
+      })
+      .toPromise()
+      .then((res) => (this.rooms = res as Room[]));
+  }
+
+  getSecondFloorOfSecondBuilding() {
+    return this.http
+      .get('/api/Room/GetRoomsByLocation', {
+        params: {
+          floorNumber: 2,
+          buildingName: 'Building 2',
+        },
+      })
+      .toPromise()
+      .then((res) => (this.rooms = res as Room[]));
   }
 
 }

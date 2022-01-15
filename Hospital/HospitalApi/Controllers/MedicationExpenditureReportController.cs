@@ -9,6 +9,7 @@ using Hospital.MedicalRecords.Service;
 using Hospital.SharedModel.Model.Wrappers;
 using Hospital.SharedModel.Repository.Base;
 using HospitalApi.DTOs;
+using HospitalApi.DTOs.ConsumptionReport;
 
 namespace HospitalApi.Controllers
 {
@@ -23,14 +24,14 @@ namespace HospitalApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult GetMedicationExpenditureReport(TimePeriod timePeriod)
+        public IActionResult GetMedicationExpenditureReport(TimeRangeDto timePeriod)
         {
             if (timePeriod.EndTime == DateTime.MinValue || timePeriod.StartTime == DateTime.MinValue || timePeriod.StartTime > timePeriod.EndTime)
             {
                 return BadRequest("Wrong time period!");
             }
             MedicationConsumptionReport report = new MedicationConsumptionReportService(_unitOfWork)
-                .CreateMedicationExpenditureReportInTimePeriod(timePeriod);
+                .CreateMedicationExpenditureReportInTimePeriod(new TimePeriod(timePeriod.StartTime, timePeriod.EndTime));
             var reportDto = new MedicationExpenditureReportDTO
             {
                 CreatedDate = report.CreatedDate,

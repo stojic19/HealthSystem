@@ -69,11 +69,26 @@ import { TimeInfoComponent } from './renovation-form/time-info/time-info.compone
 import { FirstRoomInfoComponent } from './renovation-form/first-room-info/first-room-info.component';
 import { SecondRoomInfoComponent } from './renovation-form/second-room-info/second-room-info.component';
 import { AvailableTermsComponent } from './renovation-form/available-terms/available-terms.component';
+import { TendersListComponent } from './tenders/tenders-list.component';
+import { TenderProfileComponent } from './tenders/tender-profile/tender-profile.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { AddTenderComponent } from './tendering/add-tender/add-tender.component';
 import { LoginComponent } from './components/login/login.component';
 import { JwtInterceptor } from './JWTInterceptor/JwtInterceptor';
 import { DoctorsScheduleComponent } from './doctors-schedule/doctors-schedule.component';
 import { DoctorsScheduleReportComponent } from './doctors-schedule-report/doctors-schedule-report.component';
 import { ChartsModule } from 'ng2-charts';
+import { HospitalShiftsComponent } from './hospital-shifts/hospital-shifts.component';
+import { CreateShiftComponent } from './create-shift/create-shift.component';
+import { UpdateShiftComponent } from './update-shift/update-shift.component';
+import { DoctorShiftComponent } from './doctor-shift/doctor-shift.component';
+import { ShiftListComponent } from './doctor-shift/shift-list/shift-list.component';
+import { ShiftUpdateComponent } from './doctor-shift/shift-update/shift-update.component';
+import { TenderingStatisticsComponent } from './tendering/tendering-statistics/tendering-statistics.component';
+import { DoctorVacationsComponent } from './doctor-vacations/doctor-vacations.component';
+import { CreateVacationComponent } from './create-vacation/create-vacation.component';
+import { UpdateVacationComponent } from './update-vacation/update-vacation.component';
+import { OnCallShiftsComponent } from './on-call-shifts/on-call-shifts.component';
 
 @NgModule({
   declarations: [
@@ -129,10 +144,23 @@ import { ChartsModule } from 'ng2-charts';
     FirstRoomInfoComponent,
     SecondRoomInfoComponent,
     AvailableTermsComponent,
+    TendersListComponent,
+    TenderProfileComponent,
+    AddTenderComponent,
     LoginComponent,
     DoctorsScheduleComponent,
     DoctorsScheduleReportComponent,
-
+    HospitalShiftsComponent,
+    CreateShiftComponent,
+    UpdateShiftComponent,
+    DoctorShiftComponent,
+    ShiftListComponent,
+    ShiftUpdateComponent,
+    TenderingStatisticsComponent,
+    DoctorVacationsComponent,
+    CreateVacationComponent,
+    UpdateVacationComponent,
+    OnCallShiftsComponent,
   ],
   imports: [
     BrowserModule,
@@ -155,9 +183,10 @@ import { ChartsModule } from 'ng2-charts';
       timeOut: 3000,
       positionClass: 'toast-top-right'
     }),
+    NgxChartsModule,
   ],
   providers: [HttpClientModule,
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
 
   ],
   bootstrap: [AppComponent],

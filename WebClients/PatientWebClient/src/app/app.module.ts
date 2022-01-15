@@ -26,6 +26,7 @@ import { SurveyPageComponent } from './components/survey-page/survey-page.compon
 import { JwtInterceptor } from './JwtInterceptor/jwt-interceptor';
 import { AuthGuard } from 'src/app/AuthGuard/AuthGuard';
 import { AuthService } from './services/AuthService/auth.service';
+import { LandingPageComponent } from './components/landing-page/landing-page.component';
 
 
 @NgModule({
@@ -48,6 +49,7 @@ import { AuthService } from './services/AuthService/auth.service';
     LoginComponent,
     SurveyPageComponent,
     RecommendedAppointmentComponent,
+    LandingPageComponent,
    
   ],
   imports: [

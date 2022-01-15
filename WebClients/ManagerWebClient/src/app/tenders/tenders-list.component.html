@@ -1,0 +1,32 @@
+<div class="panel panel-primary m-1">
+    <div class="panel-heading m-3">
+        <h2>Tender List</h2>
+    </div>
+    
+    <button class="btn btn-primary m-3" [routerLink]="[isProd ? 'manager/add-tender' : '../add-tender']"><strong>Create Tender</strong></button>
+    <button class="btn btn-primary m-3" [routerLink]="[isProd ? 'manager/tendering-statistics' : '../tendering-statistics']"><strong>Tender Statistics</strong></button>
+
+    <div class="table-responsive m-1">
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Closing time</th>
+                    <th>Active</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor='let tender of tenders' (dblclick)="doubleClickFunction(tender.id)">
+                    <td>{{tender.id}}</td>
+                    <td>{{tender.name}}</td>
+                    <td>{{tender.activeRange.endDate | date: "dd-MM-yyyy, hh:mm"}}</td>
+                    <td>
+                        <div><img src="./assets/images/emojipng.com-8432408.png" style="height: 20px; width:20px"></div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>

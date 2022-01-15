@@ -5,6 +5,7 @@ using Hospital.SharedModel.Model.Wrappers;
 using Hospital.SharedModel.Repository;
 using Hospital.SharedModel.Repository.Base;
 using HospitalApi.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,7 @@ namespace HospitalApi.Controllers
             _uow = uow;
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpGet]
         public IEnumerable<OnCallDuty> GetAllDuties()
         {
@@ -35,6 +37,7 @@ namespace HospitalApi.Controllers
             return duties;
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpPost]
         public IActionResult GetReportInformation(ReportDTO reportDto)
         {

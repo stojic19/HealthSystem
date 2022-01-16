@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Hospital.MedicalRecords.Repository;
 using Hospital.Schedule.Model;
-using Hospital.Schedule.Repository;
 using Hospital.SharedModel.Repository.Base;
 using HospitalApi.DTOs;
 using Microsoft.AspNetCore.Http;
@@ -15,7 +14,6 @@ using Hospital.Schedule.Service.Interfaces;
 using Hospital.SharedModel.Model.Wrappers;
 using Hospital.SharedModel.Repository;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
 
 namespace HospitalApi.Controllers
 {

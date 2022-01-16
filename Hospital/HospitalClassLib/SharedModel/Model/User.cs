@@ -7,16 +7,16 @@ namespace Hospital.SharedModel.Model
     public class User : IdentityUser<int>
     {
         private const int MaxCanceledEvents = 3;
-        public string FirstName { get; private set; }
-        public string MiddleName { get; private set; }
-        public string LastName { get; private set; }
-        public DateTime DateOfBirth { get; private set; }
-        public Gender Gender { get; private set; }
-        public string Street { get; private set; }
-        public string StreetNumber { get; private set; }
-        public City City { get; private set; }
-        public bool IsBlocked { get; private set; }
-        public string PhotoEncoded { get; private set; }
+        public string FirstName { get; set; }
+        public string MiddleName { get; set; }
+        public string LastName { get; set; }
+        public DateTime DateOfBirth { get; set; }
+        public Gender Gender { get;  set; }
+        public string Street { get; set; }
+        public string StreetNumber { get; set; }
+        public City City { get;  set; }
+        public bool IsBlocked { get;  set; }
+        public string PhotoEncoded { get; set; }
 
         public User()
         {
@@ -35,13 +35,11 @@ namespace Hospital.SharedModel.Model
             City = city;
             IsBlocked = false;
             PhotoEncoded = photoEncoded;
-            //TODO: add validate method
         }
 
         public void Block()
         {
             IsBlocked = true;
-            //Validate();
         }
 
         public bool IsMalicious(int numOfCanceledEventsInLastMonth)

@@ -47,6 +47,7 @@ export class TenderingStatisticsComponent implements OnInit {
         this.tenderOffersMadeChartData.push({ name: pharmacyStatistic.pharmacyName, value: pharmacyStatistic.tenderOffersMade })
         this.profitMadeChartData.push({ name: pharmacyStatistic.pharmacyName, value: pharmacyStatistic.profit.amount })
       });
+      this._TenderingService.openStatisticsPdf(this.stats.pdfUrl)
       this.modalService.open(myModal, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {});
     });
   }

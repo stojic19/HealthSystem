@@ -21,22 +21,24 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Add_medication_to_hospital_invalid_name_should_return_bad_request()
         {
+            RegisterAndLogin("Manager");
             AddMedicationRequestDto newRequest = GetMedicationRequestWithInvalidMedicationName();
 
             var content = GetContent(newRequest);
 
-            var response = await Client.PostAsync(BaseUrl + "api/Medication/AddMedicineQuantity", content);
+            var response = await ManagerClient.PostAsync(BaseUrl + "api/Medication/AddMedicineQuantity", content);
 
             response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
         }
         [Fact]
         public async Task Add_medication_to_hospital_invalid_quality_should_return_bad_request()
         {
+            RegisterAndLogin("Manager");
             AddMedicationRequestDto newRequest = GetMedicationRequestWithInvalidQuantity();
 
             var content = GetContent(newRequest);
 
-            var response = await Client.PostAsync(BaseUrl + "api/Medication/AddMedicineQuantity", content);
+            var response = await ManagerClient.PostAsync(BaseUrl + "api/Medication/AddMedicineQuantity", content);
 
             response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Integration.Partnership.Repository;
 using Integration.Pharmacies.Model;
@@ -23,9 +24,11 @@ namespace IntegrationIntegrationTests
         {
         }
 
-        [Fact]
+        [SkippableFact]
         public void Receive_benefit_test()
         {
+            var env = Environment.GetEnvironmentVariable("PRODUCTION");
+            Skip.If(env == null || env.Equals("1")); // 0 za local, 1 za produciton
             DeleteTestData();
             GenerateTestData();
             BenefitCreateDTO dto = new BenefitCreateDTO
@@ -49,6 +52,7 @@ namespace IntegrationIntegrationTests
                     body: body);
             }
 
+            Thread.Sleep(1000);
             var benefit = UoW.GetRepository<IBenefitReadRepository>().GetAll()
                 .FirstOrDefault(x => x.Title.Equals("BENEFIT_TEST_TITLE"));
             benefit.ShouldNotBeNull();

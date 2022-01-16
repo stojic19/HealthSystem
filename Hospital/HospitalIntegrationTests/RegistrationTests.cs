@@ -5,6 +5,8 @@ using Hospital.MedicalRecords.Model;
 using Hospital.MedicalRecords.Repository;
 using Hospital.RoomsAndEquipment.Model;
 using Hospital.RoomsAndEquipment.Repository;
+using Hospital.Schedule.Model;
+using Hospital.Schedule.Repository;
 using Hospital.SharedModel.Model;
 using Hospital.SharedModel.Model.Enumerations;
 using Hospital.SharedModel.Repository;
@@ -32,7 +34,7 @@ namespace HospitalIntegrationTests
 
             var content = GetContent(newPatient);
 
-            var response = await Client.PostAsync(BaseUrl + "api/Registration/Register", content);
+            var response = await PatientClient.PostAsync(BaseUrl + "api/Registration/Register", content);
 
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
@@ -163,6 +165,7 @@ namespace HospitalIntegrationTests
                     var room = UoW.GetRepository<IRoomReadRepository>()
                         .GetAll()
                         .FirstOrDefault(x => x.RoomType == RoomType.AppointmentRoom);
+
                     if (room == null)
                     {
                         room = new Room()
@@ -174,12 +177,28 @@ namespace HospitalIntegrationTests
                     }
 
 
+                    var shift = UoW.GetRepository<IShiftReadRepository>()
+                        .GetAll()
+                        .FirstOrDefault(x => x.Name.ToLower().Equals("test shiift"));
+
+                    if (shift == null)
+                    {
+                        shift = new Shift()
+                        {
+                            Name = "test shiift",
+                            From = 7,
+                            To = 15
+                        };
+                        UoW.GetRepository<IShiftWriteRepository>().Add(shift);
+                    }
+
                     doctor = new Doctor()
                     {
                         UserName = "Test doctor",
                         CityId = city.Id,
                         RoomId = room.Id,
-                        SpecializationId = specialization.Id
+                        SpecializationId = specialization.Id,
+                        ShiftId = shift.Id
                     };
                     UoW.GetRepository<IDoctorWriteRepository>().Add(doctor);
                 }

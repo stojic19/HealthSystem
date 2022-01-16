@@ -15,6 +15,7 @@ using Hospital.Schedule.Service.Interfaces;
 using Hospital.SharedModel.Model.Wrappers;
 using Hospital.SharedModel.Repository;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace HospitalApi.Controllers
 {
@@ -84,12 +85,11 @@ namespace HospitalApi.Controllers
         [HttpPost]
         public IActionResult ScheduleAppointment(ScheduleAppointmentDTO scheduleAppointmentDTO)
         {
-            var loggedInPatient = _uow.GetRepository<IPatientReadRepository>()
-                .GetByUsername(scheduleAppointmentDTO.PatientUsername);
-            scheduleAppointmentDTO.PatientId = loggedInPatient.Id;
-            var scheduledEventWriteRepo = _uow.GetRepository<IScheduledEventWriteRepository>();
-            var addedAppointment = scheduledEventWriteRepo.Add(_mapper.Map<ScheduledEvent>(scheduleAppointmentDTO));
-
+            var loggedInPatient = _uow.GetRepository<IPatientReadRepository>().GetAll()
+                .First(x => x.UserName == scheduleAppointmentDTO.PatientUsername);
+            scheduleAppointmentDTO.PatientId = loggedInPatient.Id; 
+            var addedAppointment = loggedInPatient.ScheduleAppointment(_mapper.Map<ScheduledEvent>(scheduleAppointmentDTO));
+            _uow.GetRepository<IPatientWriteRepository>().Update(loggedInPatient);
             return addedAppointment == null ? StatusCode(StatusCodes.Status500InternalServerError,
                 "Could not schedule appointment. Please try again.") : Ok(addedAppointment);
         }

@@ -4,7 +4,10 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Hospital.Schedule.Service.Interfaces;
 using System.Linq;
+using Hospital.MedicalRecords.Repository;
+using Hospital.SharedModel.Repository.Base;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace HospitalApi.Controllers
 {
@@ -15,11 +18,13 @@ namespace HospitalApi.Controllers
     {
         private readonly IScheduledEventService _eventsService;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork _uow;
 
-        public ScheduledEventController( IScheduledEventService eventsService, IMapper mapper)
+        public ScheduledEventController( IScheduledEventService eventsService, IMapper mapper, IUnitOfWork uow)
         {
             this._eventsService = eventsService;
             this._mapper = mapper;
+            _uow = uow;
         }
 
         [Authorize(Roles = "Patient")]
@@ -73,11 +78,12 @@ namespace HospitalApi.Controllers
 
         [Authorize(Roles = "Patient")]
         [HttpGet("{eventId}")]
+        //public IActionResult CancelAppointment(int eventId, string username)
         public IActionResult CancelAppointment(int eventId)
         {
-
-            _eventsService.CancelAppointment(eventId);
-            return Ok();
+            var loggedInPatient = _uow.GetRepository<IPatientReadRepository>().GetAll().Include(p => p.ScheduledEvents).First(p => p.UserName == "miloS12");
+            loggedInPatient.CancelAppointment(eventId);
+            return Ok(_uow.GetRepository<IPatientWriteRepository>().Update(loggedInPatient));
         }
 
     }

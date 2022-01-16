@@ -1,5 +1,4 @@
 ﻿using System;
-using Hospital.Schedule.Model;
 using Hospital.SharedModel.Model;
 using Hospital.SharedModel.Model.Enumerations;
 using System.Collections.Generic;
@@ -18,6 +17,7 @@ namespace Hospital.MedicalRecords.Model
         public int DoctorId { get; private set; }
         public Doctor Doctor { get; private set; }
         public IEnumerable<Allergy> Allergies { get; private set; }
+        public IEnumerable<Prescription> Prescriptions { get; private set; }
 
         public MedicalRecord(int id, Measurements measurements, BloodType bloodType, JobStatus jobStatus, int doctorId, IEnumerable<Allergy> allergies)
         {

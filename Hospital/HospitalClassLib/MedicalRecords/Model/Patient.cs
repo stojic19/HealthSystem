@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Hospital.Schedule.Model;
 using Hospital.SharedModel.Model;
 
@@ -10,7 +8,7 @@ namespace Hospital.MedicalRecords.Model
     {
         public int MedicalRecordId { get; private set; }
         public MedicalRecord MedicalRecord { get; private set; }
-        public IEnumerable<ScheduledEvent> ScheduledEvents { get; private set; }
+        public List<ScheduledEvent> ScheduledEvents { get; private set; } = new List<ScheduledEvent>();
         public Patient()
         {
         }
@@ -20,8 +18,8 @@ namespace Hospital.MedicalRecords.Model
             MedicalRecordId = medicalRecord.Id;
             MedicalRecord = medicalRecord;
             ScheduledEvents = new List<ScheduledEvent>();
-            //TODO: add validate method
         }
+
         public Patient(int id,string username, MedicalRecord medicalRecord)
         {
             UserName = username;
@@ -29,24 +27,21 @@ namespace Hospital.MedicalRecords.Model
             MedicalRecordId = medicalRecord.Id;
             MedicalRecord = medicalRecord;
             ScheduledEvents = new List<ScheduledEvent>();
-            //TODO: add validate method
         }
         
-
-        public IEnumerable<ScheduledEvent> GetScheduledEvents()
+        public ScheduledEvent ScheduleAppointment(ScheduledEvent newAppointment)
         {
-            return ScheduledEvents;
+            ScheduledEvents.Add(newAppointment);
+            return newAppointment;
         }
 
-        public void ScheduleAppointment(ScheduledEvent newAppointment)
-        {
-            ScheduledEvents.ToList().Add(newAppointment);
-            //Validate();
-        }
 
-        public bool NameEquals(string userName)
+        public void CancelAppointment(int eventId)
         {
-            return UserName.Equals(userName);
+            foreach (var se in ScheduledEvents.ToArray())
+            {
+                if (se.Id == eventId) se.SetToCanceled();
+            }
         }
     }
 }

@@ -80,7 +80,11 @@ namespace IntegrationAPI.Controllers.Medicine
             request.AddJsonBody(new MedicineSpecificationToPharmacyDTO
                 { ApiKey = pharmacy.ApiKey, MedicineName = dto.MedicineName });
             var response = client.Post(request);
-            if (response.StatusCode != HttpStatusCode.OK) return NotFound("Failed to reach pharmacy or pharmacy does not have medicine with given name!");
+            if (response.StatusCode == HttpStatusCode.BadRequest)
+                return NotFound("Pharmacy does not have medicine with given name!");
+            if (response.StatusCode == HttpStatusCode.InternalServerError)
+                return NotFound("Pharmacy failed to send file via sftp");
+            if (response.StatusCode != HttpStatusCode.OK) return NotFound("Failed to reach pharmacy!");
             MedicineSpecificationFileDTO medicineSpecificationFile =
                 JsonConvert.DeserializeObject<MedicineSpecificationFileDTO>(response.Content);
             try

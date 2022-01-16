@@ -198,7 +198,7 @@ namespace IntegrationAPI.Controllers.Tenders
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error while sending closed tender via rabbitmq!");
             }
-            return Ok();
+            return Ok("Winner chosen");
         }
         [HttpPost]
         public IActionResult CloseTender([FromBody]int tenderId)

@@ -45,14 +45,6 @@ namespace HospitalUnitTests
                 Category = SurveyCategory.DoctorSurvey,
                 Text = "Pitanje 3"
             });
-            //Context.Questions.Add(new Question()
-            //{
-            //    Id = 4,
-            //    SurveyId = 1,
-            //    Category = SurveyCategory.HospitalSurvey,
-            //    Text = "Pitanje 4"
-            //});
-
 
             var aQuestion1 = new AnsweredQuestion()
             {

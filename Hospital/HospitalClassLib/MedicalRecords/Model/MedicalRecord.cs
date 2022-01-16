@@ -29,7 +29,15 @@ namespace Hospital.MedicalRecords.Model
             Allergies = allergies;
             Validate();
         }
-
+        public MedicalRecord( Measurements measurements, BloodType bloodType, JobStatus jobStatus, int doctorId, IEnumerable<Allergy> allergies)
+        {
+            Measurements = measurements;
+            BloodType = bloodType;
+            JobStatus = jobStatus;
+            DoctorId = doctorId;
+            Allergies = allergies;
+            Validate();
+        }
         public MedicalRecord()
         {
         }

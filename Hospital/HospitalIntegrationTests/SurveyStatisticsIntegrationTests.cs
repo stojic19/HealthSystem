@@ -133,7 +133,7 @@
 //            var room = UoW.GetRepository<IRoomReadRepository>()
 //                .GetAll()
 //                .FirstOrDefault(x => x.Name == "TestRoom");
-            
+
 //            if (room == null)
 //            {
 //                room = new Room()
@@ -232,7 +232,7 @@
 
 //                };
 //                UoW.GetRepository<IPatientWriteRepository>().Add(patient);
-                
+
 //            }
 
 //            var date = new DateTime().AddDays(1);
@@ -243,7 +243,7 @@
 //                survey = new Survey()
 //                {
 //                    CreatedDate = date
-                    
+
 //                };
 
 //                UoW.GetRepository<ISurveyWriteRepository>().Add(survey);
@@ -287,7 +287,7 @@
 //                    };
 //                    UoW.GetRepository<IQuestionWriteRepository>().Add(question3);
 //                }
-                
+
 //                var scheduledEvent = UoW.GetRepository<IScheduledEventReadRepository>().GetAll()
 //                    .FirstOrDefault(x => x.StartDate == date && x.Patient.Id == patient.Id && x.Doctor.Id == doctor.Id);
 //                if (scheduledEvent != null) return;
@@ -304,7 +304,7 @@
 //                        Room = doctor.Room,
 //                        ScheduledEventType = ScheduledEventType.Appointment
 //                    };
-                    
+
 
 //                    var answeredSurvey = UoW.GetRepository<IAnsweredSurveyReadRepository>().GetAll()
 //                        .FirstOrDefault(x => x.AnsweredDate == date);

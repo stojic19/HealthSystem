@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Integration.Shared.Model
 {
-    public class TimeRange
+    public class TimeRange : ValueObject
     {
         public DateTime StartDate { get; private set; }
         public DateTime EndDate { get; private set; }
@@ -33,6 +34,12 @@ namespace Integration.Shared.Model
         public bool IsInPast()
         {
             return EndDate < DateTime.Now;
+        }
+
+        protected override IEnumerable<object> GetEqualityComponents()
+        {
+            yield return StartDate;
+            yield return EndDate;
         }
     }
 }

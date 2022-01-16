@@ -29,8 +29,9 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Get_survey_statistics_code_200OK()
         {
+            RegisterAndLogin("Manager");
             ArrangeDatabase();
-            var response = await Client.GetAsync(BaseUrl + "api/SurveyStatistics/GetSurveyStatistics");
+            var response = await ManagerClient.GetAsync(BaseUrl + "api/SurveyStatistics/GetSurveyStatistics");
             var responseContent = await response.Content.ReadAsStringAsync();
             var surveyStatisticsDTO = JsonConvert.DeserializeObject<SurveyStatisticDTO>(responseContent);
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -59,7 +60,7 @@ namespace HospitalIntegrationTests
             }
 
             var survey = UoW.GetRepository<ISurveyReadRepository>().GetAll()
-                .FirstOrDefault(x => x.CreatedDate == new DateTime());
+                .FirstOrDefault(x => x.CreatedDate == new DateTime().AddDays(1));
             if (survey != null)
             {
                 UoW.GetRepository<ISurveyWriteRepository>().Delete(survey);
@@ -71,7 +72,7 @@ namespace HospitalIntegrationTests
                 UoW.GetRepository<IDoctorWriteRepository>().Delete(doctor);
             }
             var specialization = UoW.GetRepository<ISpecializationReadRepository>().GetAll()
-                .FirstOrDefault(x => x.Name == "TestSpecialization");
+                .FirstOrDefault(x => x.Name == "TestSspecialization");
             if (specialization != null)
             {
                 UoW.GetRepository<ISpecializationWriteRepository>().Delete(specialization);
@@ -150,13 +151,13 @@ namespace HospitalIntegrationTests
             }
 
             var specialization = UoW.GetRepository<ISpecializationReadRepository>().GetAll()
-                .FirstOrDefault(x => x.Name == "TestSpecialization");
+                .FirstOrDefault(x => x.Name == "TestSspecialization");
             if (specialization == null)
             {
                 specialization = new Specialization()
                 {
                     Description = "DescriptionSpecialization",
-                    Name = "TestSpecialization"
+                    Name = "TestSspecialization"
                 };
                 UoW.GetRepository<ISpecializationWriteRepository>().Add(specialization);
             }
@@ -182,6 +183,12 @@ namespace HospitalIntegrationTests
                     TwoFactorEnabled = false,
                     LockoutEnabled = false,
                     AccessFailedCount = 0,
+                    Shift = new Shift()
+                    {
+                        From = 8,
+                        To = 4,
+                        Name = "prva"
+                    },
                     Room = room,
                     City = city
 
@@ -228,7 +235,7 @@ namespace HospitalIntegrationTests
                 
             }
 
-            var date = new DateTime();
+            var date = new DateTime().AddDays(1);
             var survey = UoW.GetRepository<ISurveyReadRepository>().GetAll()
                 .FirstOrDefault(x => x.CreatedDate == date);
             if (survey != null) return;
@@ -305,7 +312,7 @@ namespace HospitalIntegrationTests
                     {
                         answeredSurvey = new AnsweredSurvey()
                         {
-                            AnsweredDate = date.AddDays(3),
+                            AnsweredDate = date,
                             PatientId = patient.Id,
                             ScheduledEvent = scheduledEvent,
                             Survey = survey

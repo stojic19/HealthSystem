@@ -21,6 +21,7 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Add_transfer_request_should_return_200()
         {
+            RegisterAndLogin("Manager");
             var sourceRoom = InsertRoom("Test initial room");
             var destinationRoom = InsertRoom("Test destination room");
             var inventoryItem = InsertInventoryItem("Test item");
@@ -40,7 +41,7 @@ namespace HospitalIntegrationTests
 
             var content = GetContent(newRequest);
 
-            var response = await Client.PostAsync(BaseUrl + "api/EquipmentTransferEvent/AddNewEquipmentTransferEvent", content);
+            var response = await ManagerClient.PostAsync(BaseUrl + "api/EquipmentTransferEvent/AddNewEquipmentTransferEvent", content);
 
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
             response.ShouldNotBeNull();
@@ -60,6 +61,7 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Add_transfer_request_should_return_400()
         {
+            RegisterAndLogin("Manager");
             var sourceRoom = InsertRoom("Test initial room");
             var destinationRoom = InsertRoom("Test destination room");
             var inventoryItem = InsertInventoryItem("Test item");
@@ -79,7 +81,7 @@ namespace HospitalIntegrationTests
 
             var content = GetContent(newRequest);
 
-            var response = await Client.PostAsync(BaseUrl + "api/EquipmentTransferEvent/AddNewEquipmentTransferEvent", content);
+            var response = await ManagerClient.PostAsync(BaseUrl + "api/EquipmentTransferEvent/AddNewEquipmentTransferEvent", content);
 
             response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
             response.ShouldNotBeNull();

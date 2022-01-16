@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -26,6 +27,8 @@ using RabbitMQ.Client.Events;
 using RestSharp;
 using IntegrationAPI.Adapters.PDF;
 using IntegrationAPI.Adapters.PDF.Implementation;
+using System.IO;
+using System.Threading;
 
 namespace IntegrationAPI.Controllers.Tenders
 {
@@ -198,7 +201,7 @@ namespace IntegrationAPI.Controllers.Tenders
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error while sending closed tender via rabbitmq!");
             }
-            return Ok();
+            return Ok("Winner chosen");
         }
         [HttpPost]
         public IActionResult CloseTender([FromBody]int tenderId)
@@ -313,8 +316,33 @@ namespace IntegrationAPI.Controllers.Tenders
                 });
             }
             IPDFAdapter adapter = new DynamicPDFAdapter();
-            adapter.MakeTenderStatisticsPdf(tenderStatisticsDto, timeRange);
+            tenderStatisticsDto.PdfUrl = adapter.MakeTenderStatisticsPdf(tenderStatisticsDto, timeRange);
             return tenderStatisticsDto;
+        }
+
+        [HttpPost, Produces("application/pdf")]
+        public IActionResult GetStatisticsPdf([FromQuery(Name = "fileName")] string fileName)
+        {
+            string destDirectory = "TenderStatistics";
+
+            string destFileName = Path.GetFullPath(System.IO.Path.Combine(destDirectory, fileName));
+            string fullDestDirPath = Path.GetFullPath(destDirectory + Path.DirectorySeparatorChar);
+            if (destFileName.StartsWith(fullDestDirPath, StringComparison.Ordinal))
+            {
+                try
+                {
+                    var stream = new FileStream(destFileName, FileMode.Open);
+                    return File(stream, "application/pdf", fileName);
+                }
+                catch
+                {
+                    return NotFound("PDF not found");
+                }
+            }
+            else
+            {
+                return BadRequest("Cannot open PDF");
+            }
         }
     }
 }

@@ -190,8 +190,8 @@ namespace IntegrationAPI.Adapters.PDF.Implementation
         public string MakeTenderStatisticsPdf(TenderStatisticsDto tenderStatisticsDto, TimeRange timeRange)
         {
             MakeTitle("Tender statistics");
-            WriteLine(0, 60, "Start date: " + timeRange.StartDate);
-            WriteLine(0, 20, "End date: " + timeRange.EndDate);
+            WriteLine(0, 60, "Start date: " + timeRange.StartDate.ToShortDateString());
+            WriteLine(0, 20, "End date: " + timeRange.EndDate.ToShortDateString());
 
             List<string> labelsTenderOffers = new List<string>();
             List<float> valuesTenderOffers = new List<float>();
@@ -221,9 +221,10 @@ namespace IntegrationAPI.Adapters.PDF.Implementation
             DrawChart("Tenders won", "Number of tenders won", labelsTendersWon, valuesTendersWon);
             DrawChart("Profit made", "Amount", labelsProfit, valuesProfit);
 
-            string fileName = "TenderStatistics-" + timeRange.StartDate.ToLongDateString()
-                                                  + "-" + timeRange.EndDate.ToLongDateString() + ".pdf";
-            SaveDocument("TenderStatistics" + Path.DirectorySeparatorChar + fileName);
+            string fileName = "TenderStatistics-" + timeRange.StartDate.Ticks.ToString()
+                                                  + "-" + timeRange.EndDate.Ticks.ToString() + ".pdf";
+            string filePath = "TenderStatistics" + Path.DirectorySeparatorChar + fileName;
+            SaveDocument(filePath);
             return fileName;
         }
 

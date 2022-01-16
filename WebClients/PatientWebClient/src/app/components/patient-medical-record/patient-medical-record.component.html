@@ -128,20 +128,28 @@
               <img src="../../../assets/images/appointment.png" />
             </div>
             <div class="col-9">
-              <table mat-table [dataSource]="futureAppointments" id="futureAppointmentsMatTab" class="mat-elevation-z8">
+              <table
+                mat-table
+                [dataSource]="futureAppointments"
+                id="futureAppointmentsMatTab"
+                class="mat-elevation-z8"
+              >
                 <ng-container matColumnDef="No.">
                   <th mat-header-cell *matHeaderCellDef>No.</th>
-                  <td mat-cell *matCellDef="let element; let i = index">{{i + 1}}</td>
+                  <td mat-cell *matCellDef="let element; let i = index">
+                    {{ i + 1 }}
+                  </td>
                 </ng-container>
                 <ng-container matColumnDef="Date">
                   <th mat-header-cell *matHeaderCellDef>Date</th>
                   <td mat-cell *matCellDef="let element; let i = index">
-                    {{ element.startDate | date }}</td>
+                    {{ element.startDate | date }}
+                  </td>
                 </ng-container>
                 <ng-container matColumnDef="Time">
                   <th mat-header-cell *matHeaderCellDef>Time</th>
                   <td mat-cell *matCellDef="let element; let i = index">
-                    {{element.startDate | date: "shortTime"}}
+                    {{ element.startDate | date: "shortTime" }}
                     -
                     {{ element.endDate | date: "shortTime" }}
                   </td>
@@ -150,11 +158,13 @@
                   <th mat-header-cell *matHeaderCellDef>Doctor</th>
                   <td mat-cell *matCellDef="let element; let i = index">
                     {{ element.doctorName }}
-                      {{ element.doctorLastName }}
+                    {{ element.doctorLastName }}
                   </td>
                 </ng-container>
                 <ng-container matColumnDef="DoctorSpecialization">
-                  <th mat-header-cell *matHeaderCellDef>Doctor Specialization</th>
+                  <th mat-header-cell *matHeaderCellDef>
+                    Doctor Specialization
+                  </th>
                   <td mat-cell *matCellDef="let element; let i = index">
                     {{ element.specializationName }}
                   </td>
@@ -164,20 +174,31 @@
                   <td mat-cell *matCellDef="let element; let i = index">
                     {{ element.roomName }}
                   </td>
-                </ng-container> 
+                </ng-container>
                 <ng-container matColumnDef="Cancel">
                   <th mat-header-cell *matHeaderCellDef>Cancel</th>
                   <td mat-cell *matCellDef="let element; let i = index">
                     <button
-                    id={{i+1}}b
-                    type="button"
-                    class="btn btn-warning"
-                    (click)="cancelAppointment(this.element.id)"> Cancel  </button>
+                      id="{{ i + 1 }}b"
+                      type="button"
+                      class="btn btn-warning"
+                      (click)="cancelAppointment(this.element.id)"
+                    >
+                      Cancel
+                    </button>
                   </td>
                 </ng-container>
-                  <tr mat-header-row *matHeaderRowDef="columnsToDisplayFutureAppointments"></tr>
-                  <tr mat-row *matRowDef="let element; columns: columnsToDisplayFutureAppointments">
-                  </tr>
+                <tr
+                  mat-header-row
+                  *matHeaderRowDef="columnsToDisplayFutureAppointments"
+                ></tr>
+                <tr
+                  mat-row
+                  *matRowDef="
+                    let element;
+                    columns: columnsToDisplayFutureAppointments
+                  "
+                ></tr>
               </table>
             </div>
           </div>
@@ -190,20 +211,29 @@
               <img src="../../../assets/images/timetable.png" />
             </div>
             <div class="col-9">
-              <table mat-table [dataSource]="finishedAppointments" class="mat-elevation-z8">
+              <table
+                mat-table
+                [dataSource]="finishedAppointments"
+                class="mat-elevation-z8"
+              >
                 <ng-container matColumnDef="No.">
                   <th mat-header-cell *matHeaderCellDef>No.</th>
-                  <td mat-cell *matCellDef="let element; let i = index">{{i + 1}}</td>
+                  <td mat-cell *matCellDef="let element; let i = index">
+                    {{ i + 1 }}
+                  </td>
                 </ng-container>
                 <ng-container matColumnDef="Date">
                   <th mat-header-cell *matHeaderCellDef>Date</th>
                   <td mat-cell *matCellDef="let element; let i = index">
-                    {{ element.scheduledEventsDTO.startDate | date }}</td>
+                    {{ element.scheduledEventsDTO.startDate | date }}
+                  </td>
                 </ng-container>
                 <ng-container matColumnDef="Time">
                   <th mat-header-cell *matHeaderCellDef>Time</th>
                   <td mat-cell *matCellDef="let element; let i = index">
-                    {{element.scheduledEventsDTO.startDate | date: "shortTime"}}
+                    {{
+                      element.scheduledEventsDTO.startDate | date: "shortTime"
+                    }}
                     -
                     {{ element.scheduledEventsDTO.endDate | date: "shortTime" }}
                   </td>
@@ -212,11 +242,13 @@
                   <th mat-header-cell *matHeaderCellDef>Doctor</th>
                   <td mat-cell *matCellDef="let element; let i = index">
                     {{ element.scheduledEventsDTO.doctorName }}
-                      {{ element.scheduledEventsDTO.doctorLastName }}
+                    {{ element.scheduledEventsDTO.doctorLastName }}
                   </td>
                 </ng-container>
                 <ng-container matColumnDef="DoctorSpecialization">
-                  <th mat-header-cell *matHeaderCellDef>Doctor Specialization</th>
+                  <th mat-header-cell *matHeaderCellDef>
+                    Doctor Specialization
+                  </th>
                   <td mat-cell *matCellDef="let element; let i = index">
                     {{ element.scheduledEventsDTO.specializationName }}
                   </td>
@@ -226,21 +258,32 @@
                   <td mat-cell *matCellDef="let element; let i = index">
                     {{ element.scheduledEventsDTO.roomName }}
                   </td>
-                </ng-container> 
-                <ng-container  matColumnDef="Survey">
+                </ng-container>
+                <ng-container matColumnDef="Survey">
                   <th mat-header-cell *matHeaderCellDef>Survey</th>
                   <td mat-cell *matCellDef="let element; let i = index">
                     <button
-                        type="button"
-                        [disabled]="element.answeredSurveyId > 0"
-                        class="btn btn-primary"
-                        (click)="answerSurvey(this.element.scheduledEventsDTO.id) "> Survey  </button>
+                      type="button"
+                      [disabled]="element.answeredSurveyId > 0"
+                      class="btn btn-primary"
+                      (click)="answerSurvey(this.element.scheduledEventsDTO.id)"
+                    >
+                      Survey
+                    </button>
                   </td>
                 </ng-container>
-               
-                  <tr mat-header-row *matHeaderRowDef="columnsToDisplayFinishedAppointments"></tr>
-                  <tr mat-row *matRowDef="let element; columns: columnsToDisplayFinishedAppointments">
-                  </tr>
+
+                <tr
+                  mat-header-row
+                  *matHeaderRowDef="columnsToDisplayFinishedAppointments"
+                ></tr>
+                <tr
+                  mat-row
+                  *matRowDef="
+                    let element;
+                    columns: columnsToDisplayFinishedAppointments
+                  "
+                ></tr>
               </table>
             </div>
           </div>
@@ -253,20 +296,27 @@
               <img src="../../../assets/images/booking-cancel.png" />
             </div>
             <div class="col-9">
-              <table mat-table [dataSource]="canceledAppointments" class="mat-elevation-z8">
+              <table
+                mat-table
+                [dataSource]="canceledAppointments"
+                class="mat-elevation-z8"
+              >
                 <ng-container matColumnDef="No.">
                   <th mat-header-cell *matHeaderCellDef>No.</th>
-                  <td mat-cell *matCellDef="let element; let i = index">{{i + 1}}</td>
+                  <td mat-cell *matCellDef="let element; let i = index">
+                    {{ i + 1 }}
+                  </td>
                 </ng-container>
                 <ng-container matColumnDef="Date">
                   <th mat-header-cell *matHeaderCellDef>Date</th>
                   <td mat-cell *matCellDef="let element; let i = index">
-                    {{ element.startDate | date }}</td>
+                    {{ element.startDate | date }}
+                  </td>
                 </ng-container>
                 <ng-container matColumnDef="Time">
                   <th mat-header-cell *matHeaderCellDef>Time</th>
                   <td mat-cell *matCellDef="let element; let i = index">
-                    {{element.startDate | date: "shortTime"}}
+                    {{ element.startDate | date: "shortTime" }}
                     -
                     {{ element.endDate | date: "shortTime" }}
                   </td>
@@ -275,11 +325,13 @@
                   <th mat-header-cell *matHeaderCellDef>Doctor</th>
                   <td mat-cell *matCellDef="let element; let i = index">
                     {{ element.doctorName }}
-                      {{ element.doctorLastName }}
+                    {{ element.doctorLastName }}
                   </td>
                 </ng-container>
                 <ng-container matColumnDef="DoctorSpecialization">
-                  <th mat-header-cell *matHeaderCellDef>Doctor Specialization</th>
+                  <th mat-header-cell *matHeaderCellDef>
+                    Doctor Specialization
+                  </th>
                   <td mat-cell *matCellDef="let element; let i = index">
                     {{ element.specializationName }}
                   </td>
@@ -289,10 +341,18 @@
                   <td mat-cell *matCellDef="let element; let i = index">
                     {{ element.roomName }}
                   </td>
-                </ng-container> 
-                  <tr mat-header-row *matHeaderRowDef="columnsToDisplayCanceledAppointments"></tr>
-                  <tr mat-row *matRowDef="let element; columns: columnsToDisplayCanceledAppointments">
-                  </tr>
+                </ng-container>
+                <tr
+                  mat-header-row
+                  *matHeaderRowDef="columnsToDisplayCanceledAppointments"
+                ></tr>
+                <tr
+                  mat-row
+                  *matRowDef="
+                    let element;
+                    columns: columnsToDisplayCanceledAppointments
+                  "
+                ></tr>
               </table>
             </div>
           </div>
@@ -303,13 +363,13 @@
   <hr />
   <br />
   <div class="button-row">
-  <button class="btn btn-primary btn-md" (click)="scheduleBasic()">
-    Schedule an appointment
-  </button>
-  <div class="divider"></div>
-  <button class="btn btn-primary btn-md" (click)="scheduleRecommended()">
-    Schedule with priority
-  </button>
+    <button class="btn btn-primary btn-md" (click)="scheduleBasic()">
+      Schedule an appointment
+    </button>
+    <div class="divider"></div>
+    <button class="btn btn-primary btn-md" (click)="scheduleRecommended()">
+      Schedule with priority
+    </button>
   </div>
 
   <div *ngIf="isVisible">

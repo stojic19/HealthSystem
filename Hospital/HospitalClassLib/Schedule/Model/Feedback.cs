@@ -61,9 +61,5 @@ namespace Hospital.Schedule.Model
             ValidateOnUnpublish();
         }
 
-        public bool IsApproved()
-        {
-            return IsPublishable && FeedbackStatus == FeedbackStatus.Approved;
-        }
     }
 }

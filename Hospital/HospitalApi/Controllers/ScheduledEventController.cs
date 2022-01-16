@@ -22,6 +22,7 @@ namespace HospitalApi.Controllers
             this._eventsService = eventsService;
             this._mapper = mapper;
         }
+
         [Authorize(Roles = "Patient")]
         [HttpGet("{userName}")]
         public IActionResult GetFinishedUserEvents(string userName)
@@ -31,6 +32,7 @@ namespace HospitalApi.Controllers
 
             return Ok(eventsDTOs);
         }
+        
         [Authorize(Roles = "Patient")]
         [HttpGet("{userName}")]
         public IActionResult GetEventsForSurvey(string userName)
@@ -69,5 +71,15 @@ namespace HospitalApi.Controllers
 
             return Ok(eventsDTOs);
         }
+
+        [Authorize(Roles = "Patient")]
+        [HttpGet("{eventId}")]
+        public IActionResult CancelAppointment(int eventId)
+        {
+
+            _eventsService.CancelAppointment(eventId);
+            return Ok();
+        }
+
     }
 }

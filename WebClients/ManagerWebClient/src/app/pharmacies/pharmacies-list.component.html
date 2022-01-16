@@ -4,15 +4,15 @@
     </div>
     <button class="btn btn-primary m-3" [routerLink]="[isProd ? '/manager/pharmacy-register' : '/pharmacy-register']"><strong>Register pharmacy</strong></button>
     <div class="form-control form-control-lg  m-1">
-        <input class="m-1" [(ngModel)]="SearchString"  (keyup)="FilterFn()" placeholder="Filter" > 
+        <input class="m-1" [(ngModel)]="SearchString" (keyup)="FilterFn()" placeholder="Filter">
     </div>
     <div class="form-control form-control-lg  m-1">
-        <input class="m-1" required [(ngModel)]="MedicineString" (keyup)="Clear()" placeholder="Medicine" >
-        <input class="m-1" required [(ngModel)]="ManufacturerString" (keyup)="Clear()" placeholder="Manufacturer" >
-        <input class="m-1" required [(ngModel)]="QuantityString" (keyup)="Clear()" placeholder="Quantity" >  
+        <input class="m-1" required [(ngModel)]="MedicineString" (keyup)="Clear()" placeholder="Medicine">
+        <input class="m-1" required [(ngModel)]="ManufacturerString" (keyup)="Clear()" placeholder="Manufacturer">
+        <input class="m-1" required [(ngModel)]="QuantityString" (keyup)="Clear()" placeholder="Quantity">
     </div>
     <div class="table-responsive m-1">
-        <table class="table table-bordered table-striped table-hover">
+        <table class="table table-bordered table-striped table-hover" id="pharmaciesTable">
             <thead>
                 <tr>
                     <th>ID</th>

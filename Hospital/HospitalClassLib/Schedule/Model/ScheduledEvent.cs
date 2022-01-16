@@ -45,14 +45,14 @@ namespace Hospital.Schedule.Model
         {
             PatientId = patient.Id;
             Patient = patient;
-            Validate();
+            ValidatePatient();
         }
 
         public void ScheduleEventRoom(Room room)
         {
-            RoomId = room.Id;
             Room = room;
-            Validate();
+            RoomId = room.Id;
+            ValidateRoom();
         }
         public bool IsCanceledThisMonth()
         {
@@ -65,9 +65,11 @@ namespace Hospital.Schedule.Model
             Validate();
         }
 
-        public bool ShouldBeDone()
+        public void SetToCanceled()
         {
-            return !IsDone && !IsCanceled && DateTime.Compare(EndDate, DateTime.Now) < 0;
+            IsCanceled = true;
+            CancellationDate = DateTime.Now;
+            Validate();
         }
 
         public bool IsUpcoming()
@@ -80,9 +82,26 @@ namespace Hospital.Schedule.Model
             return IsCanceled && !IsDone;
         }
 
+        public void ValidateDoctor()
+        {
+            if (DoctorId <= 0) throw new Exception();
+        }
+
+        public void ValidatePatient()
+        {
+            if (PatientId <= 0) throw new Exception();
+        }
+
+        public void ValidateRoom()
+        {
+            if (RoomId <= 0) throw new Exception();
+        }
+
         public void Validate()
         {
-            if (DoctorId <= 0 || PatientId <= 0 || RoomId <= 0) throw new Exception();
-        } 
+            ValidateDoctor();
+            ValidatePatient();
+            ValidateRoom();
+        }
     }
 }

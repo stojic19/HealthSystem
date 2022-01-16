@@ -30,6 +30,8 @@ namespace HospitalApi.AutoMapperProfiles
 
             CreateMap<RoomRenovationEventDto, RoomRenovationEvent>();
             CreateMap<NewManagerDTO, Manager>();
+            CreateMap<ShiftDTO, Shift>();
+            CreateMap<DoctorShiftDTO, Doctor>();
         }
     }
 }

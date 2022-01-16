@@ -5,8 +5,10 @@ using Hospital.Schedule.Service.ServiceInterface;
 using Hospital.Schedule.Model;
 using HospitalApi.DTOs;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Authorization;
 using Hospital.SharedModel.Repository.Base;
 using Hospital.MedicalRecords.Repository;
+using System.Linq;
 
 namespace HospitalApi.Controllers
 {
@@ -15,15 +17,12 @@ namespace HospitalApi.Controllers
     [EnableCors("MyCorsImplementationPolicy")]
     public class AnsweredSurveyController : ControllerBase
     {
-        private readonly IPatientSurveyService surveyService;
-        private readonly ISurveyService _surveyService;
-        private readonly IUnitOfWork _uow;
+        private readonly IPatientSurveyService _surveyService;
         private readonly IMapper mapper;
-
-        public AnsweredSurveyController(ISurveyService _surveyService,IPatientSurveyService surveyService, IUnitOfWork uow, IMapper mapper)
+        private readonly IUnitOfWork _uow;
+        public AnsweredSurveyController(IPatientSurveyService surveyService, IMapper mapper, IUnitOfWork uow)
         {
-            this.surveyService = surveyService;
-            this._surveyService = _surveyService;
+            _surveyService = surveyService;
             this.mapper = mapper;
             this._uow = uow;
         }
@@ -32,22 +31,19 @@ namespace HospitalApi.Controllers
         [HttpGet]
         public IEnumerable<AnsweredSurvey> GetAllAnsweredSurvey()
         {
-            return surveyService.getAllAnsweredSurvey();
+            return _surveyService.getAllAnsweredSurvey();
         }
 
-        //[Authorize(Roles = "Patient")]
-        [HttpPost]
-        public IActionResult CreateAnsweredSurvey(AnsweredSurveyDTO answeredSurveyDTO)
+        [Authorize(Roles = "Patient")]
+        [HttpPost("{username}")]
+        public IActionResult CreateAnsweredSurvey(string username, [FromBody] AnsweredSurveyDTO answeredSurveyDTO)
         {
-            Survey activeSurvey = _surveyService.GetActiveSurvey();
-            var patient = _uow.GetRepository<IPatientReadRepository>().GetPatient(answeredSurveyDTO.UserName);
-            answeredSurveyDTO.PatientId = patient.Id;
-            activeSurvey.CreateAnsweredSurvey(mapper.Map<AnsweredSurvey>(answeredSurveyDTO));
-            _surveyService.Save(activeSurvey);
-
-            //var temp = mapper.Map<AnsweredSurvey>(answeredSurveyDTO);
-            //return Ok(surveyService.createAnsweredSurvey(temp));
-            return Ok();
+            answeredSurveyDTO.PatientId = _uow.GetRepository<IPatientReadRepository>()
+                                    .GetAll()
+                                    .First(x => x.UserName == username ).Id;
+            var temp = mapper.Map<AnsweredSurvey>(answeredSurveyDTO);
+           
+            return Ok(_surveyService.createAnsweredSurvey(temp));
         }
     }
 }

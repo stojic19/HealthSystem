@@ -18,7 +18,6 @@ namespace Hospital.Schedule.Service
 
         public AnsweredSurvey createAnsweredSurvey(AnsweredSurvey answeredSurvey)
         {
-            //answeredSurvey.PatientId = 1;
             return UoW.GetRepository<IAnsweredSurveyWriteRepository>().Add(answeredSurvey);
         }
 

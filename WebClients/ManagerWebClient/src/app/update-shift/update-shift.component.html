@@ -1,0 +1,41 @@
+<div class="d-flex justify-content-center">
+  <h6 class="text-muted subtitle mt-5" style="font-size: 20;">Creating a new hospital shift</h6>
+</div>
+
+<div class="row d-flex justify-content-center" style="height: 100%">
+  <div class="col-8">
+    <div style="height: 280px; overflow: auto" class="d-flex justify-content-center mt-5">
+      <table class="updateShiftForm">
+        <tr>
+          <td class="label">
+            From: <span style="color: red">*</span>
+          </td>
+          <td>
+            <input [(ngModel)]="fromTime" class="form-control text-start" type="string" name="fromTime" />
+          </td>
+        </tr>
+        <tr>
+          <td class="label">
+            To: <span style="color: red">*</span>
+          </td>
+          <td>
+            <input [(ngModel)]="toTime" class="form-control text-start" type="string" name="toTime" />
+          </td>
+        </tr>
+        <tr *ngIf="!isEnteredDataCorrect()">
+          <td colspan="2" style="text-align: center">
+            <p style="color: red">
+              {{ errorMessage }}
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" style="text-align: center">
+            <button type="button" class="btn btn-primary mt-5" [disabled]="isButtonDisabled()"
+              (click)="updateShift()">Update</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>

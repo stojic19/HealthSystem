@@ -71,5 +71,11 @@ namespace Hospital.Schedule.Service
                 UoW.SaveChanges();
             }
         }
+
+        public void CancelAppointment(int eventId)
+        {
+            UoW.GetRepository<IScheduledEventWriteRepository>().CancelEvent(eventId);
+        }
+
     }
 }

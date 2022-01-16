@@ -1,4 +1,5 @@
-﻿using Hospital.GraphicalEditor.Model;
+﻿using Hospital.EventStoring.Model;
+using Hospital.GraphicalEditor.Model;
 using Hospital.MedicalRecords.Model;
 using Hospital.RoomsAndEquipment.Model;
 using Hospital.Schedule.Model;
@@ -34,6 +35,7 @@ namespace Hospital.Database.EfStructures
         public DbSet<EquipmentTransferEvent> EquipmentTransferEvents { get; set; }
         public DbSet<MedicationExpenditureLog> MedicationExpenditureLogs { get; set; }
         public DbSet<RoomRenovationEvent> RoomRenovationEvents { get; set; }
+        public DbSet<StoredEvent> StoredEvents { get; set; }
         public DbSet<Manager> Managers { get; set; }
         public DbSet<OnCallDuty> OnCallDuties { get; set; }
         public DbSet<Shift> Shifts { get; set; }

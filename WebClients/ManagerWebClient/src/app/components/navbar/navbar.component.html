@@ -1,60 +1,322 @@
-<div class="navbar-inner">
-  <nav class="navbar navbar-expand-lg bg-light fixed-top shadow-lg">
-    <a class="navbar-brand ms-5 ml-3">H O S P I T A L</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" routerLink="/home" *ngIf="!isProd">Home</a>
-          <a class="nav-link" routerLink="/manager/home" *ngIf="isProd">Home</a>
-        </li>
-        <li class="nav-item active">
-          <a class="nav-link" routerLink="/overview" *ngIf="!isProd">Map</a>
-          <a class="nav-link" routerLink="/manager/overview" *ngIf="isProd">Map</a>
-        </li>
-        <li class="nav-item active">
-            <a class="nav-link" routerLink="/hospitalEquipment" *ngIf="!isProd">Equipment</a>
-            <a class="nav-link" routerLink="/manager/hospitalEquipment" *ngIf="isProd">Equipment</a>
-        </li>
-        <li class="nav-item active">
-          <a class="nav-link" routerLink="/roomRenovation" *ngIf="!isProd">Renovation</a>
-          <a class="nav-link" routerLink="/manager/roomRenovation" *ngIf="isProd">Renovation</a>
-        </li>
-        <li class="nav-item active">
-            <a class="nav-link" routerLink="/feedbacks" *ngIf="!isProd">Feedbacks</a>
-            <a class="nav-link" routerLink="/manager/feedbacks" *ngIf="isProd">Feedbacks</a>
-        </li>
-        <li class="nav-item active">
-            <a class="nav-link" routerLink="/complaints" *ngIf="!isProd">Complaints</a>
-            <a class="nav-link" routerLink="/manager/complaints" *ngIf="isProd">Complaints</a>
-        </li>
-        <li class="nav-item active">
-            <a class="nav-link" routerLink="/pharmacy-list" *ngIf="!isProd">Pharmacies</a>
-            <a class="nav-link" routerLink="/manager/pharmacy-list" *ngIf="isProd">Pharmacies</a>
-        </li>
-        <li class="nav-item active">
-            <a class="nav-link" routerLink="/benefit-list" *ngIf="!isProd">Benefits</a>
-            <a class="nav-link" routerLink="/manager/benefit-list" *ngIf="isProd">Benefits</a>
-        </li>
-        <li class="nav-item active">
-            <a class="nav-link" routerLink="/medication-consumption-report" *ngIf="!isProd">Reports</a>
-            <a class="nav-link" routerLink="/manager/medication-consumption-report" *ngIf="isProd">Reports</a>
-        </li>
-        <li class="nav-item active">
-            <a class="nav-link" routerLink="/medicine-specification-requests" *ngIf="!isProd">Medicine Specification</a>
-            <a class="nav-link" routerLink="/manager/medicine-specification-requests" *ngIf="isProd">Medicine Specification</a>
-        </li>
-        <li class="nav-item active">
-            <a class="nav-link" routerLink="/surveys" *ngIf="!isProd">Surveys</a>
-            <a class="nav-link" routerLink="/manager/surveys" *ngIf="isProd">Surveys</a>
-        </li>
-        <li class="nav-item active">
-          <a class="nav-link" routerLink="/blocking" >Blocking</a>
-      </li>
-      </ul>
-    </div>
-  </nav>
+<div class="container">
+  <div class="navbar-inner">
+    <nav
+      class="navbar navbar-expand-lg bg-light fixed-top shadow-lg"
+      style="height: 70px"
+    >
+      <a class="navbar-brand ml-3" href="/"
+        ><img
+          src="../../assets/images/LogoMakr-2KfMiMdva.png"
+          style="height: 70px"
+      /></a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li
+            class="nav-item active"
+            *ngIf="loginStatus$ | async as LoginStatus"
+          >
+            <div class="dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="dropdownMenuLink"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Doctors
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <li *ngIf="loginStatus$ | async as LoginStatus">
+                  <a class="nav-link" routerLink="/doctorShifts" *ngIf="!isProd"
+                    >Doctor Shifts</a
+                  >
+                  <a
+                    class="nav-link"
+                    routerLink="/manager/doctorShifts"
+                    *ngIf="isProd"
+                    >Doctor Shifts</a
+                  >
+                </li>
+                <li *ngIf="loginStatus$ | async as LoginStatus">
+                  <a
+                    class="nav-link"
+                    routerLink="/hospitalShifts"
+                    *ngIf="!isProd"
+                    >Shifts</a
+                  >
+                  <a
+                    class="nav-link"
+                    routerLink="/manager/hospitalShifts"
+                    *ngIf="isProd"
+                    >Shifts</a
+                  >
+                </li>
+                <li>
+                  <a class="nav-link" routerLink="/oncall" *ngIf="!isProd"
+                    >On Call Shifts</a
+                  >
+                  <a
+                    class="nav-link"
+                    routerLink="/manager/oncall"
+                    *ngIf="isProd"
+                    >On Call Shifts</a
+                  >
+                </li>
+                <li *ngIf="loginStatus$ | async as LoginStatus">
+                  <a
+                    class="nav-link"
+                    routerLink="/doctorsSchedule"
+                    *ngIf="!isProd"
+                    >Schedule overview</a
+                  >
+                  <a
+                    class="nav-link"
+                    routerLink="/manager/doctorsSchedule"
+                    *ngIf="isProd"
+                    >Schedule overview</a
+                  >
+                </li>
+                <li *ngIf="loginStatus$ | async as LoginStatus">
+                  <a
+                    class="nav-link"
+                    routerLink="/doctorsReport"
+                    *ngIf="!isProd"
+                    >Workload report</a
+                  >
+                  <a
+                    class="nav-link"
+                    routerLink="/manager/doctorsReport"
+                    *ngIf="isProd"
+                    >Workload report</a
+                  >
+                </li>
+                <li *ngIf="loginStatus$ | async as LoginStatus">
+                  <a class="nav-link" routerLink="/doctorVacations" *ngIf="!isProd">Doctor Vacations</a>
+                  <a class="nav-link" routerLink="/manager/doctorVacations" *ngIf="isProd">Doctor Vacations</a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li
+            class="nav-item active"
+            *ngIf="loginStatus$ | async as LoginStatus"
+          >
+            <div class="dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="dropdownMenuLink"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Rooms
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <li *ngIf="loginStatus$ | async as LoginStatus">
+                  <a class="nav-link" routerLink="/overview" *ngIf="!isProd"
+                    >Map</a
+                  >
+                  <a
+                    class="nav-link"
+                    routerLink="/manager/overview"
+                    *ngIf="isProd"
+                    >Map</a
+                  >
+                </li>
+                <li *ngIf="loginStatus$ | async as LoginStatus">
+                  <a
+                    class="nav-link"
+                    routerLink="/roomRenovation"
+                    *ngIf="!isProd"
+                    >Renovation</a
+                  >
+                  <a
+                    class="nav-link"
+                    routerLink="/manager/roomRenovation"
+                    *ngIf="isProd"
+                    >Renovation</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li
+            class="nav-item active"
+            *ngIf="loginStatus$ | async as LoginStatus"
+          >
+            <div class="dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="dropdownMenuLink"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Patients
+              </a>
+
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <li *ngIf="loginStatus$ | async as LoginStatus">
+                  <a class="nav-link" routerLink="/feedbacks" *ngIf="!isProd"
+                    >Feedbacks</a
+                  >
+                  <a
+                    class="nav-link"
+                    routerLink="/manager/feedbacks"
+                    *ngIf="isProd"
+                    >Feedbacks</a
+                  >
+                </li>
+                <li *ngIf="loginStatus$ | async as LoginStatus">
+                  <a class="nav-link" routerLink="/surveys" *ngIf="!isProd"
+                    >Surveys</a
+                  >
+                  <a
+                    class="nav-link"
+                    routerLink="/manager/surveys"
+                    *ngIf="isProd"
+                    >Surveys</a
+                  >
+                </li>
+                <li
+                  class="nav-item active"
+                  *ngIf="loginStatus$ | async as LoginStatus"
+                >
+                  <a class="nav-link" routerLink="/blocking">Blocking</a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li
+            class="nav-item active"
+            *ngIf="loginStatus$ | async as LoginStatus"
+          >
+            <a class="nav-link" routerLink="/hospitalEquipment" *ngIf="!isProd"
+              >Equipment</a
+            >
+            <a
+              class="nav-link"
+              routerLink="/manager/hospitalEquipment"
+              *ngIf="isProd"
+              >Equipment</a
+            >
+          </li>
+          <li
+            class="nav-item active"
+            *ngIf="loginStatus$ | async as LoginStatus"
+          >
+            <a class="nav-link" routerLink="/complaints" *ngIf="!isProd"
+              >Complaints</a
+            >
+            <a class="nav-link" routerLink="/manager/complaints" *ngIf="isProd"
+              >Complaints</a
+            >
+          </li>
+          <li
+            class="nav-item active"
+            *ngIf="loginStatus$ | async as LoginStatus"
+          >
+            <a class="nav-link" routerLink="/pharmacy-list" *ngIf="!isProd"
+              >Pharmacies</a
+            >
+            <a
+              class="nav-link"
+              routerLink="/manager/pharmacy-list"
+              *ngIf="isProd"
+              >Pharmacies</a
+            >
+          </li>
+          <li
+            class="nav-item active"
+            *ngIf="loginStatus$ | async as LoginStatus"
+          >
+            <a class="nav-link" routerLink="/benefit-list" *ngIf="!isProd"
+              >Benefits</a
+            >
+            <a
+              class="nav-link"
+              routerLink="/manager/benefit-list"
+              *ngIf="isProd"
+              >Benefits</a
+            >
+          </li>
+          <li
+            class="nav-item active"
+            *ngIf="loginStatus$ | async as LoginStatus"
+          >
+            <a
+              class="nav-link"
+              routerLink="/medication-consumption-report"
+              *ngIf="!isProd"
+              >Reports</a
+            >
+            <a
+              class="nav-link"
+              routerLink="/manager/medication-consumption-report"
+              *ngIf="isProd"
+              >Reports</a
+            >
+          </li>
+          <li
+            class="nav-item active"
+            *ngIf="loginStatus$ | async as LoginStatus"
+          >
+            <a
+              class="nav-link"
+              routerLink="/medicine-specification-requests"
+              *ngIf="!isProd"
+              >Medicine Specification</a
+            >
+            <a
+              class="nav-link"
+              routerLink="/manager/medicine-specification-requests"
+              *ngIf="isProd"
+              >Medicine Specification</a
+            >
+          </li>
+          <li
+            class="nav-item active"
+            *ngIf="loginStatus$ | async as LoginStatus"
+          >
+            <a class="nav-link" *ngIf="!isProd" routerLink="/tenders"
+              >Tenders</a
+            >
+            <a class="nav-link" *ngIf="isProd" routerLink="/manager/tenders"
+              >Tenders</a
+            >
+          </li>
+        </ul>
+        <div style="width: 30px; margin-left: 50px">
+          <form
+            style="align-items: center"
+            *ngIf="loginStatus$ | async as LoginStatus"
+            class="form-inline"
+          >
+            <button
+              mat-button
+              *ngIf="LoginStatus"
+              class="btn btn-primary btn-md"
+              (click)="onLogout()"
+            >
+              Log out
+            </button>
+          </form>
+        </div>
+      </div>
+    </nav>
+  </div>
 </div>

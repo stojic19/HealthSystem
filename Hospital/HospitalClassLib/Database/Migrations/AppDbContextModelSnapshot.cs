@@ -34,6 +34,26 @@ namespace Hospital.Migrations
                     b.ToTable("DoctorOnCallDuty");
                 });
 
+            modelBuilder.Entity("Hospital.EventStoring.Model.StoredEvent", b =>
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uuid");
+
+                b.Property<string>("StateData")
+                    .HasColumnType("text");
+
+                b.Property<DateTime>("Time")
+                    .HasColumnType("timestamp without time zone");
+
+                b.Property<int>("UserId")
+                    .HasColumnType("integer");
+
+                b.HasKey("Id");
+
+                b.ToTable("StoredEvent", "EventStoring");
+            });
+
             modelBuilder.Entity("Hospital.MedicalRecords.Model.Allergy", b =>
                 {
                     b.Property<int>("Id")

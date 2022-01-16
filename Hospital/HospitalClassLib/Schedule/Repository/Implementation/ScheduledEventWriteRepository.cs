@@ -1,6 +1,8 @@
 ﻿using Hospital.Database.EfStructures;
 using Hospital.Schedule.Model;
 using Hospital.SharedModel.Repository.Base;
+using System;
+using System.Linq;
 
 namespace Hospital.Schedule.Repository.Implementation
 {
@@ -12,5 +14,16 @@ namespace Hospital.Schedule.Repository.Implementation
             this._context = context;
         }
 
+        public void CancelEvent(int eventId)
+        {
+            var scheduledEvent = _context.Set<ScheduledEvent>()
+                 .Where(x => x.Id == eventId && x.IsDone == false)
+                 .ToList()
+                 .FirstOrDefault();
+            if (scheduledEvent == null ||
+                DateTime.Compare(DateTime.Now, scheduledEvent.StartDate.AddDays(-2)) >= 0) return;
+            scheduledEvent.SetToCanceled();
+            Update(scheduledEvent, true);
+        }
     }
 }

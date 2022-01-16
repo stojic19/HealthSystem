@@ -1,7 +1,7 @@
 using AutoMapper;
+using Hospital.MedicalRecords.Repository;
 using Hospital.Schedule.Model;
 using Hospital.Schedule.Repository;
-using Hospital.SharedModel.Model.Enumerations;
 using Hospital.SharedModel.Repository.Base;
 using HospitalApi.DTOs;
 using Microsoft.AspNetCore.Authorization;
@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Hospital.MedicalRecords.Repository;
+using Hospital.SharedModel.Model.Enumerations;
 
 namespace HospitalApi.Controllers
 {
@@ -53,20 +53,20 @@ namespace HospitalApi.Controllers
         public IEnumerable<Feedback> GetApprovedFeedbacks()
         {
             var feedbackReadRepo = _uow.GetRepository<IFeedbackReadRepository>();
-            return feedbackReadRepo.GetAll().Include(x => x.Patient).Where(x => x.IsApproved());
+            return feedbackReadRepo.GetAll().Include(x => x.Patient).Where(x => x.IsPublishable && x.FeedbackStatus == FeedbackStatus.Approved);
         }
 
         [Authorize(Roles = "Patient")]
         [HttpPost]
         public IActionResult InsertFeedback(NewFeedbackDTO feedbackDTO)
         {
-                var feedbackWriteRepo = _uow.GetRepository<IFeedbackWriteRepository>();
-                var loggedInPatient = _uow.GetRepository<IPatientReadRepository>()
-                    .GetByUsername(feedbackDTO.PatientUsername);
-                feedbackDTO.PatientId = loggedInPatient.Id;
-                var newFeedback = _mapper.Map<Feedback>(feedbackDTO);
-                return feedbackWriteRepo.Add(newFeedback) == null ? StatusCode(StatusCodes.Status500InternalServerError, "Could not insert feedback in the database.")
-                    : Ok("Your feedback has been submitted.");
+            var feedbackWriteRepo = _uow.GetRepository<IFeedbackWriteRepository>();
+            var loggedInPatient = _uow.GetRepository<IPatientReadRepository>().GetAll().First(x => x.UserName.Equals(feedbackDTO.PatientUsername));
+            feedbackDTO.PatientId = loggedInPatient.Id;
+            var newFeedback = _mapper.Map<Feedback>(feedbackDTO);
+            return feedbackWriteRepo.Add(newFeedback) == null ? StatusCode(StatusCodes.Status500InternalServerError, "Could not insert feedback in the database.")
+                : Ok("Your feedback has been submitted.");
+
         }
 
         

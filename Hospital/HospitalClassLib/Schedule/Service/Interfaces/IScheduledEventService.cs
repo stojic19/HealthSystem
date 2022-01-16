@@ -14,5 +14,6 @@ namespace Hospital.Schedule.Service.Interfaces
         public void UpdateFinishedUserEvents();
         public ScheduledEvent GetScheduledEvent(int eventId);
         public List<EventForSurvey> GetEventsForSurvey(string userName);
+        public void CancelAppointment(int eventId);
     }
 }

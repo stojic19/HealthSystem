@@ -32,7 +32,7 @@ namespace HospitalIntegrationTests
 
             var content = GetContent(newPatient);
 
-            var response = await Client.PostAsync(BaseUrl + "api/Registration/Register", content);
+            var response = await PatientClient.PostAsync(BaseUrl + "api/Registration/Register", content);
 
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
@@ -123,12 +123,27 @@ namespace HospitalIntegrationTests
                         To = 15
                     };
 
+                    var shift = UoW.GetRepository<IShiftReadRepository>()
+                        .GetAll()
+                        .FirstOrDefault(x => x.Name.ToLower().Equals("test shiift"));
+
+                    if (shift == null)
+                    {
+                        shift = new Shift()
+                        {
+                            Name = "test shiift",
+                            From = 7,
+                            To = 15
+                        };
+                        UoW.GetRepository<IShiftWriteRepository>().Add(shift);
+                    }
+
                     doctor = new Doctor()
                     {
                         UserName = "Test doctor",
                         RoomId = room.Id,
-                        Specialization = new Specialization("General Practice", ""),
-                        Shift = shift
+                        SpecializationId = specialization.Id,
+                        ShiftId = shift.Id
                     };
                     UoW.GetRepository<IDoctorWriteRepository>().Add(doctor);
                 }

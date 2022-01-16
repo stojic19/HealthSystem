@@ -1,8 +1,13 @@
 version: '3.4'
 
+secrets:
+  postgres_password:
+    external: true
+
 services:
 
   gateway:
+    image: srdjansukovic/psw_gateway
     build:
       context: ../
       dockerfile: Stacks/Build/Gateway/Dockerfile
@@ -11,7 +16,7 @@ services:
         - HOSPITAL_API_URL=hospitalapi:80
         - INTEGRATION_API_URL=integrationapi:80
     restart: on-failure
-    ports:
+    ports: 
       - 8080:8080
     depends_on:
       - hospitalapi
@@ -19,6 +24,7 @@ services:
       - integrationapi
 
   hospitalapi:
+    image: srdjansukovic/psw_hospitalapi
     build:
       dockerfile: Stacks/Build/Hospital/Dockerfile
       context: ../
@@ -28,9 +34,11 @@ services:
     depends_on:
       - hospitaldb
     environment:
-      HOSPITAL_DB_PATH: "host=hospitaldb;port=5432;database=HOSPITAL;username=postgres;password=postgres"
+      HOSPITAL_DB_PATH: "host=hospitaldb;port=5432;database=HOSPITAL;username=postgres;password=/run/secrets/postgres_password"
+      #HOSPITAL_DB_PATH: "host=hospitaldb;port=5432;database=HOSPITAL;username=postgres;password=postgres"
 
   pharmacyapi:
+    image: srdjansukovic/psw_pharmacyapi
     build:
       dockerfile: Stacks/Build/Pharmacy/Dockerfile
       context: ../
@@ -41,10 +49,11 @@ services:
       - pharmacydb
       - rabbitmq
     environment:
-      PHARMACY_DB_PATH: "host=pharmacydb;port=5432;database=PHARMACY;username=postgres;password=postgres"
+      PHARMACY_DB_PATH: "host=pharmacydb;port=5432;database=PHARMACY;username=postgres;password=/run/secrets/postgres_password"
       RABBITMQ_HOST: "rabbitmq"
 
   integrationapi:
+    image: srdjansukovic/psw_integrationapi
     build:
       dockerfile: Stacks/Build/Integration/Dockerfile
       context: ../
@@ -55,10 +64,11 @@ services:
       - integrationdb
       - rabbitmq
     environment:
-      INTEGRATION_DB_PATH: "host=integrationdb;port=5432;database=INTEGRATION;username=postgres;password=postgres"
+      INTEGRATION_DB_PATH: "host=integrationdb;port=5432;database=INTEGRATION;username=postgres;password=/run/secrets/postgres_password"
       RABBITMQ_HOST: "rabbitmq"
 
   patient-ui:
+    image: srdjansukovic/psw_patientui
     build:
       context: ../
       dockerfile: Stacks/Build/PatientUi/Dockerfile
@@ -67,6 +77,7 @@ services:
     container_name: patient-ui
 
   manager-ui:
+    image: srdjansukovic/psw_managerui
     build:
       context: ../
       dockerfile: Stacks/Build/ManagerUi/Dockerfile
@@ -75,6 +86,7 @@ services:
     container_name: manager-ui
 
   integration-ui:
+    image: srdjansukovic/psw_integrationui
     build:
       context: ../
       dockerfile: Stacks/Build/IntegrationUi/Dockerfile
@@ -86,7 +98,7 @@ services:
     image: postgres:13
     restart: always
     environment:
-      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_PASSWORD: /run/secrets/postgres_password
       POSTGRES_USER: "postgres"
       POSTGRES_DB: "HOSPITAL"
     ports:
@@ -96,7 +108,7 @@ services:
     image: postgres:13
     restart: always
     environment:
-      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_PASSWORD: /run/secrets/postgres_password
       POSTGRES_USER: "postgres"
       POSTGRES_DB: "PHARMACY"
     ports:
@@ -106,7 +118,7 @@ services:
     image: postgres:13
     restart: always
     environment:
-      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_PASSWORD: /run/secrets/postgres_password
       POSTGRES_USER: "postgres"
       POSTGRES_DB: "INTEGRATION"
     ports:

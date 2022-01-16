@@ -3,4 +3,5 @@ export interface IFeedback {
   text: string;
   isPublishable: boolean;
   isAnonymous: boolean;
+  patientId: number;
 }

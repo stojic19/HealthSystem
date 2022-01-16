@@ -19,6 +19,26 @@ namespace Integration.Migrations
                 .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+            modelBuilder.Entity("Integration.EventStoring.Model.StoredEvent", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("StateData")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Time")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StoredEvent", "EventStoring");
+                });
+
             modelBuilder.Entity("Integration.Partnership.Model.Benefit", b =>
                 {
                     b.Property<int>("Id")
@@ -200,11 +220,11 @@ namespace Integration.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<string>("ImageName")
-                        .HasColumnType("text");
-                        
                     b.Property<bool>("GrpcSupported")
                         .HasColumnType("boolean");
+
+                    b.Property<string>("ImageName")
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");

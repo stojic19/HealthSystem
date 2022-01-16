@@ -26,7 +26,7 @@ namespace HospitalApi.Controllers
             this._uow = uow;
         }
 
-        [Authorize(Roles = "Manager")]
+       // [Authorize(Roles = "Manager")]
         [HttpPost]
         public IEnumerable<Room> AddRooms(IEnumerable<Room> rooms)
         {
@@ -102,6 +102,18 @@ namespace HospitalApi.Controllers
                 //.Where(scheduledEvent => !scheduledEvent.IsCanceled &&
                 //                        !scheduledEvent.IsDone &&
                 //                        scheduledEvent.RoomId == roomId);
+        }
+
+        [Authorize(Roles = "Manager")]
+        [HttpGet]
+        public IEnumerable<Room> GetRoomsByLocation([FromQuery(Name = "floorNumber")] int floorNumber, [FromQuery(Name = "buildingName")] string buildingName)
+        {
+            var renovationService = new RenovatingRoomsService(_uow);
+            renovationService.StartRoomRenovations();
+            var roomRepo = _uow.GetRepository<IRoomReadRepository>();
+            return roomRepo.GetAll()
+                           .Where(r => r.FloorNumber == floorNumber &&
+                                    r.BuildingName == buildingName);
         }
     }
 }

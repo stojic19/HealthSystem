@@ -8,6 +8,7 @@ import { MedicalRecordService } from 'src/app/services/MedicalRecordService/medi
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatTableDataSource } from '@angular/material/table';
 import { ICurrentUser } from 'src/app/interfaces/current-user';
+import { AuthService } from 'src/app/services/AuthService/auth.service';
 
 @Component({
   selector: 'app-patient-medical-record',
@@ -58,7 +59,8 @@ export class PatientMedicalRecordComponent implements OnInit {
     private _sanitizer: DomSanitizer,
     private _service: MedicalRecordService,
     private _router: Router,
-    private changeDetectorRefs: ChangeDetectorRef
+    private changeDetectorRefs: ChangeDetectorRef,
+    private authService: AuthService
   ) {
     this.futureAppointments = new MatTableDataSource<IAppointment>();
     this.finishedAppointments = new MatTableDataSource<IFinishedAppointment>();
@@ -116,10 +118,12 @@ export class PatientMedicalRecordComponent implements OnInit {
     this.refresh();
   }
   cancelAppointment(id: number) {
-    this.sub = this._service.cancelAppointments(id).subscribe((res: string) => {
-      console.log(res);
-      this.refresh();
-    });
+    this.sub = this._service
+      .cancelAppointments(id, this.authService.currentUserValue.userName)
+      .subscribe((res: string) => {
+        console.log(res);
+        this.refresh();
+      });
   }
 
   scheduleBasic() {

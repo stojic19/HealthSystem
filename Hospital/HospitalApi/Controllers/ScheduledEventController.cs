@@ -77,11 +77,10 @@ namespace HospitalApi.Controllers
         }
 
         [Authorize(Roles = "Patient")]
-        [HttpGet("{eventId}")]
-        //public IActionResult CancelAppointment(int eventId, string username)
-        public IActionResult CancelAppointment(int eventId)
+        [HttpGet]
+        public IActionResult CancelAppointment([FromQuery(Name = "eventId")] int eventId, [FromQuery(Name = "username")]  string username)
         {
-            var loggedInPatient = _uow.GetRepository<IPatientReadRepository>().GetAll().Include(p => p.ScheduledEvents).First(p => p.UserName == "miloS12");
+            var loggedInPatient = _uow.GetRepository<IPatientReadRepository>().GetAll().Include(p => p.ScheduledEvents).First(p => p.UserName == username);
             loggedInPatient.CancelAppointment(eventId);
             return Ok(_uow.GetRepository<IPatientWriteRepository>().Update(loggedInPatient));
         }

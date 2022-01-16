@@ -100,65 +100,58 @@ namespace HospitalIntegrationTests
                     .GetRepository<IDoctorReadRepository>().GetAll().Include(d => d.Specialization).Include(d => d.Room)
                     .FirstOrDefault(d => d.Specialization.Name.ToLower().Equals("general practice"));
 
-                if (doctor == null)
+            if (doctor == null)
+            {
+                var room = UoW.GetRepository<IRoomReadRepository>()
+                    .GetAll()
+                    .FirstOrDefault(x => x.RoomType == RoomType.AppointmentRoom);
+
+                if (room == null)
                 {
-                    var room = UoW.GetRepository<IRoomReadRepository>()
-                        .GetAll()
-                        .FirstOrDefault(x => x.RoomType == RoomType.AppointmentRoom);
-
-                    if (room == null)
+                    room = new Room()
                     {
-                        room = new Room()
-                        {
-                            Name = "test room",
-                            RoomType = RoomType.AppointmentRoom
-                        };
-                        UoW.GetRepository<IRoomWriteRepository>().Add(room);
-                    }
+                        Name = "test room",
+                        RoomType = RoomType.AppointmentRoom
+                    };
+                    UoW.GetRepository<IRoomWriteRepository>().Add(room);
+                }
+                
+                var shift = UoW.GetRepository<IShiftReadRepository>()
+                    .GetAll()
+                    .FirstOrDefault(x => x.Name.ToLower().Equals("test shiift"));
 
-                    var shift = UoW.GetRepository<IShiftReadRepository>().GetAll().FirstOrDefault() ?? new Shift()
+                if (shift == null)
+                {
+                    shift = new Shift()
                     {
-                        Name = "First",
+                        Name = "test shiift",
                         From = 7,
                         To = 15
                     };
-
-                    var shift = UoW.GetRepository<IShiftReadRepository>()
-                        .GetAll()
-                        .FirstOrDefault(x => x.Name.ToLower().Equals("test shiift"));
-
-                    if (shift == null)
-                    {
-                        shift = new Shift()
-                        {
-                            Name = "test shiift",
-                            From = 7,
-                            To = 15
-                        };
-                        UoW.GetRepository<IShiftWriteRepository>().Add(shift);
-                    }
-
-                    doctor = new Doctor()
-                    {
-                        UserName = "Test doctor",
-                        RoomId = room.Id,
-                        SpecializationId = specialization.Id,
-                        ShiftId = shift.Id
-                    };
-                    UoW.GetRepository<IDoctorWriteRepository>().Add(doctor);
+                    UoW.GetRepository<IShiftWriteRepository>().Add(shift);
                 }
 
-                return new NewPatientDTO()
+                doctor = new Doctor()
                 {
-                    UserName = "testUserName",
-                    Email = "test1email@gmail.com",
-                    Password = "Test Passw0rd",
-                    MedicalRecord = new NewMedicalRecordDTO()
-                    {
-                        DoctorId = doctor.Id
-                    }
+                    UserName = "Test doctor",
+                    RoomId = room.Id,
+                    Specialization = new Specialization("General Practice", ""),
+                    ShiftId = shift.Id
                 };
-            
+                UoW.GetRepository<IDoctorWriteRepository>().Add(doctor);
+            }
+
+            return new NewPatientDTO()
+            {
+                UserName = "testUserName",
+                Email = "test1email@gmail.com",
+                Password = "Test Passw0rd",
+                MedicalRecord = new NewMedicalRecordDTO()
+                {
+                    DoctorId = doctor.Id
+                }
+            };
+
         }
     }
 }

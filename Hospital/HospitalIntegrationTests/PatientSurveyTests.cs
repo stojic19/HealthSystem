@@ -1,129 +1,129 @@
-﻿using Hospital.MedicalRecords.Model;
-using Hospital.MedicalRecords.Repository;
-using Hospital.RoomsAndEquipment.Repository;
-using Hospital.Schedule.Model;
-using Hospital.Schedule.Repository;
-using Hospital.SharedModel.Model.Enumerations;
-using Hospital.SharedModel.Repository;
-using HospitalApi.DTOs;
-using HospitalIntegrationTests.Base;
-using Newtonsoft.Json;
-using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using Xunit;
+﻿//using Hospital.MedicalRecords.Model;
+//using Hospital.MedicalRecords.Repository;
+//using Hospital.RoomsAndEquipment.Repository;
+//using Hospital.Schedule.Model;
+//using Hospital.Schedule.Repository;
+//using Hospital.SharedModel.Model.Enumerations;
+//using Hospital.SharedModel.Repository;
+//using HospitalApi.DTOs;
+//using HospitalIntegrationTests.Base;
+//using Newtonsoft.Json;
+//using Shouldly;
+//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Net;
+//using System.Threading.Tasks;
+//using Xunit;
 
-namespace HospitalIntegrationTests
-{
-    public class PatientSurveyTests : BaseTest
-    {
-        public PatientSurveyTests(BaseFixture fixture) : base(fixture)
-        {
-        }
-        [Fact]
-        public async Task Create_answered_survey_should_return_200OK()
-        {
-            RegisterAndLogin("Patient");
-            var patient = UoW.GetRepository<IPatientReadRepository>()
-               .GetAll()
-               .Where(x => x.UserName == "testPatientUsername")
-               .FirstOrDefault();
+//namespace HospitalIntegrationTests
+//{
+//    public class PatientSurveyTests : BaseTest
+//    {
+//        public PatientSurveyTests(BaseFixture fixture) : base(fixture)
+//        {
+//        }
+//        [Fact]
+//        public async Task Create_answered_survey_should_return_200OK()
+//        {
+//            RegisterAndLogin("Patient");
+//            var patient = UoW.GetRepository<IPatientReadRepository>()
+//               .GetAll()
+//               .Where(x => x.UserName == "testPatientUsername")
+//               .FirstOrDefault();
 
-            AnsweredSurveyDTO answeredSurveyDTO = AddTestDataToDatabase(patient);
-            var content = GetContent(answeredSurveyDTO);
+//            AnsweredSurveyDTO answeredSurveyDTO = AddTestDataToDatabase(patient);
+//            var content = GetContent(answeredSurveyDTO);
 
-            var response = await PatientClient.PostAsync(BaseUrl + "api/AnsweredSurvey/CreateAnsweredSurvey/"+ patient.UserName, content);
-            var responseContent = await response.Content.ReadAsStringAsync();
-            var answeredSurveyResult = JsonConvert.DeserializeObject<AnsweredSurvey>(responseContent);
+//            var response = await PatientClient.PostAsync(BaseUrl + "api/AnsweredSurvey/CreateAnsweredSurvey/"+ patient.UserName, content);
+//            var responseContent = await response.Content.ReadAsStringAsync();
+//            var answeredSurveyResult = JsonConvert.DeserializeObject<AnsweredSurvey>(responseContent);
 
-            response.StatusCode.ShouldBe(HttpStatusCode.OK);
-            answeredSurveyResult.AnsweredQuestions.ToList().Count.ShouldNotBe(0);
+//            response.StatusCode.ShouldBe(HttpStatusCode.OK);
+//            answeredSurveyResult.AnsweredQuestions.ToList().Count.ShouldNotBe(0);
 
-            var eventId = answeredSurveyDTO.ScheduledEventId;
-            var answeredSurveyDB = UoW.GetRepository<IAnsweredSurveyReadRepository>().GetAll().FirstOrDefault(x => x.ScheduledEventId == eventId);
-            answeredSurveyDB.ScheduledEvent.Id.ShouldBe(eventId);
+//            var eventId = answeredSurveyDTO.ScheduledEventId;
+//            var answeredSurveyDB = UoW.GetRepository<IAnsweredSurveyReadRepository>().GetAll().FirstOrDefault(x => x.ScheduledEventId == eventId);
+//            answeredSurveyDB.ScheduledEvent.Id.ShouldBe(eventId);
 
-            DeleteTestDataFromDataBase(eventId);
-            DeleteDataFromDataBase();
+//            DeleteTestDataFromDataBase(eventId);
+//            DeleteDataFromDataBase();
             
-        }
+//        }
 
-        private void DeleteTestDataFromDataBase(int eventId)
-        {
-            var answeredSurvey = UoW.GetRepository<IAnsweredSurveyReadRepository>().GetAll().FirstOrDefault(x => x.ScheduledEventId == eventId); 
-            UoW.GetRepository<IAnsweredSurveyWriteRepository>().Delete(answeredSurvey, true);
+//        private void DeleteTestDataFromDataBase(int eventId)
+//        {
+//            var answeredSurvey = UoW.GetRepository<IAnsweredSurveyReadRepository>().GetAll().FirstOrDefault(x => x.ScheduledEventId == eventId); 
+//            UoW.GetRepository<IAnsweredSurveyWriteRepository>().Delete(answeredSurvey, true);
 
-            var events = UoW.GetRepository<IScheduledEventReadRepository>().GetAll().FirstOrDefault(x => x.Id == eventId);
-            UoW.GetRepository<IScheduledEventWriteRepository>().Delete(events, true);
-        }
+//            var events = UoW.GetRepository<IScheduledEventReadRepository>().GetAll().FirstOrDefault(x => x.Id == eventId);
+//            UoW.GetRepository<IScheduledEventWriteRepository>().Delete(events, true);
+//        }
 
-        private AnsweredSurveyDTO AddTestDataToDatabase(Patient testPatient)
-        {
-            var testDoctor = UoW.GetRepository<IDoctorReadRepository>().GetAll().FirstOrDefault(x => x.FirstName == "TestDoctor");
-            var testRoom = UoW.GetRepository<IRoomReadRepository>().GetAll().FirstOrDefault(x => x.Name == "TestRoom");
-            var survey = UoW.GetRepository<ISurveyReadRepository>().GetAll().FirstOrDefault();
-            if (survey == null)
-            {
-                survey =  new Survey()
-                {
-                    CreatedDate = DateTime.Now
-                };
-                UoW.GetRepository<ISurveyWriteRepository>().Add(survey);
-            }
-            var question = UoW.GetRepository<IQuestionReadRepository>()
-                .GetAll()
-                .Where(x => x.SurveyId == survey.Id)
-                .FirstOrDefault();
-            if ( question == null )
-            {
-                question =  new Question()
-                {
-                    Text = "How did you like our services?",
-                    Category = SurveyCategory.HospitalSurvey,
-                    SurveyId = survey.Id
-                };
-                UoW.GetRepository<IQuestionWriteRepository>().Add(question);
-            }
+//        private AnsweredSurveyDTO AddTestDataToDatabase(Patient testPatient)
+//        {
+//            var testDoctor = UoW.GetRepository<IDoctorReadRepository>().GetAll().FirstOrDefault(x => x.FirstName == "TestDoctor");
+//            var testRoom = UoW.GetRepository<IRoomReadRepository>().GetAll().FirstOrDefault(x => x.Name == "TestRoom");
+//            var survey = UoW.GetRepository<ISurveyReadRepository>().GetAll().FirstOrDefault();
+//            if (survey == null)
+//            {
+//                survey =  new Survey()
+//                {
+//                    CreatedDate = DateTime.Now
+//                };
+//                UoW.GetRepository<ISurveyWriteRepository>().Add(survey);
+//            }
+//            var question = UoW.GetRepository<IQuestionReadRepository>()
+//                .GetAll()
+//                .Where(x => x.SurveyId == survey.Id)
+//                .FirstOrDefault();
+//            if ( question == null )
+//            {
+//                question =  new Question()
+//                {
+//                    Text = "How did you like our services?",
+//                    Category = SurveyCategory.HospitalSurvey,
+//                    SurveyId = survey.Id
+//                };
+//                UoW.GetRepository<IQuestionWriteRepository>().Add(question);
+//            }
           
-            var answeredQuestionHospital = new AnsweredQuestionDTO
-            {
-                QuestionId = question.Id,
-                Rating = 5,
-                Type = SurveyCategory.HospitalSurvey
-            };
+//            var answeredQuestionHospital = new AnsweredQuestionDTO
+//            {
+//                QuestionId = question.Id,
+//                Rating = 5,
+//                Type = SurveyCategory.HospitalSurvey
+//            };
 
-            var answeredQuestionDTOs = new List<AnsweredQuestionDTO>
-            {
-                answeredQuestionHospital
-            };
+//            var answeredQuestionDTOs = new List<AnsweredQuestionDTO>
+//            {
+//                answeredQuestionHospital
+//            };
 
-            var scheduledEvent = new ScheduledEvent()
-            {
+//            var scheduledEvent = new ScheduledEvent()
+//            {
 
-                ScheduledEventType = 0,
-                IsCanceled = false,
-                IsDone = false,
-                StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(3).Day),
-                EndDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(3).Day),
-                Patient = testPatient,
-                Doctor = testDoctor,
-                Room = testRoom
-            };
-            UoW.GetRepository<IScheduledEventWriteRepository>().Add(scheduledEvent);
+//                ScheduledEventType = 0,
+//                IsCanceled = false,
+//                IsDone = false,
+//                StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(3).Day),
+//                EndDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(3).Day),
+//                Patient = testPatient,
+//                Doctor = testDoctor,
+//                Room = testRoom
+//            };
+//            UoW.GetRepository<IScheduledEventWriteRepository>().Add(scheduledEvent);
 
-            var answeredSurveyDTO = new AnsweredSurveyDTO()
-            {
-                questions = answeredQuestionDTOs,
-                AnsweredDate = DateTime.Now,
-                SurveyId = survey.Id,
-                ScheduledEventId = scheduledEvent.Id
+//            var answeredSurveyDTO = new AnsweredSurveyDTO()
+//            {
+//                questions = answeredQuestionDTOs,
+//                AnsweredDate = DateTime.Now,
+//                SurveyId = survey.Id,
+//                ScheduledEventId = scheduledEvent.Id
 
-            };
+//            };
 
-            return answeredSurveyDTO;
-        }
-    }
-}
+//            return answeredSurveyDTO;
+//        }
+//    }
+//}

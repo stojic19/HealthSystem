@@ -71,14 +71,16 @@ namespace HospitalApi.Controllers
 
         [Authorize(Roles = "Patient")]
         [HttpPost("{userName}")]
-        public IActionResult ScheduleRecommendedAppointment([FromBody] RecommendedAppointmentDTO newAppointment,string userName)
+        public IActionResult ScheduleRecommendedAppointment([FromBody] RecommendedAppointmentDTO newAppointment, string userName)
         {
-            var appointmentToCreate = _mapper.Map<ScheduledEvent>(newAppointment);
-            appointmentToCreate.ScheduleEventForPatient(_uow.GetRepository<IPatientReadRepository>().GetByUsername(userName));
-            appointmentToCreate.ScheduleEventRoom(_uow.GetRepository<IDoctorReadRepository>().GetDoctor(newAppointment.DoctorId).Room);
-            var scheduledEvent = _uow.GetRepository<IScheduledEventWriteRepository>().Add(appointmentToCreate);
-            return scheduledEvent != null ? Ok(scheduledEvent) : StatusCode(StatusCodes.Status500InternalServerError, "Internal server error!");
-
+            var loggedInPatient = _uow.GetRepository<IPatientReadRepository>().GetAll()
+                .First(x => x.UserName == userName);
+            newAppointment.RoomId =
+                _uow.GetRepository<IDoctorReadRepository>().GetDoctor(newAppointment.DoctorId).RoomId;
+            newAppointment.PatientId = loggedInPatient.Id;
+            var addedAppointment = loggedInPatient.ScheduleAppointment(_mapper.Map<ScheduledEvent>(newAppointment));
+            _uow.GetRepository<IPatientWriteRepository>().Update(loggedInPatient);
+            return addedAppointment != null ? Ok(addedAppointment) : StatusCode(StatusCodes.Status500InternalServerError, "Internal server error!");
         }
 
         [Authorize(Roles = "Patient")]

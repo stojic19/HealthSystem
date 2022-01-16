@@ -35,7 +35,6 @@ namespace Hospital.MedicalRecords.Model
             return newAppointment;
         }
 
-
         public void CancelAppointment(int eventId)
         {
             foreach (var se in ScheduledEvents.ToArray())

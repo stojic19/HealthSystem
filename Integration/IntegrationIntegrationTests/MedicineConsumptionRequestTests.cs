@@ -62,9 +62,11 @@ namespace IntegrationIntegrationTests
             return medicineConsumptionReportDto;
         }
 
-        [Fact]
+        [SkippableFact]
         public async Task Send_consumption_report_test()
         {
+            var env = Environment.GetEnvironmentVariable("PRODUCTION");
+            Skip.If(env == null || env.Equals("1")); // 0 za local, 1 za produciton
             MedicineConsumptionReportDTO medicineConsumptionReportDto = GetMedicineConsumptionReportDtoTestData();
             var content = GetContent(medicineConsumptionReportDto);
             var response = await Client.PostAsync(BaseUrl+ "api/Report/SendConsumptionReport", content);

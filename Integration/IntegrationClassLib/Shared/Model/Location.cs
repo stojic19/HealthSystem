@@ -28,7 +28,7 @@ namespace Integration.Shared.Model
         public List<LocationInfo> Results { get; set; }
     }
 
-    public class Location
+    public class Location : ValueObject
     {
         private static string geoapify_api_key = "5bdc7059b84b4066963d7e6c07e9f3af";
         private double Latitude { get; }
@@ -115,6 +115,12 @@ namespace Integration.Shared.Model
             IRestResponse response = client.Get(request);
             LocationInfo result = JsonConvert.DeserializeObject<LocationResults>(response.Content).Results.First();
             return result.Housenumber;
+        }
+
+        protected override IEnumerable<object> GetEqualityComponents()
+        {
+            yield return Latitude;
+            yield return Longitude;
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Hospital.Schedule.Model
     public class AnsweredSurvey
     {
         public int Id { get; private set; }
-        public IEnumerable<AnsweredQuestion> AnsweredQuestions { get; private set; }
+        public List<AnsweredQuestion> AnsweredQuestions { get; private set; }
         public DateTime AnsweredDate { get; private set; }
         public int SurveyId { get; private set; }
         public Survey Survey { get; private set; }
@@ -20,7 +20,7 @@ namespace Hospital.Schedule.Model
         {
                 
         }
-        public AnsweredSurvey(IEnumerable<AnsweredQuestion> answeredQuestions, DateTime answeredDate, int surveyId, Survey survey, int patientId, Patient patient, int scheduledEventId, ScheduledEvent scheduledEvent)
+        public AnsweredSurvey(List<AnsweredQuestion> answeredQuestions, DateTime answeredDate, int surveyId, Survey survey, int patientId, Patient patient, int scheduledEventId, ScheduledEvent scheduledEvent)
         {
             AnsweredQuestions = answeredQuestions;
             AnsweredDate = answeredDate;

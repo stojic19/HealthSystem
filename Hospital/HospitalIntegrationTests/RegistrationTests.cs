@@ -42,14 +42,14 @@ namespace HospitalIntegrationTests
             ClearAllTestData();
 
             foundRegisteredUser.ShouldNotBeNull();
-            foundRegisteredUser.UserName.ShouldBe("testUserName");
+            foundRegisteredUser.UserName.ShouldBe("testUserName1");
         }
 
         private void ClearUser()
         {
             var user = UoW.GetRepository<IPatientReadRepository>()
                 .GetAll().ToList()
-                .FirstOrDefault(x => x.UserName == "testUserName");
+                .FirstOrDefault(x => x.UserName == "testUserName1");
             if (user == null) return;
             {
                 var medicalRecord = UoW.GetRepository<IMedicalRecordReadRepository>()
@@ -64,7 +64,7 @@ namespace HospitalIntegrationTests
         {
             var user = UoW.GetRepository<IPatientReadRepository>()
                 .GetAll().ToList()
-                .FirstOrDefault(x => x.UserName == "testUserName");
+                .FirstOrDefault(x => x.UserName == "testUserName1");
 
             if (user == null) return;
             {
@@ -143,7 +143,7 @@ namespace HospitalIntegrationTests
 
             return new NewPatientDTO()
             {
-                UserName = "testUserName",
+                UserName = "testUserName1",
                 Email = "test1email@gmail.com",
                 Password = "Test Passw0rd",
                 MedicalRecord = new NewMedicalRecordDTO()

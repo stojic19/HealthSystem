@@ -38,12 +38,8 @@ namespace IntegrationAPI.Controllers.Tenders
     [ApiController]
     public class TenderController : BaseIntegrationController
     {
-        private readonly IHttpRequestSender _requestSender;
 
-        public TenderController(IUnitOfWork uow, IHttpRequestSender requestSender) : base(uow)
-        {
-            _requestSender = requestSender;
-        }
+        public TenderController(IUnitOfWork uow, IHttpRequestSender requestSender) : base(uow, requestSender) { }
 
         [HttpPost, Produces("application/json")]
         public IActionResult CreateTender(CreateTenderDto createTenderDto)
@@ -238,7 +234,7 @@ namespace IntegrationAPI.Controllers.Tenders
             if (pharmacy == null) return NotFound("Pharmacy not registered in hospital");
 
             string targetUrl = _hospitalBaseUrl + "/api/Medication/AddMedicineTender";
-            IRestResponse response = _requestSender.Post(targetUrl, tenderProcurementDto);
+            IRestResponse response = _httpRequestSender.Post(targetUrl, tenderProcurementDto);
             if (response.StatusCode != HttpStatusCode.OK)
             {
                 return BadRequest("Hospital could not add received medicine");

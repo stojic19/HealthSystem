@@ -124,6 +124,7 @@ export class RecommendedAppointmentComponent implements OnInit {
           'Appointment successfully scheduled!',
           'Dismiss'
         );
+        window.location.reload();
       },
       (err) => {
         let parts = err.error.split(':');

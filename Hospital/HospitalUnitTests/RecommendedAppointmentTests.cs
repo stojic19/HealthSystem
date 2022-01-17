@@ -52,9 +52,9 @@ namespace HospitalUnitTests
             var firstDoctor = new Doctor(1, 3, new Specialization("General Practice", "")) {Room = room};
             Context.Doctors.Add(firstDoctor);
             Context.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment,false,false, new DateTime(2023, 12, 16, 13, 0, 0),
-                new DateTime(2023, 12, 16, 13, 30, 0),new DateTime(),0,1,firstDoctor));
+                new DateTime(2023, 12, 16, 13, 30, 0),new DateTime(),1,1,firstDoctor));
             Context.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, false, false, new DateTime(2023, 12, 16, 15, 0, 0),
-                new DateTime(2023, 12, 16, 15, 30, 0), new DateTime(), 0, 1, firstDoctor));
+                new DateTime(2023, 12, 16, 15, 30, 0), new DateTime(), 1, 1, firstDoctor));
             Context.SaveChanges();
 
             var service = new ScheduleAppointmentService(UoW);
@@ -125,7 +125,7 @@ namespace HospitalUnitTests
         public void Available_appointments_when_date_is_priority()
         {
             ClearDbContext();
-            var room = new Room { Id = 1, Name = "Ordination" };
+            var room = new Room {Name = "Ordination" };
             Context.Rooms.Add(room);
             Context.Shifts.Add(new Shift(3, "second", 13, 17));
             var firstDoctor = new Doctor(1, 3, new Specialization("General Practice", "")) { Room = room };

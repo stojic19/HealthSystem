@@ -54,6 +54,7 @@ export class PatientMedicalRecordComponent implements OnInit {
   currentUser!: ICurrentUser;
   response!: string;
   isVisible!: boolean;
+  isVisibleRecommended! : boolean;
 
   constructor(
     private _sanitizer: DomSanitizer,
@@ -65,6 +66,7 @@ export class PatientMedicalRecordComponent implements OnInit {
     this.futureAppointments = new MatTableDataSource<IAppointment>();
     this.finishedAppointments = new MatTableDataSource<IFinishedAppointment>();
     this.canceledAppointments = new MatTableDataSource<IAppointment>();
+    this.isVisibleRecommended = false;
 
     this.currentUser = JSON.parse(localStorage.getItem('currentUser')!);
 
@@ -128,9 +130,11 @@ export class PatientMedicalRecordComponent implements OnInit {
 
   scheduleBasic() {
     this.isVisible = true;
+    this.isVisibleRecommended=false;
   }
 
   scheduleRecommended() {
-    this._router.navigate(['/recommendedAppointments']);
+    this.isVisibleRecommended = true;
+    this.isVisible = false;
   }
 }

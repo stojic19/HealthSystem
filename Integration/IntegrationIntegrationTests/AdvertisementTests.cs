@@ -32,7 +32,7 @@ namespace IntegrationIntegrationTests
         {
             DeleteData();
             AddData();
-            var mockSender = SetupMock();
+            var mockSender = ArrangeMock();
             AdvertisementController ctr = new AdvertisementController(UoW, mockSender.Object);
             OkObjectResult result = ctr.GetAdvertisementFromPharmacies() as OkObjectResult;
             var resultContent = result.Value as List<AdvertisementDto>;
@@ -40,7 +40,7 @@ namespace IntegrationIntegrationTests
             DeleteData();
         }
 
-        private Mock<IHttpRequestSender> SetupMock()
+        private Mock<IHttpRequestSender> ArrangeMock()
         {
             List<AdvertisementDto> dto1 = new List<AdvertisementDto>();
             dto1.Add(new AdvertisementDto
@@ -68,7 +68,6 @@ namespace IntegrationIntegrationTests
                 MedicationName = "Aspirin4",
                 Title = "TestTitle4"
             });
-            Mock<IHttpRequestSender> mockSender = new Mock<IHttpRequestSender>();
             RestResponse response1 = new RestResponse();
             response1.StatusCode = HttpStatusCode.OK;
             response1.Content = JsonConvert.SerializeObject(dto1);
@@ -83,6 +82,7 @@ namespace IntegrationIntegrationTests
             List<string> urls = new List<string>();
             urls.Add(phar1.BaseUrl + "/api/Advertisement/GetAdvertisements?apiKey=" + phar1.ApiKey);
             urls.Add(phar2.BaseUrl + "/api/Advertisement/GetAdvertisements?apiKey=" + phar2.ApiKey);
+            Mock<IHttpRequestSender> mockSender = new Mock<IHttpRequestSender>();
             mockSender.Setup(m => m.Get(urls[0]))
                 .Returns(response1);
             mockSender.Setup(m => m.Get(urls[1]))

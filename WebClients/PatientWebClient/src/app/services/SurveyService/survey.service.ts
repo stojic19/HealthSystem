@@ -9,10 +9,10 @@ import { ISurvey } from 'src/app/interfaces/isurvey';
 })
 export class SurveyService {
   constructor(private _http: HttpClient) { }
-  answerSurvey(answeredSurvey: IAnsweredSurvey): Observable<IAnsweredSurvey> {
-    return this._http.post<IAnsweredSurvey>('/api/AnsweredSurvey/CreateAnsweredSurvey', answeredSurvey);
+  answerSurvey(answeredSurvey: IAnsweredSurvey, userName : string): Observable<IAnsweredSurvey> {
+    return this._http.post<IAnsweredSurvey>('/api/AnsweredSurvey/CreateAnsweredSurvey/'+ userName, answeredSurvey);
   }
   getSurvey(): any {
-    return this._http.get<ISurvey>('/api/Survey/getSurveyByCategories/1');
+    return this._http.get<ISurvey>('/api/Survey/getSurveyByCategories');
   }
 }

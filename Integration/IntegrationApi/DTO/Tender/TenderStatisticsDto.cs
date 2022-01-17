@@ -8,5 +8,6 @@ namespace IntegrationApi.DTO.Tender
     public class TenderStatisticsDto
     {
         public List<PharmacyTenderStatisticsDto> PharmacyStatistics { get; set; }
+        public string PdfUrl { get; set; }
     }
 }

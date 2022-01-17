@@ -12,31 +12,18 @@ export class RegisterPharmacyComponent implements OnInit {
 
   constructor(private _PharmacyService: PharmacyService, private toastr: ToastrService, private router:Router) { }
 
-  name:string="";
-  streetNumber:string="";
-  streetName:string="";
-  cityName:string="";
-  postalCode:string="";
-  country:string="";
   baseUrl:string="";
-  grpcSupported:boolean=false;
 
   ngOnInit(): void {
   }
 
   registerPharmacy(){
-    var val = {name:this.name,
-              streetNumber:this.streetNumber,
-              streetName:this.streetName,
-              city:{
-                name:this.cityName,
-                postalCode:this.postalCode,
-                country:{
-                  name:this.country
-                }
-              },
+    if(this.baseUrl === ""){
+      this.toastr.error("Please enter url!");
+      return;
+    }
+    var val = {
               baseUrl:this.baseUrl,
-              grpcSupported:this.grpcSupported
     }
     this._PharmacyService.registerPharmacy(val).subscribe(res =>
       {
@@ -44,5 +31,4 @@ export class RegisterPharmacyComponent implements OnInit {
         this.router.navigate(['/pharmacy-list']);
       },(error) => this.toastr.error(error.error, "Error!"));
   }
-
 }

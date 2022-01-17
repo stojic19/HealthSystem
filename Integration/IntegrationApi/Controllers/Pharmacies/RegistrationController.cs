@@ -1,4 +1,5 @@
-﻿using Integration.Pharmacies.Model;
+﻿using System.Net;
+using Integration.Pharmacies.Model;
 using Integration.Pharmacies.Service;
 using Integration.Shared.Model;
 using Integration.Shared.Repository.Base;
@@ -22,7 +23,7 @@ namespace IntegrationAPI.Controllers.Pharmacies
             _pharmacyMasterService = new PharmacyMasterService(unitOfWork);
         }
 
-        [HttpPost]
+        [HttpPost, Produces("application/json")]
         public IActionResult RegisterPharmacy(PharmacyUrlDTO pharmacyUrlDto)
         {
             //TODO Ucitati ove informacije iz nekog filea - pogledati kako je u pharmacy
@@ -34,13 +35,16 @@ namespace IntegrationAPI.Controllers.Pharmacies
                 Name = "Nasa bolnica",
                 StreetName = "Vojvode Stepe",
                 StreetNumber = "14",
-                CityName = city.Name
+                CityName = city.Name,
+                Email = "psw.company2@gmail.com"
             };
             RestClient client = new RestClient();
             string targetUrl = pharmacyUrlDto.BaseUrl + "/api/Registration/RegisterHospital";
             RestRequest request = new RestRequest(targetUrl);
             request.AddJsonBody(dto);
-            var pharmacyString = client.Post(request).Content;
+            var result = client.Post(request);
+            if (result.StatusCode != HttpStatusCode.OK) return BadRequest("Failed to reach pharmacy, please try again!");
+            var pharmacyString = result.Content;
             PharmacyDTO pharmacyDto = JsonConvert.DeserializeObject<PharmacyDTO>(pharmacyString);
             Location location = new Location(pharmacyDto.Latitude, pharmacyDto.Longitude);
             Pharmacy newPaPharmacy = new Pharmacy
@@ -55,7 +59,7 @@ namespace IntegrationAPI.Controllers.Pharmacies
                 Location = new Location(pharmacyDto.Latitude, pharmacyDto.Longitude)
             };
             _pharmacyMasterService.SavePharmacy(newPaPharmacy);
-            return Ok();
+            return Ok("Pharmacy registered successfully");
         }
     }
 }

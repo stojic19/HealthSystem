@@ -8,12 +8,15 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
 using Integration.Pharmacies.Model;
 using Integration.Pharmacies.Repository;
+using Integration.Shared.Service;
 using IntegrationAPI.Controllers.Base;
 using IntegrationApi.DTO.Shared;
 using IntegrationAPI.DTO.Shared;
@@ -26,6 +29,8 @@ using RabbitMQ.Client.Events;
 using RestSharp;
 using IntegrationAPI.Adapters.PDF;
 using IntegrationAPI.Adapters.PDF.Implementation;
+using System.IO;
+using System.Threading;
 
 namespace IntegrationAPI.Controllers.Tenders
 {
@@ -72,7 +77,7 @@ namespace IntegrationAPI.Controllers.Tenders
                 tender.AddMedicationRequest(new MedicationRequest(medicineRequestDto.MedicineName, medicineRequestDto.Quantity));
             }
             _unitOfWork.GetRepository<ITenderWriteRepository>().Add(tender);
-            var pharmacies = _unitOfWork.GetRepository<IPharmacyReadRepository>().GetAll();
+            var pharmacies = _unitOfWork.GetRepository<IPharmacyReadRepository>().GetAll().ToList();
             try
             {
                 var factory = new ConnectionFactory() { HostName = Environment.GetEnvironmentVariable("RABBITMQ_HOST") };
@@ -104,6 +109,7 @@ namespace IntegrationAPI.Controllers.Tenders
                             var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(dto));
                             channel.BasicPublish("new tender", pharmacyApiKey.ToString(), null, body);
                         }
+                        if (pharmacies.Any()) new EmailService().SendNewTenderMail(tender, pharmacies);
                     }
                 }
             }
@@ -191,14 +197,17 @@ namespace IntegrationAPI.Controllers.Tenders
                     channel.BasicPublish("declare winning offer", tender.WinningOffer.Pharmacy.ApiKey.ToString(), null, body);
                 }
 
+                var mailServ = new EmailService();
+                mailServ.SendWinningOfferMail(tender);
                 var pharmacies = _unitOfWork.GetRepository<IPharmacyReadRepository>().GetAll().Where(p => p.Id != tender.WinningOffer.PharmacyId);
                 CloseTenderRmq(factory, pharmacies, tender);
+                if(pharmacies.Any()) mailServ.SendCloseTenderMail(tender, pharmacies);
             }
             catch
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error while sending closed tender via rabbitmq!");
             }
-            return Ok();
+            return Ok("Winner chosen");
         }
         [HttpPost]
         public IActionResult CloseTender([FromBody]int tenderId)
@@ -210,9 +219,10 @@ namespace IntegrationAPI.Controllers.Tenders
             _unitOfWork.GetRepository<ITenderWriteRepository>().Update(tender);
             try
             {
-                var pharmacies = _unitOfWork.GetRepository<IPharmacyReadRepository>().GetAll();
+                var pharmacies = _unitOfWork.GetRepository<IPharmacyReadRepository>().GetAll().ToList();
                 var factory = new ConnectionFactory() { HostName = Environment.GetEnvironmentVariable("RABBITMQ_HOST") };
                 CloseTenderRmq(factory, pharmacies, tender);
+                if (pharmacies.Any()) new EmailService().SendCloseTenderMail(tender, pharmacies);
             }
             catch
             {
@@ -313,8 +323,33 @@ namespace IntegrationAPI.Controllers.Tenders
                 });
             }
             IPDFAdapter adapter = new DynamicPDFAdapter();
-            adapter.MakeTenderStatisticsPdf(tenderStatisticsDto, timeRange);
+            tenderStatisticsDto.PdfUrl = adapter.MakeTenderStatisticsPdf(tenderStatisticsDto, timeRange);
             return tenderStatisticsDto;
+        }
+
+        [HttpPost, Produces("application/pdf")]
+        public IActionResult GetStatisticsPdf([FromQuery(Name = "fileName")] string fileName)
+        {
+            string destDirectory = "TenderStatistics";
+
+            string destFileName = Path.GetFullPath(System.IO.Path.Combine(destDirectory, fileName));
+            string fullDestDirPath = Path.GetFullPath(destDirectory + Path.DirectorySeparatorChar);
+            if (destFileName.StartsWith(fullDestDirPath, StringComparison.Ordinal))
+            {
+                try
+                {
+                    var stream = new FileStream(destFileName, FileMode.Open);
+                    return File(stream, "application/pdf", fileName);
+                }
+                catch
+                {
+                    return NotFound("PDF not found");
+                }
+            }
+            else
+            {
+                return BadRequest("Cannot open PDF");
+            }
         }
     }
 }

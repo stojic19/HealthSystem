@@ -11,14 +11,11 @@ namespace IntegrationEndToEndTests.Pages
 {
     public class PharmacyRegistrationPage : BasePage
     {
-        private IWebElement Name => _driver.FindElement(By.Id("name"));  
-        private IWebElement StreetNumber => _driver.FindElement(By.Id("streetNumber"));  
-        private IWebElement StreetName => _driver.FindElement(By.Id("streetName"));  
-        private IWebElement CityName => _driver.FindElement(By.Id("cityName"));  
-        private IWebElement PostalCode => _driver.FindElement(By.Id("postalCode"));  
-        private IWebElement Country => _driver.FindElement(By.Id("country"));  
         private IWebElement BaseUrl => _driver.FindElement(By.Id("baseUrl"));
         private IWebElement SubmitButton => _driver.FindElement(By.Id("submitButton"));
+
+        public readonly string EmptyUrl = "Please enter url!";
+        public readonly string InvalidUrl = "Failed to reach pharmacy, please try again!";
 
         public PharmacyRegistrationPage(IWebDriver driver) : base(driver){}
 
@@ -42,33 +39,9 @@ namespace IntegrationEndToEndTests.Pages
             });
         }
 
-        public void InsertName(string name)
-        {
-            this.Name.SendKeys(name);
-        }
-        public void InsertStreetNumber(string streetNumber)
-        {
-            this.StreetNumber.SendKeys(streetNumber);
-        }
-        public void InsertStreetName(string streetName)
-        {
-            this.StreetName.SendKeys(streetName);
-        }
-        public void InsertCityName(string cityName)
-        {
-            this.CityName.SendKeys(cityName);
-        }
-        public void InsertPostalCode(string postalCode)
-        {
-            this.PostalCode.SendKeys(postalCode);
-        }
-        public void InsertCountry(string country)
-        {
-            this.Country.SendKeys(country);
-        }
         public void InsertBaseUrl(string baseUrl)
         {
-            this.BaseUrl.SendKeys(baseUrl);
+            BaseUrl.SendKeys(baseUrl);
         }
 
         public void Navigate() => _driver.Navigate().GoToUrl(_angularBaseUrl + "pharmacy-register");
@@ -76,6 +49,12 @@ namespace IntegrationEndToEndTests.Pages
         public void Submit()
         {
             SubmitButton.Click();
+        }
+
+        public string GetToastrMessage()
+        {
+            IWebElement toastrMessage = _driver.FindElement(By.ClassName("toast-message"));
+            return toastrMessage.Text;
         }
     }
 }

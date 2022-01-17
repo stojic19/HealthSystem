@@ -5,6 +5,7 @@ using Integration.Shared.Repository;
 using IntegrationIntegrationTests.Base;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -26,9 +27,11 @@ namespace IntegrationIntegrationTests
         {
         }
 
-        [Fact]
+        [SkippableFact]
         public void Receive_tender_offer_test()
         {
+            var env = Environment.GetEnvironmentVariable("PRODUCTION");
+            Skip.If(env == null || env.Equals("1")); // 0 za local, 1 za produciton
             DeleteTestData();
             GenerateTestData();
 

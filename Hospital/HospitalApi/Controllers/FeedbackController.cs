@@ -1,4 +1,5 @@
 using AutoMapper;
+using Hospital.MedicalRecords.Repository;
 using Hospital.Schedule.Model;
 using Hospital.Schedule.Repository;
 using Hospital.SharedModel.Model.Enumerations;
@@ -59,27 +60,14 @@ namespace HospitalApi.Controllers
         [HttpPost]
         public IActionResult InsertFeedback(NewFeedbackDTO feedbackDTO)
         {
-            try
-            {
-                if (feedbackDTO == null)
-                {
-                    return BadRequest("Incorrect feedback format sent! Please try again.");
-                }
+            var feedbackWriteRepo = _uow.GetRepository<IFeedbackWriteRepository>();
+            var loggedInPatient = _uow.GetRepository<IPatientReadRepository>().GetAll().First(x => x.UserName.Equals(feedbackDTO.PatientUsername));
+            feedbackDTO.PatientId = loggedInPatient.Id;
+            var newFeedback = _mapper.Map<Feedback>(feedbackDTO);
+            newFeedback.Patient = loggedInPatient;
+            return feedbackWriteRepo.Add(newFeedback) == null ? StatusCode(StatusCodes.Status500InternalServerError, "Could not insert feedback in the database.")
+                : Ok("Your feedback has been submitted.");
 
-                var feedbackWriteRepo = _uow.GetRepository<IFeedbackWriteRepository>();
-                Feedback addedFeedback = feedbackWriteRepo.Add(_mapper.Map<Feedback>(feedbackDTO));
-
-                if(addedFeedback == null)
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Could not insert feedback in the database.");
-                }
-
-                return Ok("Your feedback has been submitted.");
-            }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error inserting feedback in the database.");
-            }
         }
 
         

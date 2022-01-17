@@ -25,6 +25,8 @@ namespace Integration.Pharmacies.Model
 
         public string ImageName { get; set; }
         
+        public string Email { get; set; }
+
         public bool GrpcSupported { get; set; }
 
         public Location Location { get; set; }

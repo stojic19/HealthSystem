@@ -34,7 +34,8 @@ namespace IntegrationAPI.Controllers.Pharmacies
                 Name = "Nasa bolnica",
                 StreetName = "Vojvode Stepe",
                 StreetNumber = "14",
-                CityName = city.Name
+                CityName = city.Name,
+                Email = "psw.company2@gmail.com"
             };
             RestClient client = new RestClient();
             string targetUrl = pharmacyUrlDto.BaseUrl + "/api/Registration/RegisterHospital";

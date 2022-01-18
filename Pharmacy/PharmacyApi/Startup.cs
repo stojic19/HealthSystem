@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Autofac;
@@ -54,18 +53,9 @@ namespace PharmacyApi
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PharmacyApi", Version = "v1" });
             });
-
-            try
-            {
-                services.AddHostedService<NewTenderRabbitMQService>();
-                services.AddHostedService<CloseTenderRabbitMQService>();
-                services.AddHostedService<WinningTenderOfferRabbitMQService>();
-            }
-            catch(ArgumentException e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-            
+            services.AddHostedService<NewTenderRabbitMQService>();
+            services.AddHostedService<CloseTenderRabbitMQService>();
+            services.AddHostedService<WinningTenderOfferRabbitMQService>();
 
             PharmacyDetails details = new PharmacyDetails();
 

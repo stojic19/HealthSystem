@@ -13,7 +13,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Integration.Database.EfStructures;
@@ -21,7 +20,6 @@ using IntegrationAPI.HttpRequestSenders;
 using IntegrationAPI.HttpRequestSenders.Implementation;
 using Integration.Tendering.Service;
 using Microsoft.EntityFrameworkCore;
-using RabbitMQ.Client.Exceptions;
 
 namespace IntegrationAPI
 {
@@ -48,16 +46,8 @@ namespace IntegrationAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "IntegrationApi", Version = "v1" });
             });
-
-            try
-            {
-                services.AddHostedService<BenefitRabbitMqService>();
-                services.AddHostedService<NewTenderOfferRabbitMQService>();
-            }
-            catch(ConnectFailureException ex)
-            {
-                Debug.WriteLine("WARNING: RABBITMQ SERVICES UNAVAILABLE");
-            }
+            services.AddHostedService<BenefitRabbitMqService>();
+            services.AddHostedService<NewTenderOfferRabbitMQService>();
 
             services.AddDbContextPool<AppDbContext>(options =>
             {

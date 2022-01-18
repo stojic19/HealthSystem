@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -39,7 +40,15 @@ namespace Integration.Partnership.Service
         {
             var factory = new ConnectionFactory { HostName = Environment.GetEnvironmentVariable("RABBITMQ_HOST") }; //localhost
 
-            _connection = factory.CreateConnection();
+            try
+            {
+                _connection = factory.CreateConnection();
+            }
+            catch
+            {
+                Debug.WriteLine("WARNING: BENEFIT RABBITMQ SERVICES UNAVAILABLE");
+                return;
+            }
 
             _channel = _connection.CreateModel();
 
@@ -55,6 +64,7 @@ namespace Integration.Partnership.Service
 
         protected override Task ExecuteAsync(CancellationToken cancellationToken)
         {
+            if(_channel == null) return Task.CompletedTask;
             var consumer = new EventingBasicConsumer(_channel);
             consumer.Received += (model, ea) =>
             {
@@ -94,8 +104,8 @@ namespace Integration.Partnership.Service
 
         public override void Dispose()
         {
-            _channel.Close();
-            _connection.Close();
+            if(_channel != null) _channel.Close();
+            if(_connection != null) _connection.Close();
             base.Dispose();
         }
     }

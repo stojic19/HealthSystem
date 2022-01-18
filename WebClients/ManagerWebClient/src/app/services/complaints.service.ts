@@ -19,7 +19,7 @@ export class ComplaintsService{
     }
 
     addComplaint(val:any){
-        return this._httpClient.post(this._APIUrl+'api/PharmacyCommunication/PostComplaint',val);
+        return this._httpClient.post(this._APIUrl+'api/Complaint/SendComplaint',val);
     }
 
     getPharmacies(): Observable<any[]>{

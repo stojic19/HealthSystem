@@ -38,7 +38,15 @@ namespace Pharmacy.Services
         {
             var factory = new ConnectionFactory { HostName = Environment.GetEnvironmentVariable("RABBITMQ_HOST") };
 
-            _connection = factory.CreateConnection();
+            try
+            {
+                _connection = factory.CreateConnection();
+            }
+            catch
+            {
+                Debug.WriteLine("WARNING: WINNING TENDER OFFER RABBITMQ SERVICES UNAVAILABLE");
+                return;
+            }
             var hospitals = _uow.GetRepository<IHospitalReadRepository>().GetAll();
             foreach (var hospital in hospitals)
             {
@@ -100,7 +108,7 @@ namespace Pharmacy.Services
             {
                 channel.Close();
             }
-            _connection.Close();
+            if (_connection != null) _connection.Close();
             base.Dispose();
         }
     }

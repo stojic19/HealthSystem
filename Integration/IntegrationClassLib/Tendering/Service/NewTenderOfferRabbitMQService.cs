@@ -93,7 +93,15 @@ namespace Integration.Tendering.Service
         {
             var factory = new ConnectionFactory { HostName = Environment.GetEnvironmentVariable("RABBITMQ_HOST") };
 
-            _connection = factory.CreateConnection();
+            try
+            {
+                _connection = factory.CreateConnection();
+            }
+            catch
+            {
+                Debug.WriteLine("WARNING: NEW TENDER RABBITMQ SERVICES UNAVAILABLE");
+                return;
+            }
             var pharmacies = _uow.GetRepository<IPharmacyReadRepository>().GetAll();
             foreach (var pharmacy in pharmacies)
             {
@@ -178,7 +186,7 @@ namespace Integration.Tendering.Service
             {
                 channel.Close();
             }
-            _connection.Close();
+            if (_connection != null) _connection.Close();
             _runThread = false;
             base.Dispose();
         }

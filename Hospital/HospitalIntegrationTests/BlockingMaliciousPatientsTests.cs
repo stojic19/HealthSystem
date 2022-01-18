@@ -29,6 +29,7 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Patient_should_be_blocked_request()
         {
+            RegisterAndLogin("Manager");
             ArrangeDatabase();
             var patientRepo = UoW.GetRepository<IPatientReadRepository>();
             var patient = patientRepo.GetAll().FirstOrDefault(x => x.UserName == "testUsername");
@@ -39,7 +40,7 @@ namespace HospitalIntegrationTests
                 FirstName = patient.FirstName
             };
             var content = GetContent(userDTO);
-            var response = await Client.PutAsync(BaseUrl + "api/BlockPatient/BlockPatient", content);
+            var response = await ManagerClient.PutAsync(BaseUrl + "api/BlockPatient/BlockPatient", content);
             var responseContent = await response.Content.ReadAsStringAsync();
             var responsePatients = JsonConvert.DeserializeObject<List<Patient>>(responseContent);
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -54,11 +55,12 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Patient_should_be_malicious_request()
         {
+            RegisterAndLogin("Manager");
             ArrangeDataForGetMaliciousTrue();
             var patientRepo = UoW.GetRepository<IPatientReadRepository>();
             var isMalicious = false;
             var patient = patientRepo.GetAll().FirstOrDefault(x => x.UserName == "testUsername");
-            var response = await Client.GetAsync(BaseUrl + "api/BlockPatient/GetMaliciousPatients");
+            var response = await ManagerClient.GetAsync(BaseUrl + "api/BlockPatient/GetMaliciousPatients");
             var responseContent = await response.Content.ReadAsStringAsync();
             var responsePatients = JsonConvert.DeserializeObject<List<Patient>>(responseContent);
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -74,11 +76,12 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Patient_should_not_be_malicious_request()
         {
+            RegisterAndLogin("Manager");
             ArrangeDataForGetMaliciousFalse();
             var patientRepo = UoW.GetRepository<IPatientReadRepository>();
             var isMalicious = false;
             var patient = patientRepo.GetAll().FirstOrDefault(x => x.UserName == "testUsername");
-            var response = await Client.GetAsync(BaseUrl + "api/BlockPatient/GetMaliciousPatients");
+            var response = await ManagerClient.GetAsync(BaseUrl + "api/BlockPatient/GetMaliciousPatients");
             var responseContent = await response.Content.ReadAsStringAsync();
             var responsePatients = JsonConvert.DeserializeObject<List<Patient>>(responseContent);
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -170,6 +173,12 @@ namespace HospitalIntegrationTests
                     TwoFactorEnabled = false,
                     LockoutEnabled = false,
                     AccessFailedCount = 0,
+                    Shift = new Shift()
+                    {
+                        From = 8,
+                        To = 4,
+                        Name = "prva"
+                    },
                     Room = room,
                     City = city
 
@@ -354,6 +363,12 @@ namespace HospitalIntegrationTests
                     TwoFactorEnabled = false,
                     LockoutEnabled = false,
                     AccessFailedCount = 0,
+                    Shift = new Shift()
+                    {
+                        From = 8,
+                        To = 4,
+                        Name = "prva"
+                    },
                     Room = room,
                     City = city
 
@@ -539,6 +554,12 @@ namespace HospitalIntegrationTests
                     TwoFactorEnabled = false,
                     LockoutEnabled = false,
                     AccessFailedCount = 0,
+                    Shift = new Shift()
+                    {
+                        From = 8,
+                        To = 4,
+                        Name = "prva"
+                    },
                     Room = room,
                     City = city
 
@@ -638,6 +659,14 @@ namespace HospitalIntegrationTests
             if (room != null)
             {
                 UoW.GetRepository<IRoomWriteRepository>().Delete(room);
+            }
+            var shift = UoW.GetRepository<IShiftReadRepository>()
+                .GetAll().ToList()
+                .FirstOrDefault(x => x.Name == "prva");
+
+            if (shift != null)
+            {
+                UoW.GetRepository<IShiftWriteRepository>().Delete(shift);
             }
         }
     }

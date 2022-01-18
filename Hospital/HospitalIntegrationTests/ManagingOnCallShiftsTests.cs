@@ -8,11 +8,9 @@ using Hospital.SharedModel.Repository;
 using HospitalIntegrationTests.Base;
 using Microsoft.EntityFrameworkCore;
 using Shouldly;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -27,11 +25,11 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Adding_doctor_to_shift_should_return_200()
         {
-
+            RegisterAndLogin("Manager");
             var doctor = InsertDoctor("doctor");
             var shift = InsertOnCallDuty(1, 3);
 
-            var response = await Client.GetAsync(BaseUrl + "api/OnCallShifts/AddDoctor?shiftId=" + shift.Id + "&doctorId=" + doctor.Id);
+            var response = await ManagerClient.GetAsync(BaseUrl + "api/OnCallShifts/AddDoctor?shiftId=" + shift.Id + "&doctorId=" + doctor.Id);
 
 
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -49,10 +47,11 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Remove_doctor_from_shift_should_return_200()
         {
+            RegisterAndLogin("Manager");
             var shift = InsertOnCallDuty(1, 1);
             var doctor = InsertDoctor("testdoctor");
 
-            var response = await Client.GetAsync(BaseUrl + "api/OnCallShifts/RemoveDoctor?shiftId=" + shift.Id + "&doctorId=" + doctor.Id);
+            var response = await ManagerClient.GetAsync(BaseUrl + "api/OnCallShifts/RemoveDoctor?shiftId=" + shift.Id + "&doctorId=" + doctor.Id);
 
 
             response.StatusCode.ShouldBe(HttpStatusCode.OK);

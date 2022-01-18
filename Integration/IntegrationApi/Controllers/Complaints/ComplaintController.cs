@@ -52,19 +52,20 @@ namespace IntegrationAPI.Controllers.Complaints
         {
             Pharmacy pharmacy = _pharmacyMasterService.GetPharmacyById(createComplaintDTO.PharmacyId);
             if (pharmacy == null) return BadRequest("Pharmacy does not exist");
+            var timeZodeDif = DateTime.Now - DateTime.Now.ToUniversalTime();
             Complaint complaint = new Complaint
             {
                 Title = createComplaintDTO.Title,
                 Description = createComplaintDTO.Description,
                 PharmacyId = pharmacy.Id,
-                CreatedDate = DateTime.Now.ToUniversalTime(),
+                CreatedDate = DateTime.Now.ToUniversalTime() + timeZodeDif,
                 ManagerId = 1
             };
             _complaintMasterService.SaveComplaint(complaint);
             ComplaintDTO complaintDTO = new ComplaintDTO
             {
                 ApiKey = complaint.Pharmacy.ApiKey,
-                CreatedDateTime = complaint.CreatedDate.ToUniversalTime(),
+                CreatedDateTime = complaint.CreatedDate,
                 Description = complaint.Description,
                 Title = complaint.Title,
             };

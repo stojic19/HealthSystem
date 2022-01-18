@@ -7,6 +7,7 @@ namespace Hospital.Schedule.Model
     public class Feedback
     {
         public int Id { get; set; }
+        public int PatientId { get; set; }
         public Patient Patient { get; set; }
 
         public FeedbackStatus FeedbackStatus { get; set; }  

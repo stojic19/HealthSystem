@@ -45,6 +45,7 @@ namespace IntegrationAPI.Controllers.Medicine
         [Produces("application/json")]
         public IActionResult SendConsumptionReport(MedicineConsumptionReportDTO report)
         {
+            report.MedicationExpenditureDTO = report.MedicationExpenditureDTO.OrderByDescending(medicine => medicine.Amount).ToList();
             if (report.MedicationExpenditureDTO.Count < 1) return BadRequest("Report is empty!");
             string fileName;
             try

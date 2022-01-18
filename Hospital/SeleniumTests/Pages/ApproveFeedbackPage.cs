@@ -1,7 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
-using System.Collections.Generic;
 using SeleniumTests.Base;
 
 namespace SeleniumTests.Pages
@@ -17,12 +16,12 @@ namespace SeleniumTests.Pages
         public ApproveFeedbackPage(IWebDriver driver) : base(driver)
         {
             this.driver = driver;
-            this._uri = _baseUrl + "/feedbacks";
+            this._uri = _baseUrlMan + "/feedbacks";
         }
 
         public string GetUrl()
         {
-            return _baseUrl + "/feedbacks";
+            return _baseUrlMan + "/feedbacks";
         }
 
         public void Approve()

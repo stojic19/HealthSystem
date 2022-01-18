@@ -71,46 +71,76 @@ namespace IntegrationAPI.Adapters.PDF.Implementation
                              + dto.MedicineConsumptions[lastIndex].MedicineName
                              + ". Amount spent: " + dto.MedicineConsumptions[lastIndex].Amount);
             WriteLine(0, 40, "List of medications spent:");
-            Table2 table = new Table2(0, _currentY + 20, 503, dto.MedicineConsumptions.Count * 31 + 42);
-            table.CellDefault.Border.Color = RgbColor.Blue;
-            table.CellSpacing = 1.0f;
-            table.Columns.Add(350);
-            table.Columns.Add(150);
-            Row2 row1 = table.Rows.Add(40, Font.HelveticaBold, 16, RgbColor.Black,
-                RgbColor.Gray);
-            row1.CellDefault.Align = TextAlign.Center;
-            row1.CellDefault.VAlign = VAlign.Center;
-            row1.Cells.Add("Medication name");
-            row1.Cells.Add("Amount spent");
-            _currentY += 50;
+
+            var table = GenerateConsumptionTable(dto);
+
+            if (_document.Pages.Count > 1) _currentY = table.Height;
+            else _currentY = 100 + table.Height;
+            WriteLine(350,30, dto.HospitalName);
+
+            string fileName = "Report-" + dto.CreatedDate.Ticks.ToString() + ".pdf";
+            SaveDocument("MedicineReports" + Path.DirectorySeparatorChar + fileName);
+            return fileName;
+        }
+
+        private Table2 GenerateConsumptionTable(MedicineConsumptionReportToPdfDTO dto)
+        {
+            Table2 table2 = new Table2(0, _currentY + 20, 503, dto.MedicineConsumptions.Count * 31 + 42);
+            table2.CellDefault.Border.Color = RgbColor.Blue;
+            table2.CellSpacing = 1.0f;
+            table2.Columns.Add(350);
+            table2.Columns.Add(150);
+
+            AddHeaderRowToMedicationConsumptionTable(table2);
+
             for (int i = 0; i < dto.MedicineConsumptions.Count; i++)
             {
                 MedicationExpenditureDTO medicationExpenditure = dto.MedicineConsumptions[i];
                 _currentY += 32;
                 if (_currentY >= 650)
                 {
-                    _lastPage.Elements.Add(table);
-                    AddNewPage();
-                    _currentY = 0;
-                    table = new Table2(0, _currentY + 20, 503, (dto.MedicineConsumptions.Count - i) * 31 + 2);
-                    table.CellDefault.Border.Color = RgbColor.Blue;
-                    table.CellSpacing = 1.0f;
-                    table.Columns.Add(350);
-                    table.Columns.Add(150);
+                    table2 = NewPageConsumptionReport(dto, table2, i);
                 }
-                Row2 row = table.Rows.Add(30);
-                row.CellDefault.Align = TextAlign.Center;
-                row.CellDefault.VAlign = VAlign.Center;
-                row.Cells.Add(medicationExpenditure.MedicineName);
-                row.Cells.Add(Convert.ToString(medicationExpenditure.Amount));
+
+                AddRowToMedicationConsumptionTable(table2, medicationExpenditure);
             }
-            _lastPage.Elements.Add(table);
-            if (_document.Pages.Count > 1) _currentY = table.Height;
-            else _currentY = 100 + table.Height;
-            WriteLine(350,30, dto.HospitalName);
-            string fileName = "Report-" + dto.CreatedDate.Ticks.ToString() + ".pdf";
-            SaveDocument("MedicineReports" + Path.DirectorySeparatorChar + fileName);
-            return fileName;
+
+            _lastPage.Elements.Add(table2);
+            return table2;
+        }
+
+        private void AddHeaderRowToMedicationConsumptionTable(Table2 table2)
+        {
+            Row2 row2 = table2.Rows.Add(40, Font.HelveticaBold, 16, RgbColor.Black,
+                RgbColor.Gray);
+            row2.CellDefault.Align = TextAlign.Center;
+            row2.CellDefault.VAlign = VAlign.Center;
+            row2.Cells.Add("Medication name");
+            row2.Cells.Add("Amount spent");
+            _currentY += 50;
+        }
+
+        private static void AddRowToMedicationConsumptionTable(Table2 table2, MedicationExpenditureDTO medicationExpenditure)
+        {
+            Row2 row = table2.Rows.Add(30);
+            row.CellDefault.Align = TextAlign.Center;
+            row.CellDefault.VAlign = VAlign.Center;
+            row.Cells.Add(medicationExpenditure.MedicineName);
+            row.Cells.Add(Convert.ToString(medicationExpenditure.Amount));
+        }
+
+        private Table2 NewPageConsumptionReport(MedicineConsumptionReportToPdfDTO dto, Table2 table2, int i)
+        {
+            _lastPage.Elements.Add(table2);
+            AddNewPage();
+            _currentY = 0;
+
+            table2 = new Table2(0, _currentY + 20, 503, (dto.MedicineConsumptions.Count - i) * 31 + 2);
+            table2.CellDefault.Border.Color = RgbColor.Blue;
+            table2.CellSpacing = 1.0f;
+            table2.Columns.Add(350);
+            table2.Columns.Add(150);
+            return table2;
         }
 
         public string MakePrescriptionPdf(PrescriptionDTO dto, string requestType)
@@ -160,8 +190,8 @@ namespace IntegrationAPI.Adapters.PDF.Implementation
         public string MakeTenderStatisticsPdf(TenderStatisticsDto tenderStatisticsDto, TimeRange timeRange)
         {
             MakeTitle("Tender statistics");
-            WriteLine(0, 60, "Start date: " + timeRange.StartDate);
-            WriteLine(0, 20, "End date: " + timeRange.EndDate);
+            WriteLine(0, 60, "Start date: " + timeRange.StartDate.ToShortDateString());
+            WriteLine(0, 20, "End date: " + timeRange.EndDate.ToShortDateString());
 
             List<string> labelsTenderOffers = new List<string>();
             List<float> valuesTenderOffers = new List<float>();
@@ -191,9 +221,10 @@ namespace IntegrationAPI.Adapters.PDF.Implementation
             DrawChart("Tenders won", "Number of tenders won", labelsTendersWon, valuesTendersWon);
             DrawChart("Profit made", "Amount", labelsProfit, valuesProfit);
 
-            string fileName = "TenderStatistics-" + timeRange.StartDate.ToLongDateString()
-                                                  + "-" + timeRange.EndDate.ToLongDateString() + ".pdf";
-            SaveDocument("TenderStatistics" + Path.DirectorySeparatorChar + fileName);
+            string fileName = "TenderStatistics-" + timeRange.StartDate.Ticks.ToString()
+                                                  + "-" + timeRange.EndDate.Ticks.ToString() + ".pdf";
+            string filePath = "TenderStatistics" + Path.DirectorySeparatorChar + fileName;
+            SaveDocument(filePath);
             return fileName;
         }
 
@@ -224,49 +255,64 @@ namespace IntegrationAPI.Adapters.PDF.Implementation
             return text;
         }
 
-        private void DrawChart(string title, string label, List<string> labels, List<float> values)
+        private void DrawChart(string titleText, string label, List<string> labels, List<float> values)
         {
             _currentY = _currentY + 50;
             Chart chart = new Chart(0, _currentY, 500, 250);
             _currentY = _currentY + 250;
             PlotArea plotArea = chart.PrimaryPlotArea;
 
-            Title title1 = new Title(title);
-            chart.HeaderTitles.Add(title1);
+            Title title = new Title(titleText);
+            chart.HeaderTitles.Add(title);
 
+            IndexedColumnSeries firstColumn = FillDataAndXAxis(labels, values, plotArea); ;
+
+            Title lTitle = new Title(label);
+            if (labels.Count > 0)
+                firstColumn.YAxis.Titles.Add(lTitle);
+
+            _lastPage.Elements.Add(chart);
+        }
+
+        private static IndexedColumnSeries FillDataAndXAxis(List<string> labels, List<float> values, PlotArea plotArea)
+        {
             IndexedColumnSeries firstColumn = new IndexedColumnSeries("");
-
             for (int i = 0; i < labels.Count; i++)
             {
                 IndexedColumnSeries columnSeries = new IndexedColumnSeries(labels.ElementAt(i));
-                if (firstColumn.Name == "")
+                if (i == 0)
                     firstColumn = columnSeries;
-                columnSeries.Values.Add(new float[] { values.ElementAt(i) });
+                columnSeries.Values.Add(new float[] {values.ElementAt(i)});
 
-                AutoGradient autogradient = null;
-                switch (i % 3)
-                {
-                    case 0: 
-                        autogradient = new AutoGradient(180f, CmykColor.Red, CmykColor.IndianRed);
-                        break;
-                    case 1: 
-                        autogradient = new AutoGradient(180f, CmykColor.Green, CmykColor.YellowGreen);
-                        break;
-                    case 2: 
-                        autogradient = new AutoGradient(180f, CmykColor.Blue, CmykColor.LightBlue);
-                        break;
-                }
+                AutoGradient autogradient = GetAutogradient(i);
+
                 columnSeries.Color = autogradient;
 
                 plotArea.Series.Add(columnSeries);
 
                 firstColumn.XAxis.Labels.Add(new IndexedXAxisLabel(labels.ElementAt(i), i));
             }
-            Title lTitle = new Title(label);
-            if (labels.Count > 0)
-                firstColumn.YAxis.Titles.Add(lTitle);
 
-            _lastPage.Elements.Add(chart);
+            return firstColumn;
+        }
+
+        private static AutoGradient GetAutogradient(int i)
+        {
+            AutoGradient autogradient;
+            switch (i % 3)
+            {
+                case 0:
+                    autogradient = new AutoGradient(180f, CmykColor.Red, CmykColor.IndianRed);
+                    break;
+                case 1:
+                    autogradient = new AutoGradient(180f, CmykColor.Green, CmykColor.YellowGreen);
+                    break;
+                default:
+                    autogradient = new AutoGradient(180f, CmykColor.Blue, CmykColor.LightBlue);
+                    break;
+            }
+
+            return autogradient;
         }
     }
 }

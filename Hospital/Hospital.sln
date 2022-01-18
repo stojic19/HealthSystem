@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HospitalIntegrationTests", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HospitalUnitTests", "HospitalUnitTests\HospitalUnitTests.csproj", "{897C4D8D-3A29-4A6C-A92C-AC582EF4DAC6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeleniumTests", "SeleniumTests\SeleniumTests.csproj", "{BD04ED02-6994-4DEA-9CAD-B12DDFB46410}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeleniumTests", "SeleniumTests\SeleniumTests.csproj", "{BD04ED02-6994-4DEA-9CAD-B12DDFB46410}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

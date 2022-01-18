@@ -28,7 +28,7 @@ namespace IntegrationIntegrationTests
         }
 
         [Fact]
-        public void Get_ads_returns_4()
+        public void Get_ads__should_return_4()
         {
             DeleteData();
             AddData();

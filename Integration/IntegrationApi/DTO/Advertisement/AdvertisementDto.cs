@@ -8,6 +8,7 @@ namespace IntegrationApi.DTO.Advertisement
 {
     public class AdvertisementDto
     {
+        public string PharmacyName { get; set; }
         [Required (ErrorMessage = "Advertisement title is required!")]
         public string Title { get; set; }
         [Required(ErrorMessage = "Description is required!")]

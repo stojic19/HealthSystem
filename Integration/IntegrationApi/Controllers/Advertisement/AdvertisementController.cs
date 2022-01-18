@@ -35,6 +35,7 @@ namespace IntegrationApi.Controllers.Advertisement
                 if (result.StatusCode != HttpStatusCode.OK) continue;
                 var adsFromPharmacy = JsonConvert.DeserializeObject<List<AdvertisementDto>>(result.Content);
                 if (adsFromPharmacy == null) continue;
+                foreach (var ad in adsFromPharmacy) ad.PharmacyName = pharmacy.Name;
                 retVal.AddRange(adsFromPharmacy);
             }
             return Ok(retVal);

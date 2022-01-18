@@ -37,8 +37,8 @@ namespace Integration.Tendering.Service
             _queueNames = new List<string>();
             _pharmacyIds = new List<int>();
             consumers = new List<EventingBasicConsumer>();
-            _runThread = true;
             InitRabbitMQ();
+            _runThread = _connection != null;
             _thread = new Thread(ChannelThreads);
             _thread.Start();
         }
@@ -99,7 +99,7 @@ namespace Integration.Tendering.Service
             }
             catch
             {
-                Debug.WriteLine("WARNING: NEW TENDER RABBITMQ SERVICES UNAVAILABLE");
+                Debug.WriteLine("WARNING: NEW TENDER OFFER RABBITMQ SERVICES UNAVAILABLE");
                 return;
             }
             var pharmacies = _uow.GetRepository<IPharmacyReadRepository>().GetAll();

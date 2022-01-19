@@ -27,7 +27,7 @@ namespace HospitalApi.Controllers
             this._uow = uow;
         }
 
-        //[Authorize(Roles = "Patient")]
+        [Authorize(Roles = "Patient")]
         [HttpGet]
         public IEnumerable<AnsweredSurvey> GetAllAnsweredSurvey()
         {

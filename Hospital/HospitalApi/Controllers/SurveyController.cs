@@ -54,7 +54,7 @@ namespace HospitalApi.Controllers
             return categoriesSurvey;
         }
 
-        //[Authorize(Roles = "Patient")]
+        [Authorize(Roles = "Patient")]
         [HttpPost]
         public IActionResult CreateSurvey()
         {

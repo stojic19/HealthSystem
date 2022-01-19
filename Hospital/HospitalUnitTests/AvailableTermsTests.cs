@@ -41,11 +41,11 @@ namespace HospitalUnitTests
             Context.Rooms.Add(room2);
 
             Context.ScheduledEvents.Add(new ScheduledEvent(0, false, false, new DateTime(2022, 12, 1, 10, 0, 0),
-                new DateTime(2022, 12, 1, 10, 30, 0), new DateTime(), 0, 1, new Doctor() { Room = room2 }));
+                new DateTime(2022, 12, 1, 10, 30, 0), new DateTime(), 1, 1, new Doctor() { Room = room2 }));
             Context.ScheduledEvents.Add(new ScheduledEvent(0, false, false, new DateTime(2022, 12, 3, 6, 0, 0),
-                new DateTime(2022, 12, 3, 8, 0, 0), new DateTime(), 0, 1, new Doctor() { Room = room2 }));
+                new DateTime(2022, 12, 3, 8, 0, 0), new DateTime(), 1, 1, new Doctor() { Room = room2 }));
             Context.ScheduledEvents.Add(new ScheduledEvent(0, false, false, new DateTime(2022, 12, 5, 3, 0, 0),
-                new DateTime(2022, 12, 5, 3, 30, 0), new DateTime(), 0, 1, new Doctor() { Room = room2 }));
+                new DateTime(2022, 12, 5, 3, 30, 0), new DateTime(), 1, 1, new Doctor() { Room = room2 }));
 
             Context.SaveChanges();
 

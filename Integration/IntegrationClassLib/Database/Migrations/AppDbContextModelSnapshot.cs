@@ -220,6 +220,9 @@ namespace Integration.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
                     b.Property<bool>("GrpcSupported")
                         .HasColumnType("boolean");
 
@@ -452,7 +455,24 @@ namespace Integration.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.OwnsOne("Integration.Shared.Model.Location", "Location", b1 =>
+                        {
+                            b1.Property<int>("PharmacyId")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("integer")
+                                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                            b1.HasKey("PharmacyId");
+
+                            b1.ToTable("Pharmacies");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PharmacyId");
+                        });
+
                     b.Navigation("City");
+
+                    b.Navigation("Location");
                 });
 
             modelBuilder.Entity("Integration.Shared.Model.City", b =>

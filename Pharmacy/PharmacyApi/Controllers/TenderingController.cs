@@ -60,7 +60,6 @@ namespace PharmacyApi.Controllers
             catch (MedicineUnavailableException exception) { return NotFound(exception.Message); }
             catch (MedicineFromManufacturerNotFoundException exception) { return NotFound(exception.Message); }
             catch (RabbitMQNewOfferException exception) { return StatusCode(StatusCodes.Status500InternalServerError, exception.Message); }
-
             return Ok("Tender offer succesfully created!");
         }
 
@@ -82,6 +81,7 @@ namespace PharmacyApi.Controllers
             TenderOffer tenderOffer = _uow.GetRepository<ITenderOfferReadRepository>().GetAll().Include(x => x.Tender).ThenInclude(x => x.Hospital).FirstOrDefault(tender => tender.Id == tenderOfferId);
             TenderProcurementDTO tenderProcurementDTO = CreateTenderProcurementDTO(tenderOffer);
             var response = _httpRequestSender.Post(tenderOffer.Tender.Hospital.BaseUrl + "/api/Tender/ExecuteTenderProcurement", tenderProcurementDTO);
+            new EmailService().SendTenderOfferConfirmationMail(tenderOffer);
             if (response.StatusCode != System.Net.HttpStatusCode.OK) return BadRequest("Unable to reach integration API!");
             return Ok("Tender offer succesfully confirmed!");
         }

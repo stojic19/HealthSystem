@@ -14,6 +14,7 @@ using System.Net;
 using ceTe.DynamicPDF.PageElements;
 using IntegrationAPI.Controllers.Base;
 using IntegrationAPI.DTO.MedicineSpecification;
+using IntegrationAPI.HttpRequestSenders;
 using Microsoft.EntityFrameworkCore;
 using Renci.SshNet;
 using Path = System.IO.Path;
@@ -24,7 +25,7 @@ namespace IntegrationAPI.Controllers.Medicine
     [ApiController]
     public class MedicineSpecificationController : BaseIntegrationController
     {
-        public MedicineSpecificationController(IUnitOfWork unitOfWork) : base(unitOfWork) { }
+        public MedicineSpecificationController(IUnitOfWork unitOfWork, IHttpRequestSender sender) : base(unitOfWork, sender) { }
 
         [HttpGet]
         public IEnumerable<MedicineSpecificationFrontDTO> GetAllMedicineSpecificationFiles()

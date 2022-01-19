@@ -1,14 +1,14 @@
-<div class="panel panel-primary">
+<div class="panel panel-primary m-2">
     <div class="panel-heading m-3">
         <h2>Complaints List</h2>
     </div>
     <button class="btn btn-primary m-3" [routerLink]="[isProd ? '/manager/complaint-add' : '/complaint-add']"><strong>Add complaint</strong></button>
 
-    <div class="form-control form-control-lg">
+    <div *ngIf="complaints?.length" class="form-control form-control-lg">
         <input [(ngModel)]="SearchString"  (keyup)="FilterFn()" placeholder="Filter" > 
     </div>
 
-    <div>
+    <div *ngIf="complaints?.length">
         <div class="form-check form-check-inline">
             <input type="radio" id="complaintAnswerAll" [(ngModel)]="isAnswered" (change)="FilterFn()" value="All" checked="true" />
             <label class="form-check-label" for="complaintAnswerAll">
@@ -29,11 +29,10 @@
         </div>
     </div>
 
-    <div class="table-responsive">
+    <div *ngIf="complaints?.length" class="table-responsive">
         <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Title</th>
                     <th>Date</th>
                     <th>Pharmacy</th>
@@ -42,7 +41,6 @@
             </thead>
             <tbody>
                 <tr *ngFor='let complaint of complaints' [routerLink]="[isProd ? '/manager/complaints' : '/complaints', complaint.id]">
-                    <td>{{complaint.id}}</td>
                     <td>{{complaint.title}}</td>
                     <td>{{complaint.createdDate | date: 'dd-MM-yyyy, hh:mm'}}</td>
                     <td>{{complaint.pharmacy.name}}</td>
@@ -51,4 +49,6 @@
             </tbody>
         </table>
     </div>
+
+    <div class="d-flex justify-content-center m-1" *ngIf="!complaints?.length"><h4>No complaints to show.</h4></div>
 </div>

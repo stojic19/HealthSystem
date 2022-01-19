@@ -12,6 +12,7 @@ namespace IntegrationAPI.Controllers.Complaints
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Produces("application/json")]
     public class ComplaintController : ControllerBase
     {
         private ComplaintMasterService _complaintMasterService;

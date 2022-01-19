@@ -1,8 +1,8 @@
-<div class="panel panel-primary">
+<div class="panel panel-primary m-2">
     <div class="panel-heading m-3">
         <h2>Benefit List</h2>
     </div>
-    <div class="form-control form-control-lg">
+    <div *ngIf="benefits?.length" class="form-control form-control-lg">
         <input [(ngModel)]="SearchString"  (keyup)="FilterFn()" placeholder="Filter" > 
         <mat-checkbox class="checkbox-margin" [(ngModel)]="onlyActive" (change)="FilterFn()" ngDefaultControl >Show only active benefits</mat-checkbox>
         <mat-form-field appearance="fill">
@@ -16,7 +16,7 @@
             </mat-select>
         </mat-form-field>
     </div>
-    <div class="table-responsive">
+    <div *ngIf="benefits?.length" class="table-responsive">
         <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>
@@ -47,4 +47,5 @@
             </tbody>
         </table>
     </div>
+    <div class="d-flex justify-content-center m-1" *ngIf="!benefits?.length"><h4>No benefits to show.</h4></div>
 </div>

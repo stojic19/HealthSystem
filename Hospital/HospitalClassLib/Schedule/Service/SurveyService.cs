@@ -17,17 +17,26 @@ namespace Hospital.Schedule.Service
         {
             this.UoW = UoW;
         }
-        public void createSurvey(Survey survey)
+        public void CreateSurvey(Survey survey)
         {
             UoW.GetRepository<ISurveyWriteRepository>().Add(survey);
         }
 
-        public IEnumerable<Survey> getAll()
+        public Survey GetActiveSurvey()
+        {
+            return UoW.GetRepository<ISurveyReadRepository>()
+                                .GetAll()
+                                .Where(x => x.isActive == true)
+                                .FirstOrDefault();
+                                                                       
+        }
+
+        public IEnumerable<Survey> GetAll()
         {
             return UoW.GetRepository<ISurveyReadRepository>().GetAll();
         }
 
-        public SurveySection getSurveySection(int id, SurveyCategory category)
+        public SurveySection GetSurveySection(int id, SurveyCategory category)
         {
             SurveySection surveySection = new SurveySection()
             {
@@ -38,6 +47,11 @@ namespace Hospital.Schedule.Service
 
             };
             return surveySection;
+        }
+
+        public void Save(Survey activeSurvey)
+        {
+            UoW.GetRepository<ISurveyWriteRepository>().Update(activeSurvey,true);
         }
     }
 }

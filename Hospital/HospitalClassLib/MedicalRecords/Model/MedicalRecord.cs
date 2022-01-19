@@ -1,30 +1,62 @@
-﻿using Hospital.Schedule.Model;
+﻿using System;
 using Hospital.SharedModel.Model;
 using Hospital.SharedModel.Model.Enumerations;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace Hospital.MedicalRecords.Model
 {
     public class MedicalRecord
     {
-        public int Id { get; set; }
-        public Patient Patient { get; set; }
+        public int Id { get; private set; }
+        public Measurements Measurements { get; private set; }
+        public BloodType BloodType { get; private set; }
+        public JobStatus JobStatus { get; private set; }
+        [Required]
+        public int DoctorId { get; private set; }
+        public Doctor Doctor { get; private set; }
+        public IEnumerable<Allergy> Allergies { get; private set; }
+        public IEnumerable<Prescription> Prescriptions { get; private set; }
 
-        public double Height { get; set; }
-        public double Weight { get; set; }
-        
-        public int DoctorId { get; set; }
-        public Doctor Doctor { get; set; }
+        public MedicalRecord(int id, Measurements measurements, BloodType bloodType, JobStatus jobStatus, int doctorId, IEnumerable<Allergy> allergies)
+        {
+            Id = id;
+            Measurements = measurements;
+            BloodType = bloodType;
+            JobStatus = jobStatus;
+            DoctorId = doctorId;
+            Allergies = allergies;
+            Validate();
+        }
+        public MedicalRecord( Measurements measurements, BloodType bloodType, JobStatus jobStatus, int doctorId, IEnumerable<Allergy> allergies)
+        {
+            Measurements = measurements;
+            BloodType = bloodType;
+            JobStatus = jobStatus;
+            DoctorId = doctorId;
+            Allergies = allergies;
+            Validate();
+        }
+        public MedicalRecord()
+        {
+        }
 
-        public BloodType BloodType { get; set; }
-        public JobStatus JobStatus { get; set; }
 
+        private void Validate()
+        {
+            if (DoctorId <= 0) throw new Exception();
+        }
 
-        public IEnumerable<Referral> Referrals { get; set; }
-        public IEnumerable<Allergy> Allergies { get; set; }
-        public IEnumerable<Diagnose> Diagnoses { get; set; }
-        public IEnumerable<Prescription> Prescriptions { get; set; }
-        public IEnumerable<HospitalTreatment> HospitalTreatments { get; set; }
-        public IEnumerable<ScheduledEvent> ScheduledEvents { get; set; }
+        public IEnumerable<Allergy> GetAllergies()
+        {
+            return new List<Allergy>(Allergies);
+        }
+
+        public void AddNewAllergy(Allergy newAllergy)
+        {
+            Allergies.ToList().Add(newAllergy);
+            Validate();
+        }
     }
 }

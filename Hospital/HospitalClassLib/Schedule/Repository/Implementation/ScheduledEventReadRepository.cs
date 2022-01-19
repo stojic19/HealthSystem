@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Hospital.SharedModel.Model;
 
 namespace Hospital.Schedule.Repository.Implementation
 {
@@ -18,20 +19,14 @@ namespace Hospital.Schedule.Repository.Implementation
             _context = context;
         }
 
-        public IEnumerable<ScheduledEvent> GetDoctorsScheduledEvents(int doctorId)
+        public IEnumerable<ScheduledEvent> GetScheduledEventsForDoctor(int doctorId)
         {
             return _context.Set<ScheduledEvent>().Where(x => x.DoctorId == doctorId).AsEnumerable();
         }
 
-        public bool IsDoctorAvailableInTerm(int doctorId, DateTime date)
-        {
-            var scheduledEvents = GetDoctorsScheduledEvents(doctorId);
-            return scheduledEvents.Where(s => DateTime.Compare(s.StartDate, date) == 0).All(s => s.IsCanceled);
-        }
-
         public List<ScheduledEvent> GetNumberOfCanceledEventsForPatient(int id)
         {
-            return GetAll().Where(x => x.PatientId == id && x.IsCanceled).ToList();
+            return GetAll().Where(x => x.IsCanceled  && x.Patient.Id == id).ToList();
         }
 
         public List<ScheduledEvent> GetCanceledUserEvents(string userName)
@@ -78,7 +73,7 @@ namespace Hospital.Schedule.Repository.Implementation
 
         public List<ScheduledEvent> UpdateFinishedUserEvents()
         {
-            return GetAll().Where(x => !x.IsDone && !x.IsCanceled && DateTime.Compare(x.EndDate, DateTime.Now) < 0).ToList();
+            return GetAll().ToList().Where(x => !x.IsDone && !x.IsCanceled && DateTime.Compare(x.EndDate, DateTime.Now) < 0).ToList();
         }
     }
 }

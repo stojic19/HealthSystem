@@ -6,12 +6,10 @@ import { IPatientFeedback } from 'src/app/interfaces/patient-feedback/patient-fe
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FeedbackService {
-
-
-  constructor(private _http: HttpClient) { }
+  constructor(private _http: HttpClient) {}
 
   getAll(): Observable<IPatientFeedback[]> {
     return this._http.get<IPatientFeedback[]>('api/Feedback');
@@ -20,7 +18,7 @@ export class FeedbackService {
     return this._http.get<IPatientFeedback[]>('api/Feedback/approved');
   }
 
-  addFeedback(newFeedback: IFeedback): Observable<String> {
-    return this._http.post<String>('/api/Feedback', newFeedback);
+  addFeedback(newFeedback: IFeedback): Observable<IFeedback> {
+    return this._http.post<IFeedback>('/api/Feedback', newFeedback);
   }
 }

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Integration.Shared.Model;
 
 namespace Integration.Tendering.Model
 {
-    public class Money
+    public class Money : ValueObject
     {
         public double Amount { get; private set; }
         public Currency Currency { get; private set; }
@@ -40,6 +41,12 @@ namespace Integration.Tendering.Model
         private bool CheckCurrency(Currency currency)
         {
             return currency == Currency;
+        }
+
+        protected override IEnumerable<object> GetEqualityComponents()
+        {
+            yield return Currency;
+            yield return Amount;
         }
     }
 }

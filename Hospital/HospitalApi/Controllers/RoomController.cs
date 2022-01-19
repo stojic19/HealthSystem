@@ -73,35 +73,35 @@ namespace HospitalApi.Controllers
         {
             var scheduleRepo = _uow.GetRepository<IScheduledEventReadRepository>();
 
-            return scheduleRepo.GetAll()
-                .Select(scheduledEvent => new ScheduledEvent()
-                {
-                    Id = scheduledEvent.Id,
-                    StartDate = scheduledEvent.StartDate,
-                    EndDate = scheduledEvent.EndDate,
-                    IsCanceled = scheduledEvent.IsCanceled,
-                    IsDone = scheduledEvent.IsDone,
-                    RoomId = scheduledEvent.RoomId,
-                    Room = new Room()
-                    {
-                        Id = scheduledEvent.Room.Id,
-                        Name = scheduledEvent.Room.Name,
-                        BuildingName = scheduledEvent.Room.BuildingName
-                    },
-                    Doctor = new Doctor()
-                    {
-                        FirstName = scheduledEvent.Doctor.FirstName,
-                        LastName = scheduledEvent.Doctor.LastName
-                    },
-                    Patient = new Patient()
-                    {
-                        FirstName = scheduledEvent.Patient.FirstName,
-                        LastName = scheduledEvent.Patient.LastName
-                    },
-                })
-                .Where(scheduledEvent => !scheduledEvent.IsCanceled &&
-                                        !scheduledEvent.IsDone &&
-                                        scheduledEvent.RoomId == roomId);
+            return scheduleRepo.GetAll();
+                //.Select(scheduledEvent => new ScheduledEvent()
+                //{
+                //    Id = scheduledEvent.Id,
+                //    StartDate = scheduledEvent.StartDate,
+                //    EndDate = scheduledEvent.EndDate,
+                //    IsCanceled = scheduledEvent.IsCanceled,
+                //    IsDone = scheduledEvent.IsDone,
+                //    RoomId = scheduledEvent.RoomId,
+                //    Room = new Room()
+                //    {
+                //        Id = scheduledEvent.Room.Id,
+                //        Name = scheduledEvent.Room.Name,
+                //        BuildingName = scheduledEvent.Room.BuildingName
+                //    },
+                //    Doctor = new Doctor()
+                //    {
+                //        FirstName = scheduledEvent.Doctor.FirstName,
+                //        LastName = scheduledEvent.Doctor.LastName
+                //    },
+                //    Patient = new Patient()
+                //    {
+                //        FirstName = scheduledEvent.Patient.FirstName,
+                //        LastName = scheduledEvent.Patient.LastName
+                //    },
+                //})
+                //.Where(scheduledEvent => !scheduledEvent.IsCanceled &&
+                //                        !scheduledEvent.IsDone &&
+                //                        scheduledEvent.RoomId == roomId);
         }
 
         [Authorize(Roles = "Manager")]

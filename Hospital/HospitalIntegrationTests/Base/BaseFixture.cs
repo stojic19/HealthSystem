@@ -33,6 +33,7 @@ namespace HospitalIntegrationTests.Base
             {
                 CookieContainer = CookieContainer
             };
+            handler.ServerCertificateCustomValidationCallback = (message, cert, chain, sslPolicyErrors) => true;
             ManagerClient = new HttpClient(handler);
         }
         private void ConfigurePatientHttpClient()
@@ -42,6 +43,7 @@ namespace HospitalIntegrationTests.Base
             {
                 CookieContainer = CookieContainer
             };
+            handler.ServerCertificateCustomValidationCallback = (message, cert, chain, sslPolicyErrors) => true;
             PatientClient = new HttpClient(handler);
         }
 

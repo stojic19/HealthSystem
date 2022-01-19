@@ -1,4 +1,4 @@
-﻿using Hospital.RoomsAndEquipment.Model;
+using Hospital.RoomsAndEquipment.Model;
 using Hospital.RoomsAndEquipment.Repository;
 using Hospital.Schedule.Model;
 using Hospital.Schedule.Repository;
@@ -223,21 +223,21 @@ namespace HospitalIntegrationTests
             if (firstDuty != null)
                 UoW.GetRepository<IOnCallDutyWriteRepository>().Delete(firstDuty);
 
-            var secondDuty = UoW.GetRepository<IOnCallDutyReadRepository>()
-              .GetAll()
-              .FirstOrDefault(x => x.Month == 1 && x.Week == 1);
+//            var secondDuty = UoW.GetRepository<IOnCallDutyReadRepository>()
+//              .GetAll()
+//              .FirstOrDefault(x => x.Month == 1 && x.Week == 1);
 
-            if (secondDuty != null)
-                UoW.GetRepository<IOnCallDutyWriteRepository>().Delete(secondDuty);
+//            if (secondDuty != null)
+//                UoW.GetRepository<IOnCallDutyWriteRepository>().Delete(secondDuty);
 
-            var shift = UoW.GetRepository<IShiftReadRepository>().GetAll().FirstOrDefault(x => x.Name == "Second");
+//            var shift = UoW.GetRepository<IShiftReadRepository>().GetAll().FirstOrDefault(x => x.Name == "Second");
 
-            if (shift != null)
-            {
+//            if (shift != null)
+//            {
 
-                UoW.GetRepository<IShiftWriteRepository>().Delete(shift);
-            }
+//                UoW.GetRepository<IShiftWriteRepository>().Delete(shift);
+//            }
 
-        }
-    }
-}
+//        }
+//    }
+//}

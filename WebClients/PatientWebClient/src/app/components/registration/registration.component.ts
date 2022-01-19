@@ -6,7 +6,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
 import { IChosenDoctor } from 'src/app/interfaces/chosen-doctor';
 import {
   BloodType,
@@ -19,6 +18,9 @@ import { INewPatient, Gender } from 'src/app/interfaces/new-patient';
 import { AllergensService } from 'src/app/services/AllergenService/allergens.service';
 import { ChosenDoctorService } from 'src/app/services/ChosenDoctorService/chosen-doctor.service';
 import { RegistrationService } from 'src/app/services/PatientService/registration.service';
+import { Router } from '@angular/router';
+import { IMeasurements } from 'src/app/interfaces/imeasurements';
+import { ICity } from 'src/app/interfaces/city';
 
 @Component({
   selector: 'app-registration',
@@ -48,6 +50,8 @@ export class RegistrationComponent implements OnInit {
   ) {
     this.newPatient = {} as INewPatient;
     this.newPatient.medicalRecord = {} as IMedicalRecord;
+    this.newPatient.medicalRecord.measurements = {} as IMeasurements;
+    this.newPatient.city = {} as ICity;
   }
 
   ngOnInit(): void {
@@ -108,6 +112,10 @@ export class RegistrationComponent implements OnInit {
     this.allergensService.getAll().subscribe((res) => {
       this.allergens = res;
     });
+
+    // this.cityService.getAll().subscribe((res) => {
+    //   this.cities = res;
+    // });
   }
 
   onSubmit(): void {
@@ -167,6 +175,10 @@ export class RegistrationComponent implements OnInit {
     });
   }
 
+  getCity(event: any) {
+    this.newPatient.city = event.value;
+  }
+
   getBloodType(event: any) {
     this.newPatient.medicalRecord.bloodType = event.value as BloodType;
   }
@@ -190,15 +202,16 @@ export class RegistrationComponent implements OnInit {
     this.newPatient.middleName = this.createForm.value.middleName;
     this.newPatient.street = this.createForm.value.street;
     this.newPatient.streetNumber = this.createForm.value.streetNumber;
-    this.newPatient.cityId = 1;
+    this.newPatient.city.name = this.createForm.value.city;
     this.newPatient.dateOfBirth = new Date(
       this.createForm.value.dateOfBirth.getTime() -
         this.createForm.value.dateOfBirth.getTimezoneOffset() * 60000
     );
-    //this.newPatient.medicalRecordId = 9;
-    this.newPatient.medicalRecord.weight = this.createForm.value.weight;
-    this.newPatient.medicalRecord.height = this.createForm.value.height;
-    this.newPatient.phoneNumber = this.createForm.value.phoneNumber;
+    this.newPatient.medicalRecord.measurements.weight =
+      this.createForm.value.weight;
+    this.newPatient.medicalRecord.measurements.height =
+      this.createForm.value.height;
+    this.newPatient.phoneNumber = this.createForm.value.phone;
     this.newPatient.email = this.createForm.value.email;
     this.newPatient.userName = this.createForm.value.username;
     this.newPatient.password = this.createForm.value.password;

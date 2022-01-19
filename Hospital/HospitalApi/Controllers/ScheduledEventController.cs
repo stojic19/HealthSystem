@@ -1,11 +1,13 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using HospitalApi.DTOs;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Hospital.Schedule.Service.Interfaces;
 using System.Linq;
+using Hospital.MedicalRecords.Repository;
+using Hospital.SharedModel.Repository.Base;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace HospitalApi.Controllers
 {
@@ -16,12 +18,15 @@ namespace HospitalApi.Controllers
     {
         private readonly IScheduledEventService _eventsService;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork _uow;
 
-        public ScheduledEventController( IScheduledEventService eventsService, IMapper mapper)
+        public ScheduledEventController( IScheduledEventService eventsService, IMapper mapper, IUnitOfWork uow)
         {
             this._eventsService = eventsService;
             this._mapper = mapper;
+            _uow = uow;
         }
+
         [Authorize(Roles = "Patient")]
         [HttpGet("{userName}")]
         public IActionResult GetFinishedUserEvents(string userName)
@@ -31,6 +36,7 @@ namespace HospitalApi.Controllers
 
             return Ok(eventsDTOs);
         }
+        
         [Authorize(Roles = "Patient")]
         [HttpGet("{userName}")]
         public IActionResult GetEventsForSurvey(string userName)
@@ -69,22 +75,15 @@ namespace HospitalApi.Controllers
 
             return Ok(eventsDTOs);
         }
-        [Authorize(Roles = "Patient")]
-        [HttpGet("{eventId}")]
-        public IActionResult CancelAppointment(int eventId)
-        {
-
-            _eventsService.CancelAppointment(eventId);
-            return Ok();
-        }
 
         [Authorize(Roles = "Patient")]
         [HttpGet]
-        public IActionResult GetAvailableAppointments([FromQuery(Name = "doctorId")] int doctorId, string preferredDate)
+        public IActionResult CancelAppointment([FromQuery(Name = "eventId")] int eventId, [FromQuery(Name = "username")]  string username)
         {
-            var preferredDateTime = DateTime.Parse(preferredDate);
-            var scheduledEvents = _eventsService.GetAvailableAppointments(doctorId, preferredDateTime);
-            return Ok(scheduledEvents);
+            var loggedInPatient = _uow.GetRepository<IPatientReadRepository>().GetAll().Include(p => p.ScheduledEvents).First(p => p.UserName == username);
+            loggedInPatient.CancelAppointment(eventId);
+            return Ok(_uow.GetRepository<IPatientWriteRepository>().Update(loggedInPatient));
         }
+
     }
 }

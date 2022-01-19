@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Hospital.SharedModel.Model;
 using Xunit;
 
 namespace HospitalUnitTests
@@ -26,37 +27,25 @@ namespace HospitalUnitTests
         {
 
             ClearDbContext();
-            Context.Rooms.Add(new Room()
+            var room1 = new Room()
             {
                 Id = 1,
                 Name = "Test room 1"
-            });
-            Context.Rooms.Add(new Room()
+            };
+            var room2 = new Room()
             {
                 Id = 2,
                 Name = "Test room 2"
-            });
-            Context.ScheduledEvents.Add(new ScheduledEvent()
-            {
-                Id = 1,
-                StartDate = new DateTime(2022, 12, 1, 10, 0, 0),
-                EndDate = new DateTime(2022, 12, 1, 10, 30, 0),
-                RoomId = 2,
-            });
-            Context.ScheduledEvents.Add(new ScheduledEvent()
-            {
-                Id = 2,
-                StartDate = new DateTime(2022, 12, 3, 6, 0, 0),
-                EndDate = new DateTime(2022, 12, 3, 8, 0, 0),
-                RoomId = 2,
-            });
-            Context.ScheduledEvents.Add(new ScheduledEvent()
-            {
-                Id = 3,
-                StartDate = new DateTime(2022, 12, 5, 3, 0, 0),
-                EndDate = new DateTime(2022, 12, 5, 3, 30, 0),
-                RoomId = 2,
-            });
+            };
+            Context.Rooms.Add(room1);
+            Context.Rooms.Add(room2);
+
+            Context.ScheduledEvents.Add(new ScheduledEvent(0, false, false, new DateTime(2022, 12, 1, 10, 0, 0),
+                new DateTime(2022, 12, 1, 10, 30, 0), new DateTime(), 1, 1, new Doctor() { Room = room2 }));
+            Context.ScheduledEvents.Add(new ScheduledEvent(0, false, false, new DateTime(2022, 12, 3, 6, 0, 0),
+                new DateTime(2022, 12, 3, 8, 0, 0), new DateTime(), 1, 1, new Doctor() { Room = room2 }));
+            Context.ScheduledEvents.Add(new ScheduledEvent(0, false, false, new DateTime(2022, 12, 5, 3, 0, 0),
+                new DateTime(2022, 12, 5, 3, 30, 0), new DateTime(), 1, 1, new Doctor() { Room = room2 }));
 
             Context.SaveChanges();
 

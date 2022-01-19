@@ -9,5 +9,7 @@ namespace HospitalApi.DTOs
     {
         public DateTime StartDate { get; set; }
         public int DoctorId { get; set; }
+        public int RoomId { get; set; }
+        public int PatientId { get; set; }
     }
 }

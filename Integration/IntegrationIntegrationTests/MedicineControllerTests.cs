@@ -4,8 +4,11 @@ using IntegrationAPI.DTO;
 using IntegrationIntegrationTests.Base;
 using Shouldly;
 using System;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Integration.Pharmacies.Repository;
+using Integration.Shared.Repository;
 using Xunit;
 
 namespace IntegrationIntegrationTests
@@ -14,10 +17,7 @@ namespace IntegrationIntegrationTests
     {
         public MedicineControllerTests(BaseFixture fixture) : base(fixture)
         {
-            Context.Pharmacies.RemoveRange(Context.Pharmacies);
-            Context.Countries.RemoveRange(Context.Countries);
-            Context.Cities.RemoveRange(Context.Cities);
-            Context.SaveChanges();
+            DeleteData();
             MakePharmacies();
         }
 
@@ -31,6 +31,7 @@ namespace IntegrationIntegrationTests
             var response = await Client.PostAsync(BaseUrl + "api/Medicine/RequestMedicineInformation", content);
 
             response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+            DeleteData();
         }
         [Fact]
         public async Task Check_medicine_availability_incorrect_quantity_should_return_bad_request()
@@ -42,6 +43,7 @@ namespace IntegrationIntegrationTests
             var response = await Client.PostAsync(BaseUrl + "api/Medicine/RequestMedicineInformation", content);
 
             response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+            DeleteData();
         }
         [Fact]
         public async Task Check_medicine_availability_no_answer_should_return_bad_request()
@@ -53,9 +55,10 @@ namespace IntegrationIntegrationTests
             var response = await Client.PostAsync(BaseUrl + "api/Medicine/RequestMedicineInformation", content);
 
             response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+            DeleteData();
         }
         [Fact]
-        public async Task Urgent_rocurement_of_medicine_incorrect_pharmacyid_should_return_bad_request()
+        public async Task Urgent_procurement_of_medicine_incorrect_pharmacyid_should_return_bad_request()
         {
             var newRequest = GetRequestWithIncorrectPharmacyId();
 
@@ -64,9 +67,10 @@ namespace IntegrationIntegrationTests
             var response = await Client.PostAsync(BaseUrl + "api/Medicine/UrgentProcurementOfMedicine", content);
 
             response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+            DeleteData();
         }
         [Fact]
-        public async Task Urgent_rocurement_of_medicine_incorrect_quantity_should_return_bad_request()
+        public async Task Urgent_procurement_of_medicine_incorrect_quantity_should_return_bad_request()
         {
             CreateMedicineRequestForPharmacyDto newRequest = GetRequestWithIncorrectQuantity();
 
@@ -75,9 +79,10 @@ namespace IntegrationIntegrationTests
             var response = await Client.PostAsync(BaseUrl + "api/Medicine/UrgentProcurementOfMedicine", content);
 
             response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+            DeleteData();
         }
         [Fact]
-        public async Task Urgent_rocurement_of_medicine_no_answer_should_return_bad_request()
+        public async Task Urgent_procurement_of_medicine_no_answer_should_return_bad_request()
         {
             CreateMedicineRequestForPharmacyDto newRequest = GetRequestWithCorrectData();
 
@@ -86,6 +91,7 @@ namespace IntegrationIntegrationTests
             var response = await Client.PostAsync(BaseUrl + "api/Medicine/UrgentProcurementOfMedicine", content);
 
             response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+            DeleteData();
         }
         private CreateMedicineRequestForPharmacyDto GetRequestWithIncorrectPharmacyId()
         {
@@ -99,9 +105,10 @@ namespace IntegrationIntegrationTests
         }
         private CreateMedicineRequestForPharmacyDto GetRequestWithIncorrectQuantity()
         {
+            var pharmacy = UoW.GetRepository<IPharmacyReadRepository>().GetByName("MEDICINE_CONTROLLER_TEST_PHARMACY").FirstOrDefault();
             return new CreateMedicineRequestForPharmacyDto()
             {
-                PharmacyId = 1,
+                PharmacyId = pharmacy.Id,
                 ManufacturerName = "Hemofarm",
                 MedicineName = "Brufen",
                 Quantity = -1
@@ -109,9 +116,10 @@ namespace IntegrationIntegrationTests
         }
         private CreateMedicineRequestForPharmacyDto GetRequestWithCorrectData()
         {
+            var pharmacy = UoW.GetRepository<IPharmacyReadRepository>().GetByName("MEDICINE_CONTROLLER_TEST_PHARMACY").FirstOrDefault();
             return new CreateMedicineRequestForPharmacyDto()
             {
-                PharmacyId = 1,
+                PharmacyId = pharmacy.Id,
                 ManufacturerName = "Hemofarm",
                 MedicineName = "Brufen",
                 Quantity = 10
@@ -120,27 +128,31 @@ namespace IntegrationIntegrationTests
 
         private void MakePharmacies()
         {
-            Context.Pharmacies.Add(new Pharmacy()
+            UoW.GetRepository<IPharmacyWriteRepository>().Add(new Pharmacy()
             {
                 City = new City()
                 {
-                    Id = 1,
                     Country = new Country()
                     {
-                        Name = "Test country",
-                        Id = 1
+                        Name = "MEDICINE_CONTROLLER_TEST_COUNTRY",
                     },
-                    Name = "Test city"
+                    Name = "MEDICINE_CONTROLLER_TEST_CITY"
                 },
-                Id = 1,
                 ApiKey = new Guid(),
                 BaseUrl = "baseUrl",
-                Name = "Test pharmacy",
+                Name = "MEDICINE_CONTROLLER_TEST_PHARMACY",
                 StreetName = "Test Street Name",
                 StreetNumber = "1"
             });
+        }
 
-            Context.SaveChanges();
+        private void DeleteData()
+        {
+            var country = UoW.GetRepository<ICountryReadRepository>().GetByName("MEDICINE_CONTROLLER_TEST_COUNTRY");
+            if (country != null)
+            {
+                UoW.GetRepository<ICountryWriteRepository>().Delete(country);
+            }
         }
     }
 }

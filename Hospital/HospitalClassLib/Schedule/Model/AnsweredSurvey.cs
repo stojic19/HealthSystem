@@ -6,14 +6,42 @@ namespace Hospital.Schedule.Model
 {
     public class AnsweredSurvey
     {
-       public int Id { get; set; }
-       public IEnumerable<AnsweredQuestion> AnsweredQuestions  { get; set; }
-       public DateTime AnsweredDate { get; set; }
-       public int SurveyId { get; set; }
-       public Survey Survey { get; set; }
-       public int PatientId { get; set; }
-       public Patient Patient { get; set; }
-       public int ScheduledEventId { get; set; }
-       public ScheduledEvent ScheduledEvent { get; set;}
+        public int Id { get; private set; }
+        public List<AnsweredQuestion> AnsweredQuestions { get; private set; }
+        public DateTime AnsweredDate { get; private set; }
+        public int SurveyId { get; private set; }
+        public Survey Survey { get; private set; }
+        public int PatientId { get; private set; }
+        public Patient Patient { get; private set; }
+        public int ScheduledEventId { get; private set; }
+        public ScheduledEvent ScheduledEvent { get; private set; }
+
+        public AnsweredSurvey()
+        {
+                
+        }
+        public AnsweredSurvey(List<AnsweredQuestion> answeredQuestions, DateTime answeredDate, int surveyId, Survey survey, int patientId, Patient patient, int scheduledEventId, ScheduledEvent scheduledEvent)
+        {
+            AnsweredQuestions = answeredQuestions;
+            AnsweredDate = answeredDate;
+            SurveyId = surveyId;
+            Survey = survey;
+            PatientId = patientId;
+            Patient = patient;
+            ScheduledEventId = scheduledEventId;
+            ScheduledEvent = scheduledEvent;
+            Validate();
+        }
+
+        public void SetPatient(Patient patient)
+        {
+            Patient = patient;
+            PatientId = patient.Id;
+        }
+
+        private void Validate()
+        {
+            if (SurveyId <= 0 || ScheduledEventId <= 0 || PatientId <= 0 ) throw new Exception();
+        }
     }
 }

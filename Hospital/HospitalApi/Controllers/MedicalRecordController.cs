@@ -6,6 +6,7 @@ using HospitalApi.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HospitalApi.Controllers
 {
@@ -27,13 +28,8 @@ namespace HospitalApi.Controllers
         public IActionResult GetPatientWithRecord(string userName)
         {
             var patientRepo = _uow.GetRepository<IPatientReadRepository>();
-            var loggedInPatient = patientRepo.GetAll().Where(x=>x.UserName.Equals(userName)).FirstOrDefault();
-            var patient = patientRepo.GetPatient(loggedInPatient.Id);
-            var medicalRecordRepo = _uow.GetRepository<IMedicalRecordReadRepository>();
-            var medicalRecord = medicalRecordRepo.GetMedicalRecord(patient.MedicalRecordId);
-            patient.MedicalRecord = medicalRecord;
-            var patientWithRecord = _mapper.Map<PatientDTO>(patient);
-            return Ok(patientWithRecord);
+            var patient = patientRepo.GetPatient(userName);
+            return Ok(_mapper.Map<PatientDTO>(patient));
         }
     }
 }

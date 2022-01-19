@@ -41,15 +41,14 @@ namespace HospitalApi.Controllers
         {
             var service = new BlockingService(_uow);
             service.BlockPatient(user.UserName);
-            var patient = _uow.GetRepository<IPatientReadRepository>().GetAll().FirstOrDefault(x => x.UserName == user.UserName);
+            var patient = _uow.GetRepository<IPatientReadRepository>().GetAll().FirstOrDefault(x => x.UserName.Equals(user.UserName));
             if (patient == null) return BadRequest("There is no user with username: " + user.UserName + " !");
-            if (patient.IsBlocked)
+            if (!patient.IsBlocked) return BadRequest("There is no user with username: " + user.UserName + " !");
             {
                 var patients = service.GetMaliciousPatients();
                 var patientDTOs = patients.Select(patient => _mapper.Map<UserForBlockingDTO>(patient)).ToList();
                 return Ok(patientDTOs);
             }
-            return BadRequest("There is no user with username: " + user.UserName + " !");
         }
     }
 }

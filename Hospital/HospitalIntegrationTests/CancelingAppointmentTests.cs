@@ -24,7 +24,8 @@ namespace HospitalIntegrationTests
         {
             RegisterAndLogin("Patient");
             var events = AddTestDataToDatabase(isCanceled: false, isDone: false);
-            var response = await PatientClient.GetAsync(BaseUrl + "api/ScheduledEvent/CancelAppointment/" + events.Id);
+           
+            var response = await PatientClient.GetAsync(BaseUrl + "api/ScheduledEvent/CancelAppointment?eventId=" + events.Id + "&username=" + "testPatientUsername");
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
             UoW.GetRepository<IScheduledEventReadRepository>().GetCanceledUserEvents(events.Patient.UserName).Count.ShouldNotBe(0);
             DeleteTestDataFromDataBase(events);
@@ -37,12 +38,13 @@ namespace HospitalIntegrationTests
         {
             RegisterAndLogin("Patient");
             var events = AddTestDataToDatabase(isCanceled: false, isDone: true);
-            var response = await PatientClient.GetAsync(BaseUrl + "api/ScheduledEvent/CancelAppointment/" + events.Id);
+           
+
+            var response = await PatientClient.GetAsync(BaseUrl + "api/ScheduledEvent/CancelAppointment?eventId=" + events.Id + "&username=" + "testPatientUsername");
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
             UoW.GetRepository<IScheduledEventReadRepository>().GetCanceledUserEvents(events.Patient.UserName).Count.ShouldBe(0);
             DeleteTestDataFromDataBase(events);
             DeleteDataFromDataBase();
-
         }
 
         [Fact]
@@ -51,20 +53,19 @@ namespace HospitalIntegrationTests
             RegisterAndLogin("Patient");
             var events = AddTestDataToDatabase(isCanceled: false, isDone: false);
             UpdateEventTime(events);
-            var response = await PatientClient.GetAsync(BaseUrl + "api/ScheduledEvent/CancelAppointment/" + events.Id);
+            
+
+            var response = await PatientClient.GetAsync(BaseUrl + "api/ScheduledEvent/CancelAppointment?eventId=" + events.Id + "&username=" + "testPatientUsername");
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
             UoW.GetRepository<IScheduledEventReadRepository>().GetCanceledUserEvents(events.Patient.UserName).Count.ShouldBe(0);
             DeleteTestDataFromDataBase(events);
             DeleteDataFromDataBase();
-
         }
 
         private void UpdateEventTime(ScheduledEvent events)
         {
-            events.StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(-2).Day);
-            events.EndDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(-2).Day);
+            events.UpdateTime(events.StartDate.AddDays(-3), events.EndDate.AddDays(-3));
             UoW.GetRepository<IScheduledEventWriteRepository>().Update(events, true);
-
         }
 
         private void DeleteTestDataFromDataBase(ScheduledEvent events)
@@ -80,21 +81,8 @@ namespace HospitalIntegrationTests
 
             testPatient = UoW.GetRepository<IPatientReadRepository>().GetAll()
                 .FirstOrDefault(x => x.UserName == "testPatientUsername");
-
-            var scheduledEvent = new ScheduledEvent()
-            {
-
-                ScheduledEventType = 0,
-                IsCanceled = isCanceled,
-                IsDone = isDone,
-                StartDate = new DateTime(DateTime.Now.Year,DateTime.Now.Month, DateTime.Now.AddDays(3).Day),
-                EndDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(3).Day),
-                Patient = testPatient,
-                Doctor = testDoctor,
-                Room = testRoom
-
-
-            };
+            ScheduledEvent scheduledEvent = new ScheduledEvent(0, isCanceled, isDone, new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(3).Day), new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(3).Day),
+                          new DateTime(), testPatient.Id, testDoctor.Id, testDoctor);
 
             UoW.GetRepository<IScheduledEventWriteRepository>().Add(scheduledEvent);
             return scheduledEvent;

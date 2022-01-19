@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -71,30 +72,6 @@ namespace HospitalIntegrationTests
             {
                 UoW.GetRepository<IDoctorWriteRepository>().Delete(doctor);
             }
-            var specialization = UoW.GetRepository<ISpecializationReadRepository>().GetAll()
-                .FirstOrDefault(x => x.Name == "TestSspecialization");
-            if (specialization != null)
-            {
-                UoW.GetRepository<ISpecializationWriteRepository>().Delete(specialization);
-            }
-            var city = UoW.GetRepository<ICityReadRepository>()
-                .GetAll().ToList()
-                .FirstOrDefault(x => x.Name == "TestCity");
-
-            if (city != null)
-            {
-                UoW.GetRepository<ICityWriteRepository>().Delete(city);
-            }
-
-            var country = UoW.GetRepository<ICountryReadRepository>()
-                .GetAll().ToList()
-                .FirstOrDefault(x => x.Name == "TestCountry");
-
-            if (country != null)
-            {
-                UoW.GetRepository<ICountryWriteRepository>().Delete(country);
-            }
-
             var room = UoW.GetRepository<IRoomReadRepository>()
                     .GetAll().ToList()
                     .FirstOrDefault(x => x.Name == "TestRoom");
@@ -107,33 +84,10 @@ namespace HospitalIntegrationTests
 
         private void ArrangeDatabase()
         {
-            var country = UoW.GetRepository<ICountryReadRepository>().GetAll()
-                .FirstOrDefault(x => x.Name == "TestCountry");
-            if (country == null)
-            {
-                country = new Country()
-                {
-                    Name = "TestCountry",
-                };
-                UoW.GetRepository<ICountryWriteRepository>().Add(country);
-            }
-
-            var city = UoW.GetRepository<ICityReadRepository>().GetAll().FirstOrDefault(x => x.Name == "TestCity");
-            if (city == null)
-            {
-                city = new City()
-                {
-                    Name = "TestCity",
-                    PostalCode = 00000,
-                    Country = country
-
-                };
-                UoW.GetRepository<ICityWriteRepository>().Add(city);
-            }
             var room = UoW.GetRepository<IRoomReadRepository>()
-                .GetAll()
-                .FirstOrDefault(x => x.Name == "TestRoom");
-            
+               .GetAll()
+               .FirstOrDefault(x => x.Name == "TestRoom");
+
             if (room == null)
             {
                 room = new Room()
@@ -149,19 +103,6 @@ namespace HospitalIntegrationTests
 
                 UoW.GetRepository<IRoomWriteRepository>().Add(room);
             }
-
-            var specialization = UoW.GetRepository<ISpecializationReadRepository>().GetAll()
-                .FirstOrDefault(x => x.Name == "TestSspecialization");
-            if (specialization == null)
-            {
-                specialization = new Specialization()
-                {
-                    Description = "DescriptionSpecialization",
-                    Name = "TestSspecialization"
-                };
-                UoW.GetRepository<ISpecializationWriteRepository>().Add(specialization);
-            }
-
             var doctor = UoW.GetRepository<IDoctorReadRepository>().GetAll()
                 .FirstOrDefault(x => x.UserName == "testDoctorUsername");
             if (doctor == null)
@@ -174,7 +115,7 @@ namespace HospitalIntegrationTests
                     DateOfBirth = DateTime.Now,
                     Gender = Gender.Female,
                     Street = "TestDoctorStreet",
-                    SpecializationId = specialization.Id,
+                    Specialization = new Specialization("TestSpecialization", "DescriptionSpecialization"),
                     UserName = "testDoctorUsername",
                     Email = "testDoctor@gmail.com",
                     EmailConfirmed = true,
@@ -190,27 +131,18 @@ namespace HospitalIntegrationTests
                         Name = "prva"
                     },
                     Room = room,
-                    City = city
+                    City = new City("TestCity", 00000, new Country("TestCountry"))
 
                 };
                 UoW.GetRepository<IDoctorWriteRepository>().Add(doctor);
             }
 
             var patient = UoW.GetRepository<IPatientReadRepository>().GetAll()
-                .FirstOrDefault(x => x.UserName == "testPatientUsername");
+                .FirstOrDefault(x => x.UserName == "testUsername");
 
             if (patient == null)
             {
-                var medicalRecord = new MedicalRecord
-                {
-                    Weight = 70,
-                    Height = 168,
-                    BloodType = BloodType.ABNegative,
-                    JobStatus = JobStatus.Student,
-                    Doctor = doctor
-
-                };
-                patient = new Patient()
+                patient = new Patient(new MedicalRecord(null, 0, 0, doctor.Id, null))
                 {
                     FirstName = "TestPatient",
                     MiddleName = "TestPatientMiddleName",
@@ -218,7 +150,7 @@ namespace HospitalIntegrationTests
                     DateOfBirth = DateTime.Now,
                     Gender = Gender.Female,
                     Street = "TesPatientStreet",
-                    UserName = "testPatientUsername",
+                    UserName = "testUsername",
                     Email = "testPatient@gmail.com",
                     EmailConfirmed = true,
                     PhoneNumber = "testPatientPhoneNumber",
@@ -226,25 +158,17 @@ namespace HospitalIntegrationTests
                     TwoFactorEnabled = false,
                     LockoutEnabled = false,
                     AccessFailedCount = 0,
-                    MedicalRecord = medicalRecord,
-                    City = city,
+                    City = new City("TestCity", 00000, new Country("TestCountry")),
                     IsBlocked = false
 
                 };
                 UoW.GetRepository<IPatientWriteRepository>().Add(patient);
-                
             }
-
-            var date = new DateTime().AddDays(1);
             var survey = UoW.GetRepository<ISurveyReadRepository>().GetAll()
-                .FirstOrDefault(x => x.CreatedDate == date);
-            if (survey == null)
+                .FirstOrDefault(x => x.CreatedDate == DateTime.Now.AddDays(1));
+            if (survey != null) return;
             {
-                survey = new Survey()
-                {
-                    CreatedDate = date
-                    
-                };
+                survey = new Survey(true);
 
                 UoW.GetRepository<ISurveyWriteRepository>().Add(survey);
 
@@ -287,83 +211,39 @@ namespace HospitalIntegrationTests
                     };
                     UoW.GetRepository<IQuestionWriteRepository>().Add(question3);
                 }
-                
-                var scheduledEvent = UoW.GetRepository<IScheduledEventReadRepository>().GetAll()
-                    .FirstOrDefault(x => x.StartDate == date && x.Patient.Id == patient.Id && x.Doctor.Id == doctor.Id);
-                if (scheduledEvent == null)
+                var scheduledEvent = new ScheduledEvent(ScheduledEventType.Appointment, false, false, DateTime.Now.AddDays(1), DateTime.Now.AddDays(1), new DateTime(), patient.Id, 1, doctor);
+                patient.ScheduledEvents.Add(scheduledEvent);
+                UoW.GetRepository<IPatientWriteRepository>().Update(patient);
+
+
+                var answeredSurvey = UoW.GetRepository<IAnsweredSurveyReadRepository>().GetAll()
+                    .FirstOrDefault(x => x.AnsweredDate == DateTime.Now.AddDays(1));
+                if (answeredSurvey != null) return;
                 {
-                    scheduledEvent = new ScheduledEvent()
+                    answeredSurvey = new AnsweredSurvey(new List<AnsweredQuestion>(), DateTime.Now, survey.Id, survey, patient.Id, patient, scheduledEvent.Id, scheduledEvent);
+                    UoW.GetRepository<IAnsweredSurveyWriteRepository>().Add(answeredSurvey);
+                    answeredSurvey.AnsweredQuestions.Add(new AnsweredQuestion()
                     {
-                        StartDate = date,
-                        Doctor = doctor,
-                        EndDate = date,
-                        CancellationDate = date,
-                        IsCanceled = false,
-                        IsDone = false,
-                        Patient = patient,
-                        Room = doctor.Room,
-                        ScheduledEventType = ScheduledEventType.Appointment
-                    };
-                    
-
-                    var answeredSurvey = UoW.GetRepository<IAnsweredSurveyReadRepository>().GetAll()
-                    .FirstOrDefault(x => x.AnsweredDate == date);
-                    if (answeredSurvey == null)
+                        AnsweredSurvey = answeredSurvey,
+                        QuestionId = question1.Id,
+                        Rating = 4,
+                        Category = question1.Category
+                    });
+                    answeredSurvey.AnsweredQuestions.Add(new AnsweredQuestion()
                     {
-                        answeredSurvey = new AnsweredSurvey()
-                        {
-                            AnsweredDate = date,
-                            PatientId = patient.Id,
-                            ScheduledEvent = scheduledEvent,
-                            Survey = survey
-                        };
-                        UoW.GetRepository<IScheduledEventWriteRepository>().Add(scheduledEvent);
-
-                        var answeredQuestion1 = UoW.GetRepository<IAnsweredQuestionReadRepository>().GetAll()
-                        .FirstOrDefault(x => x.AnsweredSurveyId == answeredSurvey.Id && x.QuestionId == question1.Id);
-                        if (answeredQuestion1 == null)
-                        {
-                            answeredQuestion1 = new AnsweredQuestion()
-                            {
-                                AnsweredSurvey = answeredSurvey,
-                                QuestionId = question1.Id,
-                                Rating = 4,
-                                Category = question1.Category
-                            };
-                            UoW.GetRepository<IAnsweredQuestionWriteRepository>().Add(answeredQuestion1);
-                        }
-                        var answeredQuestion2 = UoW.GetRepository<IAnsweredQuestionReadRepository>().GetAll()
-                            .FirstOrDefault(x => x.AnsweredSurveyId == answeredSurvey.Id && x.QuestionId == question2.Id);
-                        if (answeredQuestion2 == null)
-                        {
-                            answeredQuestion2 = new AnsweredQuestion()
-                            {
-                                AnsweredSurvey = answeredSurvey,
-                                Question = question2,
-                                Rating = 3,
-                                Category = question2.Category
-                            };
-                            UoW.GetRepository<IAnsweredQuestionWriteRepository>().Add(answeredQuestion2);
-                        }
-                        var answeredQuestion3 = UoW.GetRepository<IAnsweredQuestionReadRepository>().GetAll()
-                            .FirstOrDefault(x => x.AnsweredSurveyId == answeredSurvey.Id && x.QuestionId == question3.Id);
-                        if (answeredQuestion3 == null)
-                        {
-                            answeredQuestion3 = new AnsweredQuestion()
-                            {
-                                AnsweredSurvey = answeredSurvey,
-                                Question = question3,
-                                Rating = 4,
-                                Category = question3.Category
-                            };
-                            UoW.GetRepository<IAnsweredQuestionWriteRepository>().Add(answeredQuestion3);
-                        }
-
-                        UoW.GetRepository<IAnsweredSurveyWriteRepository>().Add(answeredSurvey);
-                    }
-                    
-
-                    
+                        AnsweredSurvey = answeredSurvey,
+                        Question = question2,
+                        Rating = 3,
+                        Category = question2.Category
+                    });
+                    answeredSurvey.AnsweredQuestions.Add(new AnsweredQuestion()
+                    {
+                        AnsweredSurvey = answeredSurvey,
+                        Question = question3,
+                        Rating = 4,
+                        Category = question3.Category
+                    });
+                    UoW.GetRepository<IAnsweredSurveyWriteRepository>().Update(answeredSurvey);
                 }
 
                 

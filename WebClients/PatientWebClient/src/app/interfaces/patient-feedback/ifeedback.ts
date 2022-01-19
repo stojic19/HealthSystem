@@ -1,5 +1,7 @@
 export interface IFeedback {
-    patientId : number,
-    text: string;
-    isPublishable: boolean;
+  patientUsername: string;
+  text: string;
+  isPublishable: boolean;
+  isAnonymous: boolean;
+  patientId: number;
 }

@@ -62,37 +62,12 @@ namespace HospitalIntegrationTests.Base
 
                 if (user == null)
                 {
-                    var countryWriteRepo = UoW.GetRepository<ICountryWriteRepository>();
-                    var cityWriteRepo = UoW.GetRepository<ICityWriteRepository>();
+                    
                     var roomWriteRepo = UoW.GetRepository<IRoomWriteRepository>();
-                    var specializationWriteRepo = UoW.GetRepository<ISpecializationWriteRepository>();
                     var doctorWriteRepo = UoW.GetRepository<IDoctorWriteRepository>();
-
-                    var testCountry = UoW.GetRepository<ICountryReadRepository>().GetAll().FirstOrDefault(x => x.Name == "TestCountry");
-                    var testCity = UoW.GetRepository<ICityReadRepository>().GetAll().FirstOrDefault(x => x.Name == "TestCity");
                     var testRoom = UoW.GetRepository<IRoomReadRepository>().GetAll().FirstOrDefault(x => x.Name == "TestRoom");
-                    var testSpecialization = UoW.GetRepository<ISpecializationReadRepository>().GetAll().FirstOrDefault(x => x.Name == "TestSpecialization");
                     var testDoctor = UoW.GetRepository<IDoctorReadRepository>().GetAll().FirstOrDefault(x => x.FirstName == "TestDoctor");
 
-                    if (testCountry == null)
-                    {
-                        testCountry = new Country()
-                        {
-                            Name = "TestCountry"
-                        };
-                        countryWriteRepo.Add(testCountry);
-                    }
-
-                    if (testCity == null)
-                    {
-                        testCity = new City()
-                        {
-                            Name = "TestCity",
-                            Country = testCountry,
-                            PostalCode = 00000
-                        };
-                        cityWriteRepo.Add(testCity);
-                    }
                     if (testRoom == null)
                     {
                         testRoom = new Room()
@@ -105,15 +80,6 @@ namespace HospitalIntegrationTests.Base
                         };
                         roomWriteRepo.Add(testRoom);
                     }
-                    if (testSpecialization == null)
-                    {
-                        testSpecialization = new Specialization()
-                        {
-                            Description = "DescriptionSpecialization",
-                            Name = "TestSpecialization"
-                        };
-                        specializationWriteRepo.Add(testSpecialization);
-                    }
                     if (testDoctor == null)
                     {
                         testDoctor = new Doctor()
@@ -124,9 +90,9 @@ namespace HospitalIntegrationTests.Base
                             DateOfBirth = DateTime.Now,
                             Gender = Gender.Female,
                             Street = "TestDoctorStreet",
-                            City = testCity,
+                            City = new City("Novi Sad", 21000, new Country("Serbia")),
                             Room = testRoom,
-                            Specialization = testSpecialization,
+                            Specialization = new Specialization("General Practice", ""),
                             UserName = "testDoctorUsername",
                             Email = "testDoctor@gmail.com",
                             EmailConfirmed = true,
@@ -139,7 +105,7 @@ namespace HospitalIntegrationTests.Base
                             {
                                 Name = "testShift",
                                 From = 8,
-                                To = 4
+                                To = 16
                             }
 
                         };
@@ -156,7 +122,7 @@ namespace HospitalIntegrationTests.Base
                         Gender = Gender.Female,
                         Street = "TesPatientStreet",
                         StreetNumber = "44",
-                        CityId = testCity.Id,
+                        City = new CityDTO(){ Name = "Novi Sad" },
                         Email = "testPatient@gmail.com",
                         UserName = "testPatientUsername",
                         Password = "TestProba123",
@@ -165,8 +131,11 @@ namespace HospitalIntegrationTests.Base
                         MedicalRecord = new NewMedicalRecordDTO()
                         {
                             DoctorId = testDoctor.Id,
-                            Height = 0,
-                            Weight = 0,
+                            Measurements = new MeasurementsDTO()
+                            {
+                                Height = 167,
+                                Weight = 60
+                            },
                             BloodType = BloodType.Undefined,
                             JobStatus = JobStatus.Undefined
 
@@ -201,6 +170,7 @@ namespace HospitalIntegrationTests.Base
             }
             else if (role == "Manager")
             {
+                
                 user = UoW.GetRepository<IManagerReadRepository>().GetAll().FirstOrDefault(x => x.UserName.Equals("testLogInManager"));
                 if (user == null)
                 {
@@ -213,7 +183,7 @@ namespace HospitalIntegrationTests.Base
                         Gender = Gender.Female,
                         Street = "TestManagerStreet",
                         UserName = "testLogInManager",
-                        CityId = 1,
+                        City = new CityDTO() { Name = "Novi Sad"},
                         Email = "testManager@gmail.com",
                         Password = "111111aA"
 
@@ -265,29 +235,6 @@ namespace HospitalIntegrationTests.Base
             if (doctor != null)
             {
                 UoW.GetRepository<IDoctorWriteRepository>().Delete(doctor);
-            }
-            var specialization = UoW.GetRepository<ISpecializationReadRepository>().GetAll()
-                .FirstOrDefault(x => x.Name == "TestSpecialization");
-            if (specialization != null)
-            {
-                UoW.GetRepository<ISpecializationWriteRepository>().Delete(specialization);
-            }
-            var city = UoW.GetRepository<ICityReadRepository>()
-                .GetAll().ToList()
-                .FirstOrDefault(x => x.Name == "TestCity");
-
-            if (city != null)
-            {
-                UoW.GetRepository<ICityWriteRepository>().Delete(city);
-            }
-
-            var country = UoW.GetRepository<ICountryReadRepository>()
-                .GetAll().ToList()
-                .FirstOrDefault(x => x.Name == "TestCountry");
-
-            if (country != null)
-            {
-                UoW.GetRepository<ICountryWriteRepository>().Delete(country);
             }
 
             var room = UoW.GetRepository<IRoomReadRepository>()

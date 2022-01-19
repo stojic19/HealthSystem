@@ -1,10 +1,10 @@
 import { SurveyService } from './../../services/SurveyService/survey.service';
 import { IAnsweredQuestion } from 'src/app/interfaces/answered-question';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ISurvey } from 'src/app/interfaces/isurvey';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { IAnsweredSurvey } from 'src/app/interfaces/answered-survey';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { IAppointment } from 'src/app/interfaces/appointment';
 import { AppointmentService } from 'src/app/services/AppointmentService/appointment.service';
 import { ICurrentUser } from 'src/app/interfaces/current-user';
@@ -22,7 +22,7 @@ export class SurveyPageComponent implements OnInit {
   totalQuestions!: number;
   answeredSurvey!: IAnsweredSurvey;
   appointmentId: any;
-  userName!:ICurrentUser;
+  currentUser!: ICurrentUser;
 
   constructor(
     private snackBar: MatSnackBar,
@@ -32,8 +32,7 @@ export class SurveyPageComponent implements OnInit {
     private _router: Router
   ) {
     this.answeredQuestions = [];
-    this.userName = JSON.parse((localStorage.getItem('currentUser'))!)
-
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser')!);
   }
 
   addQuestion(answeredQuestion: IAnsweredQuestion) {
@@ -52,15 +51,21 @@ export class SurveyPageComponent implements OnInit {
     if (this.answeredQuestions.length == this.totalQuestions) {
       this.answeredSurvey = {
         surveyId: this.survey.surveyId,
+        userName: this.currentUser.userName,
         questions: this.answeredQuestions,
-        scheduledEventId: this.scheduledEvent.id
-      }
-      this.surveyService.answerSurvey(this.answeredSurvey,this.userName.userName).subscribe();
-      this.snackBar.open("Thank you for answering our Survey . ", '', {
+        scheduledEventId: this.scheduledEvent.id,
+      };
+      this.surveyService
+        .answerSurvey(this.answeredSurvey, this.currentUser.userName)
+        .subscribe();
+      this.snackBar.open('Thank you for answering our Survey . ', '', {
         duration: 3000,
         verticalPosition: 'bottom',
       });
-      this._router.navigate(['/record']);
+
+      this._router.navigate(['/record']).then(() => {
+        window.location.reload();
+      });
     } else {
       this.snackBar.open('You need to answer all questions. ', '', {
         duration: 3000,
@@ -70,21 +75,21 @@ export class SurveyPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.refresh()
-  }
-
-  refresh() {
     this.appointmentId = this.route.snapshot.paramMap.get('appointmentId');
     console.log(this.appointmentId);
 
-    this.appointmentService.getAppointment(this.appointmentId).subscribe((res: IAppointment) => {
-      this.scheduledEvent = res;
-    });
+    this.appointmentService
+      .getAppointment(this.appointmentId)
+      .subscribe((res: IAppointment) => {
+        this.scheduledEvent = res;
+      });
 
     this.surveyService.getSurvey().subscribe((res: ISurvey) => {
       this.survey = res;
-      this.totalQuestions = this.survey.hospitalSection.questions.length + this.survey.doctorSection.questions.length + this.survey.medicalStaffSection.questions.length;
+      this.totalQuestions =
+        this.survey.hospitalSection.questions.length +
+        this.survey.doctorSection.questions.length +
+        this.survey.medicalStaffSection.questions.length;
     });
-
   }
 }

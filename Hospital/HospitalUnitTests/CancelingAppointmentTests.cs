@@ -19,27 +19,28 @@ namespace HospitalUnitTests
         public void Appointment_should_be_cancelled()
         {
             ClearDbContext();
-            createDbContext(isCanceled: false, isDone: false);
+            ScheduledEvent events = createDbContext(isCanceled: false, isDone: false);
+            Patient testPatient = events.Patient;
             ScheduledEventService scheduledEventsService = new(UoW);
 
-            ScheduledEvent scheduled = scheduledEventsService.GetScheduledEvent(1);
-            scheduledEventsService.CancelAppointment(1);
-            scheduledEventsService.GetCanceledUserEvents("testUser").Count.ShouldNotBe(0);
+
+            testPatient.CancelAppointment(events.Id);
+            testPatient.ScheduledEvents.Count.ShouldNotBe(0);
         }
         [Fact]
         public void Appointment_should_not_be_cancelled()
         {
             ClearDbContext();
-            createDbContext(isCanceled: false, isDone: false);
+            ScheduledEvent events  = createDbContext(isCanceled: false, isDone: false);
+            Patient testPatient = events.Patient;
             ScheduledEventService scheduledEventsService = new(UoW);
-            updateEventTime(scheduledEventsService);
-            scheduledEventsService.CancelAppointment(1);
-            scheduledEventsService.GetCanceledUserEvents("testUser").Count.ShouldBe(0);
+            updateEventTime(scheduledEventsService, events);
+            testPatient.CancelAppointment(events.Id);
+            scheduledEventsService.GetCanceledUserEvents("testPatient").Count.ShouldBe(0);
         }
 
-        private void updateEventTime(ScheduledEventService scheduledEventsService)
+        private void updateEventTime(ScheduledEventService scheduledEventsService, ScheduledEvent scheduled)
         {
-            ScheduledEvent scheduled = scheduledEventsService.GetScheduledEvent(1);
             scheduled.UpdateTime(scheduled.StartDate.AddDays(-3), scheduled.EndDate.AddDays(-3));
             Context.SaveChanges();
         }
@@ -48,23 +49,21 @@ namespace HospitalUnitTests
         public void Finished_appointment_should_not_be_cancelled()
         {
             ClearDbContext();
-            createDbContext(isCanceled: false, isDone: true);
+            ScheduledEvent events = createDbContext(isCanceled: false, isDone: true);
+            Patient testPatient = events.Patient;
             ScheduledEventService scheduledEventsService = new(UoW);
-            scheduledEventsService.CancelAppointment(1);
-            scheduledEventsService.GetCanceledUserEvents("testUser").Count.ShouldBe(0);
+            testPatient.CancelAppointment(events.Id);
+            scheduledEventsService.GetCanceledUserEvents("testPatient").Count.ShouldBe(0);
         }
 
         private ScheduledEvent createDbContext(bool isCanceled, bool isDone)
         {
-            Patient testPatient = new Patient();
-            
+            Patient testPatient = new Patient(1,"testPatient",new MedicalRecord());      
             Context.Patients.Add(testPatient);
-            Doctor testDoctor = new Doctor();
+ 
+            Doctor testDoctor = new Doctor(2, new Shift().Id, new Specialization(), new Room());          
             Context.Doctors.Add(testDoctor);
-            Context.Rooms.Add(new Room()
-            {
-                Id = 10
-            });
+           
             ScheduledEvent scheduledEvent = new ScheduledEvent(0, isCanceled, isDone, new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(3).Day), new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(3).Day),
                        new DateTime(), testPatient.Id, testDoctor.Id, testDoctor);
 

@@ -40,7 +40,7 @@ namespace Hospital.MedicalRecords.Model
         {
             foreach (var se in ScheduledEvents.ToArray())
             {
-                if (se.Id == eventId && DateTime.Compare(DateTime.Now, se.StartDate.AddDays(-2)) <= 0) se.SetToCanceled();
+                if (se.Id == eventId && !se.IsCanceled && !se.IsDone && DateTime.Compare(DateTime.Now, se.StartDate.AddDays(-2)) <= 0) se.SetToCanceled();
             }
         }
     }

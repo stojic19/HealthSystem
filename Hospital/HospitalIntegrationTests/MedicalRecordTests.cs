@@ -24,6 +24,7 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Get_patient_with_medical_record_should_return_200()
         {
+            RegisterAndLogin("Patient");
             ClearUserWithUserName("testUserName");
 
             var doctor = UoW.GetRepository<IDoctorReadRepository>()
@@ -41,16 +42,17 @@ namespace HospitalIntegrationTests
             {
                 DoctorId = doctor.Id
             };
+            var city = UoW.GetRepository<ICityReadRepository>().GetAll().FirstOrDefault(x => x.Name.Equals("TestCity"));
 
             var patient = new Patient()
             {
                 UserName = "testUserName",
-                CityId = 1,
+                CityId = city.Id,
                 MedicalRecord = medRec
             };
             UoW.GetRepository<IPatientWriteRepository>().Add(patient);
             
-            var response = await Client.GetAsync(BaseUrl + "api/MedicalRecord/GetPatientWithRecord");
+            var response = await PatientClient.GetAsync(BaseUrl + "api/MedicalRecord/GetPatientWithRecord/" + patient.UserName);
 
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
             var foundPatient = UoW.GetRepository<IPatientReadRepository>()

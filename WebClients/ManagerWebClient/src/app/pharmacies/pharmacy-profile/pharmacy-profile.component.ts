@@ -37,7 +37,7 @@ export class PharmacyProfileComponent implements OnInit {
       this.chartData = [
         { name: "Tender offers", value: this.tenderStats.offers },
         { name: "Won", value: this.tenderStats.won }
-      ], console.log(this.chartData)},
+      ]},
       (error) => alert(error.error));
   }
 

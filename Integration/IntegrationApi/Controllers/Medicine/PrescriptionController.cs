@@ -16,6 +16,7 @@ using IntegrationAPI.Adapters.PDF;
 using IntegrationAPI.Adapters.PDF.Implementation;
 using IntegrationAPI.Controllers.Base;
 using IntegrationAPI.DTO.Prescription;
+using IntegrationAPI.HttpRequestSenders;
 using Renci.SshNet;
 
 namespace IntegrationAPI.Controllers.Medicine
@@ -25,7 +26,7 @@ namespace IntegrationAPI.Controllers.Medicine
     public class PrescriptionController : BaseIntegrationController
     {
 
-        public PrescriptionController(IUnitOfWork uow) : base(uow){}
+        public PrescriptionController(IUnitOfWork uow, IHttpRequestSender sender) : base(uow, sender){}
 
         [HttpPost]
         public IActionResult PostPrescription(PrescriptionDTO dto)

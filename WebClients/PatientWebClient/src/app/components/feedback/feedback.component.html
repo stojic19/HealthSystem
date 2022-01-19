@@ -1,26 +1,47 @@
 <div class="container">
-  <div class = "col-12 text-center">
+  <div class="col-12 text-center">
     <h3>Your opinion matters</h3>
-    <hr>
+    <hr />
   </div>
-  <div class = "col-12">
-    <form >
+  <div class="col-12">
+    <form id="fbForm">
       <div>
-        <mat-form-field appearance = "fill" style="width:100%;">
+        <mat-form-field appearance="fill" style="width: 100%">
           <mat-label>What could we improve?</mat-label>
-          <textarea matInput (change) = "doTextareaValueChange($event)" required></textarea>
+          <textarea
+            id="text"
+            matInput
+            (change)="doTextareaValueChange($event)"
+            required
+          ></textarea>
         </mat-form-field>
       </div>
-      <div style="width:100%;" >
-        <mat-checkbox [(ngModel)] = "stayAnonymous" [ngModelOptions] = "{standalone: true}">Remain anonymous</mat-checkbox>
+      <div style="width: 100%">
+        <mat-checkbox
+          id="stayAnonymous"
+          [(ngModel)]="stayAnonymous"
+          [ngModelOptions]="{ standalone: true }"
+          >Remain anonymous</mat-checkbox
+        >
       </div>
       <div>
-        <mat-checkbox [(ngModel)] = "isPublishable" [ngModelOptions] = "{standalone: true}">Publish feedback  </mat-checkbox>
-  
+        <mat-checkbox
+          id="isPublishable"
+          [(ngModel)]="isPublishable"
+          [ngModelOptions]="{ standalone: true }"
+          >Publish feedback
+        </mat-checkbox>
       </div>
-      <br>
-      <button mat-raised-button color="accent" (click)="submitFeedback()" class="text-center">Submit</button>
+      <br />
+      <button
+        id="submitFeedback"
+        mat-raised-button
+        color="accent"
+        (click)="submitFeedback()"
+        class="text-center"
+      >
+        Submit
+      </button>
     </form>
-  </div> 
-
+  </div>
 </div>

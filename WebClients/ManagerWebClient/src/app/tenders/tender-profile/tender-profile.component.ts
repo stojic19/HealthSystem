@@ -25,7 +25,7 @@ export class TenderProfileComponent implements OnInit {
   winner(offerId: number){
     var winner={
       tenderId : this.id,
-      offerId: offerId
+      tenderOfferId: offerId
     }
     this._tenderService.postWinner(winner)
     .subscribe((error) => alert(error));

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Integration.Shared.Model;
 
 namespace Integration.Tendering.Model
 {
-    public class MedicationRequest
+    public class MedicationRequest : ValueObject
     {
         public string MedicineName { get; private set; }
         public int Quantity { get; private set; }
@@ -37,6 +38,12 @@ namespace Integration.Tendering.Model
         {
             Quantity -= amount;
             Validate();
+        }
+
+        protected override IEnumerable<object> GetEqualityComponents()
+        {
+            yield return MedicineName;
+            yield return Quantity;
         }
     }
 }

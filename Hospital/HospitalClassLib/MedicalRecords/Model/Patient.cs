@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Hospital.Schedule.Model;
 using Hospital.SharedModel.Model;
 
@@ -39,7 +40,7 @@ namespace Hospital.MedicalRecords.Model
         {
             foreach (var se in ScheduledEvents.ToArray())
             {
-                if (se.Id == eventId) se.SetToCanceled();
+                if (se.Id == eventId && DateTime.Compare(DateTime.Now, se.StartDate.AddDays(-2)) <= 0) se.SetToCanceled();
             }
         }
     }

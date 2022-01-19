@@ -96,7 +96,12 @@ namespace Hospital.Schedule.Model
         {
             if (RoomId <= 0) throw new Exception();
         }
-
+        public void UpdateTime(DateTime startDate, DateTime endDate)
+        {
+            StartDate = startDate;
+            EndDate = endDate;
+            Validate();
+        }
         public void Validate()
         {
             ValidateDoctor();

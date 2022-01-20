@@ -25,6 +25,6 @@ export class BenefitsService {
   }
 
   hideBenefit(id: any){
-    return this._httpClient.post(this._APIUrl+'/Benefit/HideBenefit', id);
+    return this._httpClient.post(this._APIUrl+'api/Benefit/HideBenefit', id);
   }
 }

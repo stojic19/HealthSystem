@@ -6,6 +6,10 @@ using System.Linq;
 using Hospital.Schedule.Model;
 using Hospital.SharedModel.Model.Enumerations;
 using Hospital.Schedule.Repository;
+using Hospital.MedicalRecords.Model;
+using Hospital.SharedModel.Model;
+using Hospital.RoomsAndEquipment.Model;
+using System.Collections.Generic;
 
 namespace HospitalUnitTests
 {
@@ -15,84 +19,79 @@ namespace HospitalUnitTests
         {
         }
 
-    //    [Fact]
-    //    public void one_answered_surveys_created()
-    //    {
-    //        ClearDbContext();
-    //        #region
-    //        Context.Surveys.Add(new Survey()
-    //        {
-    //            Id = 1,
-    //            CreatedDate = DateTime.Now,
+        [Fact]
+        public void one_answered_surveys_created()
+        {
+            ClearDbContext();
+            #region
+            Survey testSurvey = new Survey(true);
+            Context.Surveys.Add(testSurvey);
+          
+            Context.Questions.Add(new Question()
+            {
+                Id = 1,
+                SurveyId = 1,
+                Category = SurveyCategory.DoctorSurvey,
+                Text = "Pitanje 1"
+            });
+            Context.Questions.Add(new Question()
+            {
+                Id = 2,
+                SurveyId = 1,
+                Category = SurveyCategory.StaffSurvey,
+                Text = "Pitanje 2"
+            });
 
-    //        });
-    //        Context.Questions.Add(new Question()
-    //        {
-    //            Id = 1,
-    //            SurveyId = 1,
-    //            Category = SurveyCategory.DoctorSurvey,
-    //            Text = "Pitanje 1"
-    //        });
-    //        Context.Questions.Add(new Question()
-    //        {
-    //            Id = 2,
-    //            SurveyId = 1,
-    //            Category = SurveyCategory.StaffSurvey,
-    //            Text = "Pitanje 2"
-    //        });
+            Context.Questions.Add(new Question()
+            {
+                Id = 3,
+                SurveyId = 1,
+                Category = SurveyCategory.HospitalSurvey,
+                Text = "Pitanje 3"
+            });
 
-    //        Context.Questions.Add(new Question()
-    //        {
-    //            Id = 3,
-    //            SurveyId = 1,
-    //            Category = SurveyCategory.HospitalSurvey,
-    //            Text = "Pitanje 3"
-    //        });
-    //        Context.ScheduledEvents.Add(new ScheduledEvent()
-    //        {
-    //            Id = 1,
-    //            IsDone = true
+            Patient testPatient = new Patient(1, "testPatient", new MedicalRecord());
+            Context.Patients.Add(testPatient);
 
-    //        });
+            Doctor testDoctor = new Doctor(2, new Shift().Id, new Specialization(), new Room());
+            Context.Doctors.Add(testDoctor);
 
-    //        //////////////////////
-    //        Context.AnsweredSurveys.Add(new AnsweredSurvey()
-    //        {
-    //            Id = 1,
-    //            SurveyId = 1,
-    //            ScheduledEventId = 1,
-    //            AnsweredDate = DateTime.Now
+            ScheduledEvent events = new ScheduledEvent(0, false, true, new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(-3).Day), new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(-3).Day),
+                 new DateTime(), testPatient.Id, testDoctor.Id, testDoctor);
+            Context.ScheduledEvents.Add(events);
 
-    //        });
-    //        Context.AnsweredQuestions.Add(new AnsweredQuestion()
-    //        {
-    //            Id = 1,
-    //            Category = SurveyCategory.DoctorSurvey,
-    //            QuestionId = 1,
-    //            Rating = 5
-    //        });
-    //        Context.AnsweredQuestions.Add(new AnsweredQuestion()
-    //        {
-    //            Id = 2,
-    //            Category = SurveyCategory.StaffSurvey,
-    //            QuestionId = 2,
-    //            Rating = 5
-    //        });
-    //        Context.AnsweredQuestions.Add(new AnsweredQuestion()
-    //        {
-    //            Id = 3,
-    //            Category = SurveyCategory.HospitalSurvey,
-    //            QuestionId = 3,
-    //            Rating = 5
-    //        });
+            //////////////////////
+            Context.AnsweredSurveys.Add(new AnsweredSurvey(new List<AnsweredQuestion>(), DateTime.Now, testSurvey.Id, testSurvey, testPatient.Id, testPatient, events.Id, events));
+           
+            Context.AnsweredQuestions.Add(new AnsweredQuestion()
+            {
+                Id = 1,
+                Category = SurveyCategory.DoctorSurvey,
+                QuestionId = 1,
+                Rating = 5
+            });
+            Context.AnsweredQuestions.Add(new AnsweredQuestion()
+            {
+                Id = 2,
+                Category = SurveyCategory.StaffSurvey,
+                QuestionId = 2,
+                Rating = 5
+            });
+            Context.AnsweredQuestions.Add(new AnsweredQuestion()
+            {
+                Id = 3,
+                Category = SurveyCategory.HospitalSurvey,
+                QuestionId = 3,
+                Rating = 5
+            });
 
-    //        #endregion
-    //        Context.SaveChanges();
-    //        var answeredSurvey = UoW.GetRepository<IAnsweredSurveyReadRepository>()
-    //           .GetAll();
-    //        answeredSurvey.ShouldNotBeNull();
-    //        answeredSurvey.Count().ShouldBe(1);
+            #endregion
+            Context.SaveChanges();
+            var answeredSurvey = UoW.GetRepository<IAnsweredSurveyReadRepository>()
+               .GetAll();
+            answeredSurvey.ShouldNotBeNull();
+            answeredSurvey.Count().ShouldBe(1);
 
-    //    }
+        }
     }
 }

@@ -37,16 +37,16 @@ namespace Hospital.Schedule.Model
 
         private void ValidateOnCreate()
         {
-            if (string.IsNullOrEmpty(Text) || string.IsNullOrWhiteSpace(Text)) throw new Exception();
-            if (FeedbackStatus != FeedbackStatus.NotApproved) throw new Exception();
+            if (string.IsNullOrEmpty(Text) || string.IsNullOrWhiteSpace(Text)) throw new ArgumentException("Not Valid");
+            if (FeedbackStatus != FeedbackStatus.NotApproved) throw new ArgumentException("Not Valid");
         }
         private void ValidateOnPublish()
         {
-            if (FeedbackStatus != FeedbackStatus.Approved) throw new Exception();
+            if (FeedbackStatus != FeedbackStatus.Approved) throw new ArgumentException("Not Valid");
         }
         private void ValidateOnUnpublish()
         {
-            if (FeedbackStatus != FeedbackStatus.NotApproved) throw new Exception();
+            if (FeedbackStatus != FeedbackStatus.NotApproved) throw new ArgumentException("Not Valid");
         }
 
         public void Publish()

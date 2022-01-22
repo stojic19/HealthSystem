@@ -24,8 +24,8 @@ namespace Hospital.SharedModel.Model
 
         private void Validate()
         {
-            if (Name.Any(char.IsDigit)) throw new Exception();
-            if (string.IsNullOrEmpty(Name)) throw new Exception();
+            if (Name.Any(char.IsDigit)) throw new ArgumentException("Not Valid");
+            if (string.IsNullOrEmpty(Name)) throw new ArgumentException("Not Valid");
         }
 
         protected override IEnumerable<object> GetEqualityComponents()

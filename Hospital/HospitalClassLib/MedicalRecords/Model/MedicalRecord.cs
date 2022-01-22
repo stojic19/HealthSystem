@@ -45,7 +45,7 @@ namespace Hospital.MedicalRecords.Model
 
         private void Validate()
         {
-            if (DoctorId <= 0) throw new Exception();
+            if (DoctorId <= 0) throw new ArgumentException("Not Valid");
         }
 
         public IEnumerable<Allergy> GetAllergies()

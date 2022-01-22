@@ -22,21 +22,21 @@ namespace HospitalUnitTests
         public void Should_add_feedback()
         {
             ClearDbContext();
-            var numOfFeebacksBefore = UoW.GetRepository<IFeedbackReadRepository>().GetAll().Count();
+            var numOfFeedbackBefore = UoW.GetRepository<IFeedbackReadRepository>().GetAll().Count();
             Context.Feedbacks.Add(new Feedback(1,"dsd",true,false));
             Context.SaveChanges();
-            var numOfFeedbacksAfter = UoW.GetRepository<IFeedbackReadRepository>().GetAll().Count();
-            Assert.StrictEqual(numOfFeebacksBefore + 1, numOfFeedbacksAfter);
+            var numOfFeedbackAfter = UoW.GetRepository<IFeedbackReadRepository>().GetAll().Count();
+            Assert.StrictEqual(numOfFeedbackBefore + 1, numOfFeedbackAfter);
         }
         [Fact]
         public void Should_not_add_feedback()
         {
             ClearDbContext();
-            var numOfFeebacksBefore = UoW.GetRepository<IFeedbackReadRepository>().GetAll().Count();
+            var numOfFeedbackBefore = UoW.GetRepository<IFeedbackReadRepository>().GetAll().Count();
             try { Context.Feedbacks.Add(new Feedback(1, "   ", true, false)); } catch { }
             Context.SaveChanges();
-            var numOfFeedbacksAfter = UoW.GetRepository<IFeedbackReadRepository>().GetAll().Count();
-            Assert.StrictEqual(numOfFeebacksBefore, numOfFeedbacksAfter);
+            var numOfFeedbackAfter = UoW.GetRepository<IFeedbackReadRepository>().GetAll().Count();
+            Assert.StrictEqual(numOfFeedbackBefore, numOfFeedbackAfter);
         }
         [Fact]
         public void Should_publish_feedback()

@@ -39,7 +39,7 @@ namespace Hospital.Schedule.Model
         {
           
             Validate();
-            AnsweredSurveys.Append(answeredSurvey);
+            AnsweredSurveys = AnsweredSurveys.Append(answeredSurvey);
         }
 
         internal bool IsActiveSurvey()

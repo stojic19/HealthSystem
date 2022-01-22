@@ -21,7 +21,7 @@ namespace Hospital.SharedModel.Model
         {
             if (string.IsNullOrWhiteSpace(Name) || Name.Any(char.IsDigit))
             {
-                throw new Exception();
+                throw new ArgumentException("Not Valid");
             }
         }
         protected override IEnumerable<object> GetEqualityComponents()

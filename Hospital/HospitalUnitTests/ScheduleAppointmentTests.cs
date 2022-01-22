@@ -132,7 +132,7 @@ namespace HospitalUnitTests
             var availableTerms = service.GetAvailableTermsForDoctorAndDate(doctor.Id, preferredDate).ToList();
 
             availableTerms.ShouldNotBeNull();
-            availableTerms.Count().ShouldBe(16);
+            availableTerms.Count.ShouldBe(16);
         }
 
 

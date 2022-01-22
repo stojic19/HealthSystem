@@ -42,7 +42,7 @@ namespace Hospital.SharedModel.Model
             IsBlocked = true;
         }
 
-        public bool IsMalicious(int numOfCanceledEventsInLastMonth)
+        public static bool IsMalicious(int numOfCanceledEventsInLastMonth)
         {
             return numOfCanceledEventsInLastMonth >= MaxCanceledEvents;
         }

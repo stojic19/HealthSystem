@@ -41,7 +41,7 @@ namespace Hospital.Schedule.Model
 
         private void Validate()
         {
-            if (SurveyId <= 0 || ScheduledEventId <= 0 || PatientId <= 0 ) throw new Exception();
+            if (SurveyId <= 0 || ScheduledEventId <= 0 || PatientId <= 0 ) throw new ArgumentException("Not Valid");
         }
     }
 }

@@ -84,17 +84,17 @@ namespace Hospital.Schedule.Model
 
         public void ValidateDoctor()
         {
-            if (DoctorId <= 0) throw new Exception();
+            if (DoctorId <= 0) throw new ArgumentException("Not Valid");
         }
 
         public void ValidatePatient()
         {
-            if (PatientId <= 0) throw new Exception();
+            if (PatientId <= 0) throw new ArgumentException("Not Valid");
         }
 
         public void ValidateRoom()
         {
-            if (RoomId <= 0) throw new Exception();
+            if (RoomId <= 0) throw new ArgumentException("Not Valid");
         }
         public void UpdateTime(DateTime startDate, DateTime endDate)
         {

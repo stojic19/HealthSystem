@@ -211,7 +211,7 @@ namespace HospitalIntegrationTests
                     };
                     UoW.GetRepository<IQuestionWriteRepository>().Add(question3);
                 }
-                var scheduledEvent = new ScheduledEvent(ScheduledEventType.Appointment, false, false, DateTime.Now.AddDays(1), DateTime.Now.AddDays(1), new DateTime(), patient.Id, 1, doctor);
+                var scheduledEvent = new ScheduledEvent(ScheduledEventType.Appointment, false, false, DateTime.Now.AddDays(1), DateTime.Now.AddDays(1), new DateTime(), patient.Id, doctor.Id, doctor);
                 patient.ScheduledEvents.Add(scheduledEvent);
                 UoW.GetRepository<IPatientWriteRepository>().Update(patient);
 

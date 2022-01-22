@@ -180,10 +180,10 @@ namespace HospitalIntegrationTests
                 var date = new DateTime();
                 var scheduledEvent = UoW.GetRepository<IScheduledEventReadRepository>().GetAll()
                     .FirstOrDefault(x => x.StartDate == date && x.Patient.Id == patient.Id && x.Doctor.Id == doctor.Id);
-                patient.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, true, false, DateTime.Now.AddDays(-100), DateTime.Now.AddDays(-100), DateTime.Now.AddDays(-110), patient.Id, 1, doctor));
-                patient.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, true, false, DateTime.Now.AddDays(-22), DateTime.Now.AddDays(-22), DateTime.Now.AddDays(-27), patient.Id, 1, doctor));
-                patient.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, true, false, DateTime.Now.AddDays(-4), DateTime.Now.AddDays(-4), DateTime.Now.AddDays(-14), patient.Id, 1, doctor));
-                patient.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, true, false, DateTime.Now.AddDays(7), DateTime.Now.AddDays(7), DateTime.Now.AddDays(-1), patient.Id, 1, doctor));
+                patient.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, true, false, DateTime.Now.AddDays(-100), DateTime.Now.AddDays(-100), DateTime.Now.AddDays(-110), patient.Id, doctor.Id, doctor));
+                patient.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, true, false, DateTime.Now.AddDays(-22), DateTime.Now.AddDays(-22), DateTime.Now.AddDays(-27), patient.Id, doctor.Id, doctor));
+                patient.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, true, false, DateTime.Now.AddDays(-4), DateTime.Now.AddDays(-4), DateTime.Now.AddDays(-14), patient.Id, doctor.Id, doctor));
+                patient.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, true, false, DateTime.Now.AddDays(7), DateTime.Now.AddDays(7), DateTime.Now.AddDays(-1), patient.Id, doctor.Id, doctor));
                 UoW.GetRepository<IPatientWriteRepository>().Update(patient);
 
             }
@@ -273,10 +273,10 @@ namespace HospitalIntegrationTests
                 var date = new DateTime();
                 var scheduledEvent = UoW.GetRepository<IScheduledEventReadRepository>().GetAll()
                     .FirstOrDefault(x => x.StartDate == date && x.Patient.Id == patient.Id && x.Doctor.Id == doctor.Id);
-                patient.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, true, false, DateTime.Now.AddDays(-100), DateTime.Now.AddDays(-100), DateTime.Now.AddDays(-110), patient.Id, 1, doctor));
-                patient.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, true, false, DateTime.Now.AddDays(-22), DateTime.Now.AddDays(-22), DateTime.Now.AddDays(-27), patient.Id, 1, doctor));
-                patient.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, false, true, DateTime.Now.AddDays(-4), DateTime.Now.AddDays(-4), new DateTime(), patient.Id, 1, doctor));
-                patient.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, true, false, DateTime.Now.AddDays(7), DateTime.Now.AddDays(7), DateTime.Now.AddDays(-1), patient.Id, 1, doctor));
+                patient.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, true, false, DateTime.Now.AddDays(-100), DateTime.Now.AddDays(-100), DateTime.Now.AddDays(-110), patient.Id, doctor.Id, doctor));
+                patient.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, true, false, DateTime.Now.AddDays(-22), DateTime.Now.AddDays(-22), DateTime.Now.AddDays(-27), patient.Id, doctor.Id, doctor));
+                patient.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, false, true, DateTime.Now.AddDays(-4), DateTime.Now.AddDays(-4), new DateTime(), patient.Id, doctor.Id, doctor));
+                patient.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, true, false, DateTime.Now.AddDays(7), DateTime.Now.AddDays(7), DateTime.Now.AddDays(-1), patient.Id, doctor.Id, doctor));
                 UoW.GetRepository<IPatientWriteRepository>().Update(patient);
             }
         }

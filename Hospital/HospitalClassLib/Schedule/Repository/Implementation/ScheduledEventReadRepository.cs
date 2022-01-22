@@ -73,7 +73,7 @@ namespace Hospital.Schedule.Repository.Implementation
 
         public List<ScheduledEvent> UpdateFinishedUserEvents()
         {
-            return GetAll().ToList().Where(x => !x.IsDone && !x.IsCanceled && DateTime.Compare(x.EndDate, DateTime.Now) < 0).ToList();
+            return GetAll().Where(x => !x.IsDone && !x.IsCanceled && DateTime.Compare(x.EndDate, DateTime.Now) < 0).ToList();
         }
     }
 }

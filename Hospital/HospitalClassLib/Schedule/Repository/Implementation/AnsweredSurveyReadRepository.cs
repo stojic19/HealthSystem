@@ -7,11 +7,9 @@ namespace Hospital.Schedule.Repository.Implementation
 {
     public class AnsweredSurveyReadRepository : ReadBaseRepository<int, AnsweredSurvey>, IAnsweredSurveyReadRepository
     {
-        private readonly AppDbContext _context;
 
         public AnsweredSurveyReadRepository(AppDbContext context) : base(context)
         {
-            _context = context;
         }
 
         public int GetSurveyId(int evenId)

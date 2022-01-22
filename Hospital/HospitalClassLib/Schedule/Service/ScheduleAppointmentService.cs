@@ -67,8 +67,7 @@ namespace Hospital.Schedule.Service
             var firstDoctor = doctorRepo.GetById(doctorId);
             var specializationName = firstDoctor.Specialization.Name;
             return doctorRepo.GetSpecializedDoctors(specializationName).ToList().
-                                SelectMany(doctor => GetAvailableAppointmentsForDoctorAndDateRange(doctor.Id, timePeriod))
-                                .ToList();
+                                SelectMany(doctor => GetAvailableAppointmentsForDoctorAndDateRange(doctor.Id, timePeriod));
         }
     }
 }

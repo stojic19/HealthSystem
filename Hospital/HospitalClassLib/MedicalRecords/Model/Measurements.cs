@@ -23,7 +23,7 @@ namespace Hospital.MedicalRecords.Model
 
         private void Validate()
         {
-            if (double.IsNegative(Weight) || double.IsNegative(Height)) throw new Exception();
+            if (double.IsNegative(Weight) || double.IsNegative(Height)) throw new ArgumentException("Not Valid");
         }
         protected override IEnumerable<object> GetEqualityComponents()
         {

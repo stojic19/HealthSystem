@@ -1,8 +1,10 @@
 ﻿using System;
 using Hospital.EventStoring.Model;
 using Hospital.EventStoring.Repository;
+using Hospital.EventStoring.Service.Interfaces;
 using Hospital.SharedModel.Repository.Base;
 using HospitalApi.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalApi.Controllers
@@ -12,10 +14,12 @@ namespace HospitalApi.Controllers
     public class EventController : ControllerBase
     {
         private readonly IUnitOfWork uow;
+        private readonly IEventStoringService _eventStoringService;
 
-        public EventController(IUnitOfWork uow)
+        public EventController(IUnitOfWork uow,IEventStoringService eventStoringService)
         {
             this.uow = uow;
+            this._eventStoringService = eventStoringService;
         }
 
         [HttpGet]
@@ -30,14 +34,22 @@ namespace HospitalApi.Controllers
         {
             var incomingEvent = new StoredEvent()
             {
-                StateData = newEvent.StateData,
+                Step = newEvent.Step,
                 Time = DateTime.Now,
-                UserId = newEvent.UserId
+                Username = newEvent.Username
             };
 
             uow.GetRepository<IStoredEventWriteRepository>().Add(incomingEvent);
 
             return Ok();
+        }
+
+        //[Authorize(Roles = "Manager")]
+        [HttpGet]
+        public IActionResult GetStatisticsPerPartOfDay()
+        {
+            var result = _eventStoringService.GetStatisticsPerPartOfDay();
+            return Ok(result);
         }
     }
 }

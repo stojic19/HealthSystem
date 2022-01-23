@@ -4,11 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Hospital.EventStoring.Model;
+using Hospital.EventStoring.Model.Wrappers;
 using Hospital.SharedModel.Repository.Base;
 
 namespace Hospital.EventStoring.Repository
 {
     public interface IStoredEventReadRepository : IReadBaseRepository<Guid, StoredEvent>
     {
+        public IEnumerable<StoredEvent> GetEventsStartedScheduling();
+        public StartSchedulingPerPartOfDay GetStatisticsPerPartOfDay();
     }
 }

@@ -35,8 +35,8 @@ namespace HospitalIntegrationTests.Base
         public HttpClient ManagerClient => _fixture.ManagerClient;
         public HttpClient PatientClient => _fixture.PatientClient;
         public CookieContainer CookieContainer => _fixture.CookieContainer;
-        public string BaseUrl => "https://localhost:44303/";
-        public string IntegrationBaseUrl => "https://localhost:44302/";
+        public string BaseUrl => "http://localhost:44303/";
+        public string IntegrationBaseUrl => "http://localhost:44302/";
         public string ManagerToken { get; set; }
         public string PatientToken { get; set; }
 

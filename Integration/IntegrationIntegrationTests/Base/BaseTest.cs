@@ -23,7 +23,7 @@ namespace IntegrationIntegrationTests.Base
         protected AppDbContext Context => _fixture.Context;
         public HttpClient Client => _fixture.Client;
         public CookieContainer CookieContainer => _fixture.CookieContainer;
-        public string BaseUrl => "https://localhost:44302/";
+        public string BaseUrl => "http://localhost:44302/";
 
         public void AddCookie(string name, string value, string domain)
         {

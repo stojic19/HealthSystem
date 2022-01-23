@@ -39,7 +39,7 @@ jobs:
           hash -r
 
       - name: Setup chrome
-        uses: nanasess/setup-chromedriver
+        uses: nanasess/setup-chromedriver@v1.0.5
 
       - name: Chrome driver setup
         run: |

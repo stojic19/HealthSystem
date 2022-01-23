@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System;
+using IntegrationApi.Messages;
 
 namespace IntegrationAPI.Controllers.Pharmacies
 {
@@ -49,7 +50,7 @@ namespace IntegrationAPI.Controllers.Pharmacies
                 _pharmacyMasterService.UpdatePharmacy(pharmacy);
             }
 
-            return Ok();
+            return Ok(PharmacyMessages.PharmacyUpdated);
         }
 
         [HttpPost]
@@ -63,7 +64,7 @@ namespace IntegrationAPI.Controllers.Pharmacies
                 file.CopyTo(stream);
             }
 
-            return Ok();
+            return Ok(PharmacyMessages.PharmacyImageUploaded);
         }
 
         [HttpPost]

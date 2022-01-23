@@ -31,9 +31,9 @@ namespace IntegrationAPI.Controllers.Pharmacies
             HospitalDTO dto = new HospitalDTO
             {
                 BaseUrl = $"{Request.Scheme}://{Request.Host}",
-                Name = "Nasa bolnica",
-                StreetName = "Vojvode Stepe",
-                StreetNumber = "14",
+                Name = "Heaven's Pass Medicare",
+                StreetName = "Dunavska",
+                StreetNumber = "17",
                 CityName = city.Name
             };
             RestClient client = new RestClient();

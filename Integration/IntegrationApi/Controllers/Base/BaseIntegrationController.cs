@@ -23,9 +23,9 @@ namespace IntegrationAPI.Controllers.Base
             };
             _hospitalInfo = new HospitalDTO
             {
-                Name = "Nasa bolnica",
-                StreetName = "Vojvode Stepe",
-                StreetNumber = "14",
+                Name = "Heaven's Pass Medicare",
+                StreetName = "Dunavska",
+                StreetNumber = "17",
                 CityName = "Novi Sad"
             };
             _hospitalBaseUrl = "https://localhost:44303";

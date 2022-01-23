@@ -2,8 +2,7 @@
 {
     public enum FeedbackStatus
     {
-        Pending,
-        Rejected,
+        NotApproved,
         Approved
     }
 }

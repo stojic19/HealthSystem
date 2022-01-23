@@ -5,34 +5,43 @@ import { IFinishedAppointment } from 'src/app/interfaces/finished-appoinment';
 import { IPatient } from 'src/app/interfaces/patient-interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MedicalRecordService {
- 
   patient!: IPatient;
 
   constructor(private _http: HttpClient) {}
 
-  get(userName:any): any {
-    return this._http.get<IPatient>('api/MedicalRecord/GetPatientWithRecord/' + userName);
+  get(userName: any): any {
+    return this._http.get<IPatient>(
+      'api/MedicalRecord/GetPatientWithRecord/' + userName
+    );
   }
-  getFutureAppointments(userName:any): any {
-    
-    return this._http.get<IAppointment[]>('api/ScheduledEvent/GetUpcomingUserEvents/' + userName);
-  }
-
-  getfinishedAppointments(userName:any): any {
- 
-    return this._http.get<IFinishedAppointment[]>('api/ScheduledEvent/GetEventsForSurvey/' + userName);
+  getFutureAppointments(userName: any): any {
+    return this._http.get<IAppointment[]>(
+      'api/ScheduledEvent/GetUpcomingUserEvents/' + userName
+    );
   }
 
-  getCanceledAppointments(userName:any): any {
-  
-    return this._http.get<IAppointment[]>('api/ScheduledEvent/GetCanceledUserEvents/' + userName);
+  getfinishedAppointments(userName: any): any {
+    return this._http.get<IFinishedAppointment[]>(
+      'api/ScheduledEvent/GetEventsForSurvey/' + userName
+    );
   }
-  cancelAppointments(id: number) :any {
+
+  getCanceledAppointments(userName: any): any {
+    return this._http.get<IAppointment[]>(
+      'api/ScheduledEvent/GetCanceledUserEvents/' + userName
+    );
+  }
+  cancelAppointments(id: number, username: string): any {
     console.log(id);
-    
-    return this._http.get<any>('api/ScheduledEvent/CancelAppointment/' + id);
+
+    return this._http.get<any>(
+      'api/ScheduledEvent/CancelAppointment?eventId=' +
+        id +
+        '&username=' +
+        username
+    );
   }
 }

@@ -29,7 +29,8 @@ export class LoginComponent implements OnInit {
   submit(): void {
     const loginObserver = {
       next: (x: any) => {
-        this._snackBar.open('Wellcome', 'Dismiss');
+        this._snackBar.open('Welcome!', 'Dismiss');
+        this._router.navigate(['/record']);
       },
       error: (err: any) => {
         this._snackBar.open(err.error, 'Dismiss');
@@ -38,6 +39,5 @@ export class LoginComponent implements OnInit {
 
     this._service.login(this.form.getRawValue()).subscribe(loginObserver);
     //TODO: Id za med record
-    this._router.navigate(['/record']);
   }
 }

@@ -17,12 +17,12 @@ namespace HospitalApi.Controllers
     [EnableCors("MyCorsImplementationPolicy")]
     public class AnsweredSurveyController : ControllerBase
     {
-        private readonly IPatientSurveyService surveyService;
+        private readonly IPatientSurveyService _surveyService;
         private readonly IMapper mapper;
         private readonly IUnitOfWork _uow;
         public AnsweredSurveyController(IPatientSurveyService surveyService, IMapper mapper, IUnitOfWork uow)
         {
-            this.surveyService = surveyService;
+            _surveyService = surveyService;
             this.mapper = mapper;
             this._uow = uow;
         }
@@ -31,7 +31,7 @@ namespace HospitalApi.Controllers
         [HttpGet]
         public IEnumerable<AnsweredSurvey> GetAllAnsweredSurvey()
         {
-            return surveyService.getAllAnsweredSurvey();
+            return _surveyService.getAllAnsweredSurvey();
         }
 
         [Authorize(Roles = "Patient")]
@@ -40,10 +40,10 @@ namespace HospitalApi.Controllers
         {
             answeredSurveyDTO.PatientId = _uow.GetRepository<IPatientReadRepository>()
                                     .GetAll()
-                                    .FirstOrDefault(x => x.UserName == username ).Id;
+                                    .First(x => x.UserName == username ).Id;
             var temp = mapper.Map<AnsweredSurvey>(answeredSurveyDTO);
            
-            return Ok(surveyService.createAnsweredSurvey(temp));
+            return Ok(_surveyService.createAnsweredSurvey(temp));
         }
     }
 }

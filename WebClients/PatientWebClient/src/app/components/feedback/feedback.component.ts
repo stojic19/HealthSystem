@@ -1,4 +1,3 @@
-import { NgAnalyzedFile } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -38,24 +37,14 @@ export class FeedbackComponent implements OnInit {
   submitFeedback(): void {
     if (this.feedbackText && this.feedbackText != '') {
       this.newFeedback.text = this.feedbackText;
-      this.newFeedback.isPublishable = this.isPublishable;
       this.newFeedback.patientUsername =
         this._authService.currentUserValue.userName;
-      this._feedbackService.addFeedback(this.newFeedback).subscribe(
-        (res) => {
-          console.log('evo me tu');
-          this._snackBar.open(
-            'Your feedback has been successfully submitted.',
-            'Dismiss'
-          );
-        },
-        (err) => {
-          console.log('evo me tu ipak');
-          this._snackBar.open(
-            'Your feedback has been successfully submitted.',
-            'Dismiss'
-          );
-        }
+      this.newFeedback.isPublishable = this.isPublishable;
+      this.newFeedback.isAnonymous = this.stayAnonymous;
+      this._feedbackService.addFeedback(this.newFeedback).subscribe();
+      this._snackBar.open(
+        'Your feedback has been successfully submitted.',
+        'Dismiss'
       );
 
       this.dialogRef.close(true);

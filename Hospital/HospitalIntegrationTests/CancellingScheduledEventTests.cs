@@ -1,17 +1,13 @@
-﻿using AutoMapper;
-using Hospital.GraphicalEditor.Model;
+﻿using Hospital.GraphicalEditor.Model;
 using Hospital.RoomsAndEquipment.Model;
 using Hospital.RoomsAndEquipment.Repository;
 using Hospital.SharedModel.Model.Enumerations;
 using HospitalApi.DTOs;
 using HospitalIntegrationTests.Base;
-using Microsoft.EntityFrameworkCore;
 using Shouldly;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 

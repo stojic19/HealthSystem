@@ -12,7 +12,6 @@ import { LoginComponent } from './components/login/login.component';
 import { PatientMedicalRecordComponent } from './components/patient-medical-record/patient-medical-record.component';
 import { AppointmentsPageComponent } from './components/appointments-page/appointments-page.component';
 import { SurveyPageComponent } from './components/survey-page/survey-page.component';
-import { RecommendedAppointmentComponent } from './components/recommended-appointment/recommended-appointment.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthGuard } from './AuthGuard/AuthGuard';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
@@ -48,12 +47,7 @@ const routes: Routes = [
     ],
   },
   { path: 'registration', component: RegistrationComponent },
-  { path: 'login', component: LoginComponent },
-  {
-    path: 'recommendedAppointments',
-    component: RecommendedAppointmentComponent,
-    canActivate: [AuthGuard],
-  },
+  { path: 'login', component: LoginComponent }
 ];
 
 @NgModule({

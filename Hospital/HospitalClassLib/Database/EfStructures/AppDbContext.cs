@@ -52,7 +52,10 @@ namespace Hospital.Database.EfStructures
             builder.Entity<User>().OwnsOne(u => u.City, c => c.OwnsOne(x => x.Country));
             builder.Entity<Doctor>().OwnsOne(d => d.Specialization);
             builder.Entity<MedicalRecord>().OwnsOne(d => d.Measurements);
-           
+            builder.Entity<EquipmentTransferEvent>().OwnsOne(et => et.TimePeriod);
+            builder.Entity<EquipmentTransferEvent>().HasOne(et => et.InitialRoomInventory);
+            builder.Entity<EquipmentTransferEvent>().HasOne(et => et.DestinationRoomInventory);
+
             base.OnModelCreating(builder);
         }
     }

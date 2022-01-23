@@ -46,6 +46,14 @@ namespace HospitalApi.Controllers
                     return BadRequest("Incorrect amount entered. Please Try Again!");
                 }
 
+                var roomInventoryRepo = _uow.GetRepository<IRoomInventoryReadRepository>();
+                var roomInventoryWriteRepo = _uow.GetRepository<IRoomInventoryWriteRepository>();
+                RoomInventory initial = roomInventoryRepo.GetByRoomAndInventoryItem(equipmentTransferEvent.InitialRoomId, equipmentTransferEvent.InventoryItemId);
+                RoomInventory destination = roomInventoryRepo.GetByRoomAndInventoryItem(equipmentTransferEvent.DestinationRoomId, equipmentTransferEvent.InventoryItemId);
+                if (destination == null) {
+                    destination = roomInventoryWriteRepo.Add(new RoomInventory((int)equipmentTransferEvent.DestinationRoomId, (int)equipmentTransferEvent.InventoryItemId, 0));
+                }
+
                 var repo = _uow.GetRepository<IEquipmentTransferEventWriteRepository>();
                 EquipmentTransferEvent addedEvent = repo.Add(equipmentTransferEvent);
 

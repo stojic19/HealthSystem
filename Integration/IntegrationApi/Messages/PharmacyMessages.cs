@@ -14,5 +14,6 @@ namespace IntegrationApi.Messages
         public static readonly string CannotReach = "Failed to reach pharmacy!";
         public static readonly string PharmacyUpdated = "Pharmacy info updated!";
         public static readonly string PharmacyImageUploaded = "Pharmacy image updated!";
+        public static readonly string Registered = "Pharmacy registered successfully";
     }
 }

@@ -43,8 +43,8 @@ jobs:
           INTEGRATION_DB_PATH: ${{ env.DB_PATH_INTEGRATION }}
           RABBITMQ_HOST: "rabbitmq"
         run: | 
-          dotnet run --project Hospital/HospitalApi/ --urls=https://localhost:44303 &
-          dotnet run --project Integration/IntegrationApi/ --urls=https://localhost:44302 &
+          dotnet run --project Hospital/HospitalApi/ --urls=https://0.0.0.0:44303 &
+          dotnet run --project Integration/IntegrationApi/ --urls=https://0.0.0.0:44302 &
 
       - name: Sleep for 15 seconds
         run: sleep 15s

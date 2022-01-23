@@ -9,6 +9,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { MatTableDataSource } from '@angular/material/table';
 import { ICurrentUser } from 'src/app/interfaces/current-user';
 import { AuthService } from 'src/app/services/AuthService/auth.service';
+import { IEvent, Step } from 'src/app/interfaces/ievent';
+import { EventService } from 'src/app/services/EventSourcingService/event.service';
 
 @Component({
   selector: 'app-patient-medical-record',
@@ -55,19 +57,22 @@ export class PatientMedicalRecordComponent implements OnInit {
   response!: string;
   isVisible!: boolean;
   isVisibleRecommended! : boolean;
+  event! : IEvent;
 
   constructor(
     private _sanitizer: DomSanitizer,
     private _service: MedicalRecordService,
     private _router: Router,
     private changeDetectorRefs: ChangeDetectorRef,
-    private authService: AuthService
+    private authService: AuthService,
+    private _eventService : EventService
   ) {
     this.futureAppointments = new MatTableDataSource<IAppointment>();
     this.finishedAppointments = new MatTableDataSource<IFinishedAppointment>();
     this.canceledAppointments = new MatTableDataSource<IAppointment>();
     this.isVisibleRecommended = false;
-
+    this.event = {} as IEvent;
+    
     this.currentUser = JSON.parse(localStorage.getItem('currentUser')!);
 
     this.sub = this._service.get(this.currentUser.userName).subscribe({
@@ -131,6 +136,9 @@ export class PatientMedicalRecordComponent implements OnInit {
   scheduleBasic() {
     this.isVisible = true;
     this.isVisibleRecommended=false;
+    this.event.username = this.authService.currentUserValue.userName;
+    this.event.step = Step.StartScheduling;
+    this._eventService.createNewEvent(this.event).subscribe();
   }
 
   scheduleRecommended() {

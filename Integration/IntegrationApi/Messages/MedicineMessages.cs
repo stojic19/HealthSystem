@@ -9,5 +9,6 @@ namespace IntegrationApi.Messages
     {
         public static readonly string InvalidQuantity = "Invalid quantity, it must be positive";
         public static readonly string DidNotReceive = "Pharmacy failed to receive request! Try again";
+        public static readonly string CouldNotAddToHospital = "Hospital could not add received medicine";
     }
 }

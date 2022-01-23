@@ -31,6 +31,7 @@ using IntegrationAPI.Adapters.PDF;
 using IntegrationAPI.Adapters.PDF.Implementation;
 using System.IO;
 using System.Threading;
+using IntegrationApi.Messages;
 
 namespace IntegrationAPI.Controllers.Tenders
 {
@@ -44,76 +45,89 @@ namespace IntegrationAPI.Controllers.Tenders
         [HttpPost, Produces("application/json")]
         public IActionResult CreateTender(CreateTenderDto createTenderDto)
         {
-            if (createTenderDto.Name.Equals(""))
-            {
-                return BadRequest("Invalid tender name.");
-            }
-            if (DateTime.Compare(createTenderDto.EndDate, createTenderDto.StartDate) < 0)
-            {
-                return BadRequest("Start date must be before end date.");
-            }
-            if (createTenderDto.MedicineRequests.Count == 0)
-            {
-                return BadRequest("No medicine requests in list.");
-            }
+            if (createTenderDto.Name.Equals("")) return BadRequest(TenderMessages.InvalidTenderName);
+            if (DateTime.Compare(createTenderDto.EndDate, createTenderDto.StartDate) < 0) return BadRequest(TenderMessages.InvalidDateRange);
+            if (createTenderDto.MedicineRequests.Count == 0) return BadRequest(TenderMessages.InvalidMedicineList);
             foreach (MedicineRequestDto medicineRequestDto in createTenderDto.MedicineRequests)
             {
-                if (medicineRequestDto.MedicineName.Equals(""))
-                {
-                    return BadRequest("Medicine name required.");
-                }
-                if (medicineRequestDto.Quantity <= 0)
-                {
-                    return BadRequest("Invalid quantity for " + medicineRequestDto.MedicineName + ".");
-                }
+                if (medicineRequestDto.MedicineName.Equals("")) return BadRequest(TenderMessages.InvalidMedicineName);
+                if (medicineRequestDto.Quantity <= 0) return BadRequest(TenderMessages.InvalidQuantity(medicineRequestDto.MedicineName));
             }
-            Tender tender = new Tender(createTenderDto.Name, new TimeRange(createTenderDto.StartDate, createTenderDto.EndDate));
-            foreach (MedicineRequestDto medicineRequestDto in createTenderDto.MedicineRequests)
-            {
-                tender.AddMedicationRequest(new MedicationRequest(medicineRequestDto.MedicineName, medicineRequestDto.Quantity));
-            }
-            _unitOfWork.GetRepository<ITenderWriteRepository>().Add(tender);
-            var pharmacies = _unitOfWork.GetRepository<IPharmacyReadRepository>().GetAll().ToList();
+
+            Tender tender;
             try
             {
-                var factory = new ConnectionFactory() { HostName = Environment.GetEnvironmentVariable("RABBITMQ_HOST") };
-                using (var connection = factory.CreateConnection())
-                {
-                    foreach (var pharmacyApiKey in pharmacies.Select(x => x.ApiKey))
-                    {
-                        using (var channel = connection.CreateModel())
-                        {
-                            channel.ExchangeDeclare("new tender", ExchangeType.Direct);
-                            TenderToPharmacyDto dto = new TenderToPharmacyDto
-                            {
-                                Name = tender.Name,
-                                Apikey = pharmacyApiKey,
-                                CreatedDate = tender.CreatedTime,
-                                EndDate = tender.ActiveRange.EndDate,
-                                StartDate = tender.ActiveRange.StartDate,
-                                MedicationRequestDto = new List<MedicationRequestDto>()
-                            };
-                            foreach (MedicationRequest req in tender.MedicationRequests)
-                            {
-                                dto.MedicationRequestDto.Add(new MedicationRequestDto
-                                {
-                                    MedicineName = req.MedicineName,
-                                    Quantity = req.Quantity
-                                });
-                            }
+                tender = SaveTender(createTenderDto);
+            }
+            catch(ArgumentException e)
+            {
+                return Problem(e.Message);
+            }
+            var pharmacies = _unitOfWork.GetRepository<IPharmacyReadRepository>().GetAll().ToList();
 
-                            var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(dto));
-                            channel.BasicPublish("new tender", pharmacyApiKey.ToString(), null, body);
-                        }
-                        if (pharmacies.Any()) new EmailService().SendNewTenderMail(tender, pharmacies);
-                    }
-                }
+            try
+            {
+                SendTender(pharmacies, tender);
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error while sending tender via rabbitmq!");
+                return StatusCode(StatusCodes.Status500InternalServerError, TenderMessages.FailedToSendTender);
             }
-            return Ok("Tender created");
+            return Ok(TenderMessages.Created);
+        }
+
+        private void SendTender(IEnumerable<Pharmacy> pharmacies, Tender tender)
+        {
+            var factory = new ConnectionFactory() {HostName = Environment.GetEnvironmentVariable("RABBITMQ_HOST")};
+            using (var connection = factory.CreateConnection())
+            {
+                foreach (var pharmacyApiKey in pharmacies.Select(x => x.ApiKey))
+                {
+                    using (var channel = connection.CreateModel())
+                    {
+                        channel.ExchangeDeclare("new tender", ExchangeType.Direct);
+                        var dto = CreateTenderToPharmacyDto(tender, pharmacyApiKey);
+
+                        var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(dto));
+                        channel.BasicPublish("new tender", pharmacyApiKey.ToString(), null, body);
+                    }
+
+                    if (pharmacies.Any()) new EmailService().SendNewTenderMail(tender, pharmacies);
+                }
+            }
+        }
+
+        private TenderToPharmacyDto CreateTenderToPharmacyDto(Tender tender, Guid pharmacyApiKey)
+        {
+            TenderToPharmacyDto dto = new TenderToPharmacyDto
+            {
+                Name = tender.Name,
+                Apikey = pharmacyApiKey,
+                CreatedDate = tender.CreatedTime,
+                EndDate = tender.ActiveRange.EndDate,
+                StartDate = tender.ActiveRange.StartDate,
+                MedicationRequestDto = new List<MedicationRequestDto>()
+            };
+            foreach (MedicationRequest req in tender.MedicationRequests)
+            {
+                dto.MedicationRequestDto.Add(new MedicationRequestDto
+                {
+                    MedicineName = req.MedicineName,
+                    Quantity = req.Quantity
+                });
+            }
+
+            return dto;
+        }
+
+        private Tender SaveTender(CreateTenderDto createTenderDto)
+        {
+            Tender tender = new Tender(createTenderDto.Name, new TimeRange(createTenderDto.StartDate, createTenderDto.EndDate));
+            foreach (MedicineRequestDto medicineRequestDto in createTenderDto.MedicineRequests)
+                tender.AddMedicationRequest(new MedicationRequest(medicineRequestDto.MedicineName,
+                    medicineRequestDto.Quantity));
+            _unitOfWork.GetRepository<ITenderWriteRepository>().Add(tender);
+            return tender;
         }
 
         [HttpGet]
@@ -122,13 +136,10 @@ namespace IntegrationAPI.Controllers.Tenders
             List<Tender> retVal = new List<Tender>();
             var tenders = _unitOfWork.GetRepository<ITenderReadRepository>().GetAll()
                 .Include(t => t.TenderOffers).Include(t => t.MedicationRequests);
-            foreach (var tender in tenders.AsEnumerable().Where(t => t.IsActive()))
-            {
-                retVal.Add(tender);
-            }
-
+            foreach (var tender in tenders.AsEnumerable().Where(t => t.IsActive())) retVal.Add(tender);
             return retVal;
         }
+
         [HttpGet("{id:int}")]
         public Tender GetTenderById(int id)
         {
@@ -136,10 +147,8 @@ namespace IntegrationAPI.Controllers.Tenders
                             .Include(t => t.TenderOffers).ThenInclude(to => to.Pharmacy)
                             .Include(t => t.MedicationRequests);
             foreach (var tender in tenders.AsEnumerable().Where(t => t.IsActive()))
-            {
                 if (tender.Id.Equals(id))
                     return tender;
-            }
             return null;
         }
 
@@ -152,6 +161,7 @@ namespace IntegrationAPI.Controllers.Tenders
                 .ThenInclude(x => x.Country)
                 .Include(x => x.Complaints)
                 .FirstOrDefault(x => x.Id == id);
+
             var tenders = _unitOfWork.GetRepository<ITenderReadRepository>().GetAll()
                             .Include(t => t.TenderOffers).Include(t => t.MedicationRequests);
             foreach (var tender in tenders.AsEnumerable())
@@ -172,45 +182,61 @@ namespace IntegrationAPI.Controllers.Tenders
             if (!tender.IsActive()) return BadRequest("Tender already closed!");
             var winningOffer = tender.TenderOffers.FirstOrDefault(t => t.Id == dto.TenderOfferId);
             if(winningOffer == null) return BadRequest("Invalid tender offer!");
+
             tender.ChooseWinner(winningOffer);
             tender.CloseTender();
             _unitOfWork.GetRepository<ITenderWriteRepository>().Update(tender);
+
             try
             {
-                var factory = new ConnectionFactory() { HostName = Environment.GetEnvironmentVariable("RABBITMQ_HOST") };
-                using (var connection = factory.CreateConnection())
-                using (var channel = connection.CreateModel())
-                {
-                    channel.ExchangeDeclare("declare winning offer", ExchangeType.Direct);
-                    var msg = new WinningOfferToPharmacyDto
-                    {
-                        ApiKey = tender.WinningOffer.Pharmacy.ApiKey,
-                        TenderClosedDate = tender.ClosedTime,
-                        TenderCreatedDate = tender.CreatedTime,
-                        TenderOfferCreatedDate = tender.WinningOffer.CreatedDate
-                    };
-                    var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(msg));
-                    channel.BasicPublish("declare winning offer", tender.WinningOffer.Pharmacy.ApiKey.ToString(), null, body);
-                }
-
-                var mailServ = new EmailService();
-                mailServ.SendWinningOfferMail(tender);
-                var pharmacies = _unitOfWork.GetRepository<IPharmacyReadRepository>().GetAll().Where(p => p.Id != tender.WinningOffer.PharmacyId);
-                CloseTenderRmq(factory, pharmacies, tender);
-                if(pharmacies.Any()) mailServ.SendCloseTenderMail(tender, pharmacies);
+                SendWinningTender(tender);
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error while sending closed tender via rabbitmq!");
+                return StatusCode(StatusCodes.Status500InternalServerError, TenderMessages.FailedToSendClosedTender);
             }
-            return Ok("Winner chosen");
+            return Ok(TenderMessages.Winner);
         }
+
+        private void SendWinningTender(Tender tender)
+        {
+            var factory = new ConnectionFactory() {HostName = Environment.GetEnvironmentVariable("RABBITMQ_HOST")};
+            using (var connection = factory.CreateConnection())
+            using (var channel = connection.CreateModel())
+            {
+                channel.ExchangeDeclare("declare winning offer", ExchangeType.Direct);
+                var winningOfferToPharmacyDto = CreateWinningOfferToPharmacyDto(tender);
+                var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(winningOfferToPharmacyDto));
+                channel.BasicPublish("declare winning offer", tender.WinningOffer.Pharmacy.ApiKey.ToString(), null, body);
+            }
+
+            var mailServ = new EmailService();
+            mailServ.SendWinningOfferMail(tender);
+
+            var pharmacies = _unitOfWork.GetRepository<IPharmacyReadRepository>().GetAll()
+                .Where(p => p.Id != tender.WinningOffer.PharmacyId);
+            CloseTenderRmq(factory, pharmacies, tender);
+            if (pharmacies.Any()) mailServ.SendCloseTenderMail(tender, pharmacies);
+        }
+
+        private static WinningOfferToPharmacyDto CreateWinningOfferToPharmacyDto(Tender tender)
+        {
+            var winningOfferToPharmacyDto = new WinningOfferToPharmacyDto
+            {
+                ApiKey = tender.WinningOffer.Pharmacy.ApiKey,
+                TenderClosedDate = tender.ClosedTime,
+                TenderCreatedDate = tender.CreatedTime,
+                TenderOfferCreatedDate = tender.WinningOffer.CreatedDate
+            };
+            return winningOfferToPharmacyDto;
+        }
+
         [HttpPost]
         public IActionResult CloseTender([FromBody]int tenderId)
         {
             var tender = _unitOfWork.GetRepository<ITenderReadRepository>().GetById(tenderId);
-            if (tender == null) return NotFound("Tender does not exist");
-            if (!tender.IsActive()) return BadRequest("Tender already closed!");
+            if (tender == null) return NotFound(TenderMessages.NotFound);
+            if (!tender.IsActive()) return BadRequest(TenderMessages.AlreadyClosed);
             tender.CloseTender();
             _unitOfWork.GetRepository<ITenderWriteRepository>().Update(tender);
             try
@@ -222,22 +248,22 @@ namespace IntegrationAPI.Controllers.Tenders
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error while sending closed tender via rabbitmq!");
+                return StatusCode(StatusCodes.Status500InternalServerError, TenderMessages.FailedToSendClosedTender);
             }
-            return Ok("Tender closed.");
+            return Ok(TenderMessages.Closed);
         }
 
         [HttpPost]
         public IActionResult ExecuteTenderProcurement(TenderProcurementDto tenderProcurementDto)
         {
             var pharmacy = _unitOfWork.GetRepository<IPharmacyReadRepository>().GetAll().FirstOrDefault(p => p.ApiKey == tenderProcurementDto.ApiKey);
-            if (pharmacy == null) return NotFound("Pharmacy not registered in hospital");
+            if (pharmacy == null) return NotFound(PharmacyMessages.NotRegistered);
 
             string targetUrl = _hospitalBaseUrl + "/api/Medication/AddMedicineTender";
             IRestResponse response = _httpRequestSender.Post(targetUrl, tenderProcurementDto);
             if (response.StatusCode != HttpStatusCode.OK)
             {
-                return BadRequest("Hospital could not add received medicine");
+                return BadRequest(MedicineMessages.CouldNotAddToHospital);
             }
 
             return Ok();
@@ -252,17 +278,23 @@ namespace IntegrationAPI.Controllers.Tenders
                     using (var channel = connection.CreateModel())
                     {
                         channel.ExchangeDeclare("close tender", ExchangeType.Direct);
-                        var msg = new CloseTenderToPharmaciesDto
-                        {
-                            ApiKey = pharmacyApiKey,
-                            TenderClosedDate = tender.ClosedTime,
-                            TenderCreatedDate = tender.CreatedTime
-                        };
-                        var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(msg));
+                        var closeTenderToPharmaciesDto = CreateCloseTenderToPharmaciesDto(tender, pharmacyApiKey);
+                        var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(closeTenderToPharmaciesDto));
                         channel.BasicPublish("close tender", pharmacyApiKey.ToString(), null, body);
                     }
                 }
             }
+        }
+
+        private static CloseTenderToPharmaciesDto CreateCloseTenderToPharmaciesDto(Tender tender, Guid pharmacyApiKey)
+        {
+            var closeTenderToPharmaciesDto = new CloseTenderToPharmaciesDto
+            {
+                ApiKey = pharmacyApiKey,
+                TenderClosedDate = tender.ClosedTime,
+                TenderCreatedDate = tender.CreatedTime
+            };
+            return closeTenderToPharmaciesDto;
         }
 
         [HttpPost]
@@ -282,45 +314,54 @@ namespace IntegrationAPI.Controllers.Tenders
                 .ThenInclude(x => x.Country)
                 .Include(x => x.MedicationRequests)
                 .ToList();
+
             foreach (var pharmacy in pharmacies)
             {
-                double profitAmount = 0;
-                int tendersEntered = 0;
-                int tenderOffersMade = 0;
-                int tendersWon = 0;
-                foreach (var tender in tenders)
-                {
-                    if(!tender.ActiveRange.OverlapsWith(timeRange))
-                        continue;
-                    int pharmacyOffers = tender.NumberOfPharmacyOffers(pharmacy);
-                    if (pharmacyOffers > 0)
-                    {
-                        tendersEntered++;
-                        tenderOffersMade += pharmacyOffers;
-                    }
-                    if (tender.DidPharmacyWin(pharmacy))
-                    {
-                        tendersWon++;
-                        profitAmount += tender.WinningOffer.Cost.Amount;
-                    }
-                }
-                tenderStatisticsDto.PharmacyStatistics.Add(new PharmacyTenderStatisticsDto()
-                {
-                    PharmacyId = pharmacy.Id,
-                    PharmacyName = pharmacy.Name,
-                    Profit = new MoneyDto()
-                    {
-                        Amount = profitAmount,
-                        Currency = 0
-                    },
-                    TendersEntered = tendersEntered,
-                    TendersWon = tendersWon,
-                    TenderOffersMade = tenderOffersMade
-                });
+                CreatePharmacyStatistic(tenders, timeRange, pharmacy, tenderStatisticsDto);
             }
             IPDFAdapter adapter = new DynamicPDFAdapter();
             tenderStatisticsDto.PdfUrl = adapter.MakeTenderStatisticsPdf(tenderStatisticsDto, timeRange);
             return tenderStatisticsDto;
+        }
+
+        private void CreatePharmacyStatistic(List<Tender> tenders, TimeRange timeRange, Pharmacy pharmacy,
+            TenderStatisticsDto tenderStatisticsDto)
+        {
+            double profitAmount = 0;
+            int tendersEntered = 0;
+            int tenderOffersMade = 0;
+            int tendersWon = 0;
+            foreach (var tender in tenders)
+            {
+                if (!tender.ActiveRange.OverlapsWith(timeRange))
+                    continue;
+                int pharmacyOffers = tender.NumberOfPharmacyOffers(pharmacy);
+                if (pharmacyOffers > 0)
+                {
+                    tendersEntered++;
+                    tenderOffersMade += pharmacyOffers;
+                }
+
+                if (tender.DidPharmacyWin(pharmacy))
+                {
+                    tendersWon++;
+                    profitAmount += tender.WinningOffer.Cost.Amount;
+                }
+            }
+
+            tenderStatisticsDto.PharmacyStatistics.Add(new PharmacyTenderStatisticsDto()
+            {
+                PharmacyId = pharmacy.Id,
+                PharmacyName = pharmacy.Name,
+                Profit = new MoneyDto()
+                {
+                    Amount = profitAmount,
+                    Currency = 0
+                },
+                TendersEntered = tendersEntered,
+                TendersWon = tendersWon,
+                TenderOffersMade = tenderOffersMade
+            });
         }
 
         [HttpPost, Produces("application/pdf")]
@@ -339,13 +380,10 @@ namespace IntegrationAPI.Controllers.Tenders
                 }
                 catch
                 {
-                    return NotFound("PDF not found");
+                    return NotFound(PDFMessages.NotFound);
                 }
             }
-            else
-            {
-                return BadRequest("Cannot open PDF");
-            }
+            return BadRequest(PDFMessages.CannotOpen);
         }
     }
 }

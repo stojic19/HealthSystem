@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using RestSharp;
 using System;
+using System.Collections.Specialized;
+using IntegrationApi.Messages;
 
 namespace IntegrationAPI.Controllers.Medicine
 {
@@ -29,12 +31,12 @@ namespace IntegrationAPI.Controllers.Medicine
         {
             if (createMedicineRequestDTO.Quantity <= 0)
             {
-                return BadRequest("Invalid quantity.");
+                return BadRequest(MedicineMessages.InvalidQuantity);
             }
             Pharmacy pharmacy = _pharmacyMasterService.GetPharmacyById(createMedicineRequestDTO.PharmacyId);
             if (pharmacy==null)
             {
-                return BadRequest("Pharmacy id doesn't exist.");
+                return NotFound(PharmacyMessages.WrongId);
             }
             if(pharmacy.GrpcSupported)
             {
@@ -44,7 +46,7 @@ namespace IntegrationAPI.Controllers.Medicine
             IRestResponse response = SendMedicineRequestToPharmacy(medicineRequestDTO, pharmacy);
             if (response.StatusCode != System.Net.HttpStatusCode.OK)
             {
-                return BadRequest("Pharmacy failed to receive request! Try again");
+                return Problem(MedicineMessages.DidNotReceive);
             }
             CheckMedicineAvailabilityResponseDto responseDTO = JsonConvert.DeserializeObject <CheckMedicineAvailabilityResponseDto>(response.Content);
             return Ok(responseDTO);
@@ -59,7 +61,7 @@ namespace IntegrationAPI.Controllers.Medicine
             }
             else
             {
-                return BadRequest("Pharmacy failed to receive request! Try again");
+                return Problem(MedicineMessages.DidNotReceive);
             }
         }
 
@@ -77,12 +79,12 @@ namespace IntegrationAPI.Controllers.Medicine
         {
             if (createMedicineRequestDTO.Quantity <= 0)
             {
-                return BadRequest("Invalid quantity.");
+                return BadRequest(MedicineMessages.InvalidQuantity);
             }
             Pharmacy pharmacy = _pharmacyMasterService.GetPharmacyById(createMedicineRequestDTO.PharmacyId);
             if (pharmacy == null)
             {
-                return BadRequest("Pharmacy id doesn't exist.");
+                return NotFound(PharmacyMessages.WrongId);
             }
             if (pharmacy.GrpcSupported)
             {
@@ -93,7 +95,7 @@ namespace IntegrationAPI.Controllers.Medicine
             MedicineProcurementResponseDto responseDTO = new MedicineProcurementResponseDto();
             if (response.StatusCode != System.Net.HttpStatusCode.OK && response.StatusCode != System.Net.HttpStatusCode.NotFound && response.StatusCode != System.Net.HttpStatusCode.Unauthorized)
             {
-                return BadRequest("Pharmacy failed to receive request! Try again");
+                return Problem(MedicineMessages.DidNotReceive);
             }
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
@@ -132,7 +134,7 @@ namespace IntegrationAPI.Controllers.Medicine
             }
             else
             {
-                return BadRequest("Pharmacy failed to receive request! Try again");
+                return Problem(MedicineMessages.DidNotReceive);
             }
         }
 

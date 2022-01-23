@@ -1,9 +1,7 @@
 <div class="m-5"></div>
 <div class="card mx-auto" style="width: 100rem;" *ngIf='id'>
     <div class="card-header">
-        <div>Complaint ID:  {{complaint.id}}</div>
         <div>Date: {{complaint.createdDate | date: "dd-MM-yyyy, hh:mm"}}</div>
-        <div>Author: {{complaint.manager.name}} {{complaint.manager.surname}}</div>
         <div>Pharmacy: {{complaint.pharmacy.name}}</div>
     </div>
     <div class="card-body">

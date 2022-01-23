@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Integration.Shared.Repository.Base;
 using IntegrationAPI.DTO.Shared;
+using IntegrationAPI.HttpRequestSenders;
 
 namespace IntegrationAPI.Controllers.Base
 {
@@ -10,8 +11,9 @@ namespace IntegrationAPI.Controllers.Base
         protected readonly SftpCredentialsDTO _sftpCredentials;
         protected readonly HospitalDTO _hospitalInfo;
         protected readonly string _hospitalBaseUrl;
+        protected readonly IHttpRequestSender _httpRequestSender;
 
-        protected BaseIntegrationController(IUnitOfWork uow)
+        protected BaseIntegrationController(IUnitOfWork uow, IHttpRequestSender sender)
         {
             var ipAdr = "127.0.0.1";
             _unitOfWork = uow;
@@ -29,6 +31,7 @@ namespace IntegrationAPI.Controllers.Base
                 CityName = "Novi Sad"
             };
             _hospitalBaseUrl = "https://localhost:44303";
+            _httpRequestSender = sender;
         }
     }
 }

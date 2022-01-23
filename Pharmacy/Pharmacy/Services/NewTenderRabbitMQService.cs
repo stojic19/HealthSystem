@@ -39,6 +39,7 @@ namespace Pharmacy.Services
         private void InitRabbitMQ()
         {
             var factory = new ConnectionFactory { HostName = Environment.GetEnvironmentVariable("RABBITMQ_HOST") };
+
             try
             {
                 _connection = factory.CreateConnection();
@@ -119,7 +120,7 @@ namespace Pharmacy.Services
             {
                 channel.Close();
             }
-            if(_connection != null) _connection.Close();
+            if (_connection != null) _connection.Close();
             base.Dispose();
         }
     }

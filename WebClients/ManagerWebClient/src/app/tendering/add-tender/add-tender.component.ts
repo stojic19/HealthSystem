@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TenderingService } from 'src/app/services/tendering.service';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-tender',
@@ -20,7 +21,7 @@ export class AddTenderComponent implements OnInit {
   EditQuantityString: string = "";
   EditedMedicineName: string = "";
 
-  constructor(private _tenderingService: TenderingService, private toastr: ToastrService) { }
+  constructor(private _tenderingService: TenderingService, private toastr: ToastrService, private router:Router) { }
 
   ngOnInit(): void {
 
@@ -71,7 +72,7 @@ export class AddTenderComponent implements OnInit {
       return;
     }
     for(var i = 0; i < this.nonFilteredMedicines.length; i++){
-      if(this.nonFilteredMedicines[i].medicineName === this.MedicineString && this.nonFilteredMedicines[i].medicineName != this.EditedMedicineName){     
+      if(this.nonFilteredMedicines[i].medicineName === this.EditMedicineString && this.nonFilteredMedicines[i].medicineName != this.EditedMedicineName){     
         this.toastr.error("Enter unique medicine name!", "Error!");
         return;
       }
@@ -170,6 +171,7 @@ export class AddTenderComponent implements OnInit {
     this._tenderingService.createTender(request).subscribe(res =>
       {
         this.toastr.success(res.toString());
+        this.router.navigate(['/tenders']);
       },(error) => this.toastr.error(error.error, "Error!"));
   }
 }

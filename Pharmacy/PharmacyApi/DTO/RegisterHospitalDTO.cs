@@ -18,6 +18,8 @@ namespace PharmacyApi.DTO
         public string CityName { get; set; }
         [Required(ErrorMessage = "Base url is required for http communication!")]
         public string BaseUrl { get; set; }
+        [Required(ErrorMessage = "Email is required for emailing!")]
+        public string Email { get; set; }
 
 
     }

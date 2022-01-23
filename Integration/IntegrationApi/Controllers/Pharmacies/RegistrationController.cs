@@ -13,6 +13,7 @@ namespace IntegrationAPI.Controllers.Pharmacies
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Produces("application/json")]
     public class RegistrationController : ControllerBase
     {
         private PharmacyMasterService _pharmacyMasterService;
@@ -35,6 +36,7 @@ namespace IntegrationAPI.Controllers.Pharmacies
                 StreetName = "Dunavska",
                 StreetNumber = "17",
                 CityName = city.Name
+                Email = "psw.company2@gmail.com"
             };
             RestClient client = new RestClient();
             string targetUrl = pharmacyUrlDto.BaseUrl + "/api/Registration/RegisterHospital";

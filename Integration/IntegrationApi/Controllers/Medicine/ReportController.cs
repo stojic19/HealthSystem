@@ -22,13 +22,9 @@ namespace IntegrationAPI.Controllers.Medicine
     public class ReportController : BaseIntegrationController
     {
         private readonly PharmacyMasterService _pharmacyMasterService;
-        private readonly string _hospitalBaseUrl;
-        private readonly IHttpRequestSender _httpRequestSender;
-        public ReportController(IUnitOfWork unitOfWork, IHttpRequestSender httpRequestSender) : base(unitOfWork)
+        public ReportController(IUnitOfWork unitOfWork, IHttpRequestSender httpRequestSender) : base(unitOfWork, httpRequestSender)
         {
             _pharmacyMasterService = new PharmacyMasterService(unitOfWork);
-            _hospitalBaseUrl = "https://localhost:44303/";
-            _httpRequestSender = httpRequestSender;
         }
 
         [HttpPost]

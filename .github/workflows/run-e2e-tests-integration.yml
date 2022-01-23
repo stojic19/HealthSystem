@@ -43,8 +43,11 @@ jobs:
       - name: Setup chrome
         uses: browser-actions/setup-chrome@latest
 
-      - name: Chrome version
-        run: chrome --version
+      - name: Chrome driver setup
+        run: |
+          export DISPLAY=:99
+          chromedriver --url-base=/wd/hub &
+          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
 
       - name: Run front
         run: |

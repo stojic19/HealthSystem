@@ -1,8 +1,7 @@
 name: Run Integration Tests Integration
 on:
   push:
-    branches: 
-    - feature/integration-tests 
+    branches: [ feature/mili-integ-tests ]
 
 env:
   PROJECT_PATH_HOSPITAL: './Hospital'

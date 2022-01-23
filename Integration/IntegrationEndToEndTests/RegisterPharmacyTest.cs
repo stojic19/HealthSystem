@@ -37,7 +37,7 @@ namespace IntegrationEndToEndTests
             int countBeforeRegistration = _pharmaciesPage.PharmaciesCount();
             _registrationPage.Navigate();
             _registrationPage.WaitForDisplay();
-            _registrationPage.InsertBaseUrl("https://localhost:44304");
+            _registrationPage.InsertBaseUrl("http://localhost:44304");
             _registrationPage.Submit();
             Thread.Sleep(5000);
             _pharmaciesPage.Navigate();

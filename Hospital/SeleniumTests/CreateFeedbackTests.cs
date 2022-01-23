@@ -20,6 +20,7 @@ namespace SeleniumTests
         public CreateFeedbackTests(BaseFixture fixture) : base(fixture)
         {
             var options = new ChromeOptions();
+            options.AddArguments("--headless");
             options.AddArguments("start-maximized");            // open Browser in maximized mode
             options.AddArguments("disable-infobars");           // disabling infobars
             options.AddArguments("--disable-extensions");       // disabling extensions

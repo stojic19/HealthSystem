@@ -41,7 +41,7 @@ jobs:
           hash -r
 
       - name: Setup chrome
-        uses: nanasess/setup-chromedriver@latest
+        uses: nanasess/setup-chromedriver
 
       - name: Chrome driver setup
         run: |

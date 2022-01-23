@@ -44,7 +44,7 @@ namespace HospitalApi.Controllers
             return Ok();
         }
 
-        //[Authorize(Roles = "Manager")]
+        [Authorize(Roles = "Manager")]
         [HttpGet]
         public IActionResult GetStatisticsPerPartOfDay()
         {

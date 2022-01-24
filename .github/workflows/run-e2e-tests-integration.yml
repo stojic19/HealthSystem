@@ -36,6 +36,7 @@ jobs:
           apt-get -y install sudo 
           apt-get -y install unzip
           apt -y install npm
+          apt -y install net-tools
           npm install -g npm@latest
           npm install -g n
           n 16.13.0
@@ -87,3 +88,8 @@ jobs:
           INTEGRATION_DB_PATH: ${{ env.DB_PATH_INTEGRATION }}
           PHARMACY_DB_PATH: ${{ env.DB_PATH_PHARMACY }}
         run: dotnet test ${{ env.PROJECT_PATH_INTEGRATION }}/IntegrationEndToEndTests
+
+      - name: List processes
+        run: |
+          sudo netstat -pnltu
+          sudo netstat -peanut

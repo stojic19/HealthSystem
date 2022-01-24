@@ -4,6 +4,15 @@
       <div class="col-12">
         <div id="myCarousel" class="carousel-fade" data-bs-ride="carousel">
           <div class="carousel-inner">
+            <!-- <div  *ngFor = "let p in pictures">
+            <div class="carousel-item active">
+              <img
+                [src]=
+                class="img-fluid"
+                alt=""
+              />
+            </div> 
+            </div> -->
             <div class="carousel-item active">
               <img
                 src="../../assets/images/10130.jpg"
@@ -13,11 +22,21 @@
             </div>
 
             <div class="carousel-item">
-              <img
-                src="../../assets/images/care.jpg"
+              <div class="containerImg">
+                <img
+                src="../../assets/images/hands-on-laptop.jpg"
                 class="img-fluid"
                 alt=""
-              />
+                />
+                <div class="content">
+                  <div class="animated-info">
+                  <div >
+                      <p>{{benefits[0].title}}</p>
+                  </div>
+                  </div>
+                </div>
+              
+              </div>
             </div>
 
             <div class="carousel-item">

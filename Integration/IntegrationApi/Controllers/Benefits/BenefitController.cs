@@ -6,6 +6,7 @@ using IntegrationAPI.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using IntegrationApi.DTO.Benefits;
 using IntegrationAPI.DTO.Benefits;
 
 namespace IntegrationAPI.Controllers.Benefits
@@ -67,7 +68,7 @@ namespace IntegrationAPI.Controllers.Benefits
         }
 
         [HttpGet]
-        public IEnumerable<Benefit> GetRelevantBenefits()
+        public IActionResult GetRelevantBenefits()
         {
             IEnumerable<Benefit> benefits = _uow.GetRepository<IBenefitReadRepository>().GetRelevantBenefits();
             foreach (var benefit in benefits)
@@ -77,7 +78,21 @@ namespace IntegrationAPI.Controllers.Benefits
                     benefit.Pharmacy = _uow.GetRepository<IPharmacyReadRepository>().GetById(benefit.PharmacyId);
                 }
             }
-            return benefits;
+
+            List<BenefitDto> retVal = new List<BenefitDto>();
+            foreach (var benefit in benefits)
+            {
+                retVal.Add(new BenefitDto
+                {
+                    Description = benefit.Description,
+                    PharmacyName = benefit.Pharmacy.Name,
+                    Title = benefit.Title,
+                    StartTime = benefit.StartTime,
+                    EndTime = benefit.EndTime
+                });
+                
+            }
+            return Ok(retVal);
         }
 
         [HttpPost, Produces("application/json")]

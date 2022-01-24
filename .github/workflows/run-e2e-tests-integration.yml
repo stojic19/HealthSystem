@@ -34,7 +34,7 @@ jobs:
           apt-get update
           apt-get upgrade
           apt-get -y install sudo
-          sudo apt-get install software-properties-common
+          sudo apt-get -y install software-properties-common 
           sudo add-apt-repository universe
           sudo apt-get update
           apt-get -y install unzip

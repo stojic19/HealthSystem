@@ -24,7 +24,7 @@ export class FeedbacksPageComponent implements OnInit {
     });
   }
 
-  openModal(event: any): void {
+  openModal(): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false;
     dialogConfig.id = 'modal-component';

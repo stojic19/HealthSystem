@@ -1,13 +1,8 @@
-using Hospital.MedicalRecords.Model;
 using Hospital.MedicalRecords.Repository;
-using Hospital.RoomsAndEquipment.Model;
-using Hospital.RoomsAndEquipment.Repository;
 using Hospital.Schedule.Model;
 using Hospital.Schedule.Repository;
-using Hospital.SharedModel.Model;
-using Hospital.SharedModel.Model.Enumerations;
 using Hospital.SharedModel.Repository;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using SeleniumTests.Base;
@@ -25,11 +20,11 @@ namespace SeleniumTests
         private readonly IWebDriver driver;
         private readonly CancelAppointmentPage cancelAppointmentPage;
         private readonly LoginPage loginPage;
-     
+
 
         public CancelAppointmentTests(BaseFixture fixture) : base(fixture)
         {
-           
+
             var options = new ChromeOptions();
             options.AddArguments("start-maximized");
             options.AddArguments("disable-infobars");
@@ -43,7 +38,7 @@ namespace SeleniumTests
             loginPage = new LoginPage(driver);
             loginPage.Navigate();
             loginPage.EnsureLoginFormForUserIsDisplayed();
-            cancelAppointmentPage = new CancelAppointmentPage(driver);   
+            cancelAppointmentPage = new CancelAppointmentPage(driver);
         }
 
         [Fact]
@@ -52,9 +47,9 @@ namespace SeleniumTests
             RegisterUser("Patient");
             var events = ArrangeDatabase(false, false);
             InsertCredentials();
-            loginPage.EnsureUserIsLogged();      
+            loginPage.EnsureUserIsLogged();
             cancelAppointmentPage.EnsurePageIsDisplayed();
-            cancelAppointmentPage.CancelAppointment();           
+            cancelAppointmentPage.CancelAppointment();
             Assert.True(cancelAppointmentPage.ElementNumberChanged());
             Assert.Equal(driver.Url, cancelAppointmentPage.URI);
             ClearDatabase(events);
@@ -69,25 +64,13 @@ namespace SeleniumTests
         }
 
         private ScheduledEvent ArrangeDatabase(bool isCanceled, bool isDone)
-        {          
-            var testRoom = UoW.GetRepository<IRoomReadRepository>().GetAll().Where(x => x.Name == "TestRoom").FirstOrDefault();     
-            var testDoctor = UoW.GetRepository<IDoctorReadRepository>().GetAll().Where(x => x.UserName == "testDoctorUsername").FirstOrDefault(); 
+        {
+
+            var testDoctor = UoW.GetRepository<IDoctorReadRepository>().GetAll().Include(d => d.Room).FirstOrDefault(x => x.UserName == "testDoctorUsername");
             var testPatient = UoW.GetRepository<IPatientReadRepository>().GetAll().Where(x => x.UserName == "testPatientUsername").FirstOrDefault();
 
-            ScheduledEvent scheduledEvent = new ScheduledEvent()
-            {
-                ScheduledEventType = 0,
-                IsCanceled = isCanceled,
-                IsDone = isDone,
-                StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(3).Day),
-                EndDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(3).Day),
-                Patient = testPatient,
-                Doctor = testDoctor,
-                Room = testRoom,
-                
-
-            };
-
+            ScheduledEvent scheduledEvent = new ScheduledEvent(0, isCanceled, isDone, new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(3).Day), new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(3).Day),
+                new DateTime(), testPatient.Id, testDoctor.Id, testDoctor);
             UoW.GetRepository<IScheduledEventWriteRepository>().Add(scheduledEvent);
             return scheduledEvent;
         }

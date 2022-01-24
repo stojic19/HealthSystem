@@ -16,7 +16,6 @@ namespace Hospital.Schedule.Repository
         List<ScheduledEvent> UpdateFinishedUserEvents();
         ScheduledEvent GetScheduledEvent(int eventId);
         List<ScheduledEvent> GetNumberOfCanceledEventsForPatient(int id);
-        public IEnumerable<ScheduledEvent> GetDoctorsScheduledEvents(int doctorId);
-        bool IsDoctorAvailableInTerm(int doctorId, DateTime date);
+        public IEnumerable<ScheduledEvent> GetScheduledEventsForDoctor(int doctorId);
     }
 }

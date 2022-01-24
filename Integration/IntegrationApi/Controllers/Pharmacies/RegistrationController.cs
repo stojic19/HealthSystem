@@ -50,7 +50,8 @@ namespace IntegrationAPI.Controllers.Pharmacies
                 City = location.GetCity(),
                 ApiKey = pharmacyDto.ApiKey,
                 GrpcSupported = pharmacyDto.GrpcSupported,
-                Location = new Location(pharmacyDto.Latitude, pharmacyDto.Longitude)
+                Location = new Location(pharmacyDto.Latitude, pharmacyDto.Longitude),
+                Email = pharmacyDto.Email
             };
             return newPharmacy;
         }

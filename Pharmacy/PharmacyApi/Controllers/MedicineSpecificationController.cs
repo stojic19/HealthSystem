@@ -38,11 +38,20 @@ namespace PharmacyApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            Medicine medicine = UoW
-                .GetRepository<IMedicineReadRepository>()
-                .GetAll()
-                .Include(x=>x.Manufacturer)
-                .Include(x => x.Substances).FirstOrDefault(x => x.Name.Equals(dto.MedicineName));
+            Medicine medicine = null;
+            try
+            {
+                medicine = UoW.GetRepository<IMedicineReadRepository>()
+                    .GetAll()
+                    .Include(x => x.Manufacturer)
+                    .Include(x => x.Substances)
+                    .Where(x => x.Name.Equals(dto.MedicineName)).First();
+            }
+            catch
+            {
+                ModelState.AddModelError("Medicine", "Medicine with given name does not exist");
+                return BadRequest(ModelState);
+            }
             if (medicine == null)
             {
                 ModelState.AddModelError("Medicine", "Medicine with given name does not exist");

@@ -1,94 +1,168 @@
-<div class="container" style="border-radius: 5rem; background-color: rgb(182, 209, 226);margin-top: 4rem;margin-bottom: 3rem;">
-    <div class='container' style="background-color: whitesmoke; border-radius: 5rem;">
-      <section class="section-padding pb-0" id="reviews">
-        <div class="container">
-          <div class="row">
-            <div class="col-12">
-              <h2 class="text-center mb-lg-2 mb-2">Our patients public feedbacks</h2>
-              <div *ngFor='let comment of allFeedbacks' class="list-group" style="flex-direction: column;">
-                <div class="list-group-item " *ngIf = "comment.isPublishable == true">
-                  <div class="d-flex w-100 justify-content-between">
-                    <div class="d-flex w-100 ">
-                      <div class="d-flex   align-self-baseline ">
-                        <h5 class="mb-1">{{comment.patient.firstName}} {{comment.patient.lastName}} </h5>
-                      </div>
-                      <div class="d-flex align-self-baseline">
-                        <p class="small font-weight-light font-italic" style="text-align: bottom;">{{
-                          comment.isPublishable?
-                          'Public' : 'Private'}}</p>
-                      </div>
-
-                    </div>
-                    <div class="d-flex w-100 justify-content-end">
-                      <small>{{comment.createdDate.toLocaleString()}}</small>
-                    </div>
-
-                  </div>
-                  <p class="mb-1">{{comment.text}}</p>
-                </div>
-                <!--ZAMJENITI STYLE:zalepiti za desnu ivicu-->
-                <div class="text-right;" style="justify-content: flex-end; display: flex;">
-                  <span>
-                    <button *ngIf = "comment.feedbackStatus == 0  && comment.isPublishable == true" (click)="approveFeedback(comment)"
-                      style="width: 100px;background-color:rgb(104, 183, 231);" class="btn" name="approve">Approve</button>
-                  </span>
-                </div>
-                <div class="text-right;" style="justify-content: flex-end; display: flex;">
-                  <span>
-                    <button *ngIf = "comment.feedbackStatus == 2  && comment.isPublishable == true"  (click)="unapproveFeedback(comment)"
-                      style="width: 100px;background-color:rgb(255, 98, 98);" class="btn" name="unapprove">Unapprove</button>
-                  </span>
-                </div>
-                <br>
-              </div>
-            </div>
-            <ng-template #emptyMess>
-              <p>No public feedbacks!</p>
-            </ng-template>
-            <br><br>
-          </div>
-        </div>
-    </section>
-  </div>
-</div>
-<div class="container" style="border-radius: 5rem; background-color: rgb(182, 209, 226);margin-top: 4rem;margin-bottom: 3rem;">
-  <div class='container' style="background-color: whitesmoke; border-radius: 5rem;">
+<div
+  class="container"
+  style="
+    border-radius: 5rem;
+    background-color: rgb(182, 209, 226);
+    margin-top: 4rem;
+    margin-bottom: 3rem;
+  "
+>
+  <div
+    class="container"
+    style="background-color: whitesmoke; border-radius: 5rem"
+  >
     <section class="section-padding pb-0" id="reviews">
       <div class="container">
         <div class="row">
           <div class="col-12">
-            <h2 class="text-center mb-lg-2 mb-2">Our patients private feedbacks</h2>
-            <div *ngFor='let comment of allFeedbacks' class="list-group" style="flex-direction: column;">
-              <div class="list-group-item " *ngIf = "comment.isPublishable == false">
+            <h2 class="text-center mb-lg-2 mb-2">
+              Our patients public feedbacks
+            </h2>
+            <div
+              *ngFor="let comment of allFeedbacks"
+              class="list-group"
+              style="flex-direction: column"
+            >
+              <div
+                class="list-group-item"
+                *ngIf="comment.isPublishable == true"
+              >
                 <div class="d-flex w-100 justify-content-between">
-                  <div class="d-flex w-100 ">
-                    <div class="d-flex   align-self-baseline ">
-                      <h5 class="mb-1">{{comment.patient.firstName}} {{comment.patient.lastName}} </h5>
+                  <div class="d-flex w-100">
+                    <div class="d-flex align-self-baseline">
+                      <h5 class="mb-1">
+                        {{ comment.patient.firstName }}
+                        {{ comment.patient.lastName }}
+                      </h5>
                     </div>
                     <div class="d-flex align-self-baseline">
-                      <p class="small font-weight-light font-italic" style="text-align: bottom;">{{
-                        comment.isPublishable?
-                        'Public' : 'Private'}}</p>
+                      <p
+                        class="small font-weight-light font-italic"
+                        style="text-align: bottom"
+                      >
+                        {{ comment.isPublishable ? "Public" : "Private" }}
+                      </p>
                     </div>
-
                   </div>
                   <div class="d-flex w-100 justify-content-end">
-                    <small>{{comment.createdDate.toLocaleString()}}</small>
+                    <small>{{ comment.createdDate.toLocaleString() }}</small>
                   </div>
-
                 </div>
-                <p class="mb-1">{{comment.text}}</p>
+                <p class="mb-1">{{ comment.text }}</p>
               </div>
               <!--ZAMJENITI STYLE:zalepiti za desnu ivicu-->
-              <br>
+              <div
+                class="text-right;"
+                style="justify-content: flex-end; display: flex"
+              >
+                <span>
+                  <button
+                    *ngIf="
+                      comment.feedbackStatus == 0 &&
+                      comment.isPublishable == true
+                    "
+                    (click)="approveFeedback(comment)"
+                    style="width: 100px; background-color: rgb(104, 183, 231)"
+                    class="btn"
+                    name="approve"
+                  >
+                    Approve
+                  </button>
+                </span>
+              </div>
+              <div
+                class="text-right;"
+                style="justify-content: flex-end; display: flex"
+              >
+                <span>
+                  <button
+                    *ngIf="
+                      comment.feedbackStatus == 1 &&
+                      comment.isPublishable == true
+                    "
+                    (click)="unapproveFeedback(comment)"
+                    style="width: 100px; background-color: rgb(255, 98, 98)"
+                    name="unapprove"
+                    class="btn"
+                  >
+                    Unapprove
+                  </button>
+                </span>
+              </div>
+              <br />
+            </div>
+          </div>
+          <ng-template #emptyMess>
+            <p>No public feedbacks!</p>
+          </ng-template>
+          <br /><br />
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+<div
+  class="container"
+  style="
+    border-radius: 5rem;
+    background-color: rgb(182, 209, 226);
+    margin-top: 4rem;
+    margin-bottom: 3rem;
+  "
+>
+  <div
+    class="container"
+    style="background-color: whitesmoke; border-radius: 5rem"
+  >
+    <section class="section-padding pb-0" id="reviews">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <h2 class="text-center mb-lg-2 mb-2">
+              Our patients private feedbacks
+            </h2>
+            <div
+              *ngFor="let comment of allFeedbacks"
+              class="list-group"
+              style="flex-direction: column"
+            >
+              <div
+                class="list-group-item"
+                *ngIf="comment.isPublishable == false"
+              >
+                <div class="d-flex w-100 justify-content-between">
+                  <div class="d-flex w-100">
+                    <div class="d-flex align-self-baseline">
+                      <h5 class="mb-1">
+                        {{ comment.patient.firstName }}
+                        {{ comment.patient.lastName }}
+                      </h5>
+                    </div>
+                    <div class="d-flex align-self-baseline">
+                      <p
+                        class="small font-weight-light font-italic"
+                        style="text-align: bottom"
+                      >
+                        {{ comment.isPublishable ? "Public" : "Private" }}
+                      </p>
+                    </div>
+                  </div>
+                  <div class="d-flex w-100 justify-content-end">
+                    <small>{{ comment.createdDate.toLocaleString() }}</small>
+                  </div>
+                </div>
+                <p class="mb-1">{{ comment.text }}</p>
+              </div>
+              <!--ZAMJENITI STYLE:zalepiti za desnu ivicu-->
+              <br />
             </div>
           </div>
           <ng-template #emptyMess>
             <p>No private feedbacks!</p>
           </ng-template>
-          <br><br>
+          <br /><br />
         </div>
       </div>
-  </section>
-</div>
+    </section>
+  </div>
 </div>

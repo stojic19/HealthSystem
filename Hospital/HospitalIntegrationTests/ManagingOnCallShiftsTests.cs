@@ -67,53 +67,15 @@ namespace HospitalIntegrationTests
 
         private Doctor InsertDoctor(string username)
         {
-            var city = UoW.GetRepository<ICityReadRepository>()
-                   .GetAll()
-                   .FirstOrDefault();
-
-            if (city == null)
-            {
-                var country = UoW.GetRepository<ICountryReadRepository>()
-                    .GetAll()
-                    .FirstOrDefault();
-
-                if (country == null)
-                {
-                    country = new Country()
-                    {
-                        Name = "Test country"
-                    };
-                    UoW.GetRepository<ICountryWriteRepository>().Add(country);
-                }
-
-                city = new City()
-                {
-                    CountryId = country.Id,
-                    Name = "Test city",
-                };
-                UoW.GetRepository<ICityWriteRepository>().Add(city);
-            }
-
             var doctor = UoW
                 .GetRepository<IDoctorReadRepository>().GetAll().Include(d => d.Specialization).Include(d => d.Room)
                 .FirstOrDefault(d => d.UserName.Equals(username));
 
             if (doctor == null)
             {
-                var specialization = UoW.GetRepository<ISpecializationReadRepository>()
-                    .GetAll()
-                    .FirstOrDefault(x => x.Name.ToLower().Equals("general practice"));
-                if (specialization == null)
-                {
-                    specialization = new Specialization()
-                    {
-                        Name = "General Practice"
-                    };
-                    UoW.GetRepository<ISpecializationWriteRepository>().Add(specialization);
-                }
-
                 var shift = UoW.GetRepository<IShiftReadRepository>().GetAll().FirstOrDefault(x => x.Name == "Second");
-                if (shift == null) {
+                if (shift == null)
+                {
                     shift = new Shift()
                     {
                         Name = "Second",
@@ -140,10 +102,9 @@ namespace HospitalIntegrationTests
                 doctor = new Doctor()
                 {
                     UserName = username,
-                    CityId = city.Id,
                     RoomId = room.Id,
                     ShiftId = shift.Id,
-                    SpecializationId = specialization.Id
+                    Specialization = new Specialization("General Practice", "")
                 };
                 UoW.GetRepository<IDoctorWriteRepository>().Add(doctor);
 
@@ -188,24 +149,6 @@ namespace HospitalIntegrationTests
 
             if (secondDoctor != null)
                 UoW.GetRepository<IDoctorWriteRepository>().Delete(secondDoctor);
-
-            var city = UoW.GetRepository<ICityReadRepository>()
-                .GetAll().ToList()
-                .FirstOrDefault(x => x.Name == "Test city");
-
-            if (city != null)
-            {
-                UoW.GetRepository<ICityWriteRepository>().Delete(city);
-            }
-
-            var country = UoW.GetRepository<ICountryReadRepository>()
-                .GetAll().ToList()
-                .FirstOrDefault(x => x.Name == "Test country");
-
-            if (country != null)
-            {
-                UoW.GetRepository<ICountryWriteRepository>().Delete(country);
-            }
 
             var room = UoW.GetRepository<IRoomReadRepository>()
                 .GetAll().ToList()

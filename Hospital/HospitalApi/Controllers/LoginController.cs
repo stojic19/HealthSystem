@@ -33,12 +33,21 @@ namespace HospitalApi.Controllers
             if (userFromDb == null)
             {
                 return BadRequest("There is no user with this username!");
-            }      
+            }
+
+            if (userFromDb.IsBlocked)
+            {
+                return BadRequest(
+                    "You are blocked and cannot access your account. Please contact our administration for more information.");
+            } 
+
             var result = await _signInManager.CheckPasswordSignInAsync(userFromDb, user.Password, false);
             if (!result.Succeeded)
             {
                 return BadRequest("Incorrect password!");
             }
+
+            
 
             var roles = await _userManager.GetRolesAsync(userFromDb);
            

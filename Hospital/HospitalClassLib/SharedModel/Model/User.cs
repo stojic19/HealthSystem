@@ -5,20 +5,46 @@ using System;
 namespace Hospital.SharedModel.Model
 {
     public class User : IdentityUser<int>
-
     {
-    public string FirstName { get; set; }
-    public string MiddleName { get; set; }
+        private const int MaxCanceledEvents = 3;
+        public string FirstName { get; set; }
+        public string MiddleName { get; set; }
+        public string LastName { get; set; }
+        public DateTime DateOfBirth { get; set; }
+        public Gender Gender { get;  set; }
+        public string Street { get; set; }
+        public string StreetNumber { get; set; }
+        public City City { get;  set; }
+        public bool IsBlocked { get;  set; }
+        public string PhotoEncoded { get; set; }
 
-    public string LastName { get; set; }
+        public User()
+        {
+        }
 
-    public DateTime DateOfBirth { get; set; }
-    public Gender Gender { get; set; }
+        public User(string firstName, string middleName, string lastName, DateTime dateOfBirth, Gender gender,
+            string street, string streetNumber, City city, string photoEncoded)
+        {
+            FirstName = firstName;
+            MiddleName = middleName;
+            LastName = lastName;
+            DateOfBirth = dateOfBirth;
+            Gender = gender;
+            Street = street;
+            StreetNumber = streetNumber;
+            City = city;
+            IsBlocked = false;
+            PhotoEncoded = photoEncoded;
+        }
 
-    public string Street { get; set; }
-    public string StreetNumber { get; set; }
+        public void Block()
+        {
+            IsBlocked = true;
+        }
 
-    public int CityId { get; set; }
-    public City City { get; set; }
+        public static bool IsMalicious(int numOfCanceledEventsInLastMonth)
+        {
+            return numOfCanceledEventsInLastMonth >= MaxCanceledEvents;
+        }
     }
 }

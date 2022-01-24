@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using IntegrationAPI.DTO.Complaints;
 using IntegrationApi.Messages;
+using Integration.Shared.Model;
+using Integration.Shared.Repository;
+using System;
 
 namespace IntegrationAPI.Controllers.Complaints
 {
@@ -40,6 +43,13 @@ namespace IntegrationAPI.Controllers.Complaints
                 ComplaintId = complaint.Id
             };
             _complaintResponseMasterService.SaveComplaintResponse(complaintResponse);
+            
+            Notification notification = new Notification {
+                Title = "New complaint response",
+                Description = "New response has been recieved for complaint:" + complaint.Title,
+                CreatedDate = DateTime.Now,
+            };
+            _unitOfWork.GetRepository<INotificationWriteRepository>().Add(notification);
 
             return Ok(ComplaintMessages.ResponseReceived);
         }

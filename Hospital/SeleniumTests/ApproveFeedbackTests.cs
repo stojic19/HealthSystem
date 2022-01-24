@@ -2,6 +2,7 @@
 using OpenQA.Selenium.Chrome;
 using System;
 using System.Linq;
+using System.Net.Mime;
 using Hospital.MedicalRecords.Repository;
 using Hospital.Schedule.Model;
 using Hospital.Schedule.Repository;
@@ -21,13 +22,13 @@ namespace SeleniumTests
         public ApproveFeedbackTests(BaseFixture fixture) : base(fixture)
         {
             var options = new ChromeOptions();
-            options.AddArguments("start-maximized");            
-            options.AddArguments("disable-infobars");           
-            options.AddArguments("--disable-extensions");       
-            options.AddArguments("--disable-gpu");              
-            options.AddArguments("--disable-dev-shm-usage");    
-            options.AddArguments("--no-sandbox");               
-            options.AddArguments("--disable-notifications");    
+            options.AddArguments("start-maximized");
+            options.AddArguments("disable-infobars");
+            options.AddArguments("--disable-extensions");
+            options.AddArguments("--disable-gpu");
+            options.AddArguments("--disable-dev-shm-usage");
+            options.AddArguments("--no-sandbox");
+            options.AddArguments("--disable-notifications");
             driver = new ChromeDriver(options);
             loginPage = new LoginPage(driver);
             loginPage.NavigateMan();
@@ -74,14 +75,9 @@ namespace SeleniumTests
             var feedback = UoW.GetRepository<IFeedbackReadRepository>().GetAll()
                     .FirstOrDefault(x => x.Patient.UserName == "testPatientUsername");
             if (feedback != null) return;
-            feedback = new Feedback()
-                {
-                    Patient = patient,
-                    Text = "Osoblje je ljubazno.Sve pohvale.",
-                    CreatedDate = new DateTime(2021,12,12,12,30,0),
-                    IsPublishable = true
-                };
-                UoW.GetRepository<IFeedbackWriteRepository>().Add(feedback);
+            
+            feedback = new Feedback(patient.Id, "Osoblje je ljubazno.Sve pohvale.", true, false);
+            UoW.GetRepository<IFeedbackWriteRepository>().Add(feedback);
         }
 
         private void ClearDatabase()
@@ -92,7 +88,7 @@ namespace SeleniumTests
 
             {
                 var feedback = UoW.GetRepository<IFeedbackReadRepository>().GetAll()
-                    .FirstOrDefault(x => x.Patient == patient);
+                    .FirstOrDefault(x => x.PatientId == patient.Id);
                 if (feedback != null) UoW.GetRepository<IFeedbackWriteRepository>().Delete(feedback);
             }
         }

@@ -8,8 +8,7 @@ namespace HospitalApi.DTOs
 {
     public class MedicalRecordDTO
     {
-        public double Height { get; set; }
-        public double Weight { get; set; }
+        public MeasurementsDTO Measurements { get; set; }
         public BloodType BloodType { get; set; }
         public JobStatus JobStatus { get; set; }
         public IEnumerable<AllergyDTO> Allergies { get; set; }

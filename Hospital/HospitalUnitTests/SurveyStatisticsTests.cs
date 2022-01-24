@@ -16,19 +16,14 @@ namespace HospitalUnitTests
         {
 
         }
-
         [Fact]
         public void Correct_average_rating_for_questions()
         {
             #region
 
             ClearDbContext();
-            Context.Surveys.Add(new Survey()
-            {
-                Id = 1,
-                CreatedDate = new DateTime()
-
-            });
+            var survey = new Survey(true);
+            Context.Surveys.Add(survey);
             Context.Questions.Add(new Question()
             {
                 Id = 1,
@@ -50,89 +45,65 @@ namespace HospitalUnitTests
                 Category = SurveyCategory.DoctorSurvey,
                 Text = "Pitanje 3"
             });
-            Context.Questions.Add(new Question()
-            {
-                Id = 4,
-                SurveyId = 1,
-                Category = SurveyCategory.HospitalSurvey,
-                Text = "Pitanje 4"
-            });
 
-            Context.AnsweredSurveys.Add(new AnsweredSurvey()
-            {
-                Id = 1,
-                SurveyId = 1,
-                PatientId = 1,
-                AnsweredDate = new DateTime()
-
-            });
-
-            Context.AnsweredSurveys.Add(new AnsweredSurvey()
-            {
-                Id = 2,
-                SurveyId = 1,
-                PatientId = 1,
-                AnsweredDate = new DateTime()
-
-            });
-
-            Context.AnsweredQuestions.Add(new AnsweredQuestion()
+            var aQuestion1 = new AnsweredQuestion()
             {
                 Id = 1,
                 Category = SurveyCategory.DoctorSurvey,
                 QuestionId = 1,
                 AnsweredSurveyId = 1,
                 Rating = 2
-            });
-            Context.AnsweredQuestions.Add(new AnsweredQuestion()
+            };
+            var aQuestion2 = new AnsweredQuestion()
             {
                 Id = 2,
                 Category = SurveyCategory.DoctorSurvey,
                 QuestionId = 1,
                 AnsweredSurveyId = 2,
                 Rating = 4
-            });
-            Context.AnsweredQuestions.Add(new AnsweredQuestion()
+            };
+            var aQuestion3 = new AnsweredQuestion()
             {
                 Id = 3,
                 Category = SurveyCategory.StaffSurvey,
                 QuestionId = 2,
                 AnsweredSurveyId = 1,
                 Rating = 3
-            });
-            Context.AnsweredQuestions.Add(new AnsweredQuestion()
+            };
+            var aQuestion4 = new AnsweredQuestion()
             {
                 Id = 4,
                 Category = SurveyCategory.StaffSurvey,
                 QuestionId = 2,
                 AnsweredSurveyId = 2,
                 Rating = 4
-            });
-            Context.AnsweredQuestions.Add(new AnsweredQuestion()
+            };
+            var aQuestion5 = new AnsweredQuestion()
             {
                 Id = 5,
                 Category = SurveyCategory.DoctorSurvey,
                 QuestionId = 3,
                 AnsweredSurveyId = 1,
                 Rating = 5
-            });
-            Context.AnsweredQuestions.Add(new AnsweredQuestion()
+            };
+            var aQuestion6 = new AnsweredQuestion()
             {
                 Id = 6,
                 Category = SurveyCategory.DoctorSurvey,
                 QuestionId = 3,
                 AnsweredSurveyId = 2,
                 Rating = 1
-            });
-            Context.AnsweredQuestions.Add(new AnsweredQuestion()
-            {
-                Id = 7,
-                Category = SurveyCategory.HospitalSurvey,
-                QuestionId = 4,
-                AnsweredSurveyId = 1,
-                Rating = 4
-            });
+            };
+            Context.AnsweredQuestions.Add(aQuestion1);
+            Context.AnsweredQuestions.Add(aQuestion2);
+            Context.AnsweredQuestions.Add(aQuestion3);
+            Context.AnsweredQuestions.Add(aQuestion4);
+            Context.AnsweredQuestions.Add(aQuestion5);
+            Context.AnsweredQuestions.Add(aQuestion6);
 
+            Context.AnsweredSurveys.Add(new AnsweredSurvey(UoW.GetRepository<IAnsweredQuestionReadRepository>().GetAll().Where(x => x.AnsweredSurveyId == 1).ToList(), new DateTime(), 1, survey, 1, null, 1, null));
+
+            Context.AnsweredSurveys.Add(new AnsweredSurvey(UoW.GetRepository<IAnsweredQuestionReadRepository>().GetAll().Where(x => x.AnsweredSurveyId == 2).ToList(), new DateTime(), 1, survey, 1, null, 1, null));
             Context.SaveChanges();
             #endregion
             SurveyStatisticsService service = new SurveyStatisticsService(UoW);
@@ -141,21 +112,17 @@ namespace HospitalUnitTests
             double avg2 = temp[1].AverageRating;
             avg1.ShouldBe(3);
             avg2.ShouldBe(3.5);
-            
-        }
 
+        }
         [Fact]
+        
         public void Incorrect_average_rating_for_questions()
         {
             #region
 
             ClearDbContext();
-            Context.Surveys.Add(new Survey()
-            {
-                Id = 1,
-                CreatedDate = new DateTime()
-
-            });
+            var survey = new Survey(true);
+            Context.Surveys.Add(survey);
             Context.Questions.Add(new Question()
             {
                 Id = 1,
@@ -183,24 +150,6 @@ namespace HospitalUnitTests
                 SurveyId = 1,
                 Category = SurveyCategory.HospitalSurvey,
                 Text = "Pitanje 4"
-            });
-
-            Context.AnsweredSurveys.Add(new AnsweredSurvey()
-            {
-                Id = 1,
-                SurveyId = 1,
-                PatientId = 1,
-                AnsweredDate = new DateTime()
-
-            });
-
-            Context.AnsweredSurveys.Add(new AnsweredSurvey()
-            {
-                Id = 2,
-                SurveyId = 1,
-                PatientId = 1,
-                AnsweredDate = new DateTime()
-
             });
 
             Context.AnsweredQuestions.Add(new AnsweredQuestion()
@@ -259,6 +208,10 @@ namespace HospitalUnitTests
                 AnsweredSurveyId = 1,
                 Rating = 4
             });
+
+            Context.AnsweredSurveys.Add(new AnsweredSurvey(UoW.GetRepository<IAnsweredQuestionReadRepository>().GetAll().Where(x => x.AnsweredSurveyId == 1).ToList(), new DateTime(), 1, survey, 1, null, 1, null));
+
+            Context.AnsweredSurveys.Add(new AnsweredSurvey(UoW.GetRepository<IAnsweredQuestionReadRepository>().GetAll().Where(x => x.AnsweredSurveyId == 2).ToList(), new DateTime(), 1, survey, 1, null, 1, null));
 
             Context.SaveChanges();
             #endregion
@@ -273,12 +226,8 @@ namespace HospitalUnitTests
             #region
 
             ClearDbContext();
-            Context.Surveys.Add(new Survey()
-            {
-                Id = 1,
-                CreatedDate = new DateTime()
-
-            });
+            var survey = new Survey(true);
+            Context.Surveys.Add(survey);
             Context.Questions.Add(new Question()
             {
                 Id = 1,
@@ -306,24 +255,6 @@ namespace HospitalUnitTests
                 SurveyId = 1,
                 Category = SurveyCategory.HospitalSurvey,
                 Text = "Pitanje 4"
-            });
-
-            Context.AnsweredSurveys.Add(new AnsweredSurvey()
-            {
-                Id = 1,
-                SurveyId = 1,
-                PatientId = 1,
-                AnsweredDate = new DateTime()
-
-            });
-
-            Context.AnsweredSurveys.Add(new AnsweredSurvey()
-            {
-                Id = 2,
-                SurveyId = 1,
-                PatientId = 1,
-                AnsweredDate = new DateTime()
-
             });
 
             Context.AnsweredQuestions.Add(new AnsweredQuestion()
@@ -382,6 +313,9 @@ namespace HospitalUnitTests
                 AnsweredSurveyId = 1,
                 Rating = 4
             });
+            Context.AnsweredSurveys.Add(new AnsweredSurvey(UoW.GetRepository<IAnsweredQuestionReadRepository>().GetAll().Where(x => x.AnsweredSurveyId == 1).ToList(), new DateTime(), 1, survey, 1, null, 1, null));
+
+            Context.AnsweredSurveys.Add(new AnsweredSurvey(UoW.GetRepository<IAnsweredQuestionReadRepository>().GetAll().Where(x => x.AnsweredSurveyId == 2).ToList(), new DateTime(), 1, survey, 1, null, 1, null));
 
             Context.SaveChanges();
             #endregion
@@ -398,12 +332,8 @@ namespace HospitalUnitTests
             #region
 
             ClearDbContext();
-            Context.Surveys.Add(new Survey()
-            {
-                Id = 1,
-                CreatedDate = new DateTime()
-
-            });
+            var survey = new Survey(true);
+            Context.Surveys.Add(survey);
             Context.Questions.Add(new Question()
             {
                 Id = 1,
@@ -432,25 +362,6 @@ namespace HospitalUnitTests
                 Category = SurveyCategory.HospitalSurvey,
                 Text = "Pitanje 4"
             });
-
-            Context.AnsweredSurveys.Add(new AnsweredSurvey()
-            {
-                Id = 1,
-                SurveyId = 1,
-                PatientId = 1,
-                AnsweredDate = new DateTime()
-
-            });
-
-            Context.AnsweredSurveys.Add(new AnsweredSurvey()
-            {
-                Id = 2,
-                SurveyId = 1,
-                PatientId = 1,
-                AnsweredDate = new DateTime()
-
-            });
-
             Context.AnsweredQuestions.Add(new AnsweredQuestion()
             {
                 Id = 1,
@@ -507,6 +418,10 @@ namespace HospitalUnitTests
                 AnsweredSurveyId = 1,
                 Rating = 4
             });
+
+            Context.AnsweredSurveys.Add(new AnsweredSurvey(UoW.GetRepository<IAnsweredQuestionReadRepository>().GetAll().Where(x => x.AnsweredSurveyId == 1).ToList(), new DateTime(), 1, survey, 1, null, 1, null));
+
+            Context.AnsweredSurveys.Add(new AnsweredSurvey(UoW.GetRepository<IAnsweredQuestionReadRepository>().GetAll().Where(x => x.AnsweredSurveyId == 2).ToList(), new DateTime(), 1, survey, 1, null, 1, null));
 
             Context.SaveChanges();
             #endregion
@@ -524,12 +439,8 @@ namespace HospitalUnitTests
             #region
 
             ClearDbContext();
-            Context.Surveys.Add(new Survey()
-            {
-                Id = 1,
-                CreatedDate = new DateTime()
-
-            });
+            var survey = new Survey(true);
+            Context.Surveys.Add(survey);
             Context.Questions.Add(new Question()
             {
                 Id = 1,
@@ -557,24 +468,6 @@ namespace HospitalUnitTests
                 SurveyId = 1,
                 Category = SurveyCategory.HospitalSurvey,
                 Text = "Pitanje 4"
-            });
-
-            Context.AnsweredSurveys.Add(new AnsweredSurvey()
-            {
-                Id = 1,
-                SurveyId = 1,
-                PatientId = 1,
-                AnsweredDate = new DateTime()
-
-            });
-
-            Context.AnsweredSurveys.Add(new AnsweredSurvey()
-            {
-                Id = 2,
-                SurveyId = 1,
-                PatientId = 1,
-                AnsweredDate = new DateTime()
-
             });
 
             Context.AnsweredQuestions.Add(new AnsweredQuestion()
@@ -649,7 +542,9 @@ namespace HospitalUnitTests
                 AnsweredSurveyId = 2,
                 Rating = 2
             });
+            Context.AnsweredSurveys.Add(new AnsweredSurvey(UoW.GetRepository<IAnsweredQuestionReadRepository>().GetAll().Where(x => x.AnsweredSurveyId == 1).ToList(), new DateTime(), 1, survey, 1, null, 1, null));
 
+            Context.AnsweredSurveys.Add(new AnsweredSurvey(UoW.GetRepository<IAnsweredQuestionReadRepository>().GetAll().Where(x => x.AnsweredSurveyId == 2).ToList(), new DateTime(), 1, survey, 1, null, 1, null));
             Context.SaveChanges();
             #endregion
 

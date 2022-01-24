@@ -32,6 +32,7 @@ using IntegrationAPI.Adapters.PDF.Implementation;
 using System.IO;
 using System.Threading;
 using IntegrationApi.Messages;
+using Integration.Shared.Repository;
 
 namespace IntegrationAPI.Controllers.Tenders
 {
@@ -265,6 +266,14 @@ namespace IntegrationAPI.Controllers.Tenders
             {
                 return BadRequest(MedicineMessages.CouldNotAddToHospital);
             }
+
+            Notification notification = new Notification
+            {
+                Title = "Medicine recieved",
+                Description = "Medicine recieved from pharmacy " + pharmacy.Name,
+                CreatedDate = DateTime.Now,
+            };
+            _unitOfWork.GetRepository<INotificationWriteRepository>().Add(notification);
 
             return Ok();
         }

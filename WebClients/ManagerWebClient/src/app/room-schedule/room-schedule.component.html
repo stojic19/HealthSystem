@@ -6,19 +6,12 @@
   </div>
 
   <div class="col-8">
-    <div
-      style="height: 515px; overflow: auto"
-      id="table"
-      class="table-responsive custom-table-responsive"
-    >
-      <table
-        *ngIf="!isLoading"
-        class="
+    <div style="height: 515px; overflow: auto" id="table" class="table-responsive custom-table-responsive">
+      <table id="eventTable" *ngIf="!isLoading" class="
           table table-hover
           justify-content-center
           equipmentTable equipmentTable
-        "
-      >
+        ">
         <thead>
           <tr>
             <th class="col-md-4">Type</th>
@@ -34,11 +27,8 @@
             <td>{{ event.endDate | date: "dd.MM.yyyy HH:mm" }}</td>
             <td class="pt-1">
               <div class="buttonWrapper">
-                <button
-                  *ngIf="checkIfEventIsTomorrow(event)"
-                  class="btn btn-danger cancelButton"
-                  (click)="confirmTransferCancelDialog(event)"
-                >
+                <button *ngIf="checkIfEventIsTomorrow(event)" class="btn btn-danger cancelButton"
+                  (click)="confirmTransferCancelDialog(event)">
                   Cancel
                 </button>
               </div>
@@ -50,11 +40,8 @@
             <td>{{ event.endDate | date: "dd.MM.yyyy HH:mm" }}</td>
             <td class="pt-1">
               <div class="buttonWrapper">
-                <button
-                  *ngIf="checkIfEventIsTomorrow(event)"
-                  class="btn btn-danger cancelButton"
-                  (click)="confirmRenovationCancelDialog(event)"
-                >
+                <button *ngIf="checkIfEventIsTomorrow(event)" class="btn btn-danger cancelButton" id="cancelButton"
+                  (click)="confirmRenovationCancelDialog(event)">
                   Cancel
                 </button>
               </div>
@@ -67,10 +54,7 @@
             <td>{{ event.endDate | date: "dd.MM.yyyy HH:mm" }}</td>
             <td class="pt-1">
               <div class="buttonWrapper">
-                <button
-                  class="btn btn-secondary cancelButton"
-                  (click)="openDialog(event)"
-                >
+                <button class="btn btn-secondary cancelButton" (click)="openDialog(event)">
                   Details
                 </button>
               </div>
@@ -78,10 +62,7 @@
           </tr>
         </tbody>
       </table>
-      <mat-card
-        *ngIf="isLoading"
-        style="display: flex; justify-content: center; align-items: center"
-      >
+      <mat-card *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center">
         <mat-progress-spinner color="primary" mode="indeterminate">
         </mat-progress-spinner>
       </mat-card>

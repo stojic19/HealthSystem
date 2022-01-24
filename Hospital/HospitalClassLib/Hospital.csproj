@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <Folder Include="Database\Migrations\" />
+    <Folder Include="MedicalRecords\Model\Enumerations\" />
     <Folder Include="GraphicalEditor\Repository\Implementation\" />
     <Folder Include="SharedModel\Service\" />
   </ItemGroup>

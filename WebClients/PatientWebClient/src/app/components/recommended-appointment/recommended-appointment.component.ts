@@ -5,6 +5,7 @@ import { MatRadioChange } from '@angular/material/radio';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { IAvailableAppointment } from 'src/app/interfaces/availableappointment';
+import { ICurrentUser } from 'src/app/interfaces/current-user';
 import { IDoctor } from 'src/app/interfaces/doctor';
 import { IRecommendedAppointment } from 'src/app/interfaces/irecommendedappointment';
 import { AvailableAppointmentsService } from 'src/app/services/AvailableAppointmentsService/available-appointments.service';
@@ -33,6 +34,7 @@ export class RecommendedAppointmentComponent implements OnInit {
   newAppointment : IRecommendedAppointment;
   firstFormGroup!: FormGroup;
   todayDate:Date = new Date();
+  user!: ICurrentUser;
 
   constructor(private _formBuilder: FormBuilder,
     private doctorService: DoctorService,
@@ -48,6 +50,7 @@ export class RecommendedAppointmentComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.user = JSON.parse(localStorage.getItem('currentUser')!);
     this.range = this._formBuilder.group({
       start: ['',Validators.required],
       end: ['', Validators.required]
@@ -114,13 +117,14 @@ export class RecommendedAppointmentComponent implements OnInit {
   }
 
   createAppointment() {
-    this.availableAppointmentService.createNewAppointment(this.newAppointment).subscribe(
+    this.availableAppointmentService.createNewAppointment(this.newAppointment,this.user.userName).subscribe(
       (res) => {
         this.router.navigate(['/record']);
         this._snackBar.open(
-          'Scheduling was successful.',
+          'Appointment successfully scheduled!',
           'Dismiss'
         );
+        window.location.reload();
       },
       (err) => {
         let parts = err.error.split(':');

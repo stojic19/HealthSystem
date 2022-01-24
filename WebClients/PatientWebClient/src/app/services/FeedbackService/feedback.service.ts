@@ -9,6 +9,8 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class FeedbackService {
+
+
   constructor(private _http: HttpClient) {}
 
   getAll(): Observable<IPatientFeedback[]> {
@@ -20,5 +22,10 @@ export class FeedbackService {
 
   addFeedback(newFeedback: IFeedback): Observable<IFeedback> {
     return this._http.post<IFeedback>('/api/Feedback', newFeedback);
+  }
+
+  getPublicApproved(): Observable<IPatientFeedback[]> {
+    return this._http.get<IPatientFeedback[]>('api/Feedback/public');
+    
   }
 }

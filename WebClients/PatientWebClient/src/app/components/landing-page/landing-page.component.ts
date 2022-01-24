@@ -11,18 +11,16 @@ import { FeedbackService } from 'src/app/services/FeedbackService/feedback.servi
 })
 export class LandingPageComponent implements OnInit {
   allFeedbacks!: IPatientFeedback[];
-  topFiveFeedbacks!: IPatientFeedback[];
+  topTenFeedbacks!: IPatientFeedback[];
   sub!: Subscription;
   numOfFeedback!: number;
   constructor(private _service: FeedbackService, private router: Router) {}
 
   ngOnInit(): void {
-    this.sub = this._service.getApproved().subscribe({
+    this.sub = this._service.getPublicApproved().subscribe({
       next: (feedback) => {
-        this.allFeedbacks = feedback;
-        this.topFiveFeedbacks = this.allFeedbacks.slice(
-          this.allFeedbacks.length / 2
-        );
+        this.topTenFeedbacks = feedback;
+       
       },
     });
   }

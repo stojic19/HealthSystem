@@ -12,6 +12,7 @@
       class="table-responsive custom-table-responsive"
     >
       <table
+        id="eventTable"
         *ngIf="!isLoading"
         class="table table-hover justify-content-center equipmentTable equipmentTable"
       >
@@ -49,6 +50,7 @@
                 <button
                   *ngIf="checkIfEventIsTomorrow(event)"
                   class="btn btn-danger cancelButton"
+                  id="cancelButton"
                   (click)="confirmRenovationCancelDialog(event)"
                 >
                   Cancel

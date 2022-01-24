@@ -6,6 +6,7 @@ using IntegrationAPI.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using IntegrationAPI.DTO.Benefits;
 
 namespace IntegrationAPI.Controllers.Benefits
@@ -70,12 +71,12 @@ namespace IntegrationAPI.Controllers.Benefits
         public IEnumerable<Benefit> GetRelevantBenefits()
         {
             IEnumerable<Benefit> benefits = _uow.GetRepository<IBenefitReadRepository>().GetRelevantBenefits();
+            var pharmacies = _uow.GetRepository<IPharmacyReadRepository>().GetAll().ToList();
             foreach (var benefit in benefits)
             {
-                if (benefit.Pharmacy == null)
-                {
-                    benefit.Pharmacy = _uow.GetRepository<IPharmacyReadRepository>().GetById(benefit.PharmacyId);
-                }
+                foreach(var pharmacy in pharmacies)
+                    if (benefit.PharmacyId == pharmacy.Id)
+                        benefit.Pharmacy = pharmacy;
             }
             return benefits;
         }
@@ -109,7 +110,7 @@ namespace IntegrationAPI.Controllers.Benefits
             }
             benefit.Hidden = true;
             benefit = _uow.GetRepository<IBenefitWriteRepository>().Update(benefit);
-            if (!benefit.Published)
+            if (!benefit.Hidden)
             {
                 return BadRequest("Error, could not hide benefit");
             }

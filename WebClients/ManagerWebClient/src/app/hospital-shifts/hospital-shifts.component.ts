@@ -38,6 +38,7 @@ export class HospitalShiftsComponent implements OnInit {
 
   deleteShift(shiftId: number) {
     this.service.deleteShift(shiftId);
+    this.service.getHospitalShifts().toPromise().then(res => this.shifts = res as Shift[]);
   }
 
 }

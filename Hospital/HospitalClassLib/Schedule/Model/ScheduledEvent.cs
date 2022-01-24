@@ -21,7 +21,8 @@ namespace Hospital.Schedule.Model
         public Doctor Doctor { get; private set; }
         public int RoomId { get; private set; }
         public Room Room { get; private set; }
-
+        public Report Report { get; private set; }
+        
         public ScheduledEvent(ScheduledEventType scheduledEventType, bool isCanceled, bool isDone, DateTime startDate, DateTime endDate, DateTime cancellationDate, int patientId, int doctorId, Doctor doctor)
         {
             ScheduledEventType = scheduledEventType;
@@ -34,6 +35,7 @@ namespace Hospital.Schedule.Model
             DoctorId = doctorId;
             Room = doctor.Room;
             RoomId = doctor.Room.Id;
+            Report = null;
             Validate();
         }
 
@@ -62,6 +64,7 @@ namespace Hospital.Schedule.Model
         public void SetToDone()
         {
             IsDone = true;
+            Report = new Report();
             Validate();
         }
 

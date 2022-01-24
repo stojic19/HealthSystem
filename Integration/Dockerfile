@@ -23,4 +23,5 @@ USER newuser
 WORKDIR /app
 COPY --from=publish /app .
 WORKDIR /app/publish
+CMD ASPNETCORE_URLS=http://*:$PORT dotnet IntegrationApi.dll
 ENTRYPOINT ["dotnet", "IntegrationApi.dll"]

@@ -27,7 +27,7 @@ services:
 
   hospitalapi:
     image: nikolaaleksic/hospital
-    command: [ '/bin/sh', '-c', 'export HOSPITAL_DB_PATH="$$(cat /run/secrets/hospital_db_path)" && source /docker-entrypoint.sh' ]
+    # command: [ '/bin/sh', '-c', 'export HOSPITAL_DB_PATH="$$(cat /run/secrets/hospital_db_path)" && source /docker-entrypoint.sh' ]
     # entrypoint: source /entrypoint_overwrited.sh
     build:
       dockerfile: Stacks/Build/Hospital/Dockerfile
@@ -39,10 +39,6 @@ services:
       - hospitaldb 
     secrets:
       - source: hospital_db_path
-        target: hospital_db_path
-        uid: '101'
-        gid: '443'
-        mode: 0440
     #environment:
       #HOSPITAL_DB_PATH: "/run/secrets/hospital_db_path"
       #HOSPITAL_DB_PATH: "host=hospitaldb;port=5432;database=HOSPITAL;username=postgres;password=postgres"
@@ -62,10 +58,6 @@ services:
       - rabbitmq
     secrets:
       - source: hospital_db_path
-        target: hospital_db_path
-        uid: '101'
-        gid: '443'
-        mode: 0440
     environment:
       #POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
       PHARMACY_DB_PATH: "host=pharmacydb;port=5432;database=PHARMACY;username=postgres;password=postgres"
@@ -86,10 +78,6 @@ services:
       - rabbitmq
     secrets:
       - source: hospital_db_path
-        target: hospital_db_path
-        uid: '101'
-        gid: '443'
-        mode: 0440
     environment:
       #POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
       INTEGRATION_DB_PATH: "host=integrationdb;port=5432;database=INTEGRATION;username=postgres;password=postgres"

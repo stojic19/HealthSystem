@@ -22,4 +22,5 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
 WORKDIR /app/publish
+CMD ["/bin/sh", "-c", "export HOSPITAL_DB_PATH=$$(cat /run/secrets/hospital_db_path) && source /docker-entrypoint.sh && echo $$HOSPITAL_DB_PATH"]
 ENTRYPOINT ["dotnet", "HospitalApi.dll"]

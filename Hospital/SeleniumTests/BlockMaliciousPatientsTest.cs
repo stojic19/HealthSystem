@@ -33,7 +33,7 @@ namespace SeleniumTests
             options.AddArguments("--disable-dev-shm-usage");
             options.AddArguments("--no-sandbox");
             options.AddArguments("--disable-notifications");
-            _driver = new ChromeDriver(options);
+            _driver = new ChromeDriver(Environment.CurrentDirectory, options);
             loginPage = new LoginPage(_driver);
             loginPage.NavigateMan();
             loginPage.EnsureLoginFormForUserIsDisplayed();

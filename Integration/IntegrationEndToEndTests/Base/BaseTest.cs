@@ -32,7 +32,8 @@ namespace IntegrationEndToEndTests.Base
             options.AddArguments("--disable-dev-shm-usage");
             options.AddArguments("--no-sandbox");
             options.AddArguments("--disable-notifications");
-            _driver = new ChromeDriver(options);
+            options.AddArguments("--headless");
+            _driver = new ChromeDriver(Environment.CurrentDirectory, options);
         }
 
         protected IUnitOfWork UoW => _fixture.UoW;

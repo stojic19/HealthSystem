@@ -28,7 +28,7 @@ namespace SeleniumTests
             options.AddArguments("--disable-dev-shm-usage");    // overcome limited resource problems
             options.AddArguments("--no-sandbox");               // Bypass OS security model
             options.AddArguments("--disable-notifications");    // disable notifications
-            driver = new ChromeDriver(options);
+            driver = new ChromeDriver(Environment.CurrentDirectory, options);
 
             LoginPage = new LoginPage(driver);
             LoginPage.Navigate();

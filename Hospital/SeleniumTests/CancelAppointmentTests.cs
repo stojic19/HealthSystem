@@ -35,7 +35,7 @@ namespace SeleniumTests
             options.AddArguments("--no-sandbox");
             options.AddArguments("--disable-notifications");
 
-            driver = new ChromeDriver(options);
+            driver = new ChromeDriver(Environment.CurrentDirectory, options);
             loginPage = new LoginPage(driver);
             loginPage.Navigate();
             loginPage.EnsureLoginFormForUserIsDisplayed();

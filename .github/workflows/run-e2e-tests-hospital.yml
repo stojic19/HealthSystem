@@ -39,11 +39,6 @@ jobs:
           n 16.13.0
           hash -r
 
-      - name: Setup chrome
-        run: |
-          chmod +x ./scripts/InstallChrome.sh
-          ./scripts/InstallChrome.sh 
-
       - name: Run front
         run: |
           cd WebClients/PatientWebClient

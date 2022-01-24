@@ -12,7 +12,7 @@
               Current vacation time: 
             </td>
             <td class="label">
-               {{ doctor.vacations[0].startDate | date: "dd.MM.yyyy" }} - {{ doctor.vacations[0].endDate | date: "dd.MM.yyyy" }}
+               {{ doctor.doctorSchedule.vacations[0].startDate | date: "dd.MM.yyyy" }} - {{ doctor.doctorSchedule.vacations[0].endDate | date: "dd.MM.yyyy" }}
             </td>
           </tr>
         </ng-container>

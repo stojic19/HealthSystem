@@ -25,7 +25,7 @@ namespace IntegrationAPI.Controllers.Base
             };
             _hospitalInfo = new HospitalDTO
             {
-                BaseUrl = $"{Request.Scheme}://{Request.Host}",
+                BaseUrl = "https://localhost:44302",
                 Name = "Heaven's Pass Medicare",
                 StreetName = "Dunavska",
                 StreetNumber = "17",

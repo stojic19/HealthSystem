@@ -163,7 +163,7 @@ namespace IntegrationAPI.Controllers.Tenders
                 .FirstOrDefault(x => x.Id == id);
 
             var tenders = _unitOfWork.GetRepository<ITenderReadRepository>().GetAll()
-                            .Include(t => t.TenderOffers).Include(t => t.MedicationRequests);
+                            .Include(t => t.TenderOffers).ThenInclude(to => to.Pharmacy).Include(t => t.MedicationRequests);
             foreach (var tender in tenders.AsEnumerable())
             {
                 stats.Offers += tender.NumberOfPharmacyOffers(pharmacy);

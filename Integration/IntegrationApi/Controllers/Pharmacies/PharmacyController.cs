@@ -35,7 +35,7 @@ namespace IntegrationAPI.Controllers.Pharmacies
             return _pharmacyMasterService.GetPharmacyById(id);
         }
 
-        [HttpPost]
+        [HttpPost, Produces("application/json")]
         public IActionResult UpdatePharmacy(UpdatePharmacyDTO updatePharmacyDTO)
         {
             if (updatePharmacyDTO.PharmacyName != "")
@@ -53,7 +53,7 @@ namespace IntegrationAPI.Controllers.Pharmacies
             return Ok(PharmacyMessages.PharmacyUpdated);
         }
 
-        [HttpPost]
+        [HttpPost, Produces("application/json")]
         public IActionResult UploadImage()
         {
             var file = Request.Form.Files[0];

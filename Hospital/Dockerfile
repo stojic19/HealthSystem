@@ -2,6 +2,8 @@ ARG ASPNET_VERSION=5.0
 ARG SDK_VERSION=5.0
 
 FROM mcr.microsoft.com/dotnet/aspnet:${ASPNET_VERSION} AS base
+RUN groupadd -r user -g 443 && \
+    useradd -u 101 -r -g user newuser
 WORKDIR /app
 EXPOSE 80
 
@@ -19,6 +21,7 @@ RUN dotnet tool install -g dotnet-ef --version 5.0.11 && \
     dotnet publish "${PROJECT}/${PROJECT}.csproj" -c Release -o /app/publish
 
 FROM base AS final
+USER newuser
 WORKDIR /app
 COPY --from=publish /app .
 WORKDIR /app/publish

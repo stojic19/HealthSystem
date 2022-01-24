@@ -9,7 +9,7 @@ secrets:
 services:
 
   gateway:
-    image: srdjansukovic/psw_gateway
+    image: nikolaaleksic/gateway
     build:
       context: ../
       dockerfile: Stacks/Build/Gateway/Dockerfile
@@ -26,8 +26,8 @@ services:
       - integrationapi
 
   hospitalapi:
-    image: srdjansukovic/psw_hospitalapi
-    command: [ '/bin/sh', '-c', 'export HOSPITAL_DB_PATH=$$(cat /run/secrets/hospital_db_path) ; source /docker-entrypoint.sh' ]
+    image: nikolaaleksic/hospital
+    # command: [ '/bin/sh', '-c', 'export HOSPITAL_DB_PATH="$$(cat /run/secrets/hospital_db_path)" && source /docker-entrypoint.sh' ]
     # entrypoint: source /entrypoint_overwrited.sh
     build:
       dockerfile: Stacks/Build/Hospital/Dockerfile
@@ -36,18 +36,19 @@ services:
       - "8088:80"
     restart: on-failure
     depends_on:
-      - hospitaldb
+      - hospitaldb 
     secrets:
-      - hospital_db_path
-    # environment:
-    #   HOSPITAL_DB_PATH:
-      #POSTGRES_PASSWORD_FILE: "xasd"
-      #POSTGRES_PASSWORD_FILE_X: "password=${POSTGRES_PASSWORD_FILE}"
-      # HOSPITAL_DB_PATH: /run/secrets/hospital_db_path
+      - source: hospital_db_path
+        target: hospital_db_path
+        uid: '101'
+        gid: '443'
+        mode: 0440
+    #environment:
+      #HOSPITAL_DB_PATH: "/run/secrets/hospital_db_path"
       #HOSPITAL_DB_PATH: "host=hospitaldb;port=5432;database=HOSPITAL;username=postgres;password=postgres"
 
   pharmacyapi:
-    image: srdjansukovic/psw_pharmacyapi
+    image: nikolaaleksic/pharmacy
     # secrets:
     #   - postgres_password
     build:
@@ -67,7 +68,7 @@ services:
   integrationapi:
     # secrets:
     #   - postgres_password
-    image: srdjansukovic/psw_integrationapi
+    image: nikolaaleksic/integration
     build:
       dockerfile: Stacks/Build/Integration/Dockerfile
       context: ../
@@ -83,7 +84,7 @@ services:
       RABBITMQ_HOST: "rabbitmq"
 
   patient-ui:
-    image: srdjansukovic/psw_patientui
+    image: nikolaaleksic/patientui
     build:
       context: ../
       dockerfile: Stacks/Build/PatientUi/Dockerfile
@@ -92,7 +93,7 @@ services:
     container_name: patient-ui
 
   manager-ui:
-    image: srdjansukovic/psw_managerui
+    image: nikolaaleksic/managerui
     build:
       context: ../
       dockerfile: Stacks/Build/ManagerUi/Dockerfile
@@ -101,7 +102,7 @@ services:
     container_name: manager-ui
 
   integration-ui:
-    image: srdjansukovic/psw_integrationui
+    image: nikolaaleksic/integrationui
     build:
       context: ../
       dockerfile: Stacks/Build/IntegrationUi/Dockerfile

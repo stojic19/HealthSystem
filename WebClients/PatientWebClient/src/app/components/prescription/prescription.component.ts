@@ -8,6 +8,7 @@ import { PrescriptionService } from 'src/app/services/PrescriptionService/prescr
 import { IMedication } from 'src/app/interfaces/imedication';
 import { IChosenDoctor } from 'src/app/interfaces/chosen-doctor';
 import { IPatient } from 'src/app/interfaces/patient-interface';
+import { ICity } from 'src/app/interfaces/city';
 
 @Component({
   selector: 'app-prescription',
@@ -28,6 +29,7 @@ export class PrescriptionComponent implements OnInit {
     this.prescription.medication = {} as IMedication;
     this.prescription.doctorInfo = {} as IChosenDoctor;
     this.prescription.patientInfo = {} as IPatient;
+    this.prescription.patientInfo.city = {} as ICity;
 
     this.currentUser = JSON.parse(localStorage.getItem('currentUser')!);
     this.sub = this.prescriptionService

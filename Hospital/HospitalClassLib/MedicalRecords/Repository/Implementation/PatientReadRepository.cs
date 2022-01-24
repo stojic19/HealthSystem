@@ -25,5 +25,23 @@ namespace Hospital.MedicalRecords.Repository.Implementation
         {
             return GetAll().FirstOrDefault(p => p.UserName.Equals(username));
         }
+
+        public Prescription GetPrescriptionForScheduledEvent(int scheduledEventId, string loggedPatientUsername)
+        {
+
+            var patient = GetAll()
+                .Include(p => p.MedicalRecord)
+                .ThenInclude(mr => mr.Prescriptions)
+                .ThenInclude(pr => pr.ScheduledEvent)
+                .ThenInclude(se => se.Doctor)
+
+                .Include(p => p.MedicalRecord)
+                .ThenInclude(mr => mr.Prescriptions)
+                .ThenInclude(pr => pr.Medication)
+
+                .First(p => p.UserName == loggedPatientUsername);
+
+            return patient.MedicalRecord.Prescriptions.FirstOrDefault(p => p.ScheduledEventId == scheduledEventId);
+        }
     }
 }

@@ -136,16 +136,9 @@ export class PatientMedicalRecordComponent implements OnInit {
   }
 
   openPrescription(id: number) {
-    // const dialogConfig = new MatDialogConfig();
-    // dialogConfig.disableClose = false;
-    // dialogConfig.id = 'modal-component';
-    // dialogConfig.height = '580px';
-    // dialogConfig.width = '500px';
-    // this.matDialog.open(PrescriptionComponent, dialogConfig);
-
     this.matDialog.open(PrescriptionComponent, {
-      height: '580px',
-      width: '500px',
+      height: '660px',
+      width: '550px',
       data: id,
     });
   }

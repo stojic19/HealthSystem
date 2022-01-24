@@ -12,6 +12,7 @@ namespace HospitalApi.DTOs
         public DateTime DateOfBirth { get; set; }
         public string Street { get; set; }
         public string StreetNumber { get; set; }
+        public CityDTO City { get; set; }
         public string PhoneNumber { get; set; }
     }
 }

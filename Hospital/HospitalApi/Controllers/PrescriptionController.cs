@@ -78,25 +78,10 @@ namespace HospitalApi.Controllers
         }
 
         [HttpGet]
-        //Reques/Prescription/GetPrescriptionForScheduledEvent/scheduledEventId=104&patientUsername=anamir12
-
         public IActionResult GetPrescriptionForScheduledEvent([FromQuery(Name = "scheduledEventId")] int scheduledEventId, [FromQuery(Name = "patientUsername")] string patientUsername)
         {
-            // prebaciti u repo
-            var loggedInPatient = _unitOfWork.GetRepository<IPatientReadRepository>().GetAll()
-                .Include(p => p.MedicalRecord)
-                .ThenInclude(mr => mr.Prescriptions)
-                .ThenInclude(pr => pr.ScheduledEvent)
-                .ThenInclude(se => se.Doctor)
-
-                .Include(p => p.MedicalRecord)
-                .ThenInclude(mr => mr.Prescriptions)
-                .ThenInclude(pr => pr.Medication)
-                .First(p => p.UserName == patientUsername);
-
-            var prescription =
-                loggedInPatient.MedicalRecord.Prescriptions.FirstOrDefault(p => p.ScheduledEventId == scheduledEventId);
-            
+            var prescription = _unitOfWork.GetRepository<IPatientReadRepository>()
+                .GetPrescriptionForScheduledEvent(scheduledEventId, patientUsername);
             return Ok(_mapper.Map<PrescriptionDTO>(prescription));
         }
     }

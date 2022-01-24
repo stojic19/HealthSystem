@@ -1,5 +1,5 @@
 <div class="m-5"></div>
-<div class="card mx-auto" style="width: 100rem;" *ngIf='id'>
+<div class="card mx-auto" style="width: 100rem;" *ngIf='complaint'>
     <div class="card-header">
         <div>Date: {{complaint.createdDate | date: "dd-MM-yyyy, hh:mm"}}</div>
         <div>Pharmacy: {{complaint.pharmacy.name}}</div>
@@ -8,7 +8,7 @@
       <h3 class="card-title text-center m-3">{{complaint.title}}</h3>
       <p class="card-text text-center ">{{complaint.description}}</p>
 
-      <div class="card" *ngIf="complaint.hasOwnProperty('complaintResponse')">
+      <div class="card" *ngIf="complaint.complaintResponse">
         <div class="card-header">
             <div>Response ID:  {{complaint.complaintResponse.id}}</div>
             <div>Date: {{complaint.complaintResponse.createdDate | date: "dd-MM-yyyy, hh:mm"}}</div>

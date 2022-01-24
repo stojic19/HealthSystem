@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace IntegrationApi.Messages
 {
-    public class BenefitMessages
+    public static class BenefitMessages
     {
         public static readonly string WrongId = "Benefit with that ID not found";
         public static readonly string AlreadyPublished = "Benefit is already published";

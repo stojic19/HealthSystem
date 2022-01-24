@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace IntegrationApi.Messages
 {
-    public class ComplaintMessages
+    public static class ComplaintMessages
     {
         public static readonly string WrongId = "Complaint with that ID not found";
         public static readonly string DidNotReceive = "Pharmacy failed to receive complaint! Try again";

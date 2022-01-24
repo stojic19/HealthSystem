@@ -6,7 +6,7 @@ using Microsoft.Extensions.Primitives;
 
 namespace IntegrationApi.Messages
 {
-    public class TenderMessages
+    public static class TenderMessages
     {
         public static readonly string InvalidTenderName = "Invalid tender name.";
         public static readonly string InvalidDateRange = "Start date must be before end date.";

@@ -265,7 +265,7 @@ namespace IntegrationAPI.Adapters.PDF.Implementation
             Title title = new Title(titleText);
             chart.HeaderTitles.Add(title);
 
-            IndexedColumnSeries firstColumn = FillDataAndXAxis(labels, values, plotArea); ;
+            IndexedColumnSeries firstColumn = FillDataAndXAxis(labels, values, plotArea);
 
             Title lTitle = new Title(label);
             if (labels.Count > 0)

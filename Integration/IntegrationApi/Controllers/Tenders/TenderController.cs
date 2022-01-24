@@ -380,10 +380,10 @@ namespace IntegrationAPI.Controllers.Tenders
                 }
                 catch
                 {
-                    return NotFound(PDFMessages.NotFound);
+                    return NotFound(PdfMessages.NotFound);
                 }
             }
-            return BadRequest(PDFMessages.CannotOpen);
+            return BadRequest(PdfMessages.CannotOpen);
         }
     }
 }

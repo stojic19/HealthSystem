@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace IntegrationApi.Messages
 {
-    public class PrescriptionMessages
+    public static class PrescriptionMessages
     {
         public static readonly string NoMedicineInAnyPharmacy = "No pharmacy has the medicine";
         public static readonly string CannotSend = "Cannot send prescription";

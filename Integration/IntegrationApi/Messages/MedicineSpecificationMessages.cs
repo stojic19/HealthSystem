@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace IntegrationApi.Messages
 {
-    public class MedicineSpecificationMessages
+    public static class MedicineSpecificationMessages
     {
         public static readonly string FileNotFound = "Specification file not found";
         public static readonly string CannotSaveFile = "Failed to save file, error while trying to download from sftp";

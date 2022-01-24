@@ -2,8 +2,6 @@ ARG ASPNET_VERSION=5.0
 ARG SDK_VERSION=5.0
 
 FROM mcr.microsoft.com/dotnet/aspnet:${ASPNET_VERSION} AS base
-RUN groupadd -r user -g 443 && \
-    useradd -u 101 -r -g user newuser
 WORKDIR /app
 EXPOSE 80
 

@@ -39,22 +39,5 @@ jobs:
         run: |
           cd Integration
           docker image build -t ${{env.DOCKER_REPO_PATH}}/integration .
-          docker push ${{env.DOCKER_REPO_PATH}}/integration
-      - name : Dockerize integration UI
-        run: |
-          cd WebClients/IntegrationWebClient
-          docker image build -t ${{env.DOCKER_REPO_PATH}}/integrationui .
-          docker push ${{env.DOCKER_REPO_PATH}}/integrationui
-      - name : Dockerize patient UI
-        run: |
-          cd WebClients/PatientWebClient
-          docker image build -t ${{env.DOCKER_REPO_PATH}}/patientui .
-          docker push ${{env.DOCKER_REPO_PATH}}/patientui
-      - name : Dockerize manager UI
-        run: |
-          cd WebClients/ManagerWebClient
-          npm update
-          npm install
-          docker image build -t ${{env.DOCKER_REPO_PATH}}/managerui .
-          docker push ${{env.DOCKER_REPO_PATH}}/managerui 
+          docker push ${{env.DOCKER_REPO_PATH}}/integration 
 

@@ -10,9 +10,9 @@ namespace Hospital.SharedModel.Model
 {
     public class DoctorSchedule
     {
-        public int Id { get; set; }
-        public ICollection<OnCallDuty> OnCallDuties { get; set; }
-        public ICollection<Vacation> Vacations { get; set; }
+        public int Id { get; private set; }
+        public ICollection<OnCallDuty> OnCallDuties { get; private set; }
+        public ICollection<Vacation> Vacations { get; private set; }
 
         public DoctorSchedule() { }
 

@@ -51,8 +51,11 @@ jobs:
 
       - name: Setup Chrome
         run: |
-          apt-get -y install chromium-chromedriver
-          chromedriver --version
+          wget  https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          sudo dpkg -i ./google-chrome-stable_current_amd64.deb 
+          sudo apt --fix-broken install
+          sudo dpkg -i google-chrome-stable_current_amd64.deb
+          dpkg -l | grep chrome
 
       - name: Restore NuGet packages
         run: | 

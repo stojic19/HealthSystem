@@ -1,16 +1,21 @@
 ﻿using Hospital.MedicalRecords.Repository;
 using Hospital.RoomsAndEquipment.Model;
 using Hospital.RoomsAndEquipment.Repository;
+using Hospital.Schedule.Model;
+using Hospital.Schedule.Repository;
 using Hospital.SharedModel.Model.Enumerations;
 using Hospital.SharedModel.Repository;
+using Microsoft.EntityFrameworkCore;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using SeleniumTests.Base;
 using SeleniumTests.Pages;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -44,10 +49,10 @@ namespace SeleniumTests
 
         [Fact]
         public void CancelRenovation()
-        { 
+        {
             RegisterUser("Manager");
 
-            var events = ArrangeDatabase();
+            ArrangeDatabase();
             var testRoom = UoW.GetRepository<IRoomReadRepository>()
                 .GetAll()
                 .Where(x => x.Name == "TestCancelRoom")
@@ -59,9 +64,10 @@ namespace SeleniumTests
             cancelRenovationPage.EnsurePageIsDisplayed();
             var initialRowsCount = cancelRenovationPage.EventsCount();
             cancelRenovationPage.CancelEvent();
-            Assert.True(cancelRenovationPage.EventsNumberChanged(initialRowsCount));
-            Assert.Equal(driver.Url, "http://localhost:4200/schedule/" + testRoom.Id);
-            ClearDatabase();
+
+            Assert.True(cancelRenovationPage.EventsNumberChanged());
+            Assert.Equal(driver.Url, cancelRenovationPage.URI + testRoom.Id);
+
             DeleteDataFromDataBase();
         }
 
@@ -72,10 +78,10 @@ namespace SeleniumTests
             loginPage.Submit();
         }
 
-        private RoomRenovationEvent ArrangeDatabase()
+        private void ArrangeDatabase()
         {
             var testRoom = UoW.GetRepository<IRoomReadRepository>().GetAll().Where(x => x.Name == "TestCancelRoom").FirstOrDefault();
-            
+
             if (testRoom == null)
             {
                 testRoom = new Room()
@@ -84,16 +90,15 @@ namespace SeleniumTests
                     FloorNumber = 1,
                     BuildingName = "Building 1",
                     RoomType = RoomType.AppointmentRoom,
-                    RoomPosition = new Hospital.GraphicalEditor.Model.RoomPosition(155, 155, 155, 155)
                 };
                 UoW.GetRepository<IRoomWriteRepository>().Add(testRoom);
 
             }
 
-            RoomRenovationEvent scheduledEvent = new RoomRenovationEvent()
+            RoomRenovationEvent renovation = new RoomRenovationEvent()
             {
                 StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(3).Day),
-                EndDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(3).Day),
+                EndDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(4).Day),
                 RoomId = testRoom.Id,
                 IsMerge = false,
                 FirstRoomType = RoomType.AppointmentRoom,
@@ -104,19 +109,47 @@ namespace SeleniumTests
                 SecondRoomType = RoomType.AppointmentRoom
             };
 
-            UoW.GetRepository<IRoomRenovationEventWriteRepository>().Add(scheduledEvent);
-            return scheduledEvent;
+            UoW.GetRepository<IRoomRenovationEventWriteRepository>().Add(renovation);
         }
 
         private void ClearDatabase()
         {
-            Room room = UoW.GetRepository<IRoomReadRepository>()
+            var room = UoW.GetRepository<IRoomReadRepository>()
                 .GetAll()
-                .Where(x => x.Name == "TestCancelRoom")
-                .FirstOrDefault();
-            
+                .Where(x => x.Name == "TestCancelRoom").FirstOrDefault();
+
             if (room != null)
-                UoW.GetRepository<IRoomWriteRepository>().Delete(room);
+            {
+                DeleteRoom(room);
+            }
+
+        }
+
+        private void DeleteRoom(Room room)
+        {
+            var polingInterval = 10;
+            var timeout = 1500;
+
+            while (timeout != 0)
+            {
+                timeout -= polingInterval;
+
+                try
+                {
+                    UoW.GetRepository<IRoomWriteRepository>().Delete(room, true);
+                    return;
+                }
+                catch (DbUpdateConcurrencyException e)
+                {
+                    Thread.Sleep(polingInterval);
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+            }
+
+            throw new Exception("Deleting unsuccessful");
         }
 
         public void Dispose()

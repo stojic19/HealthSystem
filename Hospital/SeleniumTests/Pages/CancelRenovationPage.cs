@@ -24,6 +24,7 @@ namespace SeleniumTests.Pages
         private IWebElement ConfirmButton => _driver.FindElement(By.Id("confirm"));
         private IWebElement Table => _driver.FindElement(By.Id("eventTable"));
         private ReadOnlyCollection<IWebElement> Rows => _driver.FindElements(By.XPath("//table[@id='eventTable']/tbody/tr"));
+        private int InitialRowsCount;
 
 
         public CancelRenovationPage(IWebDriver driver) : base(driver)
@@ -35,10 +36,11 @@ namespace SeleniumTests.Pages
         public void Navigate(int testRoomId) => _driver.Navigate().GoToUrl(URI + testRoomId);
         public void CancelEvent()
         {
-            CancelButton.Click();
+            EnsureCancelButtonIsDisplayed();
+            CancelSelectedEvent();
             EnsureConfirmDialogIsOpened();
             ConfirmButton.Click();
-            Thread.Sleep(1000);
+            Thread.Sleep(10000);
             EnsurePageIsDisplayed();
         }
 
@@ -147,9 +149,9 @@ namespace SeleniumTests.Pages
             });
         }
 
-        public bool EventsNumberChanged(int initialRowsCount)
+        public bool EventsNumberChanged()
         {
-            if (initialRowsCount - EventsCount() == 1)
+            if (InitialRowsCount - EventsCount() == 1)
             {
                 return true;
             }
@@ -162,6 +164,26 @@ namespace SeleniumTests.Pages
         internal int EventsCount()
         {
             return Rows.Count;
+        }
+
+        private void CancelSelectedEvent()
+        {
+            InitialRowsCount = Rows.Count;
+            foreach (var row in Rows)
+            {
+                var cols = _driver.FindElements(By.XPath("//table[@id='eventTable']/tbody/tr/td"));
+                for (int i = 0; i < cols.Count; i++)
+                {
+                    DateTime date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(3).Day);
+                    if (cols[i].Text.Trim().Contains("Renovation") &&
+                        cols[i + 1].Text.Trim().Contains((DateTime.Now.AddDays(3).Day + ".0" + DateTime.Now.Month +
+                                                                "." + DateTime.Now.Year + " 00:00")))
+                    {
+                        cols[i + 3].FindElement(By.Id("cancelButton")).Click();
+                        return;
+                    }
+                }
+            }
         }
     }
 }

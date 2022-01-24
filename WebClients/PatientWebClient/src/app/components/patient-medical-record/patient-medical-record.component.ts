@@ -10,6 +10,10 @@ import { IPatient } from 'src/app/interfaces/patient-feedback/patient-interface'
 import { MatTableDataSource } from '@angular/material/table';
 import { ICurrentUser } from 'src/app/interfaces/current-user';
 import { AuthService } from 'src/app/services/AuthService/auth.service';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { PrescriptionComponent } from '../prescription/prescription.component';
+import { PrescriptionService } from 'src/app/services/PrescriptionService/prescription.service';
+import { identifierModuleUrl } from '@angular/compiler';
 
 @Component({
   selector: 'app-patient-medical-record',
@@ -45,6 +49,7 @@ export class PatientMedicalRecordComponent implements OnInit {
     'DoctorSpecialization',
     'Room',
     'Survey',
+    'Prescription',
   ];
 
   futureAppointments!: MatTableDataSource<IAppointment>;
@@ -55,14 +60,15 @@ export class PatientMedicalRecordComponent implements OnInit {
   currentUser!: ICurrentUser;
   response!: string;
   isVisible!: boolean;
-  isVisibleRecommended! : boolean;
+  isVisibleRecommended!: boolean;
 
   constructor(
     private _sanitizer: DomSanitizer,
     private _service: MedicalRecordService,
     private _router: Router,
     private changeDetectorRefs: ChangeDetectorRef,
-    private authService: AuthService
+    private authService: AuthService,
+    public matDialog: MatDialog
   ) {
     this.futureAppointments = new MatTableDataSource<IAppointment>();
     this.finishedAppointments = new MatTableDataSource<IFinishedAppointment>();
@@ -130,9 +136,17 @@ export class PatientMedicalRecordComponent implements OnInit {
       });
   }
 
+  openPrescription(id: number) {
+    this.matDialog.open(PrescriptionComponent, {
+      height: '660px',
+      width: '550px',
+      data: id,
+    });
+  }
+
   scheduleBasic() {
     this.isVisible = true;
-    this.isVisibleRecommended=false;
+    this.isVisibleRecommended = false;
   }
 
   scheduleRecommended() {

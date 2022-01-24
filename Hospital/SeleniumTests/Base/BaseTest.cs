@@ -180,7 +180,10 @@ namespace SeleniumTests.Base
         public void DeleteDataFromDataBase()
         {
             var patient = UoW.GetRepository<IPatientReadRepository>().GetAll().FirstOrDefault(x => x.UserName.Equals("testPatientUsername"));
-            UoW.GetRepository<IPatientWriteRepository>().Delete(patient, true);
+            
+            if (patient != null) 
+                UoW.GetRepository<IPatientWriteRepository>().Delete(patient, true);
+            
             if (patient == null) return;
             {
                 var medicalRecord = UoW.GetRepository<IMedicalRecordReadRepository>()

@@ -182,7 +182,7 @@ namespace HospitalApi.Controllers
 
                 var vacations = doctorSchedule.Vacations.ToList();
                 vacations.Add(v);
-                doctorSchedule.Vacations = vacations;
+                doctorSchedule.AddVacation(v);
                 doctorScheduleRepoWrite.Update(doctorSchedule);
 
                 return Ok(doctor);
@@ -226,10 +226,8 @@ namespace HospitalApi.Controllers
 
                 var futureVacation = doctorSchedule.Vacations.Where(v => v.StartDate > DateTime.Now).FirstOrDefault();
 
-                var vacations = doctorSchedule.Vacations.ToList();
-                vacations.Remove(futureVacation);
-                vacations.Add(v);
-                doctorSchedule.Vacations = vacations;
+                doctorSchedule.RemoveVacation(futureVacation);
+                doctorSchedule.AddVacation(v);
                 doctorScheduleRepoWrite.Update(doctorSchedule);
 
                 return Ok(doctor);
@@ -267,7 +265,7 @@ namespace HospitalApi.Controllers
 
             var vacations = doctorSchedule.Vacations.ToList();
             vacations.Remove(futureVacation);
-            doctorSchedule.Vacations = vacations;
+            doctorSchedule.RemoveVacation(futureVacation);
             doctorScheduleRepoWrite.Update(doctorSchedule);
 
             return Ok();

@@ -32,7 +32,7 @@ namespace HospitalApi.Controllers
 
         [Authorize(Roles = "Manager")]
         [HttpPost]
-        public IActionResult AddNewEquipmentTransferEvent(EquipmentTransferEvent equipmentTransferEvent)
+        public IActionResult AddNewEquipmentTransferEvent(EquipmentTransferDTO equipmentTransferEvent)
         {
             try
             {
@@ -45,9 +45,20 @@ namespace HospitalApi.Controllers
                 {
                     return BadRequest("Incorrect amount entered. Please Try Again!");
                 }
-               
+
+                var roomInventoryRepo = _uow.GetRepository<IRoomInventoryReadRepository>();
+                var roomInventoryWriteRepo = _uow.GetRepository<IRoomInventoryWriteRepository>();
+                RoomInventory initial = roomInventoryRepo.GetByRoomAndInventoryItem(equipmentTransferEvent.InitialRoomId, equipmentTransferEvent.InventoryItemId);
+                RoomInventory destination = roomInventoryRepo.GetByRoomAndInventoryItem(equipmentTransferEvent.DestinationRoomId, equipmentTransferEvent.InventoryItemId);
+                if (destination == null) {
+                    destination = roomInventoryWriteRepo.Add(new RoomInventory((int)equipmentTransferEvent.DestinationRoomId, (int)equipmentTransferEvent.InventoryItemId, 0));
+                }
+
+                EquipmentTransferEvent newEqupmentTransfer = new EquipmentTransferEvent(1, new TimePeriod(equipmentTransferEvent.StartDate, equipmentTransferEvent.EndDate), initial.Id, initial,
+                                                                                        destination.Id, destination, equipmentTransferEvent.Quantity);
+
                 var repo = _uow.GetRepository<IEquipmentTransferEventWriteRepository>();
-                EquipmentTransferEvent addedEvent = repo.Add(equipmentTransferEvent);
+                EquipmentTransferEvent addedEvent = repo.Add(newEqupmentTransfer);
 
                 if (addedEvent == null)
                 {
@@ -61,8 +72,8 @@ namespace HospitalApi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error inserting transfer event in the database.");
             }
         }
-
-        private bool IsEnteredAmountCorrect(EquipmentTransferEvent equipmentTransferEvent)
+        
+        private bool IsEnteredAmountCorrect(EquipmentTransferDTO equipmentTransferEvent)
         {
             var roomInventory = _uow.GetRepository<IRoomInventoryReadRepository>()
                 .GetByRoomAndInventoryItem(equipmentTransferEvent.InitialRoomId, equipmentTransferEvent.InventoryItemId);
@@ -100,8 +111,8 @@ namespace HospitalApi.Controllers
         {
             var transferEventRepo = _uow.GetRepository<IEquipmentTransferEventReadRepository>();
             return transferEventRepo.GetAll()
-                .Where(transfer => transfer.DestinationRoomId == roomId ||
-                                    transfer.InitialRoomId == roomId);
+                .Where(transfer => transfer.InitialRoomInventory.RoomId == roomId ||
+                                    transfer.DestinationRoomInventory.RoomId == roomId);
         }
 
         [Authorize(Roles = "Manager")]

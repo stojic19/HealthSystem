@@ -20,6 +20,11 @@ namespace Hospital.SharedModel.Model
             Id = id;
         }
 
+        public DoctorSchedule(ICollection<OnCallDuty> nnCallDuties, ICollection<Vacation> vacations) {
+            OnCallDuties = OnCallDuties;
+            Vacations = vacations;
+        }
+
         public void AddOnCallDuty(OnCallDuty onCallDuty) {
             OnCallDuties.Add(onCallDuty);
         }

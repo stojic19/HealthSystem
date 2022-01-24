@@ -2,6 +2,7 @@
 using Hospital.RoomsAndEquipment.Repository;
 using Hospital.RoomsAndEquipment.Service;
 using Hospital.SharedModel.Model.Enumerations;
+using Hospital.SharedModel.Model.Wrappers;
 using HospitalUnitTests.Base;
 using Shouldly;
 using System;
@@ -26,27 +27,22 @@ namespace HospitalUnitTests
                 FloorNumber = 1,
                 BuildingName = "Test building"
             });
-            var transferEvent = new EquipmentTransferEvent()
+            Context.Rooms.Add(new Room()
             {
+                Id = 2,
+                Name = "Test room 2",
+                FloorNumber = 1,
+                BuildingName = "Test building"
+            });
+
+            Context.InventoryItems.Add(new InventoryItem() {
                 Id = 1,
-                StartDate = new DateTime(2022, 12, 22, 12, 0, 0),
-                EndDate = new DateTime(2022, 12, 22, 13, 0, 0),
-                InitialRoomId = 1,
-                DestinationRoom = new Room()
-                {
-                    Id = 2,
-                    Name = "Test room 2",
-                    FloorNumber = 1,
-                    BuildingName = "Test building"
-                },
-                InventoryItem = new InventoryItem()
-                {
-                    Id = 1,
-                    InventoryItemType = InventoryItemType.Dynamic,
-                    Name = "Test item"
-                },
-                Quantity = 2,
-            };
+                InventoryItemType = InventoryItemType.Dynamic,
+                Name = "Test item"
+            });
+            var transferEvent = new EquipmentTransferEvent(1, new TimePeriod(new DateTime(2022, 12, 22, 12, 0, 0), new DateTime(2022, 12, 22, 13, 0, 0)),
+                new RoomInventory(1, 1, 1, 3), new RoomInventory(2, 2, 1, 0), 2);
+          
             Context.EquipmentTransferEvents.Add(transferEvent);
             Context.SaveChanges();
 

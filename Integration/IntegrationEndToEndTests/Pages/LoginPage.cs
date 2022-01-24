@@ -14,7 +14,7 @@ namespace IntegrationEndToEndTests.Pages
         
         private IWebElement LoginUsername => _driver.FindElement(By.Id("loginUsername"));
         private IWebElement LoginPassword => _driver.FindElement(By.Id("loginPassword"));
-        private IWebElement Button => _driver.FindElement(By.Id("submitButton"));
+        private IWebElement Button => _driver.FindElement(By.Id("login"));
 
         public LoginPage(IWebDriver driver) : base(driver)
         {

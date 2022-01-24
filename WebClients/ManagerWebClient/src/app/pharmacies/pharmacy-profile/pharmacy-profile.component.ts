@@ -18,7 +18,7 @@ export class PharmacyProfileComponent implements OnInit {
   imageFile: File;
   tenderStats: ITenderStats;
   chartData = [
-    { name: "Tenders entered", value: 10 },
+    { name: "Tender offers", value: 10 },
     { name: "Won", value: 3 }
   ];
 

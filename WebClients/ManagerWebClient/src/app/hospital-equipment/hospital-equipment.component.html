@@ -73,10 +73,14 @@
               (click)="selectInventoryItem(inventory)"
               [ngClass]="selectedItem == inventory ? 'selected' : 'notSelected'"
             >
-              <td>{{ inventory.inventoryItem.name }}</td>
-              <td>{{ inventory.amount }}</td>
-              <td>{{ inventory.room.name }}</td>
-              <td>{{ inventory.room.buildingName }}</td>
+              <td *ngIf="inventory.amount != 0">
+                {{ inventory.inventoryItem.name }}
+              </td>
+              <td *ngIf="inventory.amount != 0">{{ inventory.amount }}</td>
+              <td *ngIf="inventory.amount != 0">{{ inventory.room.name }}</td>
+              <td *ngIf="inventory.amount != 0">
+                {{ inventory.room.buildingName }}
+              </td>
             </tr>
           </tbody>
         </table>

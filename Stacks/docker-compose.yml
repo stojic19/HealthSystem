@@ -27,7 +27,7 @@ services:
 
   hospitalapi:
     image: nikolaaleksic/hospital
-    # command: [ '/bin/sh', '-c', 'export HOSPITAL_DB_PATH="$$(cat /run/secrets/hospital_db_path)" && source /docker-entrypoint.sh' ]
+    command: [ '/bin/sh', '-c', 'export HOSPITAL_DB_PATH="$$(cat /run/secrets/hospital_db_path)" && source /docker-entrypoint.sh' ]
     # entrypoint: source /entrypoint_overwrited.sh
     build:
       dockerfile: Stacks/Build/Hospital/Dockerfile

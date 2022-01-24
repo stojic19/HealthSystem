@@ -25,6 +25,4 @@ USER newuser
 WORKDIR /app
 COPY --from=publish /app .
 WORKDIR /app/publish
-RUN export HOSPITAL_DB_PATH="$(cat /run/secrets/hospital_db_path)"
-CMD ASPNETCORE_URLS=http://*:$PORT dotnet HospitalApi.dll
 ENTRYPOINT ["dotnet", "HospitalApi.dll"]

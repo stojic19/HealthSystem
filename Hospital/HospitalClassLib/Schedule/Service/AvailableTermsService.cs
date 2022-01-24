@@ -74,9 +74,9 @@ namespace Hospital.Schedule.Service
 
             foreach (EquipmentTransferEvent scheduledTransfer in scheduledTransfers)
             {
-                if (scheduledTransfer.InitialRoomId == roomId || scheduledTransfer.DestinationRoomId == roomId)
+                if (scheduledTransfer.InitialRoomInventory.RoomId == roomId || scheduledTransfer.DestinationRoomInventory.RoomId == roomId)
                 {
-                    TimePeriod period = new TimePeriod(scheduledTransfer.StartDate, scheduledTransfer.EndDate);
+                    TimePeriod period = new TimePeriod(scheduledTransfer.TimePeriod.StartTime, scheduledTransfer.TimePeriod.EndTime);
                     if (timePeriod.OverlapsWith(period))
                         return true;
                 }

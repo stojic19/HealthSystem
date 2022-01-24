@@ -12,9 +12,9 @@ namespace Hospital.Schedule.Model
         public int Id { get; private set; }
         public int Month { get; private set; }
         public int Week { get; private set; }
-        public ICollection<Doctor> DoctorsOnDuty { get; private set; }
+        public ICollection<DoctorSchedule> DoctorsOnDuty { get; private set; }
 
-        public OnCallDuty(int month, int week, ICollection<Doctor> doctorsOnDuty)
+        public OnCallDuty(int month, int week, ICollection<DoctorSchedule> doctorsOnDuty)
         {
             Month = month;
             Week = week;
@@ -29,12 +29,12 @@ namespace Hospital.Schedule.Model
                 throw new ArgumentException("Not Valid");
         }
 
-        public void AddDoctor(Doctor newDoctor)
+        public void AddDoctor(DoctorSchedule newDoctor)
         {
             this.DoctorsOnDuty.Add(newDoctor);
         }
 
-        public void RemoveDoctor(Doctor doctor)
+        public void RemoveDoctor(DoctorSchedule doctor)
         {
             this.DoctorsOnDuty.Remove(doctor);
         }

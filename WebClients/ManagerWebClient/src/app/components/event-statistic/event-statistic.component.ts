@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Chart} from 'node_modules/chart.js';
 import { StartSchedulingPerPartOfDay } from 'src/app/interfaces/start-scheduling-per-part-of-day';
+import {SuccessSchedulingPerDayOfWeek } from 'src/app/interfaces/succes-scheduling-per-day-of-week';
 import { EventsService } from 'src/app/services/events.service';
 
 @Component({
@@ -11,7 +12,10 @@ import { EventsService } from 'src/app/services/events.service';
 export class EventStatisticComponent implements OnInit {
 
   statistic! : StartSchedulingPerPartOfDay;
+  statisticsPerDayOfWeek! : SuccessSchedulingPerDayOfWeek;
+  statisticsPerMonths! : number[];
   constructor(private _eventService : EventsService) { 
+    
   }
 
   ngOnInit(): void {
@@ -21,24 +25,16 @@ export class EventStatisticComponent implements OnInit {
         type: 'bar',
         data: {
             labels: ['00h-08h', '08h-12h', '12h-16h', '16h-20h', '20h-24h'],
+            legend : {display : false},
             datasets: [{
-                label:'Number of started scheduling per part of day',
                 data: [this.statistic.from0To8, this.statistic.from8To12, this.statistic.from12To16, this.statistic.from16To20, this.statistic.from20To00],
                 backgroundColor: [
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
+                    'rgba(0, 200, 32,0.6)',
+                    'rgba(255, 0, 71, 1)',
                     'rgba(75, 192, 192, 1)',
                     'rgba(153, 102, 255, 1)',
                     'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 1
+                ]
             }]
         },
         options: {
@@ -46,10 +42,47 @@ export class EventStatisticComponent implements OnInit {
                 y: {
                     beginAtZero: true
                 }
-            }
+            },
+            legend: {
+              display: false
+           }
         }
     });
   } });
+  this._eventService.getStatisticsPerDayOfWeek().subscribe({next:  (data: SuccessSchedulingPerDayOfWeek) => {this.statisticsPerDayOfWeek = data;  console.log(this.statisticsPerDayOfWeek.sunday[0]);}});
+  this._eventService.getStatisticsPerMonths().subscribe({next: (data: number[]) => {this.statisticsPerMonths = data;  console.log(this.statisticsPerMonths[0]);
   
+    const doughnutChart = new Chart("doughnutChart", {
+      type: 'doughnut',
+      data: {
+          labels: ['January', 'February', 'March', 'April', 'May','June', 'July', 'August', 'September', 'October','November', 'December'],
+          datasets: [{
+              data: [this.statisticsPerMonths[0], this.statisticsPerMonths[1], this.statisticsPerMonths[2], this.statisticsPerMonths[3],this.statisticsPerMonths[4], this.statisticsPerMonths[5],this.statisticsPerMonths[6], this.statisticsPerMonths[7],this.statisticsPerMonths[8], this.statisticsPerMonths[9],this.statisticsPerMonths[10], this.statisticsPerMonths[11]],
+              backgroundColor: [
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 0, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(0, 0, 0, 0.8)',
+                'rgba(255, 0, 0, 1)',
+                'rgba(0, 255, 0, 1)',
+                'rgba(255, 0, 71, 1)',
+                'rgba(255, 255, 0, 0.75)',
+                'rgba(255, 0, 255, 0.6)',
+                'rgba(75, 0, 192, 1)',
+                'rgba(153, 102, 0, 1)'
+
+              ]
+          }]
+      },
+      options: {
+          scales: {
+              y: {
+                  beginAtZero: true
+              }
+          }
+      }
+  });
+} });
 }}
   

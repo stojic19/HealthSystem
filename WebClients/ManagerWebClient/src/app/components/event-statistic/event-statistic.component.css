@@ -3,3 +3,23 @@
   width: 600px;
   height: 600px;
 }
+
+#divSecondChart {
+  display: block;
+  width: 600px;
+  height: 600px;
+}
+
+th {
+  width: 300px;
+  font-style: italic;
+}
+
+tr {
+  font-style: italic;
+  height: 60px;
+}
+table {
+  align-self: center;
+  width: 600px;
+}

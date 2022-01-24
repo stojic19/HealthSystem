@@ -51,5 +51,21 @@ namespace HospitalApi.Controllers
             var result = _eventStoringService.GetStatisticsPerPartOfDay();
             return Ok(result);
         }
+
+        [Authorize(Roles = "Manager")]
+        [HttpGet]
+        public IActionResult GetStatisticsPerDayOfWeek()
+        {
+            var result = _eventStoringService.GetStatisticsPerDayOfWeek();
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "Manager")]
+        [HttpGet]
+        public IActionResult GetStatisticsPerMonths()
+        {
+            var result = _eventStoringService.GetStatisticsPerMonths();
+            return Ok(result);
+        }
     }
 }

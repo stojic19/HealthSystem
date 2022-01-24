@@ -11,7 +11,8 @@ namespace Hospital.EventStoring.Repository
 {
     public interface IStoredEventReadRepository : IReadBaseRepository<Guid, StoredEvent>
     {
-        public IEnumerable<StoredEvent> GetEventsStartedScheduling();
         public StartSchedulingPerPartOfDay GetStatisticsPerPartOfDay();
+        public IEnumerable<int> GetStatisticsPerDayOfWeek(DayOfWeek day);
+        public IEnumerable<int> GetStatisticsPerMonths();
     }
 }

@@ -1,4 +1,51 @@
-<div id="divFirstChart">
+<div class="container">
+    <div class="row">
+<div id="divFirstChart" class="col">
+    <h6 style="align-self: center; font-style: italic;">Number of scheduling per part of day</h6>
     <canvas id="myChart"></canvas>
 </div>
-
+<div id="divSecondChart" style="width: 300px; height: 300px;" class="col">
+    <h6 style="align-self: center; font-style: italic;">Number of scheduling per month</h6>
+    <canvas id="doughnutChart"></canvas>
+</div>
+</div>
+<div class="row">
+    <div class="col">
+        <h6 style="align-self: center; font-style: italic;">Number of success/unsuccess scheduling per days of week</h6>
+        <table style="border: 3px;">
+            <thead>
+                <th></th>
+                <th>Monday</th>
+                <th>Tuesday</th>
+                <th>Wednesday</th>
+                <th>Thursday</th>
+                <th>Friday</th>
+                <th>Saturday</th>
+                <th>Sunday</th>
+            </thead>
+            <tbody >
+                <tr>
+                    <td style="color : green;">Success</td>
+                    <td>{{statisticsPerDayOfWeek.monday[0]}}</td>
+                    <td>{{statisticsPerDayOfWeek.tuesday[0]}}</td>
+                    <td>{{statisticsPerDayOfWeek.wednesday[0]}}</td>
+                    <td>{{statisticsPerDayOfWeek.thursday[0]}}</td>
+                    <td>{{statisticsPerDayOfWeek.friday[0]}}</td>
+                    <td>{{statisticsPerDayOfWeek.saturday[0]}}</td>
+                    <td>{{statisticsPerDayOfWeek.sunday[0]}}</td>
+                </tr>
+                <tr>
+                    <td style="color : red;">Unsuccess</td>
+                    <td>{{statisticsPerDayOfWeek.monday[1]}}</td>
+                    <td>{{statisticsPerDayOfWeek.tuesday[1]}}</td>
+                    <td>{{statisticsPerDayOfWeek.wednesday[1]}}</td>
+                    <td>{{statisticsPerDayOfWeek.thursday[1]}}</td>
+                    <td>{{statisticsPerDayOfWeek.friday[1]}}</td>
+                    <td>{{statisticsPerDayOfWeek.saturday[1]}}</td>
+                    <td>{{statisticsPerDayOfWeek.sunday[1]}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>

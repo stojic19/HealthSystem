@@ -18,9 +18,7 @@ export interface INewPatient {
   phoneNumber: string;
   street: string;
   streetNumber: string;
-  cityId: number;
   city: ICity;
-  //medicalRecordId: number;
   medicalRecord: IMedicalRecord;
   photoEncoded: string;
 }

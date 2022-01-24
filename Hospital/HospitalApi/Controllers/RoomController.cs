@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace HospitalApi.Controllers
 {
@@ -26,7 +27,7 @@ namespace HospitalApi.Controllers
             this._uow = uow;
         }
 
-       // [Authorize(Roles = "Manager")]
+        [Authorize(Roles = "Manager")]
         [HttpPost]
         public IEnumerable<Room> AddRooms(IEnumerable<Room> rooms)
         {
@@ -67,38 +68,13 @@ namespace HospitalApi.Controllers
             return roomRepo.GetAll();
         }
 
-        [Authorize(Roles = "Manager")]
+        //[Authorize(Roles = "Manager")]
         [HttpGet]
         public IEnumerable<ScheduledEvent> GetScheduledEventsByRoom(int roomId)
         {
             var scheduleRepo = _uow.GetRepository<IScheduledEventReadRepository>();
 
-            return scheduleRepo.GetAll()
-                .Select(scheduledEvent => new ScheduledEvent()
-                {
-                    Id = scheduledEvent.Id,
-                    StartDate = scheduledEvent.StartDate,
-                    EndDate = scheduledEvent.EndDate,
-                    IsCanceled = scheduledEvent.IsCanceled,
-                    IsDone = scheduledEvent.IsDone,
-                    RoomId = scheduledEvent.RoomId,
-                    Room = new Room()
-                    {
-                        Id = scheduledEvent.Room.Id,
-                        Name = scheduledEvent.Room.Name,
-                        BuildingName = scheduledEvent.Room.BuildingName
-                    },
-                    Doctor = new Doctor()
-                    {
-                        FirstName = scheduledEvent.Doctor.FirstName,
-                        LastName = scheduledEvent.Doctor.LastName
-                    },
-                    Patient = new Patient()
-                    {
-                        FirstName = scheduledEvent.Patient.FirstName,
-                        LastName = scheduledEvent.Patient.LastName
-                    },
-                })
+            return scheduleRepo.GetAll().Include(x => x.Patient).Include(x => x.Doctor).Include(x => x.Room)
                 .Where(scheduledEvent => !scheduledEvent.IsCanceled &&
                                         !scheduledEvent.IsDone &&
                                         scheduledEvent.RoomId == roomId);

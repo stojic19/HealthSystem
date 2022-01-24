@@ -6,20 +6,22 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SeleniumTests.Base;
 
 namespace SeleniumTests.Pages
 {
-    public class BlockMaliciousPatientsPage
+    public class BlockMaliciousPatientsPage : BasePage
     {
         private readonly IWebDriver _driver;
-        public readonly string URI = "http://localhost:4200/blocking";
+        public readonly string URI;
         private IWebElement BlockButton => _driver.FindElement(By.Id("blockPatientBtn"));
         private IWebElement Table => _driver.FindElement(By.Id("pat-tab"));
         private ReadOnlyCollection<IWebElement> Rows => _driver.FindElements(By.XPath("//table[@id='pat-tab']/tbody/tr"));
 
-        public BlockMaliciousPatientsPage(IWebDriver driver)
+        public BlockMaliciousPatientsPage(IWebDriver driver) : base(driver)
         {
             _driver = driver;
+            URI = _baseUrlMan + "/blocking";
         }
 
         public void Navigate() => _driver.Navigate().GoToUrl(URI);

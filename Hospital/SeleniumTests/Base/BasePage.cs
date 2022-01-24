@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 
 namespace SeleniumTests.Base
 {
@@ -11,6 +6,7 @@ namespace SeleniumTests.Base
     {
         protected readonly IWebDriver _driver;
         public readonly string _baseUrl = "http://localhost:4200";
+        public readonly string _baseUrlMan = "http://localhost:4200";
 
         public BasePage(IWebDriver driver)
         {

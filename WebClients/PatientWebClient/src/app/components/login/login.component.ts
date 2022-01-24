@@ -4,11 +4,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/AuthService/auth.service';
 
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
   public form!: FormGroup;
@@ -18,26 +17,27 @@ export class LoginComponent implements OnInit {
     private _router: Router,
     private _service: AuthService,
     private _snackBar: MatSnackBar
-    ) { }
+  ) {}
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
-      username:'',
-      password:''
+      username: '',
+      password: '',
     });
   }
-  
-  submit():void{
-   const loginObserver = {
-     next: (x:any) => {
-        this._snackBar.open("Wellcome","Dismiss");
-     },
-      error: (err:any) => {
-        this._snackBar.open(err.error,"Dismiss");
-      }};
-   
-   this._service.login(this.form.getRawValue()).subscribe(loginObserver);
-   //TODO: Id za med record
-   this._router.navigate(['/record']);
+
+  submit(): void {
+    const loginObserver = {
+      next: (x: any) => {
+        this._snackBar.open('Welcome!', 'Dismiss');
+        this._router.navigate(['/record']);
+      },
+      error: (err: any) => {
+        this._snackBar.open(err.error, 'Dismiss');
+      },
+    };
+
+    this._service.login(this.form.getRawValue()).subscribe(loginObserver);
+    //TODO: Id za med record
   }
 }

@@ -33,3 +33,12 @@ tr {
 table {
   align-self: center;
 }
+.divider {
+  width: 20px;
+  height: auto;
+  display: inline-block;
+}
+
+button #bozen {
+  width: 210px;
+}

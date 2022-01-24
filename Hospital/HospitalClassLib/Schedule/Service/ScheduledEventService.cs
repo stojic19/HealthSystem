@@ -4,15 +4,15 @@ using System;
 using Hospital.Schedule.Repository;
 using Hospital.SharedModel.Repository.Base;
 using System.Collections.Generic;
+using System.Linq;
 using Hospital.Schedule.Service.Interfaces;
+using Hospital.SharedModel.Model.Wrappers;
 
 namespace Hospital.Schedule.Service
 {
     public class ScheduledEventService : IScheduledEventService
     {
         private readonly IUnitOfWork UoW;
-        private const int StartHour = 7;
-        private const int EndHour = 15;
         public ScheduledEventService(IUnitOfWork UoW)
         {
             this.UoW = UoW;
@@ -67,25 +67,15 @@ namespace Hospital.Schedule.Service
             var finishedUserEvents = UoW.GetRepository<IScheduledEventReadRepository>().UpdateFinishedUserEvents();
             if (finishedUserEvents.Count != 0)
             {
-                finishedUserEvents.ForEach(one => one.IsDone = true);
+                finishedUserEvents.ForEach(one => one.SetToDone());
                 UoW.SaveChanges();
             }
-        }
-
-        public IEnumerable<DateTime> GetAvailableAppointments(int doctorId, DateTime preferredDate)
-        {
-            var availableTerms = new List<DateTime>();
-            for (var date = preferredDate.AddHours(StartHour); date < preferredDate.AddHours(EndHour); date = date.AddMinutes(30))
-            {
-                if(UoW.GetRepository<IScheduledEventReadRepository>().IsDoctorAvailableInTerm(doctorId, date))
-                        availableTerms.Add(date);
-            }
-            return availableTerms;
         }
 
         public void CancelAppointment(int eventId)
         {
             UoW.GetRepository<IScheduledEventWriteRepository>().CancelEvent(eventId);
         }
+
     }
 }

@@ -5,7 +5,6 @@ using Hospital.MedicalRecords.Model;
 using Hospital.SharedModel.Model;
 using HospitalApi.DTOs;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
 using Hospital.MedicalRecords.Service;
 
 namespace HospitalApi.Controllers
@@ -15,16 +14,14 @@ namespace HospitalApi.Controllers
     public class RegistrationController : ControllerBase
     {
         private readonly UserManager<User> _userManager;
-        private readonly IConfiguration _config;
         private readonly IMapper _mapper;
         private readonly RoleManager<IdentityRole<int>> _roleManager;
 
-        public RegistrationController(UserManager<User> userManager, IConfiguration config, IMapper mapper, RoleManager<IdentityRole<int>> roleManager)
+        public RegistrationController(UserManager<User> userManager, RoleManager<IdentityRole<int>> roleManager, IMapper mapper)
         {
-            _config = config;
             _userManager = userManager;
-            _mapper = mapper;
             _roleManager = roleManager;
+            _mapper = mapper;
         }
 
         [Consumes("application/json")]
@@ -36,23 +33,18 @@ namespace HospitalApi.Controllers
                 await _roleManager.CreateAsync(new IdentityRole<int>("Patient"));
             }
 
-
             var userToCreate = _mapper.Map<Patient>(newUser);
-
             var result = await _userManager.CreateAsync(userToCreate, newUser.Password);
-
             if (!result.Succeeded) return BadRequest(result);
 
             var userFromDB = await _userManager.FindByNameAsync(userToCreate.UserName);
             await _userManager.AddToRoleAsync(userFromDB, "Patient");
 
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(userFromDB);
-
             var confirmationLink = Url.Action("ConfirmEmail", "Email", new { token, email = newUser.Email }, Request.Scheme);
-            EmailService emailService = new EmailService();
-            bool emailResponse = emailService.SendEmail(userFromDB.Email, confirmationLink);
+            EmailService emailService = new();
+            emailService.SendEmail(userFromDB.Email, confirmationLink);
             return Ok(result);
-
         }
 
         [Consumes("application/json")]
@@ -63,7 +55,6 @@ namespace HospitalApi.Controllers
             {
                 await _roleManager.CreateAsync(new IdentityRole<int>("Manager"));
             }
-
 
             var userToCreate = _mapper.Map<Manager>(newUser);
             userToCreate.EmailConfirmed = true;

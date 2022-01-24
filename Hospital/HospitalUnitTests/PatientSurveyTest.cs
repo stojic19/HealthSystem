@@ -6,6 +6,10 @@ using System.Linq;
 using Hospital.Schedule.Model;
 using Hospital.SharedModel.Model.Enumerations;
 using Hospital.Schedule.Repository;
+using Hospital.MedicalRecords.Model;
+using Hospital.SharedModel.Model;
+using Hospital.RoomsAndEquipment.Model;
+using System.Collections.Generic;
 
 namespace HospitalUnitTests
 {
@@ -20,12 +24,9 @@ namespace HospitalUnitTests
         {
             ClearDbContext();
             #region
-            Context.Surveys.Add(new Survey()
-            {
-                Id = 1,
-                CreatedDate = DateTime.Now,
-
-            });
+            Survey testSurvey = new Survey(true);
+            Context.Surveys.Add(testSurvey);
+          
             Context.Questions.Add(new Question()
             {
                 Id = 1,
@@ -48,22 +49,20 @@ namespace HospitalUnitTests
                 Category = SurveyCategory.HospitalSurvey,
                 Text = "Pitanje 3"
             });
-            Context.ScheduledEvents.Add(new ScheduledEvent()
-            {
-                Id = 1,
-                IsDone = true
 
-            });
+            Patient testPatient = new Patient(1, "testPatient", new MedicalRecord());
+            Context.Patients.Add(testPatient);
+
+            Doctor testDoctor = new Doctor(2, new Shift().Id, new Specialization(), new Room());
+            Context.Doctors.Add(testDoctor);
+
+            ScheduledEvent events = new ScheduledEvent(0, false, true, new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(-3).Day), new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(-3).Day),
+                 new DateTime(), testPatient.Id, testDoctor.Id, testDoctor);
+            Context.ScheduledEvents.Add(events);
 
             //////////////////////
-            Context.AnsweredSurveys.Add(new AnsweredSurvey()
-            {
-                Id = 1,
-                SurveyId = 1,
-                ScheduledEventId = 1,
-                AnsweredDate = DateTime.Now
-
-            });
+            Context.AnsweredSurveys.Add(new AnsweredSurvey(new List<AnsweredQuestion>(), DateTime.Now, testSurvey.Id, testSurvey, testPatient.Id, testPatient, events.Id, events));
+           
             Context.AnsweredQuestions.Add(new AnsweredQuestion()
             {
                 Id = 1,

@@ -1,23 +1,20 @@
 import { SurveyService } from './../../services/SurveyService/survey.service';
 import { IAnsweredQuestion } from 'src/app/interfaces/answered-question';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ISurvey } from 'src/app/interfaces/isurvey';
-import { IScheduledEvent } from 'src/app/interfaces/scheduled-event';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { IAnsweredSurvey } from 'src/app/interfaces/answered-survey';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { IAppointment } from 'src/app/interfaces/appointment';
 import { AppointmentService } from 'src/app/services/AppointmentService/appointment.service';
-
-
+import { ICurrentUser } from 'src/app/interfaces/current-user';
 
 @Component({
   selector: 'app-survey-page',
   templateUrl: './survey-page.component.html',
-  styleUrls: ['./survey-page.component.css']
+  styleUrls: ['./survey-page.component.css'],
 })
 export class SurveyPageComponent implements OnInit {
-
   survey!: ISurvey;
   numberOfSurveys!: number;
   scheduledEvent!: IAppointment;
@@ -25,19 +22,26 @@ export class SurveyPageComponent implements OnInit {
   totalQuestions!: number;
   answeredSurvey!: IAnsweredSurvey;
   appointmentId: any;
+  currentUser!: ICurrentUser;
 
-  constructor(private snackBar: MatSnackBar,private appointmentService:AppointmentService, private surveyService: SurveyService, private route: ActivatedRoute,
-    private _router: Router) {
+  constructor(
+    private snackBar: MatSnackBar,
+    private appointmentService: AppointmentService,
+    private surveyService: SurveyService,
+    private route: ActivatedRoute,
+    private _router: Router
+  ) {
     this.answeredQuestions = [];
-
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser')!);
   }
 
   addQuestion(answeredQuestion: IAnsweredQuestion) {
-    var question = this.answeredQuestions.find(q => q.questionId == answeredQuestion.questionId);
+    var question = this.answeredQuestions.find(
+      (q) => q.questionId == answeredQuestion.questionId
+    );
     if (question == null) {
-      this.answeredQuestions.push(Object.assign({}, answeredQuestion))
-    }
-    else {
+      this.answeredQuestions.push(Object.assign({}, answeredQuestion));
+    } else {
       question.rating = answeredQuestion.rating;
     }
 
@@ -45,47 +49,46 @@ export class SurveyPageComponent implements OnInit {
   }
   saveSurvey() {
     if (this.answeredQuestions.length == this.totalQuestions) {
-
       this.answeredSurvey = {
         surveyId: this.survey.surveyId,
+        userName: this.currentUser.userName,
         questions: this.answeredQuestions,
-        scheduledEventId: this.scheduledEvent.id
-      }
-      this.surveyService.answerSurvey(this.answeredSurvey).subscribe();
-      this.snackBar.open("Thank you for answering our Survey . ", '', {
+        scheduledEventId: this.scheduledEvent.id,
+      };
+      this.surveyService
+        .answerSurvey(this.answeredSurvey, this.currentUser.userName)
+        .subscribe();
+      this.snackBar.open('Thank you for answering our Survey . ', '', {
         duration: 3000,
-        verticalPosition: 'bottom'
-
+        verticalPosition: 'bottom',
       });
-      
+
       this._router.navigate(['/record']).then(() => {
         window.location.reload();
       });
-      
     } else {
-      this.snackBar.open("You need to answer all questions. ", '', {
+      this.snackBar.open('You need to answer all questions. ', '', {
         duration: 3000,
-        verticalPosition: 'bottom'
-
+        verticalPosition: 'bottom',
       });
     }
   }
   ngOnInit(): void {
-
     this.appointmentId = this.route.snapshot.paramMap.get('appointmentId');
     console.log(this.appointmentId);
-      
-    this.appointmentService.getAppointment(this.appointmentId).subscribe((res:IAppointment)=>{
-      this.scheduledEvent = res;
-    })
+
+    this.appointmentService
+      .getAppointment(this.appointmentId)
+      .subscribe((res: IAppointment) => {
+        this.scheduledEvent = res;
+      });
 
     this.surveyService.getSurvey().subscribe((res: ISurvey) => {
       this.survey = res;
-      this.totalQuestions = this.survey.hospitalSection.questions.length + this.survey.doctorSection.questions.length + this.survey.medicalStaffSection.questions.length;
-    })
-
-
-
+      this.totalQuestions =
+        this.survey.hospitalSection.questions.length +
+        this.survey.doctorSection.questions.length +
+        this.survey.medicalStaffSection.questions.length;
+    });
   }
-
 }

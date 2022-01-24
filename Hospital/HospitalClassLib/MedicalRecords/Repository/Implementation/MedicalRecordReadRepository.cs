@@ -11,11 +11,6 @@ namespace Hospital.MedicalRecords.Repository.Implementation
         public MedicalRecordReadRepository(AppDbContext context) : base(context)
         {
         }
-
-        public MedicalRecord GetMedicalRecord(int id)
-        {
-            return GetAll().Include(x => x.Doctor).Include(x => x.Allergies).
-                            ThenInclude(x => x.MedicationIngredient).First(x=>x.Id == id);
-        }
+        
     }
 }

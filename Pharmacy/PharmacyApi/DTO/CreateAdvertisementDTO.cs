@@ -7,7 +7,7 @@ using PharmacyApi.DTO.Base;
 
 namespace PharmacyApi.DTO
 {
-    public class CreateAdvertisementDTO : BaseCommunicationDTO
+    public class CreateAdvertisementDTO
     {
         public string Title { get; set; }
         [Required(ErrorMessage = "It is necessary to specify the description of ad!")]

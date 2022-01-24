@@ -14,24 +14,37 @@ namespace HospitalIntegrationTests.Base
     {
         private IContainer container { get; set; }
         public IUnitOfWork UoW { get; set; }
-        public HttpClient Client { get; set; }
+        public HttpClient ManagerClient { get; set; }
+        public HttpClient PatientClient { get; set; }
         public CookieContainer CookieContainer { get; set; }
 
         public BaseFixture()
         {
             SetupAutoFacDip();
             ResolveUnitOfWork();
-            ConfigureHttpClient();
+            ConfigureManagerHttpClient();
+            ConfigurePatientHttpClient();
         }
 
-        private void ConfigureHttpClient()
+        private void ConfigureManagerHttpClient()
         {
             CookieContainer = new CookieContainer();
             var handler = new HttpClientHandler()
             {
                 CookieContainer = CookieContainer
             };
-            Client = new HttpClient(handler);
+            handler.ServerCertificateCustomValidationCallback = (message, cert, chain, sslPolicyErrors) => true;
+            ManagerClient = new HttpClient(handler);
+        }
+        private void ConfigurePatientHttpClient()
+        {
+            CookieContainer = new CookieContainer();
+            var handler = new HttpClientHandler()
+            {
+                CookieContainer = CookieContainer
+            };
+            handler.ServerCertificateCustomValidationCallback = (message, cert, chain, sslPolicyErrors) => true;
+            PatientClient = new HttpClient(handler);
         }
 
         private void ResolveUnitOfWork()
@@ -60,7 +73,8 @@ namespace HospitalIntegrationTests.Base
         public void Dispose()
         {
             container.Dispose();
-            Client.Dispose();
+            ManagerClient.Dispose();
+            PatientClient.Dispose();
         }
     }
 }

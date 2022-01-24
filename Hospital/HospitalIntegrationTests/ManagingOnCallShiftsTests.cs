@@ -8,11 +8,9 @@ using Hospital.SharedModel.Repository;
 using HospitalIntegrationTests.Base;
 using Microsoft.EntityFrameworkCore;
 using Shouldly;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -27,11 +25,11 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Adding_doctor_to_shift_should_return_200()
         {
-
+            RegisterAndLogin("Manager");
             var doctor = InsertDoctor("doctor");
             var shift = InsertOnCallDuty(1, 3);
 
-            var response = await Client.GetAsync(BaseUrl + "api/OnCallShifts/AddDoctor?shiftId=" + shift.Id + "&doctorId=" + doctor.Id);
+            var response = await ManagerClient.GetAsync(BaseUrl + "api/OnCallShifts/AddDoctor?shiftId=" + shift.Id + "&doctorId=" + doctor.Id);
 
 
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -49,10 +47,11 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Remove_doctor_from_shift_should_return_200()
         {
+            RegisterAndLogin("Manager");
             var shift = InsertOnCallDuty(1, 1);
             var doctor = InsertDoctor("testdoctor");
 
-            var response = await Client.GetAsync(BaseUrl + "api/OnCallShifts/RemoveDoctor?shiftId=" + shift.Id + "&doctorId=" + doctor.Id);
+            var response = await ManagerClient.GetAsync(BaseUrl + "api/OnCallShifts/RemoveDoctor?shiftId=" + shift.Id + "&doctorId=" + doctor.Id);
 
 
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -68,53 +67,15 @@ namespace HospitalIntegrationTests
 
         private Doctor InsertDoctor(string username)
         {
-            var city = UoW.GetRepository<ICityReadRepository>()
-                   .GetAll()
-                   .FirstOrDefault();
-
-            if (city == null)
-            {
-                var country = UoW.GetRepository<ICountryReadRepository>()
-                    .GetAll()
-                    .FirstOrDefault();
-
-                if (country == null)
-                {
-                    country = new Country()
-                    {
-                        Name = "Test country"
-                    };
-                    UoW.GetRepository<ICountryWriteRepository>().Add(country);
-                }
-
-                city = new City()
-                {
-                    CountryId = country.Id,
-                    Name = "Test city",
-                };
-                UoW.GetRepository<ICityWriteRepository>().Add(city);
-            }
-
             var doctor = UoW
                 .GetRepository<IDoctorReadRepository>().GetAll().Include(d => d.Specialization).Include(d => d.Room)
                 .FirstOrDefault(d => d.UserName.Equals(username));
 
             if (doctor == null)
             {
-                var specialization = UoW.GetRepository<ISpecializationReadRepository>()
-                    .GetAll()
-                    .FirstOrDefault(x => x.Name.ToLower().Equals("general practice"));
-                if (specialization == null)
-                {
-                    specialization = new Specialization()
-                    {
-                        Name = "General Practice"
-                    };
-                    UoW.GetRepository<ISpecializationWriteRepository>().Add(specialization);
-                }
-
                 var shift = UoW.GetRepository<IShiftReadRepository>().GetAll().FirstOrDefault(x => x.Name == "Second");
-                if (shift == null) {
+                if (shift == null)
+                {
                     shift = new Shift()
                     {
                         Name = "Second",
@@ -141,10 +102,9 @@ namespace HospitalIntegrationTests
                 doctor = new Doctor()
                 {
                     UserName = username,
-                    CityId = city.Id,
                     RoomId = room.Id,
                     ShiftId = shift.Id,
-                    SpecializationId = specialization.Id
+                    Specialization = new Specialization("General Practice", "")
                 };
                 UoW.GetRepository<IDoctorWriteRepository>().Add(doctor);
 
@@ -189,24 +149,6 @@ namespace HospitalIntegrationTests
 
             if (secondDoctor != null)
                 UoW.GetRepository<IDoctorWriteRepository>().Delete(secondDoctor);
-
-            var city = UoW.GetRepository<ICityReadRepository>()
-                .GetAll().ToList()
-                .FirstOrDefault(x => x.Name == "Test city");
-
-            if (city != null)
-            {
-                UoW.GetRepository<ICityWriteRepository>().Delete(city);
-            }
-
-            var country = UoW.GetRepository<ICountryReadRepository>()
-                .GetAll().ToList()
-                .FirstOrDefault(x => x.Name == "Test country");
-
-            if (country != null)
-            {
-                UoW.GetRepository<ICountryWriteRepository>().Delete(country);
-            }
 
             var room = UoW.GetRepository<IRoomReadRepository>()
                 .GetAll().ToList()

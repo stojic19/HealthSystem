@@ -7,5 +7,6 @@
         public string StreetName { get; set; }
         public string CityName { get; set; }
         public string BaseUrl { get; set; }
+        public string Email { get; set; }
     }
 }

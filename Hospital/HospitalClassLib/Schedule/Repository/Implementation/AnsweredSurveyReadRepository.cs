@@ -7,6 +7,7 @@ namespace Hospital.Schedule.Repository.Implementation
 {
     public class AnsweredSurveyReadRepository : ReadBaseRepository<int, AnsweredSurvey>, IAnsweredSurveyReadRepository
     {
+
         public AnsweredSurveyReadRepository(AppDbContext context) : base(context)
         {
         }

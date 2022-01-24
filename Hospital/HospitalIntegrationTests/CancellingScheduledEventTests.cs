@@ -1,17 +1,13 @@
-﻿using AutoMapper;
-using Hospital.GraphicalEditor.Model;
+﻿using Hospital.GraphicalEditor.Model;
 using Hospital.RoomsAndEquipment.Model;
 using Hospital.RoomsAndEquipment.Repository;
 using Hospital.SharedModel.Model.Enumerations;
 using HospitalApi.DTOs;
 using HospitalIntegrationTests.Base;
-using Microsoft.EntityFrameworkCore;
 using Shouldly;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -26,6 +22,7 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Transfer_event_should_be_canceled()
         {
+            RegisterAndLogin("Manager");
             var sourceRoom = InsertRoom("Test initial room");
             var destinationRoom = InsertRoom("Test destination room");
             var inventoryItem = InsertInventoryItem("Test item");
@@ -43,7 +40,7 @@ namespace HospitalIntegrationTests
                 Quantity = transferRequest.Quantity
             });
 
-            var response = await Client.PostAsync(BaseUrl + "api/EquipmentTransferEvent/CancelEquipmentTransferEvent", content);
+            var response = await ManagerClient.PostAsync(BaseUrl + "api/EquipmentTransferEvent/CancelEquipmentTransferEvent", content);
 
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
             response.ShouldNotBeNull();
@@ -62,6 +59,7 @@ namespace HospitalIntegrationTests
         [Fact]
         public async Task Renovation_should_be_canceled()
         {
+            RegisterAndLogin("Manager");
             var room = InsertRoom("Test renovating room");
             var roomRenovation = InsertRoomRenovationEvent(new DateTime(2025, 11, 22, 0, 0, 0), new DateTime(2025, 11, 25, 0, 0, 0), room.Id, false);
 
@@ -75,7 +73,7 @@ namespace HospitalIntegrationTests
                 MergeRoomId = roomRenovation.MergeRoomId
             });
 
-            var response = await Client.PostAsync(BaseUrl + "api/RoomRenovation/CancelRenovation", content);
+            var response = await ManagerClient.PostAsync(BaseUrl + "api/RoomRenovation/CancelRenovation", content);
 
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
             response.ShouldNotBeNull();

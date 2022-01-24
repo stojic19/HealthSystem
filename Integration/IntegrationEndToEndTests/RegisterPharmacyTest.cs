@@ -30,24 +30,14 @@ namespace IntegrationEndToEndTests
         [Fact]
         public void Register_success()
         {
-            _loginPage.Navigate();
-            _loginPage.WaitForDisplay();
-            _loginPage.InsertUsername("Rade");
-            _loginPage.InsertPassword("RadeRade654#@!");
-            _loginPage.Submit();
+            Login();
             var beforeTest = UoW.GetRepository<IPharmacyReadRepository>().GetAll().ToList();
             _pharmaciesPage.Navigate();
             _pharmaciesPage.WaitForDisplay();
             int countBeforeRegistration = _pharmaciesPage.PharmaciesCount();
             _registrationPage.Navigate();
             _registrationPage.WaitForDisplay();
-            _registrationPage.InsertName("Apoteka");
-            _registrationPage.InsertCityName("Novi Sad");
-            _registrationPage.InsertCountry("Srbija");
-            _registrationPage.InsertPostalCode("21000");
             _registrationPage.InsertBaseUrl("https://localhost:44304");
-            _registrationPage.InsertStreetName("Vojvode Stepe");
-            _registrationPage.InsertStreetNumber("14");
             _registrationPage.Submit();
             Thread.Sleep(5000);
             _pharmaciesPage.Navigate();
@@ -71,6 +61,39 @@ namespace IntegrationEndToEndTests
             }
             difference.ShouldBe(1);
             (countAfterRegistration - countBeforeRegistration).ShouldBe(1);
+        }
+
+        private void Login()
+        {
+            _loginPage.Navigate();
+            _loginPage.WaitForDisplay();
+            _loginPage.InsertUsername("Rade");
+            _loginPage.InsertPassword("RadeRade654#@!");
+            _loginPage.Submit();
+        }
+
+        [Fact]
+        public void Register_empty_url()
+        {
+            Login();
+            Thread.Sleep(250);
+            _registrationPage.Navigate();
+            _registrationPage.WaitForDisplay();
+            _registrationPage.Submit();
+            Thread.Sleep(250);
+            Assert.Contains(_registrationPage.GetToastrMessage(), _registrationPage.EmptyUrl);
+        }
+        [Fact]
+        public void Register_bad_url()
+        {
+            Login();
+            Thread.Sleep(250);
+            _registrationPage.Navigate();
+            _registrationPage.WaitForDisplay();
+            _registrationPage.InsertBaseUrl("https://localhost:4430");
+            _registrationPage.Submit();
+            Thread.Sleep(6000);
+            Assert.Contains(_registrationPage.GetToastrMessage(), _registrationPage.InvalidUrl);
         }
     }
 }

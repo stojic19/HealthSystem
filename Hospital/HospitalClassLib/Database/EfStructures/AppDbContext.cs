@@ -13,8 +13,6 @@ namespace Hospital.Database.EfStructures
     public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
         public DbSet<Allergy> Allergies { get; set; }
-        public DbSet<City> Cities { get; set; }
-        public DbSet<Country> Countries { get; set; }
         public DbSet<Diagnose> Diagnoses { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
@@ -31,8 +29,6 @@ namespace Hospital.Database.EfStructures
         public DbSet<Room> Rooms { get; set; }
         public DbSet<RoomInventory> RoomInventories { get; set; }
         public DbSet<ScheduledEvent> ScheduledEvents { get; set; }
-        public DbSet<Specialization> Specializations { get; set; }
-        public DbSet<Staff> Staffs { get; set; }
         public DbSet<Survey> Surveys { get; set; }
         public DbSet<AnsweredQuestion> AnsweredQuestions { get; set; }
         public DbSet<AnsweredSurvey> AnsweredSurveys { get; set; }
@@ -53,6 +49,9 @@ namespace Hospital.Database.EfStructures
             builder.Entity<Room>().OwnsOne(r => r.RoomPosition);
             builder.Entity<Doctor>().OwnsMany(d => d.Vacations);
             builder.Entity<OnCallDuty>().HasMany(oc => oc.DoctorsOnDuty).WithMany(d => d.OnCallDuties);
+            builder.Entity<User>().OwnsOne(u => u.City, c => c.OwnsOne(x => x.Country));
+            builder.Entity<Doctor>().OwnsOne(d => d.Specialization);
+            builder.Entity<MedicalRecord>().OwnsOne(d => d.Measurements);
            
             base.OnModelCreating(builder);
         }

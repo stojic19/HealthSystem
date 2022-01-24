@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Doctor } from '../model/doctor';
+import { DoctorsReport } from '../model/doctors-report';
 import { OnCallDuty } from '../model/on-call-duty';
 import { OnCallShiftsService } from '../services/on-call-shifts.service';
 
@@ -10,6 +11,7 @@ import { OnCallShiftsService } from '../services/on-call-shifts.service';
 })
 export class OnCallShiftsComponent implements OnInit {
   allDoctors : Doctor[];
+  doctorsOnShift : Doctor[];
   selectedMonth: number;
   selectedWeek: number;
   selectedOnCallShift: OnCallDuty;
@@ -34,7 +36,10 @@ export class OnCallShiftsComponent implements OnInit {
     .getOnCallShift(this.selectedMonth, this.selectedWeek)
     .toPromise()
     .then((res) => {
-      this.selectedOnCallShift = res as OnCallDuty;});
+      this.selectedOnCallShift = res as OnCallDuty;
+      this.service.getDoctorsOnShift(this.selectedOnCallShift.id).toPromise().then((res) => this.doctorsOnShift = res)});
+
+      
   }
 
   selectionChanged(){
@@ -43,7 +48,8 @@ export class OnCallShiftsComponent implements OnInit {
     .subscribe((res) => {
       this.selectedOnCallShift = res as OnCallDuty;
       this.selectedOldDoctor = new Doctor;
-      this.selectedOldDoctor.firstName = ''});
+      this.selectedOldDoctor.firstName = '';
+      this.service.getDoctorsOnShift(this.selectedOnCallShift.id).toPromise().then((res) => this.doctorsOnShift = res)});
   }
 
   addDoctorToShift(){
@@ -51,8 +57,8 @@ export class OnCallShiftsComponent implements OnInit {
     .toPromise()
     .then((res) => { this.selectedOnCallShift = res as OnCallDuty;
                     this.selectedNewDoctor = new Doctor;
-                    this.selectedNewDoctor.firstName = ''});
-    window.location.reload;
+                    this.selectedNewDoctor.firstName = '';
+                    this.service.getDoctorsOnShift(this.selectedOnCallShift.id).toPromise().then((res) => this.doctorsOnShift = res)});
   }
 
   removeDoctorFromShift(){
@@ -60,8 +66,8 @@ export class OnCallShiftsComponent implements OnInit {
     .toPromise()
     .then((res) => { this.selectedOnCallShift = res as OnCallDuty;
                     this.selectedOldDoctor = new Doctor;
-                    this.selectedOldDoctor.firstName = ''});
-    window.location.reload;
+                    this.selectedOldDoctor.firstName = '';
+                    this.service.getDoctorsOnShift(this.selectedOnCallShift.id).toPromise().then((res) => this.doctorsOnShift = res)});
   }
 
   isAlreadyOnCall(): boolean{

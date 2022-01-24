@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Doctor } from '../model/doctor';
 import { OnCallDuty } from '../model/on-call-duty';
 
 @Injectable({
@@ -14,6 +15,17 @@ export class OnCallShiftsService {
   getAllDoctors() {
     return this.http.get(
       '/api/Doctor/GetAllDoctors'
+    );
+  }
+
+  getDoctorsOnShift(shiftId: number) : Observable<Doctor[]> {
+    return this.http.get<Doctor[]>(
+      '/api/OnCallShifts/GetDoctors',
+      {
+        params: {
+          shiftId: shiftId,
+        },
+      }
     );
   }
 

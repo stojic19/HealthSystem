@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Hospital.MedicalRecords.Repository;
@@ -136,7 +138,8 @@ namespace HospitalIntegrationTests
                     UserName = "Test doctor",
                     RoomId = room.Id,
                     Specialization = new Specialization("General Practice", ""),
-                    ShiftId = shift.Id
+                    ShiftId = shift.Id,
+                    DoctorSchedule = new DoctorSchedule()
                 };
                 UoW.GetRepository<IDoctorWriteRepository>().Add(doctor);
             }

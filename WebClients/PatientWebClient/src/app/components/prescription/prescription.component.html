@@ -1,0 +1,46 @@
+<div class="container">
+  <div class="col-12 text-center">
+    <h3>Medical Prescription</h3>
+    <hr />
+  </div>
+  <div class="col-12">
+    <form id="fbForm">
+      <div class="row">
+        <div class="col">
+          <label
+            >dr {{ prescription.doctorInfo.firstName }}
+            {{ prescription.doctorInfo.lastName }}</label
+          >
+          <label>General Practice</label> <br />
+          <label>{{ prescription.doctorInfo.phoneNumber }}</label>
+        </div>
+        <div class="col">
+          <label>Date: {{ prescription.issuedDate }}</label>
+        </div>
+      </div>
+      <hr />
+      <div class="row">
+        <label> {{ prescription.medication.name }} </label>
+        <label>
+          From {{ prescription.startDate }} to {{ prescription.endDate }}
+        </label>
+        <label> {{ prescription.medication.timesPerDay }} times per day</label>
+        <label> {{ prescription.medication.howToUse }} </label>
+      </div>
+      <br />
+      <div class="row">
+        <label
+          >Mr/Mrs/Ms: {{ prescription.patientInfo.firstName }}
+          {{ prescription.patientInfo.lastName }}</label
+        >
+        <label>Date of birth: {{ prescription.patientInfo.dateOfBirth }}</label>
+        <label
+          >Address: {{ prescription.patientInfo.street }}
+          {{ prescription.patientInfo.streetNumber }}</label
+        >
+        <label>Phone number: {{ prescription.patientInfo.phoneNumber }}</label>
+      </div>
+      <hr />
+    </form>
+  </div>
+</div>

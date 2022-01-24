@@ -54,7 +54,7 @@ namespace HospitalApi.Controllers
                     destination = roomInventoryWriteRepo.Add(new RoomInventory((int)equipmentTransferEvent.DestinationRoomId, (int)equipmentTransferEvent.InventoryItemId, 0));
                 }
 
-                EquipmentTransferEvent newEqupmentTransfer = new EquipmentTransferEvent(1, new TimePeriod(equipmentTransferEvent.StartDate, equipmentTransferEvent.EndDate), initial.Id, initial,
+                EquipmentTransferEvent newEqupmentTransfer = new EquipmentTransferEvent(new TimePeriod(equipmentTransferEvent.StartDate, equipmentTransferEvent.EndDate), initial.Id, initial,
                                                                                         destination.Id, destination, equipmentTransferEvent.Quantity);
 
                 var repo = _uow.GetRepository<IEquipmentTransferEventWriteRepository>();

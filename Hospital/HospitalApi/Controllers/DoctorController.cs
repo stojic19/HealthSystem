@@ -83,8 +83,7 @@ namespace HospitalApi.Controllers
                     .GetAll()
                     .Include(d => d.Specialization)
                     .Include(d => d.Shift)
-                    .Include(d => d.OnCallDuties)
-                    .Include(d => d.Vacations);
+                    .Include(d => d.DoctorSchedule);
                 return Ok(doctors);
             }
             catch (Exception)

@@ -28,144 +28,36 @@ namespace HospitalUnitTests
         {
             #region
             ClearDbContext();
-            Context.Countries.Add(new Country()
+            Context.Rooms.Add(new Room { Id = 1, Name = "Ordination" });
+            Context.Shifts.Add(new Shift(3, "first", 7, 15));
+            var room = new Room()
             {
-                Id = 1,
-                Name = "BiH"
-            });
-            Context.Cities.Add(new City()
-            {
-                Id = 1,
-                Name = "Bijeljina",
-                CountryId = 1
-            });
-            Context.Specializations.Add(new Specialization()
-            {
-                Id = 1,
-                Name = "GP",
-                Description = "Doktor opste prakse"
-            });
-            Context.Rooms.Add(new Room()
-            {
-                Id = 1,
+                Id = 2,
                 BuildingName = "hf",
                 Description = "dada",
                 FloorNumber = 2,
                 Name = "duno"
-            });
+            };
+            Context.Rooms.Add(room);
+            var firstDoctor = new Doctor(1, 3, new Specialization("General Practice", ""), room);
+            Context.Doctors.Add(firstDoctor);
+            //var medicalRecord = new MedicalRecord(1, null, 0, 0, 1, null);
+            //Context.MedicalRecords.Add(medicalRecord);
+            var newPatient = new Patient(2, "testPatient", new MedicalRecord(1, null, 0, 0, 1, null));
+            Context.Patients.Add(newPatient);
+            Context.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, true, false, DateTime.Now.AddDays(-100),
+                 DateTime.Now.AddDays(-100), DateTime.Now.AddDays(-110), newPatient.Id, 1, firstDoctor));
+            Context.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, false, true, DateTime.Now.AddDays(-18),
+                DateTime.Now.AddDays(-18), new DateTime(), newPatient.Id, 1, firstDoctor));
+            Context.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, true, false, DateTime.Now.AddDays(-22),
+                 DateTime.Now.AddDays(-22), DateTime.Now.AddDays(-27), newPatient.Id, 1, firstDoctor));
+            Context.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, false, true, DateTime.Now.AddDays(-19),
+                DateTime.Now.AddDays(-19), new DateTime(), newPatient.Id, 1, firstDoctor));
+            Context.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, true, false, DateTime.Now.AddDays(-4),
+                 DateTime.Now.AddDays(-4), DateTime.Now.AddDays(-14), newPatient.Id, 1, firstDoctor));
+            Context.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, true, false, DateTime.Now.AddDays(7),
+                 DateTime.Now.AddDays(7), DateTime.Now, newPatient.Id, 1, firstDoctor));
 
-            Context.Users.Add(new Doctor()
-            {
-                Id = 1,
-                UserName = "username1",
-                Email = "mail1",
-                Gender = Gender.Male,
-                FirstName = "name",
-                LastName = "lastname",
-                CityId = 1,
-                DateOfBirth = DateTime.Now.AddYears(-35),
-                MiddleName = "middleName",
-                SpecializationId = 1,
-                EmailConfirmed = true,
-                Street = "street1",
-                StreetNumber = "1",
-                RoomId = 1,
-                PhoneNumber = "213122122",
-                PhoneNumberConfirmed = true,
-                TwoFactorEnabled = true,
-                LockoutEnabled = false,
-                AccessFailedCount = 0
-            });
-            Context.MedicalRecords.Add(new MedicalRecord()
-            {
-                Id = 1,
-                Height = 172,
-                Weight = 72,
-                DoctorId = 1,
-                BloodType = BloodType.ABNegative,
-                JobStatus = JobStatus.Student
-            });
-            Context.Users.Add(new Patient()
-            {
-                Id = 2,
-                UserName = "testPatient",
-                Email = "mailPatient",
-                Gender = Gender.Female,
-                FirstName = "name1",
-                LastName = "lastname1",
-                CityId = 1,
-                DateOfBirth = DateTime.Now.AddYears(-25),
-                MiddleName = "middle",
-                EmailConfirmed = true,
-                Street = "street2",
-                StreetNumber = "3",
-                PhoneNumber = "213124422",
-                PhoneNumberConfirmed = true,
-                TwoFactorEnabled = true,
-                LockoutEnabled = false,
-                AccessFailedCount = 0,
-                MedicalRecordId = 1,
-                IsBlocked = false
-            });
-
-            Context.ScheduledEvents.Add(new ScheduledEvent()
-            {
-                StartDate = DateTime.Now.AddDays(-100),
-                EndDate = DateTime.Now.AddDays(-100),
-                CancellationDate = DateTime.Now.AddDays(-110),
-                PatientId = 2,
-                IsDone = false,
-                IsCanceled = true
-
-            });
-            Context.ScheduledEvents.Add(new ScheduledEvent()
-            {
-                StartDate = DateTime.Now.AddDays(-18),
-                EndDate = DateTime.Now.AddDays(-18),
-                PatientId = 2,
-                IsDone = true,
-                IsCanceled = false
-
-            });
-            Context.ScheduledEvents.Add(new ScheduledEvent()
-            {
-                StartDate = DateTime.Now.AddDays(-22),
-                EndDate = DateTime.Now.AddDays(-22),
-                CancellationDate = DateTime.Now.AddDays(-27),
-                PatientId = 2,
-                IsDone = false,
-                IsCanceled = true
-
-            });
-            Context.ScheduledEvents.Add(new ScheduledEvent()
-            {
-                StartDate = DateTime.Now.AddDays(-19),
-                EndDate = DateTime.Now.AddDays(-19),
-                PatientId = 2,
-                IsDone = true,
-                IsCanceled = false
-
-            });
-            Context.ScheduledEvents.Add(new ScheduledEvent()
-            {
-                StartDate = DateTime.Now.AddDays(-4),
-                EndDate = DateTime.Now.AddDays(-4),
-                CancellationDate = DateTime.Now.AddDays(-14),
-                PatientId = 2,
-                IsDone = false,
-                IsCanceled = true
-
-            });
-            Context.ScheduledEvents.Add(new ScheduledEvent()
-            {
-                StartDate = DateTime.Now.AddDays(7),
-                EndDate = DateTime.Now.AddDays(7),
-                CancellationDate = DateTime.Now,
-                PatientId = 2,
-                IsDone = false,
-                IsCanceled = true
-
-            });
             Context.SaveChanges();
 
             #endregion
@@ -184,141 +76,41 @@ namespace HospitalUnitTests
         {
             #region
             ClearDbContext();
-            Context.Countries.Add(new Country()
+            Context.Rooms.Add(new Room { Id = 1, Name = "Ordination" });
+            Context.Shifts.Add(new Shift(3, "first", 7, 15));
+            var room = new Room()
             {
-                Id = 1,
-                Name = "BiH"
-            });
-            Context.Cities.Add(new City()
-            {
-                Id = 1,
-                Name = "Bijeljina",
-                CountryId = 1
-            });
-            Context.Specializations.Add(new Specialization()
-            {
-                Id = 1,
-                Name = "GP",
-                Description = "Doktor opste prakse"
-            });
-            Context.Rooms.Add(new Room()
-            {
-                Id = 1,
+                Id = 2,
                 BuildingName = "hf",
                 Description = "dada",
                 FloorNumber = 2,
                 Name = "duno"
-            });
+            };
+            Context.Rooms.Add(room);
+            var firstDoctor = new Doctor(1, 3, new Specialization("General Practice", ""), room);
+            Context.Doctors.Add(firstDoctor);
+            var medicalRecord = new MedicalRecord(1, null, 0, 0, 1, null);
+            Context.MedicalRecords.Add(medicalRecord);
+            var newPatient = new Patient(2, "testPatient", medicalRecord);
+            Context.Patients.Add(newPatient);
 
-            Context.Users.Add(new Doctor()
-            {
-                Id = 1,
-                UserName = "username1",
-                Email = "mail1",
-                Gender = Gender.Male,
-                FirstName = "name",
-                LastName = "lastname",
-                CityId = 1,
-                DateOfBirth = DateTime.Now.AddYears(-35),
-                MiddleName = "middleName",
-                SpecializationId = 1,
-                EmailConfirmed = true,
-                Street = "street1",
-                StreetNumber = "1",
-                RoomId = 1,
-                PhoneNumber = "213122122",
-                PhoneNumberConfirmed = true,
-                TwoFactorEnabled = true,
-                LockoutEnabled = false,
-                AccessFailedCount = 0
-            });
+            Context.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, true, false, DateTime.Now.AddDays(-100),
+                 DateTime.Now.AddDays(-100), DateTime.Now.AddDays(-110), 2, 1, firstDoctor));
+            Context.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, false, true, DateTime.Now.AddDays(-22),
+                DateTime.Now.AddDays(-22), new DateTime(), 2, 1, firstDoctor));
+            Context.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, false, true, DateTime.Now.AddDays(-19),
+                DateTime.Now.AddDays(-19), new DateTime(), 2, 1, firstDoctor));
+            Context.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, true, false, DateTime.Now.AddDays(-4),
+                 DateTime.Now.AddDays(-4), DateTime.Now.AddDays(-14), 2, 1, firstDoctor));
 
-
-            Context.MedicalRecords.Add(new MedicalRecord()
-            {
-                Id = 1,
-                Height = 172,
-                Weight = 72,
-                DoctorId = 1,
-                BloodType = BloodType.ABNegative,
-                JobStatus = JobStatus.Student
-            });
-            Context.Users.Add(new Patient()
-            {
-                Id = 3,
-                UserName = "testPatient",
-                Email = "mailPatient",
-                Gender = Gender.Female,
-                FirstName = "name1",
-                LastName = "lastname1",
-                CityId = 1,
-                DateOfBirth = DateTime.Now.AddYears(-25),
-                MiddleName = "middle",
-                EmailConfirmed = true,
-                Street = "street2",
-                StreetNumber = "3",
-                PhoneNumber = "213124422",
-                PhoneNumberConfirmed = true,
-                TwoFactorEnabled = true,
-                LockoutEnabled = false,
-                AccessFailedCount = 0,
-                MedicalRecordId = 1
-            });
-            Context.ScheduledEvents.Add(new ScheduledEvent()
-            {
-                StartDate = DateTime.Now.AddDays(-100),
-                EndDate = DateTime.Now.AddDays(-100),
-                CancellationDate = DateTime.Now.AddDays(-110),
-                PatientId = 3,
-                IsDone = false,
-                IsCanceled = true
-
-            });
-            Context.ScheduledEvents.Add(new ScheduledEvent()
-            {
-                StartDate = DateTime.Now.AddDays(-22),
-                EndDate = DateTime.Now.AddDays(-22),
-                PatientId = 3,
-                IsDone = true,
-                IsCanceled = false
-
-            });
-            Context.ScheduledEvents.Add(new ScheduledEvent()
-            {
-                StartDate = DateTime.Now.AddDays(-19),
-                EndDate = DateTime.Now.AddDays(-19),
-                PatientId = 3,
-                IsDone = true,
-                IsCanceled = false
-
-            });
-            Context.ScheduledEvents.Add(new ScheduledEvent()
-            {
-                StartDate = DateTime.Now.AddDays(-4),
-                EndDate = DateTime.Now.AddDays(-4),
-                CancellationDate = DateTime.Now.AddDays(-14),
-                PatientId = 3,
-                IsDone = false,
-                IsCanceled = true
-
-            });
-            Context.ScheduledEvents.Add(new ScheduledEvent()
-            {
-                StartDate = DateTime.Now.AddDays(7),
-                EndDate = DateTime.Now.AddDays(7),
-                PatientId = 3,
-                CancellationDate = DateTime.Now.AddDays(-1),
-                IsDone = false,
-                IsCanceled = true
-
-            });
-
+            Context.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, true, false, DateTime.Now.AddDays(7),
+                 DateTime.Now.AddDays(7), DateTime.Now.AddDays(-1), 2, 1, firstDoctor));
 
             Context.SaveChanges();
             #endregion
 
             var blockingService = new BlockingService(UoW);
-            var patient = UoW.GetRepository<IPatientReadRepository>().GetById(3);
+            var patient = UoW.GetRepository<IPatientReadRepository>().GetById(2);
             if (patient == null) return;
             var maliciousPatients = blockingService.GetMaliciousPatients();
             maliciousPatients.ShouldNotBe(null);
@@ -330,144 +122,37 @@ namespace HospitalUnitTests
         {
             #region
             ClearDbContext();
-            Context.Countries.Add(new Country()
+            Context.Rooms.Add(new Room { Id = 1, Name = "Ordination" });
+            Context.Shifts.Add(new Shift(3, "first", 7, 15));
+            var room = new Room()
             {
-                Id = 1,
-                Name = "BiH"
-            });
-            Context.Cities.Add(new City()
-            {
-                Id = 1,
-                Name = "Bijeljina",
-                CountryId = 1
-            });
-            Context.Specializations.Add(new Specialization()
-            {
-                Id = 1,
-                Name = "GP",
-                Description = "Doktor opste prakse"
-            });
-            Context.Rooms.Add(new Room()
-            {
-                Id = 1,
+                Id = 2,
                 BuildingName = "hf",
                 Description = "dada",
                 FloorNumber = 2,
                 Name = "duno"
-            });
+            };
+            Context.Rooms.Add(room);
+            var firstDoctor = new Doctor(1, 3, new Specialization("General Practice", ""), room);
+            Context.Doctors.Add(firstDoctor);
+            var medicalRecord = new MedicalRecord(1, null, 0, 0, 1, null);
+            Context.MedicalRecords.Add(medicalRecord);
+            var newPatient = new Patient(2,"testPatient", medicalRecord);
+            Context.Patients.Add(newPatient);
 
-            Context.Users.Add(new Doctor()
-            {
-                Id = 1,
-                UserName = "username1",
-                Email = "mail1",
-                Gender = Gender.Male,
-                FirstName = "name",
-                LastName = "lastname",
-                CityId = 1,
-                DateOfBirth = DateTime.Now.AddYears(-35),
-                MiddleName = "middleName",
-                SpecializationId = 1,
-                EmailConfirmed = true,
-                Street = "street1",
-                StreetNumber = "1",
-                RoomId = 1,
-                PhoneNumber = "213122122",
-                PhoneNumberConfirmed = true,
-                TwoFactorEnabled = true,
-                LockoutEnabled = false,
-                AccessFailedCount = 0
-            });
-            Context.MedicalRecords.Add(new MedicalRecord()
-            {
-                Id = 1,
-                Height = 172,
-                Weight = 72,
-                DoctorId = 1,
-                BloodType = BloodType.ABNegative,
-                JobStatus = JobStatus.Student
-            });
-            Context.Users.Add(new Patient()
-            {
-                Id = 2,
-                UserName = "testPatient",
-                Email = "mailPatient",
-                Gender = Gender.Female,
-                FirstName = "name1",
-                LastName = "lastname1",
-                CityId = 1,
-                DateOfBirth = DateTime.Now.AddYears(-25),
-                MiddleName = "middle",
-                EmailConfirmed = true,
-                Street = "street2",
-                StreetNumber = "3",
-                PhoneNumber = "213124422",
-                PhoneNumberConfirmed = true,
-                TwoFactorEnabled = true,
-                LockoutEnabled = false,
-                AccessFailedCount = 0,
-                MedicalRecordId = 1,
-                IsBlocked = false
-            });
+            Context.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, true, false, DateTime.Now.AddDays(-100),
+                 DateTime.Now.AddDays(-100), DateTime.Now.AddDays(-110), 2, 1, firstDoctor));
+            Context.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, false, true, DateTime.Now.AddDays(-18),
+                DateTime.Now.AddDays(-18), new DateTime(), 2, 1, firstDoctor));
+            Context.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, true, false, DateTime.Now.AddDays(-22),
+                 DateTime.Now.AddDays(-22), DateTime.Now.AddDays(-27), 2, 1, firstDoctor));
+            Context.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, false, true, DateTime.Now.AddDays(-19),
+                DateTime.Now.AddDays(-19), new DateTime(), 2, 1, firstDoctor));
+            Context.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, true, false, DateTime.Now.AddDays(-4),
+                 DateTime.Now.AddDays(-4), DateTime.Now.AddDays(-14), 2, 1, firstDoctor));
+            Context.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, true, false, DateTime.Now.AddDays(7),
+                 DateTime.Now.AddDays(7), DateTime.Now, 2, 1, firstDoctor));
 
-            Context.ScheduledEvents.Add(new ScheduledEvent()
-            {
-                StartDate = DateTime.Now.AddDays(-100),
-                EndDate = DateTime.Now.AddDays(-100),
-                CancellationDate = DateTime.Now.AddDays(-110),
-                PatientId = 2,
-                IsDone = false,
-                IsCanceled = true
-
-            });
-            Context.ScheduledEvents.Add(new ScheduledEvent()
-            {
-                StartDate = DateTime.Now.AddDays(-18),
-                EndDate = DateTime.Now.AddDays(-18),
-                PatientId = 2,
-                IsDone = true,
-                IsCanceled = false
-
-            });
-            Context.ScheduledEvents.Add(new ScheduledEvent()
-            {
-                StartDate = DateTime.Now.AddDays(-22),
-                EndDate = DateTime.Now.AddDays(-22),
-                CancellationDate = DateTime.Now.AddDays(-27),
-                PatientId = 2,
-                IsDone = false,
-                IsCanceled = true
-
-            });
-            Context.ScheduledEvents.Add(new ScheduledEvent()
-            {
-                StartDate = DateTime.Now.AddDays(-19),
-                EndDate = DateTime.Now.AddDays(-19),
-                PatientId = 2,
-                IsDone = true,
-                IsCanceled = false
-
-            });
-            Context.ScheduledEvents.Add(new ScheduledEvent()
-            {
-                StartDate = DateTime.Now.AddDays(-4),
-                EndDate = DateTime.Now.AddDays(-4),
-                CancellationDate = DateTime.Now.AddDays(-14),
-                PatientId = 2,
-                IsDone = false,
-                IsCanceled = true
-
-            });
-            Context.ScheduledEvents.Add(new ScheduledEvent()
-            {
-                StartDate = DateTime.Now.AddDays(7),
-                EndDate = DateTime.Now.AddDays(7),
-                CancellationDate = DateTime.Now,
-                PatientId = 2,
-                IsDone = false,
-                IsCanceled = true
-
-            });
             Context.SaveChanges();
 
             #endregion
@@ -489,134 +174,35 @@ namespace HospitalUnitTests
         {
             #region
             ClearDbContext();
-            Context.Countries.Add(new Country()
+            Context.Rooms.Add(new Room { Id = 1, Name = "Ordination" });
+            Context.Shifts.Add(new Shift(3, "first", 7, 15));
+            var room = new Room()
             {
-                Id = 1,
-                Name = "BiH"
-            });
-            Context.Cities.Add(new City()
-            {
-                Id = 1,
-                Name = "Bijeljina",
-                CountryId = 1
-            });
-            Context.Specializations.Add(new Specialization()
-            {
-                Id = 1,
-                Name = "GP",
-                Description = "Doktor opste prakse"
-            });
-            Context.Rooms.Add(new Room()
-            {
-                Id = 1,
+                Id = 2,
                 BuildingName = "hf",
                 Description = "dada",
                 FloorNumber = 2,
                 Name = "duno"
-            });
+            };
+            Context.Rooms.Add(room);
+            var firstDoctor = new Doctor(1, 3, new Specialization("General Practice", ""), room);
 
-            Context.Users.Add(new Doctor()
-            {
-                Id = 1,
-                UserName = "username1",
-                Email = "mail1",
-                Gender = Gender.Male,
-                FirstName = "name",
-                LastName = "lastname",
-                CityId = 1,
-                DateOfBirth = DateTime.Now.AddYears(-35),
-                MiddleName = "middleName",
-                SpecializationId = 1,
-                EmailConfirmed = true,
-                Street = "street1",
-                StreetNumber = "1",
-                RoomId = 1,
-                PhoneNumber = "213122122",
-                PhoneNumberConfirmed = true,
-                TwoFactorEnabled = true,
-                LockoutEnabled = false,
-                AccessFailedCount = 0
-            });
+            Context.Doctors.Add(firstDoctor);
+            var medicalRecord = new MedicalRecord(1, null, 0, 0, 1, null);
+            Context.MedicalRecords.Add(medicalRecord);
+            var newPatient = new Patient(2, "testPatient", medicalRecord);
+            Context.Patients.Add(newPatient);
+            Context.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, true, false, DateTime.Now.AddDays(-100),
+                 DateTime.Now.AddDays(-100), DateTime.Now.AddDays(-110), 2, 1, firstDoctor));
+            Context.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, false, true, DateTime.Now.AddDays(-22),
+                DateTime.Now.AddDays(-22), new DateTime(), 2, 1, firstDoctor));
+            Context.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, false, true, DateTime.Now.AddDays(-19),
+                DateTime.Now.AddDays(-19), new DateTime(), 2, 1, firstDoctor));
+            Context.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, true, false, DateTime.Now.AddDays(-4),
+                 DateTime.Now.AddDays(-4), DateTime.Now.AddDays(-14), 2, 1, firstDoctor));
 
-
-            Context.MedicalRecords.Add(new MedicalRecord()
-            {
-                Id = 1,
-                Height = 172,
-                Weight = 72,
-                DoctorId = 1,
-                BloodType = BloodType.ABNegative,
-                JobStatus = JobStatus.Student
-            });
-            Context.Users.Add(new Patient()
-            {
-                Id = 3,
-                UserName = "testPatient",
-                Email = "mailPatient",
-                Gender = Gender.Female,
-                FirstName = "name1",
-                LastName = "lastname1",
-                CityId = 1,
-                DateOfBirth = DateTime.Now.AddYears(-25),
-                MiddleName = "middle",
-                EmailConfirmed = true,
-                Street = "street2",
-                StreetNumber = "3",
-                PhoneNumber = "213124422",
-                PhoneNumberConfirmed = true,
-                TwoFactorEnabled = true,
-                LockoutEnabled = false,
-                AccessFailedCount = 0,
-                MedicalRecordId = 1
-            });
-            Context.ScheduledEvents.Add(new ScheduledEvent()
-            {
-                StartDate = DateTime.Now.AddDays(-100),
-                EndDate = DateTime.Now.AddDays(-100),
-                CancellationDate = DateTime.Now.AddDays(-110),
-                PatientId = 3,
-                IsDone = false,
-                IsCanceled = true
-
-            });
-            Context.ScheduledEvents.Add(new ScheduledEvent()
-            {
-                StartDate = DateTime.Now.AddDays(-22),
-                EndDate = DateTime.Now.AddDays(-22),
-                PatientId = 3,
-                IsDone = true,
-                IsCanceled = false
-
-            });
-            Context.ScheduledEvents.Add(new ScheduledEvent()
-            {
-                StartDate = DateTime.Now.AddDays(-19),
-                EndDate = DateTime.Now.AddDays(-19),
-                PatientId = 3,
-                IsDone = true,
-                IsCanceled = false
-
-            });
-            Context.ScheduledEvents.Add(new ScheduledEvent()
-            {
-                StartDate = DateTime.Now.AddDays(-4),
-                EndDate = DateTime.Now.AddDays(-4),
-                CancellationDate = DateTime.Now.AddDays(-14),
-                PatientId = 3,
-                IsDone = false,
-                IsCanceled = true
-
-            });
-            Context.ScheduledEvents.Add(new ScheduledEvent()
-            {
-                StartDate = DateTime.Now.AddDays(7),
-                EndDate = DateTime.Now.AddDays(7),
-                PatientId = 3,
-                CancellationDate = DateTime.Now.AddDays(-1),
-                IsDone = false,
-                IsCanceled = true
-
-            });
+            Context.ScheduledEvents.Add(new ScheduledEvent(ScheduledEventType.Appointment, true, false, DateTime.Now.AddDays(7),
+                 DateTime.Now.AddDays(7), DateTime.Now.AddDays(-1), 2, 1, firstDoctor));
 
 
             Context.SaveChanges();
@@ -630,7 +216,7 @@ namespace HospitalUnitTests
             {
                 blockingService.BlockPatient(patient.UserName);
             }
-            var blockedPatient = UoW.GetRepository<IPatientReadRepository>().GetById(3);
+            var blockedPatient = UoW.GetRepository<IPatientReadRepository>().GetById(2);
             blockedPatient.IsBlocked.ShouldBe(false);
         }
 
@@ -639,95 +225,32 @@ namespace HospitalUnitTests
         {
             #region
             ClearDbContext();
-            Context.Countries.Add(new Country()
+            Context.Rooms.Add(new Room { Id = 1, Name = "Ordination" });
+            Context.Shifts.Add(new Shift(3, "first", 7, 15));
+            var room = new Room()
             {
-                Id = 1,
-                Name = "BiH"
-            });
-            Context.Cities.Add(new City()
-            {
-                Id = 1,
-                Name = "Bijeljina",
-                CountryId = 1
-            });
-            Context.Specializations.Add(new Specialization()
-            {
-                Id = 1,
-                Name = "GP",
-                Description = "Doktor opste prakse"
-            });
-            Context.Rooms.Add(new Room()
-            {
-                Id = 1,
+                Id = 2,
                 BuildingName = "hf",
                 Description = "dada",
                 FloorNumber = 2,
                 Name = "duno"
-            });
+            };
+            Context.Rooms.Add(room);
+            var firstDoctor = new Doctor(1, 3, new Specialization("General Practice", ""), room);
+            Context.Doctors.Add(firstDoctor);
+            var medicalRecord = new MedicalRecord(1, null, 0, 0, 1, null);
+            Context.MedicalRecords.Add(medicalRecord);
+            var newPatient = new Patient(2, "testPatient", medicalRecord);
+            Context.Patients.Add(newPatient);
 
-            Context.Users.Add(new Doctor()
-            {
-                Id = 1,
-                UserName = "username1",
-                Email = "mail1",
-                Gender = Gender.Male,
-                FirstName = "name",
-                LastName = "lastname",
-                CityId = 1,
-                DateOfBirth = DateTime.Now.AddYears(-35),
-                MiddleName = "middleName",
-                SpecializationId = 1,
-                EmailConfirmed = true,
-                Street = "street1",
-                StreetNumber = "1",
-                RoomId = 1,
-                PhoneNumber = "213122122",
-                PhoneNumberConfirmed = true,
-                TwoFactorEnabled = true,
-                LockoutEnabled = false,
-                AccessFailedCount = 0
-            });
-            Context.MedicalRecords.Add(new MedicalRecord()
-            {
-                Id = 1,
-                Height = 172,
-                Weight = 72,
-                DoctorId = 1,
-                BloodType = BloodType.ABNegative,
-                JobStatus = JobStatus.Student
-            });
-            Context.Users.Add(new Patient()
-            {
-                Id = 2,
-                UserName = "testPatient",
-                Email = "mailPatient",
-                Gender = Gender.Female,
-                FirstName = "name1",
-                LastName = "lastname1",
-                CityId = 1,
-                DateOfBirth = DateTime.Now.AddYears(-25),
-                MiddleName = "middle",
-                EmailConfirmed = true,
-                Street = "street2",
-                StreetNumber = "3",
-                PhoneNumber = "213124422",
-                PhoneNumberConfirmed = true,
-                TwoFactorEnabled = true,
-                LockoutEnabled = false,
-                AccessFailedCount = 0,
-                MedicalRecordId = 1,
-                IsBlocked = false
-            });
-
-          
             Context.SaveChanges();
 
             #endregion
 
             var blockingService = new BlockingService(UoW);
-            var patient = UoW.GetRepository<IPatientReadRepository>().GetById(2);
+            var patient = UoW.GetRepository<IPatientReadRepository>().GetById(newPatient.Id);
             blockingService.BlockPatient(patient.UserName);
-            var blockedPatient = UoW.GetRepository<IPatientReadRepository>().GetById(2);
+            var blockedPatient = UoW.GetRepository<IPatientReadRepository>().GetById(newPatient.Id);
             blockedPatient.IsBlocked.ShouldBe(true);
 
         }

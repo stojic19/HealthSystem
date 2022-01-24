@@ -7,9 +7,10 @@ namespace Hospital.Schedule.Service.ServiceInterface
 {
     public interface ISurveyService
     {
-        public void createSurvey(Survey survey);
-        public SurveySection getSurveySection(int id, SurveyCategory category);
-        public IEnumerable<Survey> getAll();
-
+        public void CreateSurvey(Survey survey);
+        public SurveySection GetSurveySection(int id, SurveyCategory category);
+        public IEnumerable<Survey> GetAll();
+        Survey GetActiveSurvey();
+        void Save(Survey activeSurvey);
     }
 }

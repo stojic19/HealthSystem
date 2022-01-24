@@ -33,7 +33,7 @@
               #matOption1
               (click)="getDocsForSpec(matOption1)"
               *ngFor="let s of specializations"
-              value="{{ s.id }}"
+              value="{{ s.name }}"
             >
               {{ s.name }}</mat-option
             >
@@ -54,7 +54,7 @@
               #matOption2
               (click)="getTerms(matOption2)"
               *ngFor="let dr of doctors"
-              value="{{ dr.id }}"
+              value="{{ dr.id + ',' + dr.roomId }}"
             >
               {{ dr.firstName }} {{ dr.lastName }}</mat-option
             >

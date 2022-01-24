@@ -15,10 +15,5 @@ namespace Hospital.Repositories.DbImplementation
         {
             _context = context;
         }
-
-        public IEnumerable<City> GetAllByCountryId(int countryId)
-        {
-            return _context.Set<City>().Where(x => x.CountryId == countryId);
-        }
     }
 }

@@ -17,7 +17,7 @@ namespace Integration.Shared.Service
     {
         private readonly string _hospitalName = "Nasa bolnica";
         private readonly string _hospitalEmail = "psw.company2@gmail.com";
-        private readonly string _emailPassword = "Dont panic!";
+        private readonly string _emailPassword = Environment.GetEnvironmentVariable("HOSPITAL_EMAIL_PASSWORD");
         public EmailService()
         {
 
@@ -67,27 +67,33 @@ namespace Integration.Shared.Service
             return text;
         }
 
-        private string MakeMedicationList(IEnumerable<MedicationRequest> medicationRequests, string text)
+        private static string MakeMedicationList(IEnumerable<MedicationRequest> medicationRequests, string text)
         {
-            text += "<ul>";
+            StringBuilder builder = new StringBuilder();
+            builder.Append(text);
+            builder.Append("<ul>");
             foreach (var medReq in medicationRequests)
             {
-                text += "<li>" + medReq.MedicineName + ", Amount: " + medReq.Quantity + "</li>";
+                builder.Append("<li>");
+                builder.Append(medReq.MedicineName);
+                builder.Append(", Amount: ");
+                builder.Append(medReq.Quantity);
+                builder.Append("</li>");
             }
-
-            text += "</ul>";
-            return text;
+            builder.Append("</ul>");
+            return builder.ToString();
         }
 
-        private string PrepareMailNames(IEnumerable<Pharmacy> pharmacies)
+        private static string PrepareMailNames(IEnumerable<Pharmacy> pharmacies)
         {
-            string mail = "";
+            StringBuilder builder = new StringBuilder();
             foreach (string pharmacyMail in pharmacies.Select(x => x.Email))
             {
-                mail += pharmacyMail;
-                mail += ",";
+                builder.Append(pharmacyMail);
+                builder.Append(',');
             }
 
+            string mail = builder.ToString();
             mail = mail.Remove(mail.Length - 1);
             return mail;
         }

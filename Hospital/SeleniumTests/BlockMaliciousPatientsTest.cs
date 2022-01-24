@@ -2,6 +2,7 @@
 using Hospital.Schedule.Model;
 using Hospital.Schedule.Repository;
 using Hospital.SharedModel.Model.Enumerations;
+using Hospital.SharedModel.Repository;
 using Microsoft.EntityFrameworkCore;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -70,64 +71,29 @@ namespace SeleniumTests
             RegisterUser("Patient");
             var patient = UoW.GetRepository<IPatientReadRepository>().GetAll().Include(p => p.MedicalRecord).ThenInclude(mr => mr.Doctor)
                 .FirstOrDefault(p => p.UserName == "testPatientUsername");
+            var doctor = UoW.GetRepository<IDoctorReadRepository>().GetAll().Include(d => d.Room)
+                .FirstOrDefault(d => d.UserName == "testDoctorUsername");
 
-                var date = new DateTime();
-                var scheduledEvent = UoW.GetRepository<IScheduledEventReadRepository>().GetAll()
-                    .FirstOrDefault(x => x.StartDate == date && x.Patient.Id == patient.Id && x.Doctor.Id == patient.MedicalRecord.DoctorId);
-                if (scheduledEvent != null) return;
-                scheduledEvent = new ScheduledEvent()
-                {
-                    StartDate = DateTime.Now.AddDays(-100),
-                    EndDate = DateTime.Now.AddDays(-100),
-                    CancellationDate = DateTime.Now.AddDays(-110),
-                    Doctor = patient.MedicalRecord.Doctor,
-                    IsCanceled = true,
-                    IsDone = false,
-                    Patient = patient,
-                    Room = patient.MedicalRecord.Doctor.Room,
-                    ScheduledEventType = ScheduledEventType.Appointment
-                };
-                UoW.GetRepository<IScheduledEventWriteRepository>().Add(scheduledEvent);
+            var date = new DateTime();
+            var scheduledEvent = UoW.GetRepository<IScheduledEventReadRepository>().GetAll()
+                .FirstOrDefault(x => x.StartDate == date && x.Patient.Id == patient.Id && x.Doctor.Id == patient.MedicalRecord.DoctorId);
+            if (scheduledEvent != null) return;
+            scheduledEvent = new ScheduledEvent(0, true, false, DateTime.Now.AddDays(-100), DateTime.Now.AddDays(-100),
+                DateTime.Now.AddDays(-110), patient.Id, doctor.Id, doctor);
 
-                var scheduledEvent2 = new ScheduledEvent()
-                {
-                    StartDate = DateTime.Now.AddDays(-22),
-                    EndDate = DateTime.Now.AddDays(-22),
-                    CancellationDate = DateTime.Now.AddDays(-27),
-                    Doctor = patient.MedicalRecord.Doctor,
-                    IsCanceled = true,
-                    IsDone = false,
-                    Patient = patient,
-                    Room = patient.MedicalRecord.Doctor.Room,
-                    ScheduledEventType = ScheduledEventType.Appointment
-                };
-                UoW.GetRepository<IScheduledEventWriteRepository>().Add(scheduledEvent2);
-                var scheduledEvent3 = new ScheduledEvent()
-                {
-                    StartDate = DateTime.Now.AddDays(-4),
-                    EndDate = DateTime.Now.AddDays(-4),
-                    CancellationDate = DateTime.Now.AddDays(-14),
-                    Doctor = patient.MedicalRecord.Doctor,
-                    IsCanceled = true,
-                    IsDone = false,
-                    Patient = patient,
-                    Room = patient.MedicalRecord.Doctor.Room,
-                    ScheduledEventType = ScheduledEventType.Appointment
-                };
-                UoW.GetRepository<IScheduledEventWriteRepository>().Add(scheduledEvent3);
-                var scheduledEvent4 = new ScheduledEvent()
-                {
-                    StartDate = DateTime.Now.AddDays(7),
-                    EndDate = DateTime.Now.AddDays(7),
-                    CancellationDate = DateTime.Now.AddDays(-1),
-                    Doctor = patient.MedicalRecord.Doctor,
-                    IsCanceled = true,
-                    IsDone = false,
-                    Patient = patient,
-                    Room = patient.MedicalRecord.Doctor.Room,
-                    ScheduledEventType = ScheduledEventType.Appointment
-                };
-                UoW.GetRepository<IScheduledEventWriteRepository>().Add(scheduledEvent4);
+            UoW.GetRepository<IScheduledEventWriteRepository>().Add(scheduledEvent);
+
+            var scheduledEvent2 = new ScheduledEvent(0, true, false, DateTime.Now.AddDays(-22), DateTime.Now.AddDays(-22),
+                DateTime.Now.AddDays(-27), patient.Id, doctor.Id, doctor);
+
+            UoW.GetRepository<IScheduledEventWriteRepository>().Add(scheduledEvent2);
+            var scheduledEvent3 = new ScheduledEvent(0, true, false, DateTime.Now.AddDays(-4), DateTime.Now.AddDays(-4),
+                DateTime.Now.AddDays(-14), patient.Id, doctor.Id, doctor);
+
+            UoW.GetRepository<IScheduledEventWriteRepository>().Add(scheduledEvent3);
+            var scheduledEvent4 = new ScheduledEvent(0, true, false, DateTime.Now.AddDays(7), DateTime.Now.AddDays(7),
+                DateTime.Now.AddDays(-1), patient.Id, doctor.Id, doctor);
+            UoW.GetRepository<IScheduledEventWriteRepository>().Add(scheduledEvent4);
         }
     }
 }

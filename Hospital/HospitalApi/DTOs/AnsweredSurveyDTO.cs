@@ -1,5 +1,4 @@
-﻿using Hospital.MedicalRecords.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace HospitalApi.DTOs

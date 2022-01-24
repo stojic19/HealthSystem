@@ -10,5 +10,6 @@ namespace Hospital.Schedule.Repository
 {
     public interface IShiftReadRepository : IReadBaseRepository<int, Shift>
     {
+        public Shift GetShiftForDoctor(int doctorId);
     }
 }

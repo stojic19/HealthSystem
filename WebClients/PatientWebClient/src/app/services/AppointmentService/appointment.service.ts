@@ -1,4 +1,4 @@
-import { HttpClient} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IAppointment } from 'src/app/interfaces/appointment';
 import { Observable } from 'rxjs';
@@ -15,14 +15,16 @@ export class AppointmentService {
     preferredDate: string
   ): Observable<String[]> {
     return this._http.get<String[]>(
-      '/api/ScheduledEvent/GetAvailableAppointments?doctorId=' +
+      '/api/ScheduleAppointment/GetAvailableAppointments?doctorId=' +
         doctorId +
         '&preferredDate=' +
         preferredDate
     );
   }
-  getAppointment(eventId:string): any {
-    return this._http.get<IAppointment>('/api/ScheduledEvent/GetScheduledEvent/'+ eventId);
+  getAppointment(eventId: string): any {
+    return this._http.get<IAppointment>(
+      '/api/ScheduledEvent/GetScheduledEvent/' + eventId
+    );
   }
 
   scheduleAppointment(newAppointment: INewAppointment): Observable<any> {

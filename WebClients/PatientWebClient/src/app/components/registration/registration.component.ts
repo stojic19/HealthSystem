@@ -21,6 +21,7 @@ import { ChosenDoctorService } from 'src/app/services/ChosenDoctorService/chosen
 import { CityService } from 'src/app/services/CityService/city.service';
 import { RegistrationService } from 'src/app/services/PatientService/registration.service';
 import { Router } from '@angular/router';
+import { IMeasurements } from 'src/app/interfaces/imeasurements';
 
 @Component({
   selector: 'app-registration',
@@ -53,6 +54,8 @@ export class RegistrationComponent implements OnInit {
   ) {
     this.newPatient = {} as INewPatient;
     this.newPatient.medicalRecord = {} as IMedicalRecord;
+    this.newPatient.medicalRecord.measurements = {} as IMeasurements;
+    this.newPatient.city = {} as ICity;
   }
 
   ngOnInit(): void {
@@ -111,9 +114,9 @@ export class RegistrationComponent implements OnInit {
       this.allergens = res;
     });
 
-    this.cityService.getAll().subscribe((res) => {
-      this.cities = res;
-    });
+    // this.cityService.getAll().subscribe((res) => {
+    //   this.cities = res;
+    // });
   }
 
   onSubmit(): void {
@@ -174,7 +177,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   getCity(event: any) {
-    this.newPatient.cityId = event.value;
+    this.newPatient.city = event.value;
   }
 
   getBloodType(event: any) {
@@ -200,13 +203,16 @@ export class RegistrationComponent implements OnInit {
     this.newPatient.middleName = this.createForm.value.middleName;
     this.newPatient.street = this.createForm.value.street;
     this.newPatient.streetNumber = this.createForm.value.streetNumber;
+    this.newPatient.city.name = this.createForm.value.city;
     this.newPatient.dateOfBirth = new Date(
       this.createForm.value.dateOfBirth.getTime() -
         this.createForm.value.dateOfBirth.getTimezoneOffset() * 60000
     );
-    this.newPatient.medicalRecord.weight = this.createForm.value.weight;
-    this.newPatient.medicalRecord.height = this.createForm.value.height;
-    this.newPatient.phoneNumber = this.createForm.value.phoneNumber;
+    this.newPatient.medicalRecord.measurements.weight =
+      this.createForm.value.weight;
+    this.newPatient.medicalRecord.measurements.height =
+      this.createForm.value.height;
+    this.newPatient.phoneNumber = this.createForm.value.phone;
     this.newPatient.email = this.createForm.value.email;
     this.newPatient.userName = this.createForm.value.username;
     this.newPatient.password = this.createForm.value.password;

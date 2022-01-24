@@ -6,11 +6,10 @@
     <button class="btn btn-primary m-3" [routerLink]="[isProd ? 'manager/add-tender' : '../add-tender']"><strong>Create Tender</strong></button>
     <button class="btn btn-primary m-3" [routerLink]="[isProd ? 'manager/tendering-statistics' : '../tendering-statistics']"><strong>Tender Statistics</strong></button>
 
-    <div class="table-responsive m-1">
+    <div *ngIf="tenders?.length" class="table-responsive m-1">
         <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Name</th>
                     <th>Closing time</th>
                     <th>Active</th>
@@ -18,7 +17,6 @@
             </thead>
             <tbody>
                 <tr *ngFor='let tender of tenders' (dblclick)="doubleClickFunction(tender.id)">
-                    <td>{{tender.id}}</td>
                     <td>{{tender.name}}</td>
                     <td>{{tender.activeRange.endDate | date: "dd-MM-yyyy, hh:mm"}}</td>
                     <td>
@@ -29,4 +27,5 @@
         </table>
     </div>
 
+    <div class="d-flex justify-content-center m-1" *ngIf="!tenders?.length"><h4>No tenders to show.</h4></div>
 </div>

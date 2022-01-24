@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Hospital.MedicalRecords.Model;
+using Hospital.Schedule.Model;
 using Hospital.SharedModel.Model;
 using Hospital.SharedModel.Repository;
 using HospitalUnitTests.Base;
@@ -18,60 +19,23 @@ namespace HospitalUnitTests
         public void Should_return_doctors_with_ids_2_and_3()
         {
             ClearDbContext();
-            Context.Doctors.Add(new Doctor()
-            {
-                Id = 1
-            });
-            Context.Doctors.Add(new Doctor()
-            {
-                Id = 2
-            });
-            Context.Doctors.Add(new Doctor()
-            {
-                Id = 3
-            });
-
-            Context.MedicalRecords.Add(new MedicalRecord()
-            {
-                Id = 1,
-                DoctorId = 1
-            });
-            Context.MedicalRecords.Add(new MedicalRecord()
-            {
-                Id = 2,
-                DoctorId = 1
-            });
-            Context.MedicalRecords.Add(new MedicalRecord()
-            {
-                Id = 3,
-                DoctorId = 1
-            });
-            Context.MedicalRecords.Add(new MedicalRecord()
-            {
-                Id = 4,
-                DoctorId = 2
-            });
-            Context.MedicalRecords.Add(new MedicalRecord()
-            {
-                Id = 5,
-                DoctorId = 1
-            });
-            Context.MedicalRecords.Add(new MedicalRecord()
-            {
-                Id = 6,
-                DoctorId = 2
-            });
-            Context.MedicalRecords.Add(new MedicalRecord()
-            {
-                Id = 7,
-                DoctorId = 3
-            });
+            Context.Shifts.Add(new Shift(1, "First Shift", 7, 15));
+            Context.Doctors.Add(new Doctor(1, 1, null));
+            Context.Doctors.Add(new Doctor(2, 1, null));
+            Context.Doctors.Add(new Doctor(3, 1, null));
+            Context.MedicalRecords.Add(new MedicalRecord(1, null, 0, 0, 1, null));
+            Context.MedicalRecords.Add(new MedicalRecord(2, null, 0, 0, 1, null));
+            Context.MedicalRecords.Add(new MedicalRecord(3, null, 0, 0, 1, null));
+            Context.MedicalRecords.Add(new MedicalRecord(4, null, 0, 0, 2, null));
+            Context.MedicalRecords.Add(new MedicalRecord(5, null, 0, 0, 1, null));
+            Context.MedicalRecords.Add(new MedicalRecord(6, null, 0, 0, 2, null));
+            Context.MedicalRecords.Add(new MedicalRecord(7, null, 0, 0, 3, null));
             Context.SaveChanges();
 
             var doctors = UoW.GetRepository<IDoctorReadRepository>().GetNonOverloadedDoctors().ToList();
 
             doctors.ShouldNotBeNull();
-            doctors.Count().ShouldBe(2);
+            doctors.Count.ShouldBe(2);
         }
 
 

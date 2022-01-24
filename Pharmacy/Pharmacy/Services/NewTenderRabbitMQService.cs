@@ -119,7 +119,7 @@ namespace Pharmacy.Services
             {
                 channel.Close();
             }
-            if(_connection != null) _connection.Close();
+            if (_connection != null) _connection.Close();
             base.Dispose();
         }
     }

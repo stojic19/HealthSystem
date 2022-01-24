@@ -20,11 +20,10 @@ namespace Hospital.Schedule.Repository.Implementation
                  .Where(x => x.Id == eventId && x.IsDone == false)
                  .ToList()
                  .FirstOrDefault();
-            if (scheduledEvent != null && DateTime.Compare(DateTime.Now, scheduledEvent.StartDate.AddDays(-2)) < 0)
-            {
-                scheduledEvent.IsCanceled = true;
-                Update(scheduledEvent, true);
-            }
+            if (scheduledEvent == null ||
+                DateTime.Compare(DateTime.Now, scheduledEvent.StartDate.AddDays(-2)) >= 0) return;
+            scheduledEvent.SetToCanceled();
+            Update(scheduledEvent, true);
         }
     }
 }

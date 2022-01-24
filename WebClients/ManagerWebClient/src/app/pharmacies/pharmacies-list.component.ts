@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PharmacyService } from 'src/app/services/pharmacy.service';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
-import { IMedicineResponse } from '../interfaces/medicineResponse';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-pharmacies-list',
@@ -20,7 +20,7 @@ export class PharmaciesListComponent implements OnInit {
   ordered: any = [];
   isProd: boolean = environment.production;
 
-  constructor(private _pharmacyService: PharmacyService, private router: Router) { }
+  constructor(private _pharmacyService: PharmacyService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this._pharmacyService.getPharmacies()
@@ -70,7 +70,7 @@ export class PharmaciesListComponent implements OnInit {
         if(res.answer == true ){
           this.confirmed.push(id);
         }},
-        (error) => alert(error.error)
+        (error) => this.toastr.error(error.error)
         );
     }
   }
@@ -82,7 +82,7 @@ export class PharmaciesListComponent implements OnInit {
         if(res.answer == true){
           this.ordered.push(id);
         }},
-        (error) => alert(error.error)
+        (error) => this.toastr.error(error.error)
         );
     }
   }

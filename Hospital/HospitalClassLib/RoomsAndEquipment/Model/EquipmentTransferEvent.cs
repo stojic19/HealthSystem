@@ -27,10 +27,32 @@ namespace Hospital.RoomsAndEquipment.Model
             Validate();
         }
 
+        public EquipmentTransferEvent(TimePeriod timePeriod, int initialRoomInventoryId, RoomInventory initialRoomInventory,
+                                        int destinationRoomInvenotoryId, RoomInventory destinationRoomInventory, int quantity)
+        {
+            TimePeriod = timePeriod;
+            InitialRoomInventoryId = initialRoomInventoryId;
+            InitialRoomInventory = initialRoomInventory;
+            DestinationRoomInventoryId = destinationRoomInvenotoryId;
+            DestinationRoomInventory = destinationRoomInventory;
+            Quantity = quantity;
+            Validate();
+        }
+
         public EquipmentTransferEvent(int id, TimePeriod timePeriod, RoomInventory initialRoomInventory,
                                         RoomInventory destinationRoomInventory, int quantity)
         {
             Id = id;
+            TimePeriod = timePeriod;
+            InitialRoomInventory = initialRoomInventory;
+            DestinationRoomInventory = destinationRoomInventory;
+            Quantity = quantity;
+            Validate();
+        }
+
+        public EquipmentTransferEvent(TimePeriod timePeriod, RoomInventory initialRoomInventory,
+                                        RoomInventory destinationRoomInventory, int quantity)
+        {
             TimePeriod = timePeriod;
             InitialRoomInventory = initialRoomInventory;
             DestinationRoomInventory = destinationRoomInventory;

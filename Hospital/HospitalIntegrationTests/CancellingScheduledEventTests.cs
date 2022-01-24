@@ -2,6 +2,7 @@
 using Hospital.RoomsAndEquipment.Model;
 using Hospital.RoomsAndEquipment.Repository;
 using Hospital.SharedModel.Model.Enumerations;
+using Hospital.SharedModel.Model.Wrappers;
 using HospitalApi.DTOs;
 using HospitalIntegrationTests.Base;
 using Shouldly;
@@ -32,11 +33,11 @@ namespace HospitalIntegrationTests
             var content = GetContent(new EquipmentTransferEventDto()
             {
                 Id = transferRequest.Id,
-                StartDate = transferRequest.StartDate,
-                EndDate = transferRequest.EndDate,
-                InitialRoomId = transferRequest.InitialRoomId,
-                DestinationRoomId = transferRequest.DestinationRoomId,
-                InventoryItemId = transferRequest.InventoryItemId,
+                StartDate = transferRequest.TimePeriod.StartTime,
+                EndDate = transferRequest.TimePeriod.EndTime,
+                InitialRoomId = transferRequest.InitialRoomInventory.RoomId,
+                DestinationRoomId = transferRequest.DestinationRoomInventory.RoomId,
+                InventoryItemId = transferRequest.InitialRoomInventory.InventoryItemId,
                 Quantity = transferRequest.Quantity
             });
 
@@ -47,11 +48,11 @@ namespace HospitalIntegrationTests
 
             var canceledRequest = UoW.GetRepository<IEquipmentTransferEventReadRepository>()
                 .GetAll()
-                .FirstOrDefault(x => x.StartDate == transferRequest.StartDate &&
-                                x.EndDate == transferRequest.EndDate &&
-                                x.InitialRoomId == transferRequest.InitialRoomId &&
-                                x.DestinationRoomId == transferRequest.DestinationRoomId &&
-                                x.InventoryItemId == transferRequest.InventoryItemId);
+                .FirstOrDefault(x => x.TimePeriod.StartTime == transferRequest.TimePeriod.StartTime &&
+                                x.TimePeriod.EndTime == transferRequest.TimePeriod.EndTime &&
+                                x.InitialRoomInventory.RoomId == transferRequest.InitialRoomInventory.RoomId &&
+                                x.DestinationRoomInventory.RoomId == transferRequest.DestinationRoomInventory.RoomId &&
+                                x.InitialRoomInventory.InventoryItemId == transferRequest.InitialRoomInventory.InventoryItemId);
 
             canceledRequest.ShouldBeNull();
         }
@@ -186,21 +187,14 @@ namespace HospitalIntegrationTests
         {
             var transferEvent = UoW.GetRepository<IEquipmentTransferEventReadRepository>()
                 .GetAll()
-                .FirstOrDefault(x => x.InitialRoomId == sourceRoomId &&
-                                     x.DestinationRoomId == destinationRoomId &&
-                                     x.InventoryItemId == inventoryItemId);
+                .FirstOrDefault(x => x.InitialRoomInventory.RoomId == sourceRoomId &&
+                                     x.DestinationRoomInventory.RoomId == destinationRoomId &&
+                                     x.InitialRoomInventory.InventoryItemId == inventoryItemId);
 
             if (transferEvent == null)
             {
-                transferEvent = new EquipmentTransferEvent()
-                {
-                    StartDate = startDate,
-                    EndDate = new DateTime(2025, 11, 23, 16, 0, 0),
-                    InitialRoomId = sourceRoomId,
-                    DestinationRoomId = destinationRoomId,
-                    InventoryItemId = inventoryItemId,
-                    Quantity = 2
-                };
+                  transferEvent = new EquipmentTransferEvent(new TimePeriod(startDate, new DateTime(2025, 11, 23, 16, 0, 0)),
+                  new RoomInventory(sourceRoomId, inventoryItemId, 3), new RoomInventory(destinationRoomId, inventoryItemId, 1), 2);
                 UoW.GetRepository<IEquipmentTransferEventWriteRepository>()
                     .Add(transferEvent);
             }

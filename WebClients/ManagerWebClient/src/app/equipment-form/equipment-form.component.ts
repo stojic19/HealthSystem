@@ -115,7 +115,8 @@ export class EquipmentFormComponent implements OnInit {
       startDate: this.startDate,
       endDate: this.endDate,
       duration: this.duration,
-      roomId: this.destinationRoom.id,
+      destinationRoomId: this.destinationRoom.id,
+      initialRoomId: this.selectedItem.roomId,
     };
 
     this.roomInventoryService

@@ -128,7 +128,8 @@ namespace HospitalApi.Controllers
                 }
 
                 var cancellingEventsService = new CancellingEventsService(_uow);
-                cancellingEventsService.CancelEquipmentTransferEvent(_mapper.Map<EquipmentTransferEvent>(transferEventDTO));
+                var repo = _uow.GetRepository<IEquipmentTransferEventReadRepository>();
+                cancellingEventsService.CancelEquipmentTransferEvent(repo.GetById(transferEventDTO.Id));
 
                 return Ok("Your transfer event has been canceled.");
             }

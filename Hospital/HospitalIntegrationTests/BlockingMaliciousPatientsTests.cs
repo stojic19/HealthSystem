@@ -144,7 +144,8 @@ namespace HospitalIntegrationTests
                         Name = "prva"
                     },
                     Room = room,
-                    City = new City("TestCity",00000,new Country("TestCountry"))
+                    City = new City("TestCity",00000,new Country("TestCountry")),
+                    DoctorSchedule = new DoctorSchedule()
 
                 };
                 UoW.GetRepository<IDoctorWriteRepository>().Add(doctor);
@@ -237,8 +238,8 @@ namespace HospitalIntegrationTests
                         Name = "prva"
                     },
                     Room = room,
-                    City = new City("TestCity", 00000, new Country("TestCountry"))
-
+                    City = new City("TestCity", 00000, new Country("TestCountry")),
+                    DoctorSchedule = new DoctorSchedule()
                 };
                 UoW.GetRepository<IDoctorWriteRepository>().Add(doctor);
             }
@@ -331,7 +332,8 @@ namespace HospitalIntegrationTests
                         Name = "prva"
                     },
                     Room = room,
-                    City = new City("TestCity", 00000, new Country("TestCountry"))
+                    City = new City("TestCity", 00000, new Country("TestCountry")),
+                    DoctorSchedule = new DoctorSchedule()
 
                 };
                 UoW.GetRepository<IDoctorWriteRepository>().Add(doctor);
@@ -360,7 +362,6 @@ namespace HospitalIntegrationTests
                     AccessFailedCount = 0,
                     City = new City("TestCity", 00000, new Country("TestCountry")),
                     IsBlocked = false
-
                 };
                 UoW.GetRepository<IPatientWriteRepository>().Add(patient);
 

@@ -27,6 +27,8 @@ namespace HospitalIntegrationTests
             var destinationRoom = InsertRoom("Test destination room");
             var inventoryItem = InsertInventoryItem("Test item");
             var roomInventoryItem = InsertInventoryInRoom(sourceRoom.Id, inventoryItem.Id, 4);
+            var destinationRoomInventoryItem = InsertInventoryInRoom(destinationRoom.Id, inventoryItem.Id, 0);
+
 
             CheckAndDeleteRequests(new DateTime(2025, 11, 22, 0, 0, 0));
 

@@ -1,0 +1,12 @@
+<div class="list-group m-5">
+    <a *ngFor="let notification of notifications" class="list-group-item list-group-item-action" aria-current="true">
+      <div class="d-flex w-100 justify-content-between">
+        <h5 class="mx-1">{{notification.title}}</h5>
+        <small class="mx-1">{{notification.date}}</small>
+      </div>
+      <div class="d-flex w-100 justify-content-between">
+        <p class="mx-1">{{notification.description}}</p>
+        <button class="btn btn-close mx-3" (click)="delete(notification.id)"></button>
+      </div>
+    </a>
+  </div>

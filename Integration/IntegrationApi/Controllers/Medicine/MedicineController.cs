@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using RestSharp;
 using System;
+using System.Collections.Specialized;
+using IntegrationApi.Messages;
 
 namespace IntegrationAPI.Controllers.Medicine
 {
@@ -27,25 +29,13 @@ namespace IntegrationAPI.Controllers.Medicine
         [HttpPost]
         public IActionResult RequestMedicineInformation(CreateMedicineRequestForPharmacyDto createMedicineRequestDTO)
         {
-            if (createMedicineRequestDTO.Quantity <= 0)
-            {
-                return BadRequest("Invalid quantity.");
-            }
+            if (createMedicineRequestDTO.Quantity <= 0) return BadRequest(MedicineMessages.InvalidQuantity);
             Pharmacy pharmacy = _pharmacyMasterService.GetPharmacyById(createMedicineRequestDTO.PharmacyId);
-            if (pharmacy==null)
-            {
-                return BadRequest("Pharmacy id doesn't exist.");
-            }
-            if(pharmacy.GrpcSupported)
-            {
-                return CheckMedicineAvailabilityGrpc(createMedicineRequestDTO, pharmacy);
-            }
+            if (pharmacy == null) return NotFound(PharmacyMessages.WrongId);
+            if(pharmacy.GrpcSupported) return CheckMedicineAvailabilityGrpc(createMedicineRequestDTO, pharmacy);
             CheckMedicineAvailabilityRequestDto medicineRequestDTO = MedicineInventoryAdapter.CreateMedicineRequestToMedicineInformationRequest(createMedicineRequestDTO, pharmacy);
             IRestResponse response = SendMedicineRequestToPharmacy(medicineRequestDTO, pharmacy);
-            if (response.StatusCode != System.Net.HttpStatusCode.OK)
-            {
-                return BadRequest("Pharmacy failed to receive request! Try again");
-            }
+            if (response.StatusCode != System.Net.HttpStatusCode.OK) return Problem(MedicineMessages.DidNotReceive);
             CheckMedicineAvailabilityResponseDto responseDTO = JsonConvert.DeserializeObject <CheckMedicineAvailabilityResponseDto>(response.Content);
             return Ok(responseDTO);
         }
@@ -53,14 +43,8 @@ namespace IntegrationAPI.Controllers.Medicine
         private IActionResult CheckMedicineAvailabilityGrpc(CreateMedicineRequestForPharmacyDto createMedicineRequestDTO, Pharmacy pharmacy)
         {
             CheckMedicineAvailabilityGrpcResponseDto grpcResponseDTO = MedicineInventoryGrpcService.CheckMedicineAvailability(createMedicineRequestDTO, pharmacy);
-            if(grpcResponseDTO.ConnectionSuccesfull)
-            {
-                return Ok(grpcResponseDTO.Response);
-            }
-            else
-            {
-                return BadRequest("Pharmacy failed to receive request! Try again");
-            }
+            if(grpcResponseDTO.ConnectionSuccesfull) return Ok(grpcResponseDTO.Response);
+            return Problem(MedicineMessages.DidNotReceive);
         }
 
         private static IRestResponse SendMedicineRequestToPharmacy(CheckMedicineAvailabilityRequestDto medicineRequestDTO, Pharmacy pharmacy)
@@ -75,40 +59,24 @@ namespace IntegrationAPI.Controllers.Medicine
         [HttpPost]
         public IActionResult UrgentProcurementOfMedicine(CreateMedicineRequestForPharmacyDto createMedicineRequestDTO)
         {
-            if (createMedicineRequestDTO.Quantity <= 0)
-            {
-                return BadRequest("Invalid quantity.");
-            }
+            if (createMedicineRequestDTO.Quantity <= 0) return BadRequest(MedicineMessages.InvalidQuantity);
             Pharmacy pharmacy = _pharmacyMasterService.GetPharmacyById(createMedicineRequestDTO.PharmacyId);
-            if (pharmacy == null)
-            {
-                return BadRequest("Pharmacy id doesn't exist.");
-            }
-            if (pharmacy.GrpcSupported)
-            {
-                return MedicineProcurementGrpc(createMedicineRequestDTO, pharmacy);
-            }
+            if (pharmacy == null) return NotFound(PharmacyMessages.WrongId);
+            if (pharmacy.GrpcSupported) return MedicineProcurementGrpc(createMedicineRequestDTO, pharmacy);
             MedicineProcurementRequestDto medicineRequestDTO = MedicineInventoryAdapter.CreateMedicineRequestToEmergencyProcurementRequest(createMedicineRequestDTO, pharmacy);
             IRestResponse response = SendUrgentProcurementRequestToPharmacy(medicineRequestDTO, pharmacy);
             MedicineProcurementResponseDto responseDTO = new MedicineProcurementResponseDto();
-            if (response.StatusCode != System.Net.HttpStatusCode.OK && response.StatusCode != System.Net.HttpStatusCode.NotFound && response.StatusCode != System.Net.HttpStatusCode.Unauthorized)
-            {
-                return BadRequest("Pharmacy failed to receive request! Try again");
-            }
+            if (response.StatusCode != System.Net.HttpStatusCode.OK) return Problem(MedicineMessages.DidNotReceive);
+            responseDTO.Answer = true;
+            response = SendMedicineToHospital(new AddMedicineRequestDto() { MedicineName = createMedicineRequestDTO.MedicineName, Quantity = createMedicineRequestDTO.Quantity });
+            MedicineProcurementHospitalResponseDto responseFromHospitalDTO = JsonConvert.DeserializeObject<MedicineProcurementHospitalResponseDto>(response.Content);
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                responseDTO.Answer = true;
-                response = SendMedicineToHospital(new AddMedicineRequestDto() { MedicineName = createMedicineRequestDTO.MedicineName, Quantity = createMedicineRequestDTO.Quantity });
-                MedicineProcurementHospitalResponseDto responseFromHospitalDTO = JsonConvert.DeserializeObject<MedicineProcurementHospitalResponseDto>(response.Content);
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                {
-                    responseDTO.ExceptionMessage = responseFromHospitalDTO.Answer;
-                    return Ok(responseDTO);
-                }
-                responseDTO.ExceptionMessage = response.Content;
-                return BadRequest(responseDTO);
+                responseDTO.ExceptionMessage = responseFromHospitalDTO.Answer;
+                return Ok(responseDTO);
             }
-            return Ok(responseDTO);
+            responseDTO.ExceptionMessage = response.Content;
+            return BadRequest(responseDTO);
         }
 
         private IActionResult MedicineProcurementGrpc(CreateMedicineRequestForPharmacyDto createMedicineRequestDTO, Pharmacy pharmacy)
@@ -130,10 +98,7 @@ namespace IntegrationAPI.Controllers.Medicine
                 }
                 return Ok(grpcResponseDTO.Response);
             }
-            else
-            {
-                return BadRequest("Pharmacy failed to receive request! Try again");
-            }
+            return Problem(MedicineMessages.DidNotReceive);
         }
 
         private static IRestResponse SendUrgentProcurementRequestToPharmacy(MedicineProcurementRequestDto medicineRequestDTO, Pharmacy pharmacy)

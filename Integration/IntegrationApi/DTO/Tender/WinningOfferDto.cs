@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace IntegrationAPI.Controllers.Tenders
+namespace IntegrationAPI.DTO.Tender
 {
     public class WinningOfferDto
     {

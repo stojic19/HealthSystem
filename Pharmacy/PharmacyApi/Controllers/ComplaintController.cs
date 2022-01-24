@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
@@ -13,6 +14,8 @@ using PharmacyApi.ConfigurationMappers;
 using PharmacyApi.Controllers.Base;
 using PharmacyApi.DTO;
 using PharmacyApi.DTO.Base;
+using PharmacyApi.HttpRequestSenders;
+using PharmacyApi.HttpRequestSenders.Implementation;
 
 namespace PharmacyApi.Controllers
 {
@@ -20,8 +23,10 @@ namespace PharmacyApi.Controllers
     [ApiController]
     public class ComplaintController : BasePharmacyController
     {
-        public ComplaintController(IUnitOfWork uow, PharmacyDetails details) : base(uow, details)
+        private readonly IHttpRequestSender _httpSender;
+        public ComplaintController(IUnitOfWork uow, PharmacyDetails details, IHttpRequestSender sender) : base(uow, details)
         {
+            _httpSender = sender;
         }
 
         [HttpPost]
@@ -97,7 +102,8 @@ namespace PharmacyApi.Controllers
         [HttpPost]
         public IActionResult CreateComplaintResponse(CreateComplaintResponseDTO newResponse)
         {
-            var foundComplaint = UoW.GetRepository<IComplaintReadRepository>().GetById(newResponse.ComplaintId);
+            var foundComplaint = UoW.GetRepository<IComplaintReadRepository>().GetAll().Include(c => c.Hospital)
+                .FirstOrDefault(c => c.Id == newResponse.ComplaintId);
             if (foundComplaint == null)
             {
                 ModelState.AddModelError("ComplaintId", "Complaint not found!");
@@ -135,7 +141,21 @@ namespace PharmacyApi.Controllers
 
             //TODO: notify the hospital
 
+            ComplaintResponseToPharmacyDto dto = new ComplaintResponseToPharmacyDto
+            {
+                ApiKey = foundComplaint.Hospital.ApiKey,
+                ComplaintCreatedDate = fixTimeZone(foundComplaint.CreatedDate),
+                CreatedDate = fixTimeZone(newComplaintResponse.CreatedDate),
+                Text = newComplaintResponse.Text
+            };
+            var response = _httpSender.Post(foundComplaint.Hospital.BaseUrl + "/api/ComplaintResponse/ReceiveComplaintResponse", dto);
+            if (response.StatusCode != HttpStatusCode.OK) return Problem("Hospital failed to receive response");
             return Ok();
+        }
+
+        private DateTime fixTimeZone(DateTime time)
+        {
+            return time.ToUniversalTime() + (time - time.ToUniversalTime());
         }
     }
 }

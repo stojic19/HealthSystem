@@ -52,7 +52,6 @@ namespace PharmacyApi.Controllers
                 ModelState.AddModelError("Medicine", "Medicine with given name does not exist");
                 return BadRequest(ModelState);
             }
-            
             if (medicine == null)
             {
                 ModelState.AddModelError("Medicine", "Medicine with given name does not exist");
@@ -67,7 +66,7 @@ namespace PharmacyApi.Controllers
             }
             catch
             {
-                return BadRequest("Error while saving to sftp server");
+                return Problem("Error while saving to sftp server");
             }
             MedicineSpecificationFileDTO medicineSpecificationFileDto = new MedicineSpecificationFileDTO
             {
@@ -103,21 +102,11 @@ namespace PharmacyApi.Controllers
 
         private string saveMedicineSpecificationsToSftpServer(MedicineDTO medicine, SftpCredentialsDTO credentials)
         {
-            //string fileName = medicine.Name + "Specification" + DateTime.Now.Ticks + ".txt";
-            //string path = "MedicineSpecifications" + Path.DirectorySeparatorChar + fileName;
-            //saveFile(medicine, path);
             IPDFAdapter adapter = new DynamicPDFAdapter();
             string fileName = adapter.MakeMedicineSpecificationPdf(medicine);
             string path = "MedicineSpecifications" + Path.DirectorySeparatorChar + fileName;
             saveToSftp(path, credentials);
             return fileName;
-        }
-        private void saveFile(MedicineDTO medicine, string path)
-        {
-            StreamWriter fileSaveStream = new StreamWriter(path);
-            string jsonString = JsonConvert.SerializeObject(medicine);
-            fileSaveStream.Write(jsonString);
-            fileSaveStream.Close();
         }
         private void saveToSftp(string path, SftpCredentialsDTO credentials)
         {
@@ -133,7 +122,7 @@ namespace PharmacyApi.Controllers
         {
             return new SftpCredentialsDTO
             {
-                Host = "192.168.0.22",
+                Host = "127.0.0.1",
                 Password = "password",
                 Username = "tester"
             };

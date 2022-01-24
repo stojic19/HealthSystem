@@ -3,8 +3,11 @@ using Integration.Pharmacies.Model;
 using Integration.Pharmacies.Service;
 using Integration.Shared.Model;
 using Integration.Shared.Repository.Base;
+using IntegrationAPI.Controllers.Base;
 using IntegrationAPI.DTO.Pharmacies;
 using IntegrationAPI.DTO.Shared;
+using IntegrationAPI.HttpRequestSenders;
+using IntegrationApi.Messages;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using RestSharp;
@@ -14,11 +17,11 @@ namespace IntegrationAPI.Controllers.Pharmacies
     [Route("api/[controller]/[action]")]
     [ApiController]
     [Produces("application/json")]
-    public class RegistrationController : ControllerBase
+    public class RegistrationController : BaseIntegrationController
     {
         private PharmacyMasterService _pharmacyMasterService;
 
-        public RegistrationController(IUnitOfWork unitOfWork)
+        public RegistrationController(IUnitOfWork unitOfWork, IHttpRequestSender httpRequestSender) : base(unitOfWork, httpRequestSender)
         {
             _pharmacyMasterService = new PharmacyMasterService(unitOfWork);
         }
@@ -26,28 +29,19 @@ namespace IntegrationAPI.Controllers.Pharmacies
         [HttpPost, Produces("application/json")]
         public IActionResult RegisterPharmacy(PharmacyUrlDTO pharmacyUrlDto)
         {
-            //TODO Ucitati ove informacije iz nekog filea - pogledati kako je u pharmacy
-            Country country = new Country {Name = "Srbija"};
-            City city = new City {Name = "Novi Sad", PostalCode = 21000, Country = country};
-            HospitalDTO dto = new HospitalDTO
-            {
-                BaseUrl = $"{Request.Scheme}://{Request.Host}",
-                Name = "Nasa bolnica",
-                StreetName = "Vojvode Stepe",
-                StreetNumber = "14",
-                CityName = city.Name,
-                Email = "psw.company2@gmail.com"
-            };
-            RestClient client = new RestClient();
-            string targetUrl = pharmacyUrlDto.BaseUrl + "/api/Registration/RegisterHospital";
-            RestRequest request = new RestRequest(targetUrl);
-            request.AddJsonBody(dto);
-            var result = client.Post(request);
-            if (result.StatusCode != HttpStatusCode.OK) return BadRequest("Failed to reach pharmacy, please try again!");
-            var pharmacyString = result.Content;
+            var response = _httpRequestSender.Post(pharmacyUrlDto.BaseUrl + "/api/Registration/RegisterHospital", _hospitalInfo);
+            if (response.StatusCode != HttpStatusCode.OK) return BadRequest(PharmacyMessages.CannotReach);
+            var pharmacyString = response.Content;
             PharmacyDTO pharmacyDto = JsonConvert.DeserializeObject<PharmacyDTO>(pharmacyString);
             Location location = new Location(pharmacyDto.Latitude, pharmacyDto.Longitude);
-            Pharmacy newPaPharmacy = new Pharmacy
+            var newPharmacy = CreatePharmacy(pharmacyDto, location);
+            _pharmacyMasterService.SavePharmacy(newPharmacy);
+            return Ok(PharmacyMessages.Registered);
+        }
+
+        private static Pharmacy CreatePharmacy(PharmacyDTO pharmacyDto, Location location)
+        {
+            Pharmacy newPharmacy = new Pharmacy
             {
                 Name = pharmacyDto.PharmacyName,
                 BaseUrl = pharmacyDto.BaseUrl,
@@ -59,8 +53,7 @@ namespace IntegrationAPI.Controllers.Pharmacies
                 Location = new Location(pharmacyDto.Latitude, pharmacyDto.Longitude),
                 Email = pharmacyDto.Email
             };
-            _pharmacyMasterService.SavePharmacy(newPaPharmacy);
-            return Ok("Pharmacy registered successfully");
+            return newPharmacy;
         }
     }
 }

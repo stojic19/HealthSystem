@@ -10,9 +10,9 @@ namespace Hospital.SharedModel.Model
 {
     public class DoctorSchedule
     {
-        public int Id { get; set; }
-        public ICollection<OnCallDuty> OnCallDuties { get; set; }
-        public ICollection<Vacation> Vacations { get; set; }
+        public int Id { get; private set; }
+        public ICollection<OnCallDuty> OnCallDuties { get; private set; }
+        public ICollection<Vacation> Vacations { get; private set; }
 
         public DoctorSchedule() { }
 
@@ -20,8 +20,8 @@ namespace Hospital.SharedModel.Model
             Id = id;
         }
 
-        public DoctorSchedule(ICollection<OnCallDuty> nnCallDuties, ICollection<Vacation> vacations) {
-            OnCallDuties = OnCallDuties;
+        public DoctorSchedule(ICollection<OnCallDuty> onCallDuties, ICollection<Vacation> vacations) {
+            OnCallDuties = onCallDuties;
             Vacations = vacations;
         }
 
@@ -82,7 +82,7 @@ namespace Hospital.SharedModel.Model
                 }
             }
 
-            return foundDuties.Count();
+            return foundDuties.Count;
         }
 
     }

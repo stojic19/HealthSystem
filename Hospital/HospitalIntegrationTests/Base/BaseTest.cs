@@ -18,6 +18,7 @@ using Hospital.RoomsAndEquipment.Model;
 using Microsoft.EntityFrameworkCore;
 using Hospital.Schedule.Repository;
 using HospitalIntegrationTests.DTOs;
+using System.Collections.Generic;
 
 namespace HospitalIntegrationTests.Base
 {
@@ -106,8 +107,8 @@ namespace HospitalIntegrationTests.Base
                                 Name = "testShift",
                                 From = 8,
                                 To = 16
-                            }
-
+                            },
+                            DoctorSchedule = new DoctorSchedule()
                         };
                         doctorWriteRepo.Add(testDoctor);
                     }

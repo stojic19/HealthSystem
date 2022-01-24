@@ -194,7 +194,7 @@ namespace HospitalIntegrationTests
             if (transferEvent == null)
             {
                   transferEvent = new EquipmentTransferEvent(new TimePeriod(startDate, new DateTime(2025, 11, 23, 16, 0, 0)),
-                  new RoomInventory(sourceRoomId, inventoryItemId, 3), new RoomInventory(destinationRoomId, inventoryItemId, 1), 2);
+                  InsertInventoryInRoom(sourceRoomId, inventoryItemId, 3), InsertInventoryInRoom(destinationRoomId, inventoryItemId, 0), 2);
                 UoW.GetRepository<IEquipmentTransferEventWriteRepository>()
                     .Add(transferEvent);
             }

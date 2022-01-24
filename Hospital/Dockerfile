@@ -2,8 +2,13 @@ ARG ASPNET_VERSION=5.0
 ARG SDK_VERSION=5.0
 
 FROM mcr.microsoft.com/dotnet/aspnet:${ASPNET_VERSION} AS base
+RUN groupadd -g 5000 appuser && \
+    useradd -u 5000 -g appuser appuser
+
+USER appuser:appuser
 WORKDIR /app
-EXPOSE 80
+ENV ASPNETCORE_URLS=http://+:7000
+EXPOSE 7000
 
 FROM mcr.microsoft.com/dotnet/sdk:${SDK_VERSION} AS build
 ENV PROJECT=HospitalApi
@@ -22,5 +27,4 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
 WORKDIR /app/publish
-CMD ["/bin/sh", "-c", "export HOSPITAL_DB_PATH=$$(cat /run/secrets/hospital_db_path) && source /docker-entrypoint.sh && echo $$HOSPITAL_DB_PATH"]
 ENTRYPOINT ["dotnet", "HospitalApi.dll"]

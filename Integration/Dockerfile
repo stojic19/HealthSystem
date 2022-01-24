@@ -19,9 +19,7 @@ RUN dotnet tool install -g dotnet-ef --version 5.0.11 && \
     dotnet publish "${PROJECT}/${PROJECT}.csproj" -c Release -o /app/publish
 
 FROM base AS final
-USER newuser
 WORKDIR /app
 COPY --from=publish /app .
 WORKDIR /app/publish
-CMD ASPNETCORE_URLS=http://*:$PORT dotnet IntegrationApi.dll
 ENTRYPOINT ["dotnet", "IntegrationApi.dll"]

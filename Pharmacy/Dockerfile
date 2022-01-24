@@ -22,5 +22,4 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
 WORKDIR /app/publish
-CMD ASPNETCORE_URLS=http://*:$PORT dotnet IntegrationApi.dll
 ENTRYPOINT ["dotnet", "PharmacyApi.dll"]

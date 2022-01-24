@@ -29,10 +29,11 @@ jobs:
 
       - name: Installing libs
         run: |
-          sudo add-apt-repository universe
           apt-get update
           apt-get upgrade
           apt-get -y install sudo
+          sudo add-apt-repository universe
+          sidp apt-get update
           apt-get -y install unzip
           apt -y install npm
           npm install -g npm@latest

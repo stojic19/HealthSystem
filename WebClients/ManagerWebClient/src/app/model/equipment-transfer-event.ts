@@ -9,10 +9,13 @@ export class EquipmentTransferEvent {
 
 export class EquipmentTransferEventDTO {
   id: number;
-  startDate: Date;
-  endDate: Date;
-  initialRoomId: number;
-  destinationRoomId: number;
-  inventoryItemId: number;
+  timePeriod: TimePeriod;
+  initialRoomInventoryId: number;
+  destinationRoomInventoryId: number;
   quantity: number;
+}
+
+export class TimePeriod{
+  startTime : Date;
+  endTime : Date;
 }

@@ -89,6 +89,8 @@ namespace HospitalApi.Controllers
         public IActionResult GetRoomInventoryAmount(int roomId, int itemId)
         {
             var roomInventoryRepo = _uow.GetRepository<IRoomInventoryReadRepository>();
+            var roomInventoryWriteRepo = _uow.GetRepository<IRoomInventoryWriteRepository>();
+
             IEnumerable<RoomInventory> roomInventories = new List<RoomInventory>();
 
             roomInventories = roomInventoryRepo.GetAll()

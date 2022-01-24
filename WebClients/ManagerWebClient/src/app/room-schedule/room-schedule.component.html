@@ -13,11 +13,7 @@
     >
       <table
         *ngIf="!isLoading"
-        class="
-          table table-hover
-          justify-content-center
-          equipmentTable equipmentTable
-        "
+        class="table table-hover justify-content-center equipmentTable equipmentTable"
       >
         <thead>
           <tr>
@@ -30,8 +26,8 @@
         <tbody>
           <tr *ngFor="let event of equipmentTransferEvents">
             <td>Equipment Transfer</td>
-            <td>{{ event.startDate | date: "dd.MM.yyyy HH:mm" }}</td>
-            <td>{{ event.endDate | date: "dd.MM.yyyy HH:mm" }}</td>
+            <td>{{ event.timePeriod.startTime | date: "dd.MM.yyyy HH:mm" }}</td>
+            <td>{{ event.timePeriod.endTime | date: "dd.MM.yyyy HH:mm" }}</td>
             <td class="pt-1">
               <div class="buttonWrapper">
                 <button

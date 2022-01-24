@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches: 
-      - 'feature/non-root-user'
+      - 'feature/non-root-user-2'
 
 env:
   DOCKER_REPO_PATH : 'nikolaaleksic'

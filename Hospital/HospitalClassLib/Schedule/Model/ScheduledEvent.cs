@@ -37,6 +37,22 @@ namespace Hospital.Schedule.Model
             Validate();
         }
 
+        public ScheduledEvent(int id, ScheduledEventType scheduledEventType, bool isCanceled, bool isDone, DateTime startDate, DateTime endDate, DateTime cancellationDate, int patientId, int doctorId, Doctor doctor)
+        {
+            Id = id;
+            ScheduledEventType = scheduledEventType;
+            IsCanceled = isCanceled;
+            IsDone = isDone;
+            StartDate = startDate;
+            EndDate = endDate;
+            CancellationDate = cancellationDate;
+            PatientId = patientId;
+            DoctorId = doctorId;
+            Room = doctor.Room;
+            RoomId = doctor.Room.Id;
+            Validate();
+        }
+
         public ScheduledEvent()
         {
         }

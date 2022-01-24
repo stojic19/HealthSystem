@@ -158,7 +158,9 @@ namespace HospitalApi.Controllers
                 }
 
                 var doctorRepoRead = _uow.GetRepository<IDoctorReadRepository>();
-                var doctorRepoWrite = _uow.GetRepository<IDoctorWriteRepository>();
+                var doctorScheduleRepoRead = _uow.GetRepository<IDoctorScheduleReadRepository>();
+                var doctorScheduleRepoWrite = _uow.GetRepository<IDoctorScheduleWriteRepository>();
+
                 var doctor = doctorRepoRead.GetById(vacationDTO.DoctorId);
 
                 if (doctor == null)
@@ -166,7 +168,9 @@ namespace HospitalApi.Controllers
                     return StatusCode(StatusCodes.Status500InternalServerError, "Couldn't update doctor!");
                 }
 
-                if (doctor.Vacations.Where(v => v.StartDate > DateTime.Now).Count() > 0) {
+                var doctorSchedule = doctorScheduleRepoRead.GetById(doctor.DoctorScheduleId);
+
+                if (doctorSchedule.Vacations.Where(v => v.StartDate > DateTime.Now).Count() > 0) {
                     return StatusCode(StatusCodes.Status500InternalServerError, "Vacation already exists!");
                 }
 
@@ -176,10 +180,10 @@ namespace HospitalApi.Controllers
 
                 Vacation v = new Vacation(vacationDTO.Type, vacationDTO.StartDate, vacationDTO.EndDate);
 
-                var vacations = doctor.Vacations.ToList();
+                var vacations = doctorSchedule.Vacations.ToList();
                 vacations.Add(v);
-                doctor.Vacations = vacations;
-                doctorRepoWrite.Update(doctor);
+                doctorSchedule.Vacations = vacations;
+                doctorScheduleRepoWrite.Update(doctorSchedule);
 
                 return Ok(doctor);
             }
@@ -208,7 +212,8 @@ namespace HospitalApi.Controllers
                 Vacation v = new Vacation(type, startDate, endDate);
 
                 var doctorRepoRead = _uow.GetRepository<IDoctorReadRepository>();
-                var doctorRepoWrite = _uow.GetRepository<IDoctorWriteRepository>();
+                var doctorScheduleRepoRead = _uow.GetRepository<IDoctorScheduleReadRepository>();
+                var doctorScheduleRepoWrite = _uow.GetRepository<IDoctorScheduleWriteRepository>();
 
                 var doctor = doctorRepoRead.GetById(vacationDTO.DoctorId);
 
@@ -217,13 +222,15 @@ namespace HospitalApi.Controllers
                     return StatusCode(StatusCodes.Status500InternalServerError, "Couldn't update doctor!");
                 }
 
-                var futureVacation = doctor.Vacations.Where(v => v.StartDate > DateTime.Now).FirstOrDefault();
+                var doctorSchedule = doctorScheduleRepoRead.GetById(doctor.DoctorScheduleId);
 
-                var vacations = doctor.Vacations.ToList();
+                var futureVacation = doctorSchedule.Vacations.Where(v => v.StartDate > DateTime.Now).FirstOrDefault();
+
+                var vacations = doctorSchedule.Vacations.ToList();
                 vacations.Remove(futureVacation);
                 vacations.Add(v);
-                doctor.Vacations = vacations;
-                doctorRepoWrite.Update(doctor);
+                doctorSchedule.Vacations = vacations;
+                doctorScheduleRepoWrite.Update(doctorSchedule);
 
                 return Ok(doctor);
             }
@@ -245,19 +252,23 @@ namespace HospitalApi.Controllers
                 return BadRequest();
             }
             var doctorReadRepo = _uow.GetRepository<IDoctorReadRepository>();
-            var doctorWriteRepo = _uow.GetRepository<IDoctorWriteRepository>();
+            var doctorScheduleRepoRead = _uow.GetRepository<IDoctorScheduleReadRepository>();
+            var doctorScheduleRepoWrite = _uow.GetRepository<IDoctorScheduleWriteRepository>();
 
             var doctor = doctorReadRepo.GetById(id);
+
             if (doctor == null) {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Couldn't update doctor!");
             }
 
-            var futureVacation = doctor.Vacations.Where(v => v.StartDate > DateTime.Now).FirstOrDefault();
+            var doctorSchedule = doctorScheduleRepoRead.GetById(doctor.DoctorScheduleId);
 
-            var vacations = doctor.Vacations.ToList();
+            var futureVacation = doctorSchedule.Vacations.Where(v => v.StartDate > DateTime.Now).FirstOrDefault();
+
+            var vacations = doctorSchedule.Vacations.ToList();
             vacations.Remove(futureVacation);
-            doctor.Vacations = vacations;
-            doctorWriteRepo.Update(doctor);
+            doctorSchedule.Vacations = vacations;
+            doctorScheduleRepoWrite.Update(doctorSchedule);
 
             return Ok();
 
@@ -270,7 +281,8 @@ namespace HospitalApi.Controllers
 
             var doctorRepo = _uow.GetRepository<IDoctorReadRepository>();
             return Ok(doctorRepo.GetAll()
-                .Include(d => d.Vacations.Where(v => v.StartDate > DateTime.Now)));
+                .Include(d => d.DoctorSchedule).ThenInclude(ds => ds.Vacations.Where(v => v.StartDate > DateTime.Now)));
+                //.Include(d => d.Vacations.Where(v => v.StartDate > DateTime.Now)));
 
         }
 
@@ -281,7 +293,7 @@ namespace HospitalApi.Controllers
         {
             var doctorRepo = _uow.GetRepository<IDoctorReadRepository>();
             return Ok(doctorRepo.GetAll().Where(d => d.Id == id)
-                .Include(d => d.Vacations.Where(v => v.StartDate > DateTime.Now)));
+                .Include(d => d.DoctorSchedule).ThenInclude(ds => ds.Vacations.Where(v => v.StartDate > DateTime.Now)));
         }
 
     }

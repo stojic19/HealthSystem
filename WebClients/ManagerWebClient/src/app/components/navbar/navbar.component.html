@@ -303,11 +303,17 @@
           class="nav-item active"
           *ngIf="loginStatus$ | async as LoginStatus"
         >
-          <a class="nav-link" *ngIf="!isProd" routerLink="/notifications"
+          <a class="nav-link" *ngIf="!isProd && !notifications?.length" routerLink="/notifications"
             >Notifications</a
           >
-          <a class="nav-link" *ngIf="isProd" routerLink="/manager/notifications"
+          <a class="nav-link" *ngIf="isProd && !notifications?.length" routerLink="/manager/notifications"
             >Notifications</a
+          >
+          <a class="nav-link text-success" *ngIf="isProd && notifications?.length" routerLink="/manager/notifications"
+            >Notifications!</a
+          >
+          <a class="nav-link text-success" *ngIf="!isProd && notifications?.length" routerLink="/notifications"
+            >Notifications!</a
           >
         </li>
         </ul>

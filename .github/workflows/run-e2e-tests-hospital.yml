@@ -32,8 +32,9 @@ jobs:
           apt-get update
           apt-get upgrade
           apt-get -y install sudo
+          sudo apt-get install software-properties-common
           sudo add-apt-repository universe
-          sidp apt-get update
+          sudo apt-get update
           apt-get -y install unzip
           apt -y install npm
           npm install -g npm@latest

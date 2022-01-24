@@ -3,6 +3,8 @@ version: '3.4'
 secrets:
   postgres_password:
     external: true
+  hospital_db_path:
+    external: true
 
 services:
 
@@ -25,6 +27,8 @@ services:
 
   hospitalapi:
     image: srdjansukovic/psw_hospitalapi
+    command: [ '/bin/sh', '-c', 'export HOSPITAL_DB_PATH=$$(cat /var/run/secrets/hospital_db_path) ; source /docker-entrypoint.sh' ]
+    # entrypoint: source /entrypoint_overwrited.sh
     build:
       dockerfile: Stacks/Build/Hospital/Dockerfile
       context: ../
@@ -33,12 +37,19 @@ services:
     restart: on-failure
     depends_on:
       - hospitaldb
-    environment:
-      HOSPITAL_DB_PATH: "host=hospitaldb;port=5432;database=HOSPITAL;username=postgres;password=/run/secrets/postgres_password"
+    secrets:
+      - hospital_db_path
+    # environment:
+    #   HOSPITAL_DB_PATH:
+      #POSTGRES_PASSWORD_FILE: "xasd"
+      #POSTGRES_PASSWORD_FILE_X: "password=${POSTGRES_PASSWORD_FILE}"
+      # HOSPITAL_DB_PATH: /run/secrets/hospital_db_path
       #HOSPITAL_DB_PATH: "host=hospitaldb;port=5432;database=HOSPITAL;username=postgres;password=postgres"
 
   pharmacyapi:
     image: srdjansukovic/psw_pharmacyapi
+    # secrets:
+    #   - postgres_password
     build:
       dockerfile: Stacks/Build/Pharmacy/Dockerfile
       context: ../
@@ -49,10 +60,13 @@ services:
       - pharmacydb
       - rabbitmq
     environment:
-      PHARMACY_DB_PATH: "host=pharmacydb;port=5432;database=PHARMACY;username=postgres;password=/run/secrets/postgres_password"
+      #POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      PHARMACY_DB_PATH: "host=pharmacydb;port=5432;database=PHARMACY;username=postgres;password=postgres"
       RABBITMQ_HOST: "rabbitmq"
 
   integrationapi:
+    # secrets:
+    #   - postgres_password
     image: srdjansukovic/psw_integrationapi
     build:
       dockerfile: Stacks/Build/Integration/Dockerfile
@@ -64,7 +78,8 @@ services:
       - integrationdb
       - rabbitmq
     environment:
-      INTEGRATION_DB_PATH: "host=integrationdb;port=5432;database=INTEGRATION;username=postgres;password=/run/secrets/postgres_password"
+      #POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      INTEGRATION_DB_PATH: "host=integrationdb;port=5432;database=INTEGRATION;username=postgres;password=postgres"
       RABBITMQ_HOST: "rabbitmq"
 
   patient-ui:
@@ -96,9 +111,11 @@ services:
 
   hospitaldb:
     image: postgres:13
+    secrets:
+      - postgres_password
     restart: always
     environment:
-      POSTGRES_PASSWORD: /run/secrets/postgres_password
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
       POSTGRES_USER: "postgres"
       POSTGRES_DB: "HOSPITAL"
     ports:
@@ -106,9 +123,11 @@ services:
 
   pharmacydb:
     image: postgres:13
+    secrets:
+      - postgres_password
     restart: always
     environment:
-      POSTGRES_PASSWORD: /run/secrets/postgres_password
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
       POSTGRES_USER: "postgres"
       POSTGRES_DB: "PHARMACY"
     ports:
@@ -116,9 +135,11 @@ services:
 
   integrationdb:
     image: postgres:13
+    secrets:
+      - postgres_password
     restart: always
     environment:
-      POSTGRES_PASSWORD: /run/secrets/postgres_password
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
       POSTGRES_USER: "postgres"
       POSTGRES_DB: "INTEGRATION"
     ports:

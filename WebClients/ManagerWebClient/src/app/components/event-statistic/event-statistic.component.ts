@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Chart} from 'node_modules/chart.js';
+import { NumberOfScheduling } from 'src/app/interfaces/number-of-scheduling';
 import { StartSchedulingPerPartOfDay } from 'src/app/interfaces/start-scheduling-per-part-of-day';
 import {SuccessSchedulingPerDayOfWeek } from 'src/app/interfaces/succes-scheduling-per-day-of-week';
 import { EventsService } from 'src/app/services/events.service';
@@ -14,6 +15,7 @@ export class EventStatisticComponent implements OnInit {
   statistic! : StartSchedulingPerPartOfDay;
   statisticsPerDayOfWeek! : SuccessSchedulingPerDayOfWeek;
   statisticsPerMonths! : number[];
+  numbersOfScheduling! : NumberOfScheduling[];
   constructor(private _eventService : EventsService) { 
     
   }
@@ -84,5 +86,33 @@ export class EventStatisticComponent implements OnInit {
       }
   });
 } });
+
+this._eventService.getNumberOfStepsSuccessScheduling().subscribe({next: (data: NumberOfScheduling[]) => {this.numbersOfScheduling = data;  
+  
+  const doughnutChart = new Chart("polarAreaChart", {
+    type: 'polarArea',
+    data: {
+        labels: [this.numbersOfScheduling[0].numberOfSteps,this.numbersOfScheduling[1].numberOfSteps,this.numbersOfScheduling[2].numberOfSteps,this.numbersOfScheduling[3].numberOfSteps,this.numbersOfScheduling[4].numberOfSteps,this.numbersOfScheduling[5].numberOfSteps],
+        datasets: [{
+            data: [this.numbersOfScheduling[0].numberOfScheduled,this.numbersOfScheduling[1].numberOfScheduled,this.numbersOfScheduling[2].numberOfScheduled,this.numbersOfScheduling[3].numberOfScheduled,this.numbersOfScheduling[4].numberOfScheduled,this.numbersOfScheduling[5].numberOfScheduled],
+            backgroundColor: [
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 0, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(0, 0, 0, 0.8)'
+            ]
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+} });
+
 }}
   

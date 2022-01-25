@@ -8,5 +8,6 @@ namespace Hospital.EventStoring.Service.Interfaces
         public StartSchedulingPerPartOfDay GetStatisticsPerPartOfDay();
         public SuccessSchedulingPerDayOfWeek GetStatisticsPerDayOfWeek();
         public IEnumerable<int> GetStatisticsPerMonths();
+        public IEnumerable<NumberOfScheduling> GetNumberOfSteps();
     }
 }

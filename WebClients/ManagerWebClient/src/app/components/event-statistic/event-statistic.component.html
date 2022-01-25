@@ -1,18 +1,18 @@
 <div class="container">
     <div class="row">
 <div id="divFirstChart" class="col">
-    <h6 style="align-self: center; font-style: italic;">Number of scheduling per part of day</h6>
+    <h6 style="align-self: center; font-style: italic;">Scheduling attempts by periods of day</h6>
     <canvas id="myChart"></canvas>
 </div>
 <div id="divSecondChart" style="width: 300px; height: 300px;" class="col">
-    <h6 style="align-self: center; font-style: italic;">Number of scheduling per month</h6>
+    <h6 style="align-self: center; font-style: italic;">Scheduling attempts per month</h6>
     <canvas id="doughnutChart"></canvas>
 </div>
 </div>
 <div class="row">
     <div class="col">
-        <h6 style="align-self: center; font-style: italic;">Number of success/unsuccess scheduling per days of week</h6>
-        <table style="border: 3px;">
+        <h6 style="align-self: center; font-style: italic;">Number of successful/unsuccessful scheduling by days per week</h6>
+        <table>
             <thead>
                 <th></th>
                 <th>Monday</th>
@@ -23,7 +23,7 @@
                 <th>Saturday</th>
                 <th>Sunday</th>
             </thead>
-            <tbody >
+            <tbody>
                 <tr>
                     <td style="color : green;">Success</td>
                     <td>{{statisticsPerDayOfWeek.monday[0]}}</td>
@@ -46,6 +46,10 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+    <div id="divThirdChart" style="width: 300px; height: 300px;" class="col">
+        <h6 style="align-self: center; font-style: italic;">Successful scheduling by number of steps</h6>
+        <canvas id="polarAreaChart"></canvas>
     </div>
 </div>
 </div>

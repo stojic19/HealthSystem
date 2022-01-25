@@ -138,5 +138,49 @@ namespace HospitalUnitTests
 
             statistics[11].ShouldBe(2);
         }
+        [Fact]
+        public void Get_number_of_steps()
+        {
+            ClearDbContext();
+            Context.StoredEvents.Add(new StoredEvent
+            {
+                Username = "testPatient123",
+                Time = new DateTime(2021, 12, 20, 10, 32, 0),
+                Step = Step.StartScheduling
+            });
+
+            Context.StoredEvents.Add(new StoredEvent
+            {
+                Username = "testPatient123",
+                Time = new DateTime(2021, 12, 20, 10, 32, 30),
+                Step = Step.DateNext
+            });
+            Context.StoredEvents.Add(new StoredEvent
+            {
+                Username = "testPatient123",
+                Time = new DateTime(2021, 12, 20, 10, 32, 31),
+                Step = Step.SpecializationNext
+            });
+
+            Context.StoredEvents.Add(new StoredEvent
+            {
+                Username = "testPatient123",
+                Time = new DateTime(2021, 12, 20, 10, 32, 32),
+                Step = Step.DoctorNext
+            });
+            Context.StoredEvents.Add(new StoredEvent
+            {
+                Username = "testPatient123",
+                Time = new DateTime(2021, 12, 20, 10, 32, 40),
+                Step = Step.Schedule
+            });
+            Context.SaveChanges();
+
+            var eventStoringService = new EventStoringService(UoW);
+            var statistics = eventStoringService.GetNumberOfSteps().ToList();
+
+            statistics[0].NumberOfSteps.ShouldBe(5);
+            statistics[0].NumberOfScheduled.ShouldBe(1);
+        }
     }
 }

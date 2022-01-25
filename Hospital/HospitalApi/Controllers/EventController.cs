@@ -67,5 +67,12 @@ namespace HospitalApi.Controllers
             var result = _eventStoringService.GetStatisticsPerMonths();
             return Ok(result);
         }
+        [Authorize(Roles = "Manager")]
+        [HttpGet]
+        public IActionResult GetNumberOfStepsSuccessScheduling()
+        {
+            var result = _eventStoringService.GetNumberOfSteps();
+            return Ok(result);
+        }
     }
 }

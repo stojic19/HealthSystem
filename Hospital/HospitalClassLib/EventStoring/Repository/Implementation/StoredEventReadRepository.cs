@@ -88,14 +88,10 @@ namespace Hospital.EventStoring.Repository.Implementation
             return result;
         }
 
-        public IEnumerable<StoredEvent> GetAllStarted()
+        public IEnumerable<StoredEvent> GetAllByStep(Step step)
         {
-            return GetAll().Where(se => se.Step.Equals(Step.StartScheduling));
+            return GetAll().Where(se => se.Step.Equals(step));
         }
 
-        public IEnumerable<StoredEvent> GetAllScheduled()
-        {
-            return GetAll().Where(se => se.Step.Equals(Step.Schedule));
-        }
     }
 }

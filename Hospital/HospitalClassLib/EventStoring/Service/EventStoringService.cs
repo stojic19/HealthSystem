@@ -45,12 +45,12 @@ namespace Hospital.EventStoring.Service
         private IEnumerable<SuccessScheduling> GetStartAndEndForSuccessScheduling()
         {
             var steps = new List<SuccessScheduling>();
-            var startSchedulingEvents = _uow.GetRepository<IStoredEventReadRepository>().GetAllStarted().ToList();
-            var scheduledEvents = _uow.GetRepository<IStoredEventReadRepository>().GetAllScheduled().ToList();
+            var startSchedulingEvents = _uow.GetRepository<IStoredEventReadRepository>().GetAllByStep(Step.StartScheduling).ToList();
+            var scheduledEvents = _uow.GetRepository<IStoredEventReadRepository>().GetAllByStep(Step.Schedule).ToList();
             foreach (var eventScheduled in scheduledEvents)
             {
                 var schedulingEvents = startSchedulingEvents.ToList();
-                foreach (var startScheduling in schedulingEvents.Where(startScheduling => eventScheduled.Username.Equals(startScheduling.Username) && (startScheduling.Time.AddMinutes(1) >= eventScheduled.Time)))
+                foreach (var startScheduling in schedulingEvents.Where(startScheduling => eventScheduled.Username.Equals(startScheduling.Username) && (startScheduling.Time.AddMinutes(2) >= eventScheduled.Time)))
                 {
                     steps.Add(new SuccessScheduling
                     {
@@ -74,7 +74,7 @@ namespace Hospital.EventStoring.Service
         public IEnumerable<NumberOfScheduling> GetNumberOfSteps()
         {
             var result = new List<NumberOfScheduling>();
-            for (var i = 5; i <= 10; i++)
+            for (var i = 5; i <= 9; i++)
             {
                 result.Add(new NumberOfScheduling
                 {
@@ -82,6 +82,12 @@ namespace Hospital.EventStoring.Service
                     NumberOfScheduled = GetNumberStepsForSuccessScheduling().Count(steps => steps == i)
                 });
             }
+
+            result.Add(new NumberOfScheduling
+            {
+                NumberOfSteps = 10,
+                NumberOfScheduled = GetNumberStepsForSuccessScheduling().Count(steps => steps>=10)
+            });
 
             return result;
         }

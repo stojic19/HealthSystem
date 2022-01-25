@@ -92,7 +92,7 @@ this._eventService.getNumberOfStepsSuccessScheduling().subscribe({next: (data: N
   const doughnutChart = new Chart("polarAreaChart", {
     type: 'polarArea',
     data: {
-        labels: [this.numbersOfScheduling[0].numberOfSteps,this.numbersOfScheduling[1].numberOfSteps,this.numbersOfScheduling[2].numberOfSteps,this.numbersOfScheduling[3].numberOfSteps,this.numbersOfScheduling[4].numberOfSteps,this.numbersOfScheduling[5].numberOfSteps],
+        labels: ['5','6','7','8','9','10 and more'],
         datasets: [{
             data: [this.numbersOfScheduling[0].numberOfScheduled,this.numbersOfScheduling[1].numberOfScheduled,this.numbersOfScheduling[2].numberOfScheduled,this.numbersOfScheduling[3].numberOfScheduled,this.numbersOfScheduling[4].numberOfScheduled,this.numbersOfScheduling[5].numberOfScheduled],
             backgroundColor: [
@@ -100,7 +100,9 @@ this._eventService.getNumberOfStepsSuccessScheduling().subscribe({next: (data: N
               'rgba(255, 206, 86, 1)',
               'rgba(75, 192, 0, 1)',
               'rgba(153, 102, 255, 1)',
-              'rgba(0, 0, 0, 0.8)'
+              'rgba(255, 0, 0, 0.8)',
+              'rgba(255, 255, 0, 0.8)',
+
             ]
         }]
     },

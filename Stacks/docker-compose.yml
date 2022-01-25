@@ -27,26 +27,26 @@ services:
 
   hospitalapi:
     image: nikolaaleksic/hospital
-    # command: [ '/bin/sh', '-c', 'export HOSPITAL_DB_PATH="$$(cat /run/secrets/hospital_db_path)" && source /docker-entrypoint.sh' ]
-    # entrypoint: source /entrypoint_overwrited.sh
+    volumes:
+      - ./data:/data/
+    entrypoint: ['/bin/bash', '-c' ,  '/data/wait-for-it.sh hospitaldb:5432 -t 60 && source /data/env_secrets_expand.sh && dotnet HospitalApi.dll']
     build:
       dockerfile: Stacks/Build/Hospital/Dockerfile
       context: ../
     ports:  
-      - "8088:80"
+      - "8088:7000"
     restart: on-failure
     depends_on:
       - hospitaldb 
     secrets:
       - source: hospital_db_path
-    #environment:
-      #HOSPITAL_DB_PATH: "/run/secrets/hospital_db_path"
-      #HOSPITAL_DB_PATH: "host=hospitaldb;port=5432;database=HOSPITAL;username=postgres;password=postgres"
+    environment:
+      HOSPITAL_DB_PATH: DOCKER-SECRET->hospital_db_path
 
   pharmacyapi:
     image: nikolaaleksic/pharmacy
-    # secrets:
-    #   - postgres_password
+    volumes:
+      - ./data:/data/
     build:
       dockerfile: Stacks/Build/Pharmacy/Dockerfile
       context: ../
@@ -59,14 +59,13 @@ services:
     secrets:
       - source: hospital_db_path
     environment:
-      #POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
       PHARMACY_DB_PATH: "host=pharmacydb;port=5432;database=PHARMACY;username=postgres;password=postgres"
       RABBITMQ_HOST: "rabbitmq"
 
   integrationapi:
-    # secrets:
-    #   - postgres_password
     image: nikolaaleksic/integration
+    volumes:
+      - ./data:/data/
     build:
       dockerfile: Stacks/Build/Integration/Dockerfile
       context: ../
@@ -79,7 +78,6 @@ services:
     secrets:
       - source: hospital_db_path
     environment:
-      #POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
       INTEGRATION_DB_PATH: "host=integrationdb;port=5432;database=INTEGRATION;username=postgres;password=postgres"
       RABBITMQ_HOST: "rabbitmq"
 

@@ -2,8 +2,13 @@ ARG ASPNET_VERSION=5.0
 ARG SDK_VERSION=5.0
 
 FROM mcr.microsoft.com/dotnet/aspnet:${ASPNET_VERSION} AS base
+RUN groupadd -g 5000 appuser && \
+    useradd -u 5000 -g appuser appuser
+
+USER appuser:appuser
 WORKDIR /app
-EXPOSE 80
+ENV ASPNETCORE_URLS=http://+:7002
+EXPOSE 7002
 
 FROM mcr.microsoft.com/dotnet/sdk:${SDK_VERSION} AS build
 ENV PROJECT=PharmacyApi

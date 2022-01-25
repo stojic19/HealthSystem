@@ -9,6 +9,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { MatTableDataSource } from '@angular/material/table';
 import { ICurrentUser } from 'src/app/interfaces/current-user';
 import { AuthService } from 'src/app/services/AuthService/auth.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ReportComponent } from '../report/report.component';
 
 @Component({
   selector: 'app-patient-medical-record',
@@ -44,6 +46,7 @@ export class PatientMedicalRecordComponent implements OnInit {
     'DoctorSpecialization',
     'Room',
     'Survey',
+    'Report',
   ];
 
   futureAppointments!: MatTableDataSource<IAppointment>;
@@ -61,7 +64,8 @@ export class PatientMedicalRecordComponent implements OnInit {
     private _service: MedicalRecordService,
     private _router: Router,
     private changeDetectorRefs: ChangeDetectorRef,
-    private authService: AuthService
+    private authService: AuthService,
+    public matDialog: MatDialog
   ) {
     this.futureAppointments = new MatTableDataSource<IAppointment>();
     this.finishedAppointments = new MatTableDataSource<IFinishedAppointment>();
@@ -136,5 +140,13 @@ export class PatientMedicalRecordComponent implements OnInit {
   scheduleRecommended() {
     this.isVisibleRecommended = true;
     this.isVisible = false;
+  }
+  openReport(id: number) { 
+
+    this.matDialog.open(ReportComponent, {
+      height: '580px',
+      width: '500px',
+      data: id,
+    });
   }
 }

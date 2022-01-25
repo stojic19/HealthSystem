@@ -18,6 +18,15 @@ namespace Hospital.MedicalRecords.Service
         {
           return _uow.GetRepository<IReportReadRepository>().GetAllReports(userName);
         }
-      
+
+        public IEnumerable<Report> GetAllReports()
+        {
+            return _uow.GetRepository<IReportReadRepository>().GetAll();
+        }
+
+        public Report GetReport(int eventId)
+        {
+            return _uow.GetRepository<IReportReadRepository>().GetReport(eventId);
+        }
     }
 }

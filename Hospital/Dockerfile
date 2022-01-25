@@ -5,7 +5,6 @@ FROM mcr.microsoft.com/dotnet/aspnet:${ASPNET_VERSION} AS base
 RUN groupadd -g 5000 appuser && \
     useradd -u 5000 -g appuser appuser
 
-USER appuser:appuser
 WORKDIR /app
 ENV ASPNETCORE_URLS=http://+:7000
 EXPOSE 7000
@@ -24,6 +23,7 @@ RUN dotnet tool install -g dotnet-ef --version 5.0.11 && \
     dotnet publish "${PROJECT}/${PROJECT}.csproj" -c Release -o /app/publish
 
 FROM base AS final
+RUN apt-get install coreutils
 USER appuser:appuser
 WORKDIR /app
 COPY --from=publish /app .

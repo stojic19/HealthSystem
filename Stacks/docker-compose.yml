@@ -44,6 +44,9 @@ services:
       - hospitaldb 
     secrets:
       - source: hospital_db_path
+        uid: '5000'
+        gid: '5000'
+        mode: 0440
     environment:
       HOSPITAL_DB_PATH: DOCKER-SECRET->hospital_db_path
 
@@ -63,6 +66,9 @@ services:
       - rabbitmq
     secrets:
       - source: pharmacy_db_path
+        uid: '5000'
+        gid: '5000'
+        mode: 0440
     environment:
       RABBITMQ_HOST: "rabbitmq"
       PHARMACY_DB_PATH: DOCKER-SECRET->pharmacy_db_path
@@ -83,6 +89,9 @@ services:
       - rabbitmq
     secrets:
       - source: integration_db_path
+        uid: '5000'
+        gid: '5000'
+        mode: 0440
     environment:
       INTEGRATION_DB_PATH: DOCKER-SECRET->integration_db_path
       RABBITMQ_HOST: "rabbitmq"

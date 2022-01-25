@@ -24,6 +24,7 @@ RUN dotnet tool install -g dotnet-ef --version 5.0.11 && \
     dotnet publish "${PROJECT}/${PROJECT}.csproj" -c Release -o /app/publish
 
 FROM base AS final
+USER appuser:appuser
 WORKDIR /app
 COPY --from=publish /app .
 WORKDIR /app/publish

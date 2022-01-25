@@ -5,6 +5,10 @@ secrets:
     external: true
   hospital_db_path:
     external: true
+  integration_db_path:
+    external: true
+  pharmacy_db_path:
+    external: true
 
 services:
 
@@ -47,38 +51,40 @@ services:
     image: nikolaaleksic/pharmacy
     volumes:
       - ./data:/data/
+    entrypoint: ['/bin/bash', '-c' ,  '/data/wait-for-it.sh pharmacydb:5432 -t 60 && source /data/env_secrets_expand.sh && dotnet PharmacyApi.dll']
     build:
       dockerfile: Stacks/Build/Pharmacy/Dockerfile
       context: ../
     ports:  
-      - "8089:80"
+      - "8089:7001"
     restart: on-failure
     depends_on:
       - pharmacydb
       - rabbitmq
     secrets:
-      - source: hospital_db_path
+      - source: pharmacy_db_path
     environment:
-      PHARMACY_DB_PATH: "host=pharmacydb;port=5432;database=PHARMACY;username=postgres;password=postgres"
       RABBITMQ_HOST: "rabbitmq"
+      PHARMACY_DB_PATH: DOCKER-SECRET->pharmacy_db_path
 
   integrationapi:
     image: nikolaaleksic/integration
     volumes:
       - ./data:/data/
+    entrypoint: ['/bin/bash', '-c' ,  '/data/wait-for-it.sh integrationdb:5432 -t 60 && source /data/env_secrets_expand.sh && dotnet IntegrationApi.dll']
     build:
       dockerfile: Stacks/Build/Integration/Dockerfile
       context: ../
     ports:  
-      - "8090:80"
+      - "8090:7002"
     restart: on-failure
     depends_on:
       - integrationdb
       - rabbitmq
     secrets:
-      - source: hospital_db_path
+      - source: integration_db_path
     environment:
-      INTEGRATION_DB_PATH: "host=integrationdb;port=5432;database=INTEGRATION;username=postgres;password=postgres"
+      INTEGRATION_DB_PATH: DOCKER-SECRET->integration_db_path
       RABBITMQ_HOST: "rabbitmq"
 
   patient-ui:

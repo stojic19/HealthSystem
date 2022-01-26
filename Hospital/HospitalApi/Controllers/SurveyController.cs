@@ -4,7 +4,6 @@ using Hospital.Schedule.Repository;
 using Hospital.Schedule.Service.ServiceInterface;
 using Hospital.SharedModel.Model.Enumerations;
 using Hospital.SharedModel.Repository.Base;
-using HospitalApi.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -54,7 +53,6 @@ namespace HospitalApi.Controllers
             return categoriesSurvey;
         }
 
-        [Authorize(Roles = "Patient")]
         [HttpPost]
         public IActionResult CreateSurvey()
         {

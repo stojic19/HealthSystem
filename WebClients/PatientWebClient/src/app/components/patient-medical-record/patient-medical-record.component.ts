@@ -11,6 +11,10 @@ import { ICurrentUser } from 'src/app/interfaces/current-user';
 import { AuthService } from 'src/app/services/AuthService/auth.service';
 import { IEvent, Step } from 'src/app/interfaces/ievent';
 import { EventService } from 'src/app/services/EventSourcingService/event.service';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { PrescriptionComponent } from '../prescription/prescription.component';
+import { PrescriptionService } from 'src/app/services/PrescriptionService/prescription.service';
+import { identifierModuleUrl } from '@angular/compiler';
 
 @Component({
   selector: 'app-patient-medical-record',
@@ -46,6 +50,7 @@ export class PatientMedicalRecordComponent implements OnInit {
     'DoctorSpecialization',
     'Room',
     'Survey',
+    'Prescription',
   ];
 
   futureAppointments!: MatTableDataSource<IAppointment>;
@@ -65,7 +70,8 @@ export class PatientMedicalRecordComponent implements OnInit {
     private _router: Router,
     private changeDetectorRefs: ChangeDetectorRef,
     private authService: AuthService,
-    private _eventService : EventService
+    private _eventService : EventService,
+    public matDialog: MatDialog
   ) {
     this.futureAppointments = new MatTableDataSource<IAppointment>();
     this.finishedAppointments = new MatTableDataSource<IFinishedAppointment>();
@@ -119,6 +125,7 @@ export class PatientMedicalRecordComponent implements OnInit {
         },
       });
   }
+
   answerSurvey(id: number) {
     var str = id.toString();
     this._router.navigate(['/survey', str]);
@@ -131,6 +138,14 @@ export class PatientMedicalRecordComponent implements OnInit {
         console.log(res);
         this.refresh();
       });
+  }
+
+  openPrescription(id: number) {
+    this.matDialog.open(PrescriptionComponent, {
+      height: '660px',
+      width: '550px',
+      data: id,
+    });
   }
 
   scheduleBasic() {

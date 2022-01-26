@@ -28,6 +28,8 @@ using Hospital.SharedModel.Service.Implementation;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Hospital.EventStoring.Service.Interfaces;
+using Hospital.EventStoring.Service;
 
 namespace HospitalApi
 {
@@ -111,7 +113,8 @@ namespace HospitalApi
             services.AddScoped<IScheduledEventService, ScheduledEventService>();
             services.AddScoped<ISurveyService, SurveyService>();
             services.AddScoped<IScheduleAppointmentService, ScheduleAppointmentService>();
-       
+            services.AddScoped<IEventStoringService, EventStoringService>();
+
 
             var builder = new ContainerBuilder();
 

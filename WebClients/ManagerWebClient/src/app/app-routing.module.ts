@@ -45,6 +45,7 @@ import { DoctorVacationsComponent } from './doctor-vacations/doctor-vacations.co
 import { CreateVacationComponent } from './create-vacation/create-vacation.component';
 import { UpdateVacationComponent } from './update-vacation/update-vacation.component';
 import { OnCallShiftsComponent } from './on-call-shifts/on-call-shifts.component';
+import { EventStatisticComponent } from './components/event-statistic/event-statistic.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 
 const _isProd = environment.production;
@@ -314,6 +315,11 @@ const routes: Routes = [
   {
     path: _isProd ? 'manager/tendering-statistics' : 'tendering-statistics',
     component: TenderingStatisticsComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: _isProd ? 'manager/eventStatistics' : 'eventStatistics',
+    component: EventStatisticComponent,
     canActivate: [AuthGuard],
   },
   { path: _isProd ? 'manager/doctorsSchedule' : 'doctorsSchedule', component: DoctorsScheduleComponent, canActivate: [AuthGuard] },

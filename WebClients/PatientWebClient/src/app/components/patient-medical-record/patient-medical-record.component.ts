@@ -14,6 +14,8 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { PrescriptionComponent } from '../prescription/prescription.component';
 import { PrescriptionService } from 'src/app/services/PrescriptionService/prescription.service';
 import { identifierModuleUrl } from '@angular/compiler';
+import { IEvent, Step } from 'src/app/interfaces/ievent';
+import { EventService } from 'src/app/services/EventSourcingService/event.service';
 
 @Component({
   selector: 'app-patient-medical-record',
@@ -61,6 +63,7 @@ export class PatientMedicalRecordComponent implements OnInit {
   response!: string;
   isVisible!: boolean;
   isVisibleRecommended!: boolean;
+  event! : IEvent;
 
   constructor(
     private _sanitizer: DomSanitizer,
@@ -68,13 +71,15 @@ export class PatientMedicalRecordComponent implements OnInit {
     private _router: Router,
     private changeDetectorRefs: ChangeDetectorRef,
     private authService: AuthService,
-    public matDialog: MatDialog
+    public matDialog: MatDialog,
+    private _eventService : EventService
   ) {
     this.futureAppointments = new MatTableDataSource<IAppointment>();
     this.finishedAppointments = new MatTableDataSource<IFinishedAppointment>();
     this.canceledAppointments = new MatTableDataSource<IAppointment>();
     this.isVisibleRecommended = false;
-
+    this.event = {} as IEvent;
+    
     this.currentUser = JSON.parse(localStorage.getItem('currentUser')!);
 
     this.sub = this._service.get(this.currentUser.userName).subscribe({
@@ -146,7 +151,10 @@ export class PatientMedicalRecordComponent implements OnInit {
 
   scheduleBasic() {
     this.isVisible = true;
-    this.isVisibleRecommended = false;
+    this.isVisibleRecommended=false;
+    this.event.username = this.authService.currentUserValue.userName;
+    this.event.step = Step.StartScheduling;
+    this._eventService.createNewEvent(this.event).subscribe();
   }
 
   scheduleRecommended() {

@@ -89,6 +89,7 @@ import { DoctorVacationsComponent } from './doctor-vacations/doctor-vacations.co
 import { CreateVacationComponent } from './create-vacation/create-vacation.component';
 import { UpdateVacationComponent } from './update-vacation/update-vacation.component';
 import { OnCallShiftsComponent } from './on-call-shifts/on-call-shifts.component';
+import { NotificationsComponent } from './notifications/notifications.component';
 
 @NgModule({
   declarations: [
@@ -161,6 +162,8 @@ import { OnCallShiftsComponent } from './on-call-shifts/on-call-shifts.component
     CreateVacationComponent,
     UpdateVacationComponent,
     OnCallShiftsComponent,
+    NotificationsComponent
+
   ],
   imports: [
     BrowserModule,

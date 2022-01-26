@@ -263,7 +263,7 @@ namespace Hospital.Migrations
                     b.Property<int?>("PatientId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("ScheduledEventId")
+                    b.Property<int?>("ScheduledEventId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("StartDate")
@@ -1097,9 +1097,7 @@ namespace Hospital.Migrations
 
                     b.HasOne("Hospital.Schedule.Model.ScheduledEvent", "ScheduledEvent")
                         .WithMany()
-                        .HasForeignKey("ScheduledEventId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ScheduledEventId");
 
                     b.Navigation("Medication");
 

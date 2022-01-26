@@ -72,6 +72,7 @@ namespace HospitalApi.Controllers
             };
             var response = _httpRequestSender.Post(_integrationBaseUrl + "api/Prescription/PostPrescription",
                 prescriptionToIntegrationDTO);
+            if (response.StatusCode != HttpStatusCode.OK) return BadRequest();
             var writeRepo = _unitOfWork.GetRepository<IPrescriptionWriteRepository>();
             writeRepo.Add(newPrescription);
             return Ok(response.Content);

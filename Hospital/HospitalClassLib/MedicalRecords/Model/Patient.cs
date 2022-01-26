@@ -36,6 +36,11 @@ namespace Hospital.MedicalRecords.Model
             return newAppointment;
         }
 
+        public void AddPrescription(Prescription prescription)
+        {
+            MedicalRecord.AddPrescription(prescription);
+        }
+
         public void CancelAppointment(int eventId)
         {
             foreach (var se in ScheduledEvents.ToArray())

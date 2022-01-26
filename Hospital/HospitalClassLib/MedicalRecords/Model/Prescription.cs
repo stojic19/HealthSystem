@@ -12,7 +12,7 @@ namespace Hospital.MedicalRecords.Model
         public DateTime IssuedDate { get; set; }
         public int MedicationId { get; set; }
         public Medication Medication { get; set; }
-        public int ScheduledEventId { get; set; }
+        public int? ScheduledEventId { get; set; }
         public ScheduledEvent ScheduledEvent { get; set; }
     }
 }

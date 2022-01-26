@@ -3,12 +3,13 @@ import { Injectable } from '@angular/core';
 import { IAppointment } from 'src/app/interfaces/appointment';
 import { IFinishedAppointment } from 'src/app/interfaces/finished-appoinment';
 import { IPatient } from 'src/app/interfaces/patient-feedback/patient-interface';
-
+import { IReport } from 'src/app/interfaces/report';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MedicalRecordService {
+
   patient!: IPatient;
 
   constructor(private _http: HttpClient) { }
@@ -36,13 +37,16 @@ export class MedicalRecordService {
     );
   }
   cancelAppointments(id: number, username: string): any {
-    console.log(id);
-
-    return this._http.get<any>(
+    return this._http.get<String>(
       'api/ScheduledEvent/CancelAppointment?eventId=' +
         id +
         '&username=' +
         username
+    );
+  }
+  getReportForEvent(data: number): any  {
+    return this._http.get<IReport>(
+      'api/Report/GetReport?eventId=' + data
     );
   }
 }

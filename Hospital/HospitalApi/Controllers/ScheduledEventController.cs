@@ -81,8 +81,14 @@ namespace HospitalApi.Controllers
         public IActionResult CancelAppointment([FromQuery(Name = "eventId")] int eventId, [FromQuery(Name = "username")]  string username)
         {
             var loggedInPatient = _uow.GetRepository<IPatientReadRepository>().GetAll().Include(p => p.ScheduledEvents).First(p => p.UserName == username);
-            loggedInPatient.CancelAppointment(eventId);
-            return Ok(_uow.GetRepository<IPatientWriteRepository>().Update(loggedInPatient));
+            if (loggedInPatient.CancelAppointment(eventId))
+            {
+                return Ok(_uow.GetRepository<IPatientWriteRepository>().Update(loggedInPatient));
+            }
+            else
+            {
+                return Content("Invalid Email Confirmation Request");
+            }
         }
 
     }

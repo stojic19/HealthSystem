@@ -28,6 +28,8 @@ using Hospital.SharedModel.Service.Implementation;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Hospital.MedicalRecords.Service;
+using Hospital.MedicalRecords.Service.Interfaces;
 using Hospital.EventStoring.Service.Interfaces;
 using Hospital.EventStoring.Service;
 
@@ -113,6 +115,8 @@ namespace HospitalApi
             services.AddScoped<IScheduledEventService, ScheduledEventService>();
             services.AddScoped<ISurveyService, SurveyService>();
             services.AddScoped<IScheduleAppointmentService, ScheduleAppointmentService>();
+            services.AddScoped<IReportService, ReportService>();
+       
             services.AddScoped<IEventStoringService, EventStoringService>();
 
 

@@ -5,20 +5,19 @@ import { IAppointment } from 'src/app/interfaces/appointment';
 import { IFinishedAppointment } from 'src/app/interfaces/finished-appoinment';
 import { MedicalRecordService } from 'src/app/services/MedicalRecordService/medicalrecord.service';
 import { DomSanitizer } from '@angular/platform-browser';
-import { AsyncKeyword } from 'typescript';
 import { IPatient } from 'src/app/interfaces/patient-feedback/patient-interface';
 import { MatTableDataSource } from '@angular/material/table';
 import { ICurrentUser } from 'src/app/interfaces/current-user';
 import { AuthService } from 'src/app/services/AuthService/auth.service';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { PrescriptionComponent } from '../prescription/prescription.component';
-import { PrescriptionService } from 'src/app/services/PrescriptionService/prescription.service';
-import { identifierModuleUrl } from '@angular/compiler';
 import { IEvent, Step } from 'src/app/interfaces/ievent';
 import { EventService } from 'src/app/services/EventSourcingService/event.service';
+import { ReportComponent } from '../report/report.component';
+import { HttpErrorResponse } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-patient-medical-record',
   templateUrl: './patient-medical-record.component.html',
   styleUrls: ['./patient-medical-record.component.css'],
 })
@@ -51,6 +50,7 @@ export class PatientMedicalRecordComponent implements OnInit {
     'DoctorSpecialization',
     'Room',
     'Survey',
+    'Report',
     'Prescription',
   ];
 
@@ -62,7 +62,7 @@ export class PatientMedicalRecordComponent implements OnInit {
   currentUser!: ICurrentUser;
   response!: string;
   isVisible!: boolean;
-  isVisibleRecommended!: boolean;
+  isVisibleRecommended! : boolean;
   event! : IEvent;
 
   constructor(
@@ -72,7 +72,9 @@ export class PatientMedicalRecordComponent implements OnInit {
     private changeDetectorRefs: ChangeDetectorRef,
     private authService: AuthService,
     public matDialog: MatDialog,
+    private _snackBar: MatSnackBar,
     private _eventService : EventService
+ 
   ) {
     this.futureAppointments = new MatTableDataSource<IAppointment>();
     this.finishedAppointments = new MatTableDataSource<IFinishedAppointment>();
@@ -136,9 +138,13 @@ export class PatientMedicalRecordComponent implements OnInit {
     this.sub = this._service
       .cancelAppointments(id, this.authService.currentUserValue.userName)
       .subscribe((res: string) => {
-        console.log(res);
+        
         this.refresh();
-      });
+      },
+      (err:HttpErrorResponse) => {
+        console.log(err.message);
+            
+      } );
   }
 
   openPrescription(id: number) {
@@ -161,4 +167,16 @@ export class PatientMedicalRecordComponent implements OnInit {
     this.isVisibleRecommended = true;
     this.isVisible = false;
   }
+  openReport(id: number) { 
+
+    this.matDialog.open(ReportComponent, {
+      height: '580px',
+      width: '500px',
+      data: id,
+    });
+  }
 }
+function next(next: any, arg1: (res: string) => void): Subscription {
+  throw new Error('Function not implemented.');
+}
+

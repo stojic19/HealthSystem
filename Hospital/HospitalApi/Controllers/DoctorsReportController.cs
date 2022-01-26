@@ -2,17 +2,13 @@
 using Hospital.Schedule.Repository;
 using Hospital.Schedule.Service;
 using Hospital.SharedModel.Model.Wrappers;
-using Hospital.SharedModel.Repository;
 using Hospital.SharedModel.Repository.Base;
 using HospitalApi.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HospitalApi.Controllers
 {

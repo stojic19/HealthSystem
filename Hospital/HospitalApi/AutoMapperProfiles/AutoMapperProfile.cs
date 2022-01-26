@@ -32,6 +32,13 @@ namespace HospitalApi.AutoMapperProfiles
             CreateMap<NewManagerDTO, Manager>();
             CreateMap<ShiftDTO, Shift>();
             CreateMap<DoctorShiftDTO, Doctor>();
+           
+            CreateMap<Medication, MedicationDTO>();
+            CreateMap<Doctor, PrescriptionDoctorDTO>();
+            CreateMap<Patient, PrescriptionPatientDTO>();
+            CreateMap<Prescription, PrescriptionDTO>()
+                .ForMember(dto => dto.PatientInfo, opt => opt.MapFrom(src => src.ScheduledEvent.Patient))
+                    .ForMember(dto => dto.DoctorInfo, opt => opt.MapFrom(src => src.ScheduledEvent.Doctor));
         }
     }
 }

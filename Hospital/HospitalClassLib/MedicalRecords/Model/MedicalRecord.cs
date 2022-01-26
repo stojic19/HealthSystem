@@ -17,7 +17,7 @@ namespace Hospital.MedicalRecords.Model
         public int DoctorId { get; private set; }
         public Doctor Doctor { get; private set; }
         public IEnumerable<Allergy> Allergies { get; private set; }
-        public IEnumerable<Prescription> Prescriptions { get; private set; }
+        public List<Prescription> Prescriptions { get; private set; } = new List<Prescription>();
 
         public MedicalRecord(int id, Measurements measurements, BloodType bloodType, JobStatus jobStatus, int doctorId, IEnumerable<Allergy> allergies)
         {
@@ -27,7 +27,9 @@ namespace Hospital.MedicalRecords.Model
             JobStatus = jobStatus;
             DoctorId = doctorId;
             Allergies = allergies;
+            Prescriptions = new List<Prescription>();
             Validate();
+
         }
         public MedicalRecord( Measurements measurements, BloodType bloodType, JobStatus jobStatus, int doctorId, IEnumerable<Allergy> allergies)
         {
@@ -36,12 +38,17 @@ namespace Hospital.MedicalRecords.Model
             JobStatus = jobStatus;
             DoctorId = doctorId;
             Allergies = allergies;
+            Prescriptions = new List<Prescription>();
             Validate();
         }
         public MedicalRecord()
         {
         }
 
+        public void AddPrescription(Prescription prescription)
+        {
+            this.Prescriptions.Add(prescription);
+        }
 
         private void Validate()
         {

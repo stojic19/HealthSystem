@@ -10,7 +10,7 @@ namespace Hospital.Migrations
                 name: "ScheduledEventId",
                 table: "Prescriptions",
                 type: "integer",
-                nullable: true,
+                nullable: false,
                 defaultValue: 0);
 
             migrationBuilder.CreateIndex(

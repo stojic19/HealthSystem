@@ -166,17 +166,14 @@ namespace HospitalIntegrationTests
             
             var se1 = UoW.GetRepository<IScheduledEventReadRepository>().GetAll()
                 .FirstOrDefault((se => DateTime.Compare(se.EndDate, new DateTime(2022, 01, 24, 13, 30, 00)) == 0));
-            UoW.GetRepository<IScheduledEventWriteRepository>().Delete(se1);
-            
+            if (se1 != null ) UoW.GetRepository<IScheduledEventWriteRepository>().Delete(se1);
+
             var se2 = UoW.GetRepository<IScheduledEventReadRepository>().GetAll().FirstOrDefault((se => DateTime.Compare(se.EndDate, new DateTime(2022, 01, 25, 13, 30, 00)) == 0));
-            UoW.GetRepository<IScheduledEventWriteRepository>().Delete(se2);
-            
-            var prescriptions = UoW.GetRepository<IPrescriptionReadRepository>().GetAll().Include(p => p.Patient)
-                .Where(pr => pr.Patient.UserName == "testPatientUsername");
-            foreach (var pr in prescriptions)
-            {
-                UoW.GetRepository<IPrescriptionWriteRepository>().Delete(pr);
-            }
+            if (se2 != null) UoW.GetRepository<IScheduledEventWriteRepository>().Delete(se2);
+
+            var pr = UoW.GetRepository<IPrescriptionReadRepository>().GetAll().Include(p => p.Patient)
+                .FirstOrDefault(pr => pr.Patient.UserName == "testPatientUsername");
+            if (pr != null) UoW.GetRepository<IPrescriptionWriteRepository>().Delete(pr);
         }
 
 

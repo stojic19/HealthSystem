@@ -41,7 +41,7 @@ export class DoctorVacationsComponent implements OnInit {
 
     var doctorVac = this.findDoctor(id);
 
-    if (doctorVac.vacations.length > 0) {
+    if (doctorVac.doctorSchedule.vacations.length > 0) {
       return true;
     }
 
@@ -52,7 +52,7 @@ export class DoctorVacationsComponent implements OnInit {
 
     var doctorVac = this.findDoctor(id);
 
-    if (doctorVac.vacations.length == 1) {
+    if (doctorVac.doctorSchedule.vacations.length == 1) {
       return false;
     }
 

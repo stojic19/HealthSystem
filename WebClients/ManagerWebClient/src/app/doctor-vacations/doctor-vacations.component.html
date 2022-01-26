@@ -51,8 +51,8 @@
         <div class="modal-content">
             <div class="modal-header" style="border-bottom: 0 none">
                 <ng-container *ngFor="let doctor of doctorVacations">
-                    <h1 mat-dialog-title>Vacation {{ doctor.vacations[0].startDate | date: "dd.MM.yyyy" }} - {{
-                        doctor.vacations[0].endDate | date: "dd.MM.yyyy" }} is deleted!</h1>
+                    <h1 mat-dialog-title>Vacation {{ doctor.doctorSchedule.vacations[0].startDate | date: "dd.MM.yyyy" }} - {{
+                        doctor.doctorSchedule.vacations[0].endDate | date: "dd.MM.yyyy" }} is deleted!</h1>
                 </ng-container>
             </div>
             <div mat-dialog-actions class="justify-content-center align-items-center modal-footer"

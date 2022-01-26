@@ -16,7 +16,10 @@ namespace IntegrationEndToEndTests.Pages
         //private IWebElement firstSelect => _driver.FindElement(By.XPath("//select[contains([@id='specificationsTable', '__TypeID')][1]"));
         private IWebElement Button => _driver.FindElement(By.Id("requestButton"));
         private SelectElement PharmacySelect => new SelectElement(_driver.FindElement(By.Id("pharmacy")));
-        
+
+        public readonly string EmptyMedicineName = "Enter valid pharmacy and medicine name!";
+        public readonly string PharmacyOrMedicineMissing = "Failed to reach pharmacy or pharmacy does not have medicine with given name!";
+
         public NewMedicineSpecificationPage(IWebDriver driver) : base(driver) { }
 
         public void WaitForDisplay()
@@ -47,12 +50,21 @@ namespace IntegrationEndToEndTests.Pages
         {
             this.PharmacySelect.SelectByIndex(0);
         }
+        public void SelectSecondPharmacy()
+        {
+            this.PharmacySelect.SelectByIndex(1);
+        }
 
         public void Navigate() => _driver.Navigate().GoToUrl(_angularBaseUrl + "new-medicine-specification-request");
 
         public void Submit()
         {
             Button.Click();
+        }
+        public string GetToastrMessage()
+        {
+            IWebElement toastrMessage = _driver.FindElement(By.ClassName("toast-message"));
+            return toastrMessage.Text;
         }
     }
 }

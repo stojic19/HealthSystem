@@ -1,6 +1,7 @@
 ﻿using Hospital.RoomsAndEquipment.Model;
 using Hospital.RoomsAndEquipment.Repository;
 using Hospital.SharedModel.Model.Enumerations;
+using HospitalApi.DTOs;
 using HospitalIntegrationTests.Base;
 using Newtonsoft.Json;
 using Shouldly;
@@ -26,10 +27,12 @@ namespace HospitalIntegrationTests
             var destinationRoom = InsertRoom("Test destination room");
             var inventoryItem = InsertInventoryItem("Test item");
             var roomInventoryItem = InsertInventoryInRoom(sourceRoom.Id, inventoryItem.Id, 4);
+            var destinationRoomInventoryItem = InsertInventoryInRoom(destinationRoom.Id, inventoryItem.Id, 0);
+
 
             CheckAndDeleteRequests(new DateTime(2025, 11, 22, 0, 0, 0));
 
-            var newRequest = new EquipmentTransferEvent()
+            var newRequest = new EquipmentTransferDTO()
             {
                 StartDate = new DateTime(2025, 11, 22, 0, 0, 0),
                 EndDate = new DateTime(2025, 11, 22, 16, 2, 2),
@@ -48,11 +51,11 @@ namespace HospitalIntegrationTests
 
             var foundRequest = UoW.GetRepository<IEquipmentTransferEventReadRepository>()
                 .GetAll()
-                .FirstOrDefault(x => x.StartDate == newRequest.StartDate &&
-                                x.EndDate == newRequest.EndDate &&
-                                x.InitialRoomId == newRequest.InitialRoomId &&
-                                x.DestinationRoomId == newRequest.DestinationRoomId &&
-                                x.InventoryItemId == newRequest.InventoryItemId);
+                .FirstOrDefault(x => x.TimePeriod.StartTime == newRequest.StartDate &&
+                                x.TimePeriod.EndTime == newRequest.EndDate &&
+                                x.InitialRoomInventory.RoomId == newRequest.InitialRoomId &&
+                                x.DestinationRoomInventory.RoomId == newRequest.DestinationRoomId &&
+                                x.InitialRoomInventory.InventoryItemId == newRequest.InventoryItemId);
 
             foundRequest.ShouldNotBeNull();
             ClearAllTestData();
@@ -69,7 +72,7 @@ namespace HospitalIntegrationTests
 
             CheckAndDeleteRequests(new DateTime(2025, 11, 22, 0, 0, 0));
 
-            var newRequest = new EquipmentTransferEvent()
+            var newRequest = new EquipmentTransferDTO()
             {
                 StartDate = new DateTime(2025, 11, 22, 0, 0, 0),
                 EndDate = new DateTime(2025, 11, 22, 16, 2, 2),
@@ -88,11 +91,11 @@ namespace HospitalIntegrationTests
 
             var foundRequest = UoW.GetRepository<IEquipmentTransferEventReadRepository>()
                 .GetAll()
-                .FirstOrDefault(x => x.StartDate == newRequest.StartDate &&
-                                x.EndDate == newRequest.EndDate &&
-                                x.InitialRoomId == newRequest.InitialRoomId &&
-                                x.DestinationRoomId == newRequest.DestinationRoomId &&
-                                x.InventoryItemId == newRequest.InventoryItemId);
+                .FirstOrDefault(x => x.TimePeriod.StartTime == newRequest.StartDate &&
+                                x.TimePeriod.EndTime == newRequest.EndDate &&
+                                x.InitialRoomInventory.RoomId == newRequest.InitialRoomId &&
+                                x.DestinationRoomInventory.RoomId == newRequest.DestinationRoomId &&
+                                x.InitialRoomInventory.InventoryItemId == newRequest.InventoryItemId);
 
             foundRequest.ShouldBeNull();
             ClearAllTestData();
@@ -102,7 +105,7 @@ namespace HospitalIntegrationTests
         {
             var requests = UoW.GetRepository<IEquipmentTransferEventReadRepository>()
                 .GetAll()
-                .Where(x => x.StartDate == startDate);
+                .Where(x => x.TimePeriod.StartTime == startDate);
 
             if (requests.Any())
             {

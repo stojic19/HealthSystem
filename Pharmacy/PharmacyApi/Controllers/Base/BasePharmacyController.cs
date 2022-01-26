@@ -16,7 +16,7 @@ namespace PharmacyApi.Controllers.Base
         protected readonly PharmacyDetails PharmacyDetails;
         protected SftpCredentialsDTO _sftpCredentials = new SftpCredentialsDTO
         {
-            Host = "192.168.0.13",
+            Host = "127.0.0.1",
             Password = "password",
             Username = "tester"
         };

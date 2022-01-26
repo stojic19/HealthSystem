@@ -34,24 +34,24 @@ namespace HospitalUnitTests
             rooms.Count().ShouldBe(2);
         }
 
-        //[Fact]
-        //public void Room_sizes_should_change()
-        //{
-        //    PrepareData();
+        [Fact]
+        public void Room_sizes_should_change()
+        {
+            PrepareData();
 
-        //    var oldRoom = UoW.GetRepository<IRoomReadRepository>().GetById(1);
-        //    oldRoom.Width.ShouldBe(5);
-        //    oldRoom.Height.ShouldBe(6);
-        //    var service = new RenovatingRoomsService(UoW);
-        //    var roomRenovationEvent = UoW.GetRepository<IRoomRenovationEventReadRepository>().GetById(1);
-        //    service.SplitRoom(roomRenovationEvent);
-        //    var firstRoom = UoW.GetRepository<IRoomReadRepository>().GetById(1);
-        //    firstRoom.Width.ShouldBe(5);
-        //    firstRoom.Height.ShouldBe(3);
-        //    var secondRoom = UoW.GetRepository<IRoomReadRepository>().GetById(2);
-        //    secondRoom.Width.ShouldBe(5);
-        //    secondRoom.Height.ShouldBe(3);
-        //}
+            var oldRoom = UoW.GetRepository<IRoomReadRepository>().GetById(1);
+            oldRoom.Width.ShouldBe(5);
+            oldRoom.Height.ShouldBe(6);
+            var service = new RenovatingRoomsService(UoW);
+            var roomRenovationEvent = UoW.GetRepository<IRoomRenovationEventReadRepository>().GetById(1);
+            service.SplitRoom(roomRenovationEvent);
+            var firstRoom = UoW.GetRepository<IRoomReadRepository>().GetById(1);
+            firstRoom.Width.ShouldBe(5);
+            firstRoom.Height.ShouldBe(3);
+            var secondRoom = UoW.GetRepository<IRoomReadRepository>().GetAll().Where(room => room.Name == "New Room").FirstOrDefault();
+            secondRoom.Width.ShouldBe(5);
+            secondRoom.Height.ShouldBe(3);
+        }
 
         private void PrepareData()
         {
@@ -74,8 +74,9 @@ namespace HospitalUnitTests
             Context.RoomRenovationEvents.Add(new RoomRenovationEvent()
             {
                 Id = 1,
-                RoomId = 1
-            });
+                RoomId = 1,
+                SecondRoomName = "New Room"
+            }); 
 
             Context.SaveChanges();
         }

@@ -61,7 +61,7 @@
               </thead>
               <tbody>
                 <tr
-                  *ngFor="let doctor of selectedOnCallShift.doctorsOnDuty"
+                  *ngFor="let doctor of doctorsOnShift"
                   [ngClass]="
                     selectedOldDoctor == doctor ? 'selected' : 'notSelected'
                   "
@@ -160,9 +160,7 @@
           class="btn btn-primary"
           data-bs-dismiss="modal"
           [disabled]="
-            selectedNewDoctor == undefined ||
-            selectedNewDoctor.firstName == '' ||
-            isAlreadyOnCall()
+            selectedNewDoctor == undefined || selectedNewDoctor.firstName == ''
           "
           (click)="addDoctorToShift()"
         >

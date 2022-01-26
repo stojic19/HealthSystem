@@ -91,6 +91,7 @@ import { CreateVacationComponent } from './create-vacation/create-vacation.compo
 import { UpdateVacationComponent } from './update-vacation/update-vacation.component';
 import { OnCallShiftsComponent } from './on-call-shifts/on-call-shifts.component';
 import { EventStatisticComponent } from './components/event-statistic/event-statistic.component';
+import { NotificationsComponent } from './notifications/notifications.component';
 
 @NgModule({
   declarations: [
@@ -164,6 +165,8 @@ import { EventStatisticComponent } from './components/event-statistic/event-stat
     UpdateVacationComponent,
     OnCallShiftsComponent,
     EventStatisticComponent,
+    NotificationsComponent
+
   ],
   imports: [
     BrowserModule,

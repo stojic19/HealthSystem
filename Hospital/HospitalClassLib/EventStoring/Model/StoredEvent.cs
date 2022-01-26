@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Hospital.EventStoring.Model.Enumerations;
 using Hospital.SharedModel.Model;
 
 namespace Hospital.EventStoring.Model
@@ -13,7 +14,7 @@ namespace Hospital.EventStoring.Model
     {
         public Guid Id { get; set; }
         public DateTime Time { get; set; }
-        public string StateData { get; set; }
-        public int UserId { get; set; }
+        public Step Step { get; set; }
+        public string Username { get; set; }
     }
 }

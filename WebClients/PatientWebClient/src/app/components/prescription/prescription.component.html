@@ -1,0 +1,78 @@
+<div class="container">
+  <div class="col-12 text-center">
+    <h3 style="color: #0275d8">Medication Prescription</h3>
+  </div>
+  <div class="col-12">
+    <hr style="color: #0275d8" />
+    <form id="fbForm" style="font-size: large">
+      <div
+        class="row"
+        style="
+          background-color: rgba(13, 110, 151, 0.103);
+          box-shadow: 4px 4px 4px rgba(2, 117, 216, 0.17);
+        "
+      >
+        <div class="col">
+          <label style="font-weight: 500">
+            dr {{ prescription.doctorInfo.firstName }}
+            {{ prescription.doctorInfo.lastName }}
+          </label>
+          <label style="font-weight: 500">General Practice</label> <br />
+          <label style="font-weight: 500"
+            >Contact: {{ prescription.doctorInfo.phoneNumber }}</label
+          >
+        </div>
+        <div class="col">
+          <label
+            style="
+              position: absolute;
+              bottom: 0px;
+              right: 15px;
+              font-weight: 500;
+            "
+            >Date: {{ prescription.issuedDate | date }}</label
+          >
+        </div>
+      </div>
+      <hr style="color: #0275d8" />
+      <div class="row">
+        <label
+          ><span>Medication: </span>
+          <span style="font-weight: 500; font-style: italic">
+            {{ prescription.medication.name }}</span
+          >
+        </label>
+        <span>
+          From {{ prescription.startDate | date }} to
+          {{ prescription.endDate | date }}
+        </span>
+        <span> {{ prescription.medication.timesPerDay }} times per day</span>
+        <span> {{ prescription.medication.howToUse }} </span>
+      </div>
+      <br />
+      <div class="row">
+        <label
+          >Mr/Mrs/Ms: {{ prescription.patientInfo.firstName }}
+          {{ prescription.patientInfo.lastName }}</label
+        >
+        <label
+          >Date of birth:
+          {{ prescription.patientInfo.dateOfBirth | date }}</label
+        >
+        <label
+          >Address: {{ prescription.patientInfo.street }}
+          {{ prescription.patientInfo.streetNumber }},
+          {{ prescription.patientInfo.city.name }}
+        </label>
+        <label>Phone number: {{ prescription.patientInfo.phoneNumber }}</label>
+      </div>
+      <hr style="color: #0275d8" />
+      <div style="text-align: center">
+        <img
+          src="../../assets/images/LogoMakr-2KfMiMdva.png"
+          style="height: 60px"
+        />
+      </div>
+    </form>
+  </div>
+</div>

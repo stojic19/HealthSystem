@@ -69,7 +69,7 @@ namespace Hospital.Schedule.Service
 
             var duties = uow.GetRepository<IOnCallDutyReadRepository>()
                 .GetAll()
-                .Where(d => d.DoctorsOnDuty.Contains(doctor));
+                .Where(d => d.DoctorsOnDuty.Contains(doctor.DoctorSchedule));
 
             List<OnCallDuty> foundDuties = new List<OnCallDuty>();
             foreach (var duty in duties)

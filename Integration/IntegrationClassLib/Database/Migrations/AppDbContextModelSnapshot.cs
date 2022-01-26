@@ -319,6 +319,30 @@ namespace Integration.Migrations
                     b.ToTable("Medicines");
                 });
 
+            modelBuilder.Entity("Integration.Shared.Model.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("Seen")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Notifications");
+                });
+
             modelBuilder.Entity("Integration.Tendering.Model.Tender", b =>
                 {
                     b.Property<int>("Id")

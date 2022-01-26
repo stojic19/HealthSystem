@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { NavigationStart, Router } from '@angular/router';
+import { Observable, Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
+import { NotificationsService } from 'src/app/services/notifications.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -11,8 +12,18 @@ import { environment } from 'src/environments/environment';
 })
 export class NavbarComponent implements OnInit {
   loginStatus$: Observable<boolean>;
-  constructor(private authService: AuthService, private router: Router) {
+  subscription : Subscription;
+  notifications : Array<any> = [];
+  constructor(private authService: AuthService, private router: Router, private _notificationsService: NotificationsService) {
     this.loginStatus$ = this.authService.isLoggedIn;
+    this.subscription = router.events.subscribe((event) => {
+      if (event instanceof NavigationStart) {
+        this._notificationsService.getNotifications()
+        .subscribe(notifications => {
+          this.notifications = notifications
+        });
+      }
+    });
   }
   
     isProd = environment.production;

@@ -12,6 +12,8 @@ using IntegrationAPI.Controllers.Base;
 using IntegrationApi.DTO.Advertisement;
 using IntegrationAPI.HttpRequestSenders;
 using Newtonsoft.Json;
+using Integration.Shared.Repository;
+using Integration.Shared.Model;
 
 namespace IntegrationApi.Controllers.Advertisement
 {
@@ -38,6 +40,15 @@ namespace IntegrationApi.Controllers.Advertisement
                 foreach (var ad in adsFromPharmacy) ad.PharmacyName = pharmacy.Name;
                 retVal.AddRange(adsFromPharmacy);
             }
+
+            Notification notification = new Notification
+            {
+                Title = "New advertisements",
+                Description = "New advertisements have been recieved.",
+                CreatedDate = DateTime.Now,
+            };
+            _unitOfWork.GetRepository<INotificationWriteRepository>().Add(notification);
+
             return Ok(retVal);
         }
     }

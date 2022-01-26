@@ -39,6 +39,8 @@ namespace Hospital.Database.EfStructures
         public DbSet<Manager> Managers { get; set; }
         public DbSet<OnCallDuty> OnCallDuties { get; set; }
         public DbSet<Shift> Shifts { get; set; }
+        public DbSet<DoctorSchedule> DoctorSchedule { get; set; }
+
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -47,12 +49,16 @@ namespace Hospital.Database.EfStructures
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Room>().OwnsOne(r => r.RoomPosition);
-            builder.Entity<Doctor>().OwnsMany(d => d.Vacations);
-            builder.Entity<OnCallDuty>().HasMany(oc => oc.DoctorsOnDuty).WithMany(d => d.OnCallDuties);
+            builder.Entity<Doctor>().HasOne(d => d.DoctorSchedule);
+            builder.Entity<DoctorSchedule>().OwnsMany(ds => ds.Vacations);
+            builder.Entity<OnCallDuty>().HasMany(oc => oc.DoctorsOnDuty).WithMany(ds => ds.OnCallDuties);
             builder.Entity<User>().OwnsOne(u => u.City, c => c.OwnsOne(x => x.Country));
             builder.Entity<Doctor>().OwnsOne(d => d.Specialization);
             builder.Entity<MedicalRecord>().OwnsOne(d => d.Measurements);
-           
+            builder.Entity<EquipmentTransferEvent>().OwnsOne(et => et.TimePeriod);
+            builder.Entity<EquipmentTransferEvent>().HasOne(et => et.InitialRoomInventory);
+            builder.Entity<EquipmentTransferEvent>().HasOne(et => et.DestinationRoomInventory);
+
             base.OnModelCreating(builder);
         }
     }

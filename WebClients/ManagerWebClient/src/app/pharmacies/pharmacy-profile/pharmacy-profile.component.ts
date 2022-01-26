@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 import { ITenderStats } from 'src/app/interfaces/tender-statistic';
 import { PharmacyService } from 'src/app/services/pharmacy.service';
 import { TenderService } from 'src/app/services/tender.service';
@@ -18,11 +19,12 @@ export class PharmacyProfileComponent implements OnInit {
   imageFile: File;
   tenderStats: ITenderStats;
   chartData = [
-    { name: "Tenders entered", value: 10 },
+    { name: "Tender offers", value: 10 },
     { name: "Won", value: 3 }
   ];
 
-  constructor(private _route: ActivatedRoute, private _pharmacyService: PharmacyService, private _tenderService: TenderService, private sanitizer: DomSanitizer, private modalService: NgbModal) { }
+  constructor(private _route: ActivatedRoute, private _pharmacyService: PharmacyService, private _tenderService: TenderService, 
+    private sanitizer: DomSanitizer, private modalService: NgbModal, private toastr: ToastrService, private router:Router ) { }
 
   ngOnInit(): void {
     let id = Number(this._route.snapshot.paramMap.get('id'));
@@ -63,16 +65,21 @@ export class PharmacyProfileComponent implements OnInit {
 
   UpdatePharmacy(){
     this._pharmacyService.updatePharmacy(this.makeRequest())
-    .subscribe(res => {},
-      (error) => alert(error.error)
-      );
+    .subscribe(res => {
+      this.toastr.success(res.toString());
+    },(error) => alert(error.error)
+    );
 
     const formData = new FormData();
-    formData.append(this.imageFile.name, this.imageFile);
-    this._pharmacyService.uploadImage(formData).subscribe(res => {},
-      (error) => alert(error.error)
+    if(this.imageFile){
+      formData.append(this.imageFile.name, this.imageFile);
+      this._pharmacyService.uploadImage(formData).subscribe(res => {
+        this.toastr.success(res.toString());
+      },(error) => alert(error.error)
       );
-  }
+    }
+    this.router.navigate(['/pharmacy-list']);
+  } 
 
   open(content) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {});

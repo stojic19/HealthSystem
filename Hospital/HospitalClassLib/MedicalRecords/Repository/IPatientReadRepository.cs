@@ -9,5 +9,6 @@ namespace Hospital.MedicalRecords.Repository
     {
         public Patient GetPatient(string username);
         public Patient GetByUsername(string username);
+        public Prescription GetPrescriptionForScheduledEvent(int scheduledEventId, string loggedPatientUsername);
     }
 }

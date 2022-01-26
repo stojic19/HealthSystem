@@ -1,6 +1,8 @@
 import { analyzeFileForInjectables } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { BenefitsService } from 'src/app/services/benefits.service';
 import { PharmacyService } from 'src/app/services/pharmacy.service';
 import { environment } from 'src/environments/environment';
@@ -14,7 +16,7 @@ export class BenefitListComponent implements OnInit {
 
     isProd: boolean = environment.production;
 
-  constructor(private _benefitsService: BenefitsService, private _pharmaciesService: PharmacyService) { 
+  constructor(private _benefitsService: BenefitsService, private _pharmaciesService: PharmacyService, private toastr: ToastrService, private router:Router) { 
     this._pharmaciesService.getPharmacies()
             .subscribe(pharmacies => this.filterPharmacies = pharmacies);
     
@@ -55,14 +57,22 @@ export class BenefitListComponent implements OnInit {
 
   publishBenefit(id: any) {
     var json = {benefitId: id}
-    this._benefitsService.publishBenefit(json).subscribe(data => {console.log(data)});
-    this.loadBenefits();
+    this._benefitsService.publishBenefit(json).subscribe(data => {
+
+      this.toastr.success(data.toString());
+      this.router.navigate(['/benefit-list']);
+      this.loadBenefits();
+    },(error) => this.toastr.error(error.error, "Error!"));
+    
   }
 
   hideBenefit(id: any) {
     var json = {benefitId: id}
-    this._benefitsService.hideBenefit(json).subscribe(data => {console.log(data)});
-    this.loadBenefits();
+    this._benefitsService.hideBenefit(json).subscribe(data => {
+      this.toastr.success(data.toString());
+      this.router.navigate(['/benefit-list']);
+      this.loadBenefits();
+    },(error) => this.toastr.error(error.error, "Error!"));
   }
 
   FilterFn(){

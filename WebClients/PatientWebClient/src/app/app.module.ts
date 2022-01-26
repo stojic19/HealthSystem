@@ -28,6 +28,7 @@ import { AuthGuard } from 'src/app/AuthGuard/AuthGuard';
 import { AuthService } from './services/AuthService/auth.service';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
 import { ReportComponent } from './components/report/report.component';
+import { PrescriptionComponent } from './components/prescription/prescription.component';
 
 
 @NgModule({
@@ -51,6 +52,7 @@ import { ReportComponent } from './components/report/report.component';
     RecommendedAppointmentComponent,
     LandingPageComponent,
     ReportComponent,
+    PrescriptionComponent,
    
   ],
   imports: [

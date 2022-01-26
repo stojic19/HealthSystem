@@ -50,16 +50,16 @@ namespace Hospital.EventStoring.Service
             foreach (var eventScheduled in scheduledEvents)
             {
                 var schedulingEvents = startSchedulingEvents.ToList();
-                foreach (var startScheduling in schedulingEvents.Where(startScheduling => eventScheduled.Username.Equals(startScheduling.Username) && (startScheduling.Time.AddMinutes(2) >= eventScheduled.Time)))
+                var startScheduling = schedulingEvents.FirstOrDefault(startScheduling => eventScheduled.Username.Equals(startScheduling.Username) && (startScheduling.Time.AddMinutes(2) >= eventScheduled.Time));
+                
+                steps.Add(new SuccessScheduling
                 {
-                    steps.Add(new SuccessScheduling
-                    {
-                        EndScheduling = eventScheduled.Time,
-                        StartScheduling = startScheduling.Time,
-                        Username = eventScheduled.Username
-                    });
-                    break;
-                }
+                    EndScheduling = eventScheduled.Time,
+                    StartScheduling = startScheduling.Time,
+                    Username = eventScheduled.Username
+                });
+                    
+               
             }
 
             return steps;

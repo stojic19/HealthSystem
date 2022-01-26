@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using IntegrationAPI.DTO.Benefits;
+using IntegrationApi.Messages;
 
 namespace IntegrationAPI.Controllers.Benefits
 {
@@ -29,27 +30,20 @@ namespace IntegrationAPI.Controllers.Benefits
                 .Include(x => x.Pharmacy);
             return benefits;
         }
-        [HttpGet("{id:int}")]
-        public Benefit GetBenefitById(int id)
+        [HttpGet("{id:int}"), Produces("application/json")]
+        public IActionResult GetBenefitById(int id)
         {
             Benefit benefit = _uow.GetRepository<IBenefitReadRepository>().GetById(id);
-            if (benefit.Pharmacy == null)
-            {
-                benefit.Pharmacy = _uow.GetRepository<IPharmacyReadRepository>().GetById(benefit.PharmacyId);
-            }
-            return benefit;
+            if (benefit == null) return NotFound(BenefitMessages.WrongId);
+            if (benefit.Pharmacy == null) benefit.Pharmacy = _uow.GetRepository<IPharmacyReadRepository>().GetById(benefit.PharmacyId);
+            return Ok(benefit);
         }
         [HttpGet]
         public IEnumerable<Benefit> GetVisibleBenefits()
         {
             IEnumerable<Benefit> benefits = _uow.GetRepository<IBenefitReadRepository>().GetVisibleBenefits();
             foreach(var benefit in benefits)
-            {
-                if(benefit.Pharmacy == null)
-                {
-                    benefit.Pharmacy = _uow.GetRepository<IPharmacyReadRepository>().GetById(benefit.PharmacyId);
-                }
-            }
+                if(benefit.Pharmacy == null) benefit.Pharmacy = _uow.GetRepository<IPharmacyReadRepository>().GetById(benefit.PharmacyId);
             return benefits;
         }
 
@@ -58,12 +52,8 @@ namespace IntegrationAPI.Controllers.Benefits
         {
             IEnumerable<Benefit> benefits = _uow.GetRepository<IBenefitReadRepository>().GetPublishedBenefits();
             foreach (var benefit in benefits)
-            {
                 if (benefit.Pharmacy == null)
-                {
                     benefit.Pharmacy = _uow.GetRepository<IPharmacyReadRepository>().GetById(benefit.PharmacyId);
-                }
-            }
             return benefits;
         }
 
@@ -73,11 +63,8 @@ namespace IntegrationAPI.Controllers.Benefits
             IEnumerable<Benefit> benefits = _uow.GetRepository<IBenefitReadRepository>().GetRelevantBenefits();
             var pharmacies = _uow.GetRepository<IPharmacyReadRepository>().GetAll().ToList();
             foreach (var benefit in benefits)
-            {
-                foreach(var pharmacy in pharmacies)
-                    if (benefit.PharmacyId == pharmacy.Id)
-                        benefit.Pharmacy = pharmacy;
-            }
+                if (benefit.Pharmacy == null)
+                    benefit.Pharmacy = _uow.GetRepository<IPharmacyReadRepository>().GetById(benefit.PharmacyId);
             return benefits;
         }
 
@@ -85,37 +72,23 @@ namespace IntegrationAPI.Controllers.Benefits
         public IActionResult PublishBenefit(BenefitIdDTO dto)
         {
             Benefit benefit = _uow.GetRepository<IBenefitReadRepository>().GetById(dto.BenefitId);
-            if (benefit.Published)
-            {
-                return BadRequest("Benefit is already published");
-            }
+            if (benefit.Published) return BadRequest(BenefitMessages.AlreadyPublished);
             benefit.Published = true;
             _uow.GetRepository<IBenefitWriteRepository>().Update(benefit);
             Benefit benefitNew = _uow.GetRepository<IBenefitReadRepository>().GetById(dto.BenefitId);
-            if (!benefitNew.Published)
-            {
-                return BadRequest("Error, could not publish benefit");
-            }
-
-            return Ok("Benefit published");
+            if (!benefitNew.Published) return BadRequest(BenefitMessages.CannotPublish);
+            return Ok(BenefitMessages.ConfirmPublish);
         }
 
         [HttpPost, Produces("application/json")]
         public IActionResult HideBenefit(BenefitIdDTO dto)
         {
             Benefit benefit = _uow.GetRepository<IBenefitReadRepository>().GetById(dto.BenefitId);
-            if (benefit.Hidden)
-            {
-                return BadRequest("Benefit is already hidden");
-            }
+            if (benefit.Hidden) return BadRequest(BenefitMessages.AlreadyHidden);
             benefit.Hidden = true;
             benefit = _uow.GetRepository<IBenefitWriteRepository>().Update(benefit);
-            if (!benefit.Hidden)
-            {
-                return BadRequest("Error, could not hide benefit");
-            }
-
-            return Ok("Benefit hidden");
+            if (!benefit.Hidden) return BadRequest(BenefitMessages.CannotHide);
+            return Ok(BenefitMessages.ConfirmHide);
         }
     }
 }

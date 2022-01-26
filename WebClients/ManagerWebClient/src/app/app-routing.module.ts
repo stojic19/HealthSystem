@@ -166,10 +166,12 @@ const routes: Routes = [
   {
     path: _isProd ? 'manager/pharmacy-list' : 'pharmacy-list',
     component: PharmaciesListComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: _isProd ? 'manager/pharmacy-profile/:id' : 'pharmacy-profile/:id',
     component: PharmacyProfileComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: _isProd ? 'manager/benefit-list' : 'benefit-list',
@@ -185,10 +187,12 @@ const routes: Routes = [
   {
     path: _isProd ? 'manager/tenders' : 'tenders',
     component: TendersListComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: _isProd ? 'manager/tender-profile/:id' : 'tender-profile/:id',
     component: TenderProfileComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: _isProd
@@ -229,6 +233,7 @@ const routes: Routes = [
   {
     path: _isProd ? 'manager/add-tender' : 'add-tender',
     component: AddTenderComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: _isProd ? 'manager/moveEquipment/:id' : 'moveEquipment/:id',

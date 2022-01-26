@@ -1,7 +1,6 @@
 <div class="m-5"></div>
 <div class="card mx-auto" style="width: 100rem;" *ngIf='id'>
     <div *ngIf="tender" class="card-header">
-        <div>Tender ID:  {{id}}</div>
         <div>Closing Date: {{tender.activeRange.endDate | date: "dd-MM-yyyy, hh:mm"}}</div>
     </div>
     <div *ngIf="tender?.medicationRequests" class="card-body">

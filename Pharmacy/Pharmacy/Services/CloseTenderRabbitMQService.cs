@@ -44,7 +44,7 @@ namespace Pharmacy.Services
             }
             catch
             {
-                Debug.WriteLine("WARNING: NEW TENDER RABBITMQ SERVICES UNAVAILABLE");
+                Debug.WriteLine("WARNING: CLOSE TENDER RABBITMQ SERVICES UNAVAILABLE");
                 return;
             }
             var hospitals = _uow.GetRepository<IHospitalReadRepository>().GetAll();

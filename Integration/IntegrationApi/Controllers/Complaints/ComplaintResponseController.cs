@@ -6,6 +6,7 @@ using IntegrationAPI.DTO;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using IntegrationAPI.DTO.Complaints;
+using IntegrationApi.Messages;
 using Integration.Shared.Model;
 using Integration.Shared.Repository;
 using System;
@@ -31,10 +32,10 @@ namespace IntegrationAPI.Controllers.Complaints
         public IActionResult ReceiveComplaintResponse(ComplaintResponseDTO complaintResponseDTO)
         {
             Pharmacy pharmacy = _pharmacyMasterService.FindPharmacyByApiKey(complaintResponseDTO.ApiKey.ToString());
-            if (pharmacy == null) return BadRequest("Pharmacy not registered");
+            if (pharmacy == null) return NotFound(PharmacyMessages.NotRegistered);
             Complaint complaint = _unitOfWork.GetRepository<IComplaintReadRepository>().GetAll()
                 .FirstOrDefault(x => x.CreatedDate == complaintResponseDTO.ComplaintCreatedDate);
-            if (complaint == null) return BadRequest("Complaint not found");
+            if (complaint == null) return NotFound(ComplaintMessages.NotFound);
             ComplaintResponse complaintResponse = new ComplaintResponse
             {
                 Text = complaintResponseDTO.Text,
@@ -42,7 +43,7 @@ namespace IntegrationAPI.Controllers.Complaints
                 ComplaintId = complaint.Id
             };
             _complaintResponseMasterService.SaveComplaintResponse(complaintResponse);
-
+            
             Notification notification = new Notification {
                 Title = "New complaint response",
                 Description = "New response has been recieved for complaint:" + complaint.Title,
@@ -50,7 +51,7 @@ namespace IntegrationAPI.Controllers.Complaints
             };
             _unitOfWork.GetRepository<INotificationWriteRepository>().Add(notification);
 
-            return Ok("Complaint response received!");
+            return Ok(ComplaintMessages.ResponseReceived);
         }
     }
 }

@@ -11,6 +11,9 @@ import { ICurrentUser } from 'src/app/interfaces/current-user';
 import { AuthService } from 'src/app/services/AuthService/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ReportComponent } from '../report/report.component';
+import { error } from '@angular/compiler/src/util';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-patient-medical-record',
@@ -65,7 +68,8 @@ export class PatientMedicalRecordComponent implements OnInit {
     private _router: Router,
     private changeDetectorRefs: ChangeDetectorRef,
     private authService: AuthService,
-    public matDialog: MatDialog
+    public matDialog: MatDialog,
+    private _snackBar: MatSnackBar
   ) {
     this.futureAppointments = new MatTableDataSource<IAppointment>();
     this.finishedAppointments = new MatTableDataSource<IFinishedAppointment>();
@@ -127,9 +131,13 @@ export class PatientMedicalRecordComponent implements OnInit {
     this.sub = this._service
       .cancelAppointments(id, this.authService.currentUserValue.userName)
       .subscribe((res: string) => {
-        console.log(res);
+        
         this.refresh();
-      });
+      },
+      (err:HttpErrorResponse) => {
+        console.log(err.message);
+            
+      } );
   }
 
   scheduleBasic() {
@@ -150,3 +158,7 @@ export class PatientMedicalRecordComponent implements OnInit {
     });
   }
 }
+function next(next: any, arg1: (res: string) => void): Subscription {
+  throw new Error('Function not implemented.');
+}
+

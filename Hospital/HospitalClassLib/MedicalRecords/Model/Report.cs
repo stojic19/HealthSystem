@@ -13,7 +13,7 @@ namespace Hospital.MedicalRecords.Model
         public Report()
         {
             WrittenReport = "I have been the doctor in charge of this patient since November 2010. I have" +
-                            "seen the patient regularly since then, on average once or twice a year. For purposes " +
+                            " seen the patient regularly since then, on average once or twice a year. For purposes " +
                             "of this medical report, I re - examined the patient today.";
             CreatedDate = DateTime.Now;
         }

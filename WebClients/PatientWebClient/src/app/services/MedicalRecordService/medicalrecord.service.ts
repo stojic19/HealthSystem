@@ -37,9 +37,7 @@ export class MedicalRecordService {
     );
   }
   cancelAppointments(id: number, username: string): any {
-    console.log(id);
-
-    return this._http.get<any>(
+    return this._http.get<String>(
       'api/ScheduledEvent/CancelAppointment?eventId=' +
         id +
         '&username=' +

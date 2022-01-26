@@ -34,7 +34,7 @@ namespace HospitalApi.Controllers
         }
        
 
-       //[Authorize(Roles = "Patient")]
+       [Authorize(Roles = "Patient")]
        [HttpGet]
        public ReportDTO GetReport([FromQuery(Name = "eventId")] int eventId)  
         {

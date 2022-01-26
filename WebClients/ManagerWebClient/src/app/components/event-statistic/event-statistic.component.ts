@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Chart} from 'node_modules/chart.js';
 import { NumberOfScheduling } from 'src/app/interfaces/number-of-scheduling';
-import { StartSchedulingPerPartOfDay } from 'src/app/interfaces/start-scheduling-per-part-of-day';
 import {SuccessSchedulingPerDayOfWeek } from 'src/app/interfaces/succes-scheduling-per-day-of-week';
 import { EventsService } from 'src/app/services/events.service';
 
@@ -12,7 +11,7 @@ import { EventsService } from 'src/app/services/events.service';
 })
 export class EventStatisticComponent implements OnInit {
 
-  statistic! : StartSchedulingPerPartOfDay;
+  statistic! : number[];
   statisticsPerDayOfWeek! : SuccessSchedulingPerDayOfWeek;
   statisticsPerMonths! : number[];
   numbersOfScheduling! : NumberOfScheduling[];
@@ -21,7 +20,7 @@ export class EventStatisticComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.statistic =   this._eventService.getStatisticsPerPartOfDay().subscribe({next:  (data: StartSchedulingPerPartOfDay) => {this.statistic = data; console.log(this.statistic.from0To8);
+    this.statistic =   this._eventService.getStatisticsPerPartOfDay().subscribe({next:  (data: number[]) => {this.statistic = data; console.log(this.statistic[0]);
      
       const myChart = new Chart("myChart", {
         type: 'bar',
@@ -29,7 +28,7 @@ export class EventStatisticComponent implements OnInit {
             labels: ['00h-08h', '08h-12h', '12h-16h', '16h-20h', '20h-24h'],
             legend : {display : false},
             datasets: [{
-                data: [this.statistic.from0To8, this.statistic.from8To12, this.statistic.from12To16, this.statistic.from16To20, this.statistic.from20To00],
+                data: [this.statistic[0], this.statistic[1], this.statistic[2], this.statistic[3], this.statistic[4]],
                 backgroundColor: [
                     'rgba(0, 200, 32,0.6)',
                     'rgba(255, 0, 71, 1)',

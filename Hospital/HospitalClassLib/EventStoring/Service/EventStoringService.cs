@@ -38,7 +38,7 @@ namespace Hospital.EventStoring.Service
             return _uow.GetRepository<IStoredEventReadRepository>().GetStatisticsPerMonths();
         }
 
-        public StartSchedulingPerPartOfDay GetStatisticsPerPartOfDay()
+        public IEnumerable<int> GetStatisticsPerPartOfDay()
         {
             return _uow.GetRepository<IStoredEventReadRepository>().GetStatisticsPerPartOfDay();
         }

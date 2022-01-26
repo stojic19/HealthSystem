@@ -5,7 +5,7 @@ namespace Hospital.EventStoring.Service.Interfaces
 {
     public interface IEventStoringService
     {
-        public StartSchedulingPerPartOfDay GetStatisticsPerPartOfDay();
+        public IEnumerable<int> GetStatisticsPerPartOfDay();
         public SuccessSchedulingPerDayOfWeek GetStatisticsPerDayOfWeek();
         public IEnumerable<int> GetStatisticsPerMonths();
         public IEnumerable<NumberOfScheduling> GetNumberOfSteps();

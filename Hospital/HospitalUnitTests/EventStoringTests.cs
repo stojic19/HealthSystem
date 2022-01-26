@@ -73,13 +73,13 @@ namespace HospitalUnitTests
             Context.SaveChanges();
 
             var eventStoringService = new EventStoringService(UoW);
-            var statistics = eventStoringService.GetStatisticsPerPartOfDay();
+            var statistics = eventStoringService.GetStatisticsPerPartOfDay().ToList();
 
-            statistics.From0To8.ShouldBe(1);
-            statistics.From8To12.ShouldBe(3);
-            statistics.From12To16.ShouldBe(2);
-            statistics.From16To20.ShouldBe(1);
-            statistics.From20To00.ShouldBe(1);
+            statistics[0].ShouldBe(1);
+            statistics[1].ShouldBe(3);
+            statistics[2].ShouldBe(2);
+            statistics[3].ShouldBe(1);
+            statistics[4].ShouldBe(1);
         }
 
 

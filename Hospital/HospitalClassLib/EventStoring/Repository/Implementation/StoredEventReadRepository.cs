@@ -24,21 +24,20 @@ namespace Hospital.EventStoring.Repository.Implementation
                 DateTime.Compare(se.Time, DateTime.Now.AddDays(-30)) >= 0 && se.Step.Equals(Step.StartScheduling));
         }
 
-        public StartSchedulingPerPartOfDay GetStatisticsPerPartOfDay()
+        public IEnumerable<int> GetStatisticsPerPartOfDay()
         {
-            return new StartSchedulingPerPartOfDay
-            {
-                From0To8 = GetEventsStartedScheduling().Count(se =>
-                    se.Time.TimeOfDay >= new TimeSpan(0, 0, 0) && se.Time.TimeOfDay < new TimeSpan(8, 0, 0)),
-                From8To12 = GetEventsStartedScheduling().Count(se =>
-                    se.Time.TimeOfDay >= new TimeSpan(8, 0, 0) && se.Time.TimeOfDay < new TimeSpan(12, 0, 0)),
-                From12To16 = GetEventsStartedScheduling().Count(se =>
-                    se.Time.TimeOfDay >= new TimeSpan(12, 0, 0) && se.Time.TimeOfDay < new TimeSpan(16, 0, 0)),
-                From16To20 = GetEventsStartedScheduling().Count(se =>
-                    se.Time.TimeOfDay >= new TimeSpan(16, 0, 0) && se.Time.TimeOfDay < new TimeSpan(20, 0, 0)),
-                From20To00 = GetEventsStartedScheduling().Count(se =>
-                    se.Time.TimeOfDay >= new TimeSpan(20, 0, 0) && se.Time.TimeOfDay < new TimeSpan(23, 59, 59))
-            };
+            var result = new List<int>();
+            result.Add(GetEventsStartedScheduling().Count(se =>
+                    se.Time.TimeOfDay >= new TimeSpan(0, 0, 0) && se.Time.TimeOfDay < new TimeSpan(8, 0, 0)));
+            result.Add(GetEventsStartedScheduling().Count(se =>
+                    se.Time.TimeOfDay >= new TimeSpan(8, 0, 0) && se.Time.TimeOfDay < new TimeSpan(12, 0, 0)));
+            result.Add(GetEventsStartedScheduling().Count(se =>
+                se.Time.TimeOfDay >= new TimeSpan(12, 0, 0) && se.Time.TimeOfDay < new TimeSpan(16, 0, 0)));
+            result.Add(GetEventsStartedScheduling().Count(se =>
+                    se.Time.TimeOfDay >= new TimeSpan(16, 0, 0) && se.Time.TimeOfDay < new TimeSpan(20, 0, 0)));
+            result.Add(GetEventsStartedScheduling().Count(se =>
+                     se.Time.TimeOfDay >= new TimeSpan(20, 0, 0) && se.Time.TimeOfDay < new TimeSpan(23, 59, 59)));
+            return result;
         }
 
         public IEnumerable<int> GetStatisticsPerDayOfWeek(DayOfWeek day)

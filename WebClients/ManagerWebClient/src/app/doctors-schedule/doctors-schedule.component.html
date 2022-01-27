@@ -29,7 +29,7 @@
                 Show older
               </a>
               <br>
-              <div *ngFor="let duty of doctor.onCallDuties">
+              <div *ngFor="let duty of doctor.doctorSchedule.onCallDuties">
                 {{ displayOnCallDuties(duty.week, 2022, duty.month) }}
               </div>
             </td>

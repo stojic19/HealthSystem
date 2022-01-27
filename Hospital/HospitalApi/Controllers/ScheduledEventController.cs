@@ -87,7 +87,7 @@ namespace HospitalApi.Controllers
             }
             else
             {
-                return Content("Invalid Email Confirmation Request");
+                return Content("You cannot cancel appointment 48 hours or less before the scheduled time.");
             }
         }
 

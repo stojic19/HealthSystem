@@ -1,12 +1,9 @@
 using Hospital.Schedule.Model;
 using Hospital.Schedule.Model.Wrappers;
-using System;
 using Hospital.Schedule.Repository;
 using Hospital.SharedModel.Repository.Base;
 using System.Collections.Generic;
-using System.Linq;
 using Hospital.Schedule.Service.Interfaces;
-using Hospital.SharedModel.Model.Wrappers;
 
 namespace Hospital.Schedule.Service
 {
@@ -68,6 +65,7 @@ namespace Hospital.Schedule.Service
             if (finishedUserEvents.Count != 0)
             {
                 finishedUserEvents.ForEach(one => one.SetToDone());
+
                 UoW.SaveChanges();
             }
         }

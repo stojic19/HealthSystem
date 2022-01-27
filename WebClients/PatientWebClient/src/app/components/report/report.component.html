@@ -1,0 +1,25 @@
+<div class="container">
+    <div class="col-12 text-center">
+      <h3>Medical Report</h3>
+      <hr />
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                Dr {{ report.doctor.firstName }} {{ report.doctor.lastName }}
+            </div>
+            <div class="col">
+                General Practice
+            </div>
+        </div>
+    </div>
+    <br><br>
+    <div class="col-12 border purple-border">     
+         <br><p class="note note-light">{{report.writtenReport}}</p>
+    </div> 
+    <br>
+    <div class="col">
+        {{report.createdDate | date:'medium' }} 
+    </div>
+    
+</div>

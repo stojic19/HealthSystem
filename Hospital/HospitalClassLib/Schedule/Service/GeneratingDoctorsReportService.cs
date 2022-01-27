@@ -3,6 +3,7 @@ using Hospital.Schedule.Repository;
 using Hospital.SharedModel.Model.Wrappers;
 using Hospital.SharedModel.Repository;
 using Hospital.SharedModel.Repository.Base;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,7 +66,10 @@ namespace Hospital.Schedule.Service
         private int CountOnCallDuties(int doctorsId, TimePeriod timePeriod)
         {
             var doctor = uow.GetRepository<IDoctorReadRepository>()
-                .GetById(doctorsId);
+                .GetAll()
+                .Where(d => d.Id == doctorsId)
+                .Include(d => d.DoctorSchedule)
+                .FirstOrDefault();
 
             var duties = uow.GetRepository<IOnCallDutyReadRepository>()
                 .GetAll()

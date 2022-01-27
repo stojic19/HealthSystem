@@ -21,7 +21,6 @@ export class DoctorsScheduleComponent implements OnInit {
       .toPromise()
       .then((res) => {
         this.doctors = res as Doctor[];
-        console.log(this.doctors[1].vacations)
         this.isLoading = false;
       });;
 
@@ -75,7 +74,7 @@ export class DoctorsScheduleComponent implements OnInit {
 
   getOnCallsForDoctor(doctor: Doctor) {
     let pastDuties = [] as any
-    for (let d of doctor.onCallDuties) {
+    for (let d of doctor.doctorSchedule.onCallDuties) {
       let end = this.getEndOfDuty(d.week, 2022, d.month);
       let today = new Date();
       if (new Date(end) < today) {
@@ -88,7 +87,7 @@ export class DoctorsScheduleComponent implements OnInit {
 
   getFutureVacations(doctor: Doctor) {
     let futureVacations = [] as any;
-    for (let vacation of doctor.vacations) {
+    for (let vacation of doctor.doctorSchedule.vacations) {
       let end = new Date(vacation.endDate)
       if (end >= new Date()) {
         futureVacations.push(vacation);
@@ -100,7 +99,7 @@ export class DoctorsScheduleComponent implements OnInit {
 
   getPastVacations(doctor: Doctor) {
     let pastVacations = [] as any;
-    for (let vacation of doctor.vacations) {
+    for (let vacation of doctor.doctorSchedule.vacations) {
       let end = new Date(vacation.endDate)
       if (end < new Date()) {
         pastVacations.push(vacation);

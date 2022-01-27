@@ -1,13 +1,7 @@
-﻿using AutoMapper;
-using Hospital.SharedModel.Model;
-using Hospital.SharedModel.Repository.Base;
+﻿using Hospital.SharedModel.Model;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace HospitalApi.Controllers

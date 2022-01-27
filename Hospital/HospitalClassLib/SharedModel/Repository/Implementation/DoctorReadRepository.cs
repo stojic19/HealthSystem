@@ -21,22 +21,49 @@ namespace Hospital.SharedModel.Repository.Implementation
         {
             var medRecords = _context.Set<MedicalRecord>().AsEnumerable();
 
+            var doctors = _context.Set<Doctor>()
+               .Where(d => d.Specialization.Name.ToLower().Equals("general practice")).AsEnumerable();
+
             var query = medRecords
                 .GroupBy(t => new { Doctor = t.DoctorId })
                 .Select(g => new { Count = g.Count(p => p.Id > 0), g.Key.Doctor });
 
-            var min = medRecords
-                .GroupBy(t => t.DoctorId)
-                .Select(g => g.Count()).Min();
+            var mrs = _context.Set<MedicalRecord>().Include(mr => mr.Doctor);
+            var docs = _context.Set<Doctor>();
 
-            var retVal = query
+            var docsWithMR = (from mr in mrs where mr.Doctor != null select mr.Doctor);
+            var docsWOMR = docs.Except(docsWithMR).ToList();
+
+            List<Doctor> returnVal;
+            int min; 
+           if( docsWOMR != null )
+            {
+                returnVal = docsWOMR;
+                min = 0;
+            }
+            else
+            {
+                returnVal = new List<Doctor>();
+                min = medRecords
+                    .GroupBy(t => t.DoctorId)
+                    .Select(g => g.Count()).Min();
+
+            }
+          
+            var moreDoctors = query
                 .Where(g => g.Count <= min + 2)
                 .Select(g => g.Doctor).ToList();
 
-            var doctors = _context.Set<Doctor>()
-                .Where(d => d.Specialization.Name.ToLower().Equals("general practice")).AsEnumerable();
+            foreach (Doctor d in docs)
+            {
+                if (moreDoctors.Contains(d.Id))
+                {
+                    returnVal.Add(d);
+                }
+            }
 
-            return retVal.Select(id => doctors.FirstOrDefault(d => d.Id == id)).AsEnumerable();
+            return returnVal;
+
         }
 
         public IEnumerable<Doctor> GetAllDoctorsWithSpecialization()

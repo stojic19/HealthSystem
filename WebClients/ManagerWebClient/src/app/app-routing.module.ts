@@ -45,6 +45,8 @@ import { DoctorVacationsComponent } from './doctor-vacations/doctor-vacations.co
 import { CreateVacationComponent } from './create-vacation/create-vacation.component';
 import { UpdateVacationComponent } from './update-vacation/update-vacation.component';
 import { OnCallShiftsComponent } from './on-call-shifts/on-call-shifts.component';
+import { EventStatisticComponent } from './components/event-statistic/event-statistic.component';
+import { NotificationsComponent } from './notifications/notifications.component';
 
 const _isProd = environment.production;
 
@@ -55,6 +57,53 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   { path: _isProd? 'manager/oncall' : 'oncall', component: OnCallShiftsComponent , canActivate: [AuthGuard]},
+  { path: _isProd? 'manager/overview' : 'overview', component: HospitalOverviewComponent , canActivate: [AuthGuard]},
+  { path: _isProd? 'manager/feedbacks' : 'feedbacks', component: FeedbacksManagerComponent , canActivate: [AuthGuard]},
+  { path: _isProd? 'manager/firstBuilding' : 'firstBuilding', component: FirstBuildingComponent , canActivate: [AuthGuard]},
+  { path: _isProd? 'manager/secondBuilding' : 'secondBuilding', component: SecondBuildingComponent , canActivate: [AuthGuard]},
+  { path: _isProd? 'manager/roomInventory/:id' : 'roomInventory/:id', component: RoomInventoryComponent , canActivate: [AuthGuard]},
+  { path: _isProd? 'manager/hospitalEquipment' : 'hospitalEquipment', component: HospitalEquipmentComponent , canActivate: [AuthGuard]},
+  { path: _isProd? 'manager/firstBuilding/:roomName/:floor' : 'firstBuilding/:roomName/:floor', component: FirstBuildingComponent , canActivate: [AuthGuard]},
+  {
+    path: _isProd? 'manager/secondBuilding/:roomName/:floor' : 'secondBuilding/:roomName/:floor',
+    component: SecondBuildingComponent , canActivate: [AuthGuard]
+  },
+  { path: _isProd? 'manager/complaints' : 'complaints', component: ComplaintsListComponent, canActivate: [AuthGuard]},
+  { path: _isProd? 'manager/complaints/:id' : 'complaints/:id', component: ComplaintDetailsComponent , canActivate: [AuthGuard]},
+  { path: _isProd? 'manager/complaint-add' : 'complaint-add', component: AddComplaintComponent , canActivate: [AuthGuard]},
+  { path: _isProd? 'manager/pharmacy-register' : 'pharmacy-register', component: RegisterPharmacyComponent , canActivate: [AuthGuard]},
+  { path: _isProd? 'manager/pharmacy-list' : 'pharmacy-list', component: PharmaciesListComponent },
+  { path: _isProd? 'manager/pharmacy-profile/:id' : 'pharmacy-profile/:id', component: PharmacyProfileComponent},
+  { path: _isProd? 'manager/benefit-list' : 'benefit-list', component: BenefitListComponent , canActivate: [AuthGuard]},
+  { path: _isProd? 'manager/benefit/:id' : 'benefit/:id', component: BenefitDetailsComponent , canActivate: [AuthGuard]},
+  { path: _isProd? 'manager/home' : 'home', component: HomePageComponent },
+  { path: _isProd? 'manager/tenders' : 'tenders', component: TendersListComponent},
+  { path: _isProd? 'manager/tender-profile/:id' : 'tender-profile/:id', component: TenderProfileComponent},
+  { path: _isProd? 'manager/notifications' : 'notifications', component: NotificationsComponent},
+  {
+    path: _isProd? 'manager/medication-consumption-report' : 'medication-consumption-report',
+    component: MedicationReportsComponent, canActivate: [AuthGuard]
+  },
+  {
+    path: _isProd? 'manager/medicine-specification-requests' : 'medicine-specification-requests',
+    component: MedicineSpecificationListComponent, canActivate: [AuthGuard]
+  },
+  {
+    path: _isProd? 'manager/new-medicine-specification-request' : 'new-medicine-specification-request',
+    component: MedicineSpecificationRequestsComponent, canActivate: [AuthGuard]
+  },
+  { path: _isProd? 'manager/roomRenovation' : 'roomRenovation', component: RenovationFormComponent, canActivate: [AuthGuard]},
+  { path: _isProd? 'manager/blocking' : 'blocking', component: MaliciousPatientsComponent, canActivate: [AuthGuard]},
+  { path: _isProd? 'manager' : '', redirectTo: _isProd? 'manager/home' : 'home', pathMatch: 'full' },
+  { path: _isProd? 'manager/add-tender' : 'add-tender', component: AddTenderComponent },
+  { path: _isProd? 'manager/moveEquipment/:id' : 'moveEquipment/:id', component: EquipmentFormComponent , canActivate: [AuthGuard]},
+  { path: _isProd? 'manager/surveys' : 'surveys', component: SurveysObserveComponent , canActivate: [AuthGuard]},
+  { path: _isProd? 'manager/schedule/:id' : 'schedule/:id', component: RoomScheduleComponent , canActivate: [AuthGuard]},
+  { path: _isProd? 'manager/login' : 'login', component: LoginComponent},
+  { path: _isProd? 'manager/hospitalShifts' : 'hospitalShifts', component: HospitalShiftsComponent, canActivate: [AuthGuard]},
+  { path: _isProd? 'manager/createNewShift' : 'createNewShift', component: CreateShiftComponent, canActivate: [AuthGuard]},
+  { path: _isProd? 'manager/updateShift/:id' : 'updateShift/:id', component: UpdateShiftComponent, canActivate: [AuthGuard]},
+  { path: _isProd? 'manager/doctorShifts' : 'doctorShifts', component: DoctorShiftComponent, canActivate: [AuthGuard]},
 
   {
     path: _isProd ? 'manager/feedbacks' : 'feedbacks',
@@ -118,10 +167,12 @@ const routes: Routes = [
   {
     path: _isProd ? 'manager/pharmacy-list' : 'pharmacy-list',
     component: PharmaciesListComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: _isProd ? 'manager/pharmacy-profile/:id' : 'pharmacy-profile/:id',
     component: PharmacyProfileComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: _isProd ? 'manager/benefit-list' : 'benefit-list',
@@ -137,10 +188,12 @@ const routes: Routes = [
   {
     path: _isProd ? 'manager/tenders' : 'tenders',
     component: TendersListComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: _isProd ? 'manager/tender-profile/:id' : 'tender-profile/:id',
     component: TenderProfileComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: _isProd
@@ -181,6 +234,7 @@ const routes: Routes = [
   {
     path: _isProd ? 'manager/add-tender' : 'add-tender',
     component: AddTenderComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: _isProd ? 'manager/moveEquipment/:id' : 'moveEquipment/:id',
@@ -221,6 +275,11 @@ const routes: Routes = [
   {
     path: _isProd ? 'manager/tendering-statistics' : 'tendering-statistics',
     component: TenderingStatisticsComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: _isProd ? 'manager/eventStatistics' : 'eventStatistics',
+    component: EventStatisticComponent,
     canActivate: [AuthGuard],
   },
   { path: _isProd ? 'manager/doctorsSchedule' : 'doctorsSchedule', component: DoctorsScheduleComponent, canActivate: [AuthGuard] },

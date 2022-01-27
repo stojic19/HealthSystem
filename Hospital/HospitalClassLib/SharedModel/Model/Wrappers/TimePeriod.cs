@@ -9,6 +9,8 @@ namespace Hospital.SharedModel.Model.Wrappers
         public DateTime StartTime { get; private set; }
         public DateTime EndTime { get; private set; }
 
+        public TimePeriod() { }
+
         public TimePeriod(DateTime start, DateTime end)
         {
             this.StartTime = start;

@@ -1,4 +1,5 @@
 import { Gender } from '../interfaces/patient';
+import { DoctorSchedule } from './doctor-schedule.model';
 
 export class Doctor {
   id: number;
@@ -18,8 +19,8 @@ export class Doctor {
   specialization: any;
   shiftId: number;
   shift: Shift;
-  onCallDuties: OnCallDuty[];
-  vacations: Vacation[];
+  doctorScheduleId: number;
+  doctorSchedule: DoctorSchedule;
 }
 
 export interface Shift {

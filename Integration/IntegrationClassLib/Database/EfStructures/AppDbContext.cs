@@ -22,6 +22,7 @@ namespace Integration.Database.EfStructures
         public DbSet<MedicineInventory> MedicineInventory { get; set; }
         public DbSet<Tender> Tenders { get; set; }
         public DbSet<StoredEvent> StoredEvents { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }

@@ -9,6 +9,8 @@ import { INewAppointment } from 'src/app/interfaces/new-appointment';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/AuthService/auth.service';
+import { EventService } from 'src/app/services/EventSourcingService/event.service';
+import { IEvent, Step } from 'src/app/interfaces/ievent';
 
 @Component({
   selector: 'app-basic-appointment',
@@ -28,6 +30,7 @@ export class BasicAppointmentComponent implements OnInit {
   fourthFormGroup!: FormGroup;
   minDate!: Date;
   roomId!: number;
+  event! : IEvent;
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -36,10 +39,12 @@ export class BasicAppointmentComponent implements OnInit {
     private datePipe: DatePipe,
     private _snackBar: MatSnackBar,
     private router: Router,
-    private _authService: AuthService
+    private _authService: AuthService,
+    private _eventService : EventService
   ) {
     this.newAppointment = {} as INewAppointment;
     this.minDate = new Date();
+    this.event = {} as IEvent;
   }
 
   ngOnInit(): void {
@@ -97,6 +102,9 @@ export class BasicAppointmentComponent implements OnInit {
   schedule() {
     this.newAppointment.patientUsername =
       this._authService.currentUserValue.userName;
+    this.event.username = this._authService.currentUserValue.userName;
+    this.event.step = Step.Schedule;
+    this._eventService.createNewEvent(this.event).subscribe();
     this.appointmentService.scheduleAppointment(this.newAppointment).subscribe(
       (res) => {
         this.router.navigate(['/record']);
@@ -112,5 +120,42 @@ export class BasicAppointmentComponent implements OnInit {
         );
       }
     );
+  }
+
+  appointmentBack() {
+    this.event.username = this._authService.currentUserValue.userName;
+    this.event.step = Step.AppointmentBack;
+    this._eventService.createNewEvent(this.event).subscribe();
+  }
+
+  dateNext() {
+    this.event.username = this._authService.currentUserValue.userName;
+    this.event.step =Step.DateNext;
+    this._eventService.createNewEvent(this.event).subscribe();
+  }
+
+  doctorBack() {
+    this.event.username = this._authService.currentUserValue.userName;
+    this.event.step =Step.DoctorBack;
+    this._eventService.createNewEvent(this.event).subscribe();
+  }
+
+  doctorNext() {
+    this.event.username = this._authService.currentUserValue.userName;
+    this.event.step =Step.DoctorNext;
+    this._eventService.createNewEvent(this.event).subscribe();
+  }
+
+  specializationNext() {
+    this.event.username = this._authService.currentUserValue.userName;
+    this.event.step =Step.SpecializationNext;
+    this._eventService.createNewEvent(this.event).subscribe();
+  }
+
+  specializationBack() {
+    this.event.username = this._authService.currentUserValue.userName;
+    this.event.step =Step.SpecializationBack;
+    console.log(this.event.step);
+    this._eventService.createNewEvent(this.event).subscribe();
   }
 }

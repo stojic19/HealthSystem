@@ -3,4 +3,5 @@ export interface IChosenDoctor {
   lastName: string;
   id: number;
   roomId: number;
+  phoneNumber: string;
 }

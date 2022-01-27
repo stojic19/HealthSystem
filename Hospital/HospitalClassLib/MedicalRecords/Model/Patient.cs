@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Hospital.Schedule.Model;
 using Hospital.SharedModel.Model;
 
+
 namespace Hospital.MedicalRecords.Model
 {
     public class Patient : User
@@ -36,12 +37,23 @@ namespace Hospital.MedicalRecords.Model
             return newAppointment;
         }
 
-        public void CancelAppointment(int eventId)
+        public void AddPrescription(Prescription prescription)
+        {
+            MedicalRecord.AddPrescription(prescription);
+        }
+
+        public bool CancelAppointment(int eventId)
         {
             foreach (var se in ScheduledEvents.ToArray())
             {
-                if (se.Id == eventId && !se.IsCanceled && !se.IsDone && DateTime.Compare(DateTime.Now, se.StartDate.AddDays(-2)) <= 0) se.SetToCanceled();
+                if (se.Id == eventId && !se.IsCanceled && !se.IsDone && DateTime.Compare(DateTime.Now, se.StartDate.AddDays(-2)) <= 0)
+                {
+                    se.SetToCanceled();
+                    return true;
+                }
+               
             }
+            return false;
         }
     }
 }

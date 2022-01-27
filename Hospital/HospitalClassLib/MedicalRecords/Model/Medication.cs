@@ -6,10 +6,8 @@ namespace Hospital.MedicalRecords.Model
     {
         public int Id { get; set; }
         public string Name { get; set; }
-
         public int TimesPerDay { get; set; }
         public string HowToUse { get; set; }
-
         public IEnumerable<MedicationIngredient> MedicationIngredients { get; set; }
     }
 }

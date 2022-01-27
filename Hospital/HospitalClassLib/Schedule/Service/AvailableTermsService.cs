@@ -4,6 +4,7 @@ using Hospital.Schedule.Model;
 using Hospital.Schedule.Repository;
 using Hospital.SharedModel.Model.Wrappers;
 using Hospital.SharedModel.Repository.Base;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,13 +71,14 @@ namespace Hospital.Schedule.Service
         {
 
             var transfersRepo = uow.GetRepository<IEquipmentTransferEventReadRepository>();
-            var scheduledTransfers = transfersRepo.GetAll().ToList();
+            var scheduledTransfers = transfersRepo.GetAll().Include(t => t.InitialRoomInventory)
+                                                            .Include(t => t.DestinationRoomInventory).ToList();
 
             foreach (EquipmentTransferEvent scheduledTransfer in scheduledTransfers)
             {
-                if (scheduledTransfer.InitialRoomId == roomId || scheduledTransfer.DestinationRoomId == roomId)
+                if (scheduledTransfer.InitialRoomInventory.RoomId == roomId || scheduledTransfer.DestinationRoomInventory.RoomId == roomId)
                 {
-                    TimePeriod period = new TimePeriod(scheduledTransfer.StartDate, scheduledTransfer.EndDate);
+                    TimePeriod period = new TimePeriod(scheduledTransfer.TimePeriod.StartTime, scheduledTransfer.TimePeriod.EndTime);
                     if (timePeriod.OverlapsWith(period))
                         return true;
                 }

@@ -38,7 +38,6 @@ namespace HospitalApi.Controllers
 
             var shiftsRepo = _uow.GetRepository<IOnCallDutyReadRepository>();
             return Ok(shiftsRepo.GetAll()
-                .Include(x => x.DoctorsOnDuty).ThenInclude(x => x.Specialization)
                 .Where(shift => shift.Month == month && shift.Week == week).FirstOrDefault());
         }
 
@@ -60,13 +59,12 @@ namespace HospitalApi.Controllers
                 .Include(x => x.DoctorsOnDuty)
                 .Where(shift => shift.Id == shiftId).FirstOrDefault();
 
-            var doctor = doctorsReadRepo.GetById(doctorId);
-            shift.AddDoctor(doctor);
+            var doctor = doctorsReadRepo.GetAll().Include(d => d.DoctorSchedule).Where(d => d.Id == doctorId).FirstOrDefault();
+            shift.AddDoctor(doctor.DoctorSchedule);
 
             shiftsWriteRepo.Update(shift);
 
             shift = shiftsReadRepo.GetAll()
-                .Include(x => x.DoctorsOnDuty).ThenInclude(x => x.Specialization)
                 .Where(shift => shift.Id == shiftId).FirstOrDefault();
 
             return Ok(shift);
@@ -87,18 +85,45 @@ namespace HospitalApi.Controllers
             var doctorsReadRepo = _uow.GetRepository<IDoctorReadRepository>();
 
             var shift = shiftsReadRepo.GetAll()
-                .Include(x => x.DoctorsOnDuty).ThenInclude(x => x.Specialization)
-                .Where(shift => shift.Id == shiftId).FirstOrDefault();
+                        .Include(x => x.DoctorsOnDuty)
+                        .Where(shift => shift.Id == shiftId).FirstOrDefault();
 
-            var doctor = doctorsReadRepo.GetById(doctorId);
-            shift.RemoveDoctor(doctor);
+            var doctor = doctorsReadRepo.GetAll().Include(d => d.DoctorSchedule).Where(d => d.Id == doctorId).FirstOrDefault();
+            shift.RemoveDoctor(doctor.DoctorSchedule);
             shiftsWriteRepo.Update(shift);
 
             shift = shiftsReadRepo.GetAll()
-                .Include(x => x.DoctorsOnDuty).ThenInclude(x => x.Specialization)
                 .Where(shift => shift.Id == shiftId).FirstOrDefault();
 
             return Ok(shift);
+        }
+
+        [Authorize(Roles = "Manager")]
+        [HttpGet]
+        public IActionResult GetDoctors([FromQuery(Name = "shiftId")] int shiftId)
+        {
+
+            if (shiftId <= 0)
+            {
+                return BadRequest();
+            }
+
+            var shiftsReadRepo = _uow.GetRepository<IOnCallDutyReadRepository>();
+            var shiftsWriteRepo = _uow.GetRepository<IOnCallDutyWriteRepository>();
+            var doctorsReadRepo = _uow.GetRepository<IDoctorReadRepository>();
+
+            var shift = shiftsReadRepo.GetAll()
+                .Include(x => x.DoctorsOnDuty)
+                .Where(shift => shift.Id == shiftId).FirstOrDefault();
+
+            List<Doctor> doctors = new List<Doctor>();
+
+            foreach (Doctor doctor in doctorsReadRepo.GetAll()) {
+                if (shift.DoctorsOnDuty.Contains(doctor.DoctorSchedule))
+                    doctors.Add(doctor);
+            }
+
+            return Ok(doctors);
         }
 
 

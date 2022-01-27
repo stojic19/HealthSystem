@@ -28,7 +28,7 @@ namespace Hospital.RoomsAndEquipment.Service
         public void CancelEquipmentTransferEvent(EquipmentTransferEvent transferEvent)
         {
             var transferEventRepo = uow.GetRepository<IEquipmentTransferEventWriteRepository>();
-            if (!EventStartsTomorrow(transferEvent.StartDate))
+            if (!EventStartsTomorrow(transferEvent.TimePeriod.StartTime))
             {
                 transferEventRepo.Delete(transferEvent);
             }

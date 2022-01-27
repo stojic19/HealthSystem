@@ -13,7 +13,7 @@ import { LandingPageService } from 'src/app/services/LandingPage/landing-page.se
 })
 export class LandingPageComponent implements OnInit {
   allFeedbacks!: IPatientFeedback[];
-  topFiveFeedbacks!: IPatientFeedback[];
+  topTenFeedbacks!: IPatientFeedback[];
   sub!: Subscription;
   sub1!: Subscription;
   numOfFeedback!: number;
@@ -25,12 +25,10 @@ export class LandingPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.sub = this._service.getApproved().subscribe({
+    this.sub = this._service.getPublicApproved().subscribe({
       next: (feedback) => {
-        this.allFeedbacks = feedback;
-        this.topFiveFeedbacks = this.allFeedbacks.slice(
-          this.allFeedbacks.length / 2
-        );
+        this.topTenFeedbacks = feedback;
+       
       },
     });
     this.sub1 = this.benefitService.getBenefits().subscribe({

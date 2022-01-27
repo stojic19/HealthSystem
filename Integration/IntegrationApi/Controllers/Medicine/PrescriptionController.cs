@@ -17,6 +17,7 @@ using IntegrationAPI.Adapters.PDF.Implementation;
 using IntegrationAPI.Controllers.Base;
 using IntegrationAPI.DTO.Prescription;
 using IntegrationAPI.HttpRequestSenders;
+using IntegrationApi.Messages;
 using Renci.SshNet;
 
 namespace IntegrationAPI.Controllers.Medicine
@@ -42,30 +43,44 @@ namespace IntegrationAPI.Controllers.Medicine
                 }
             }
 
-            if (foundPharmacy == null)
-            {
-                return BadRequest("No pharmacy has the needed medicine");
-            }
+            if (foundPharmacy == null) return BadRequest(PrescriptionMessages.NoMedicineInAnyPharmacy);
 
             var sftpResponse = SendPrescriptionWithSftp(foundPharmacy, dto);
-            
             var httpResponse = SendPrescriptionWithHttp(foundPharmacy, dto);
 
+            var fullResponse = CreateResponse(foundPharmacy, sftpResponse, httpResponse);
+            if (sftpResponse.Contains("Done") || httpResponse.Contains("Done")) return Ok(fullResponse);
+            return BadRequest(fullResponse);
+        }
+
+        private static string CreateResponse(Pharmacy foundPharmacy, string sftpResponse, string httpResponse)
+        {
             string fullResponse = "Pharmacy: " + foundPharmacy.Name + "\n" +
                                   "SFTP: " + sftpResponse + "\n" +
                                   "HTTP: " + httpResponse;
-            if (sftpResponse.Equals("Done") || httpResponse.Equals("Done"))
-            {
-                return Ok(fullResponse);
-            }
-            else
-            {
-                return BadRequest(fullResponse);
-            }
-            
+            return fullResponse;
         }
 
         private bool CheckMedicineInPharmacy(PrescriptionDTO dto, Pharmacy pharmacy)
+        {
+            var medicineDto = CreateMedicineRequestForPharmacyDto(dto, pharmacy);
+            try
+            {
+                var response = _httpRequestSender.Post($"{Request.Scheme}://{Request.Host}" + "/api/Medicine/RequestMedicineInformation", medicineDto);
+                var content = response.Content;
+                if (response.StatusCode != HttpStatusCode.OK) return false;
+
+                CheckMedicineAvailabilityResponseDto responseDTO =
+                    JsonConvert.DeserializeObject<CheckMedicineAvailabilityResponseDto>(content);
+                return responseDTO.Answer;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private static CreateMedicineRequestForPharmacyDto CreateMedicineRequestForPharmacyDto(PrescriptionDTO dto, Pharmacy pharmacy)
         {
             CreateMedicineRequestForPharmacyDto medicineDto = new CreateMedicineRequestForPharmacyDto()
             {
@@ -74,34 +89,7 @@ namespace IntegrationAPI.Controllers.Medicine
                 Quantity = 1,
                 ManufacturerName = "Manufacturer 1"
             };
-            try
-            {
-                RestClient restClient = new RestClient();
-                RestRequest request =
-                    new RestRequest($"{Request.Scheme}://{Request.Host}" + "/api/Medicine/RequestMedicineInformation");
-                request.AddJsonBody(medicineDto);
-                var response = restClient.Post(request);
-                var content = response.Content;
-                Console.WriteLine(content);
-                if ((HttpStatusCode) response.GetType().GetProperty("StatusCode").GetValue(response, null) !=
-                    HttpStatusCode.OK)
-                {
-                    return false;
-                }
-
-                CheckMedicineAvailabilityResponseDto responseDTO =
-                    JsonConvert.DeserializeObject<CheckMedicineAvailabilityResponseDto>(content);
-                if (responseDTO.Answer)
-                {
-                    return true;
-                }
-            }
-            catch
-            {
-                return false;
-            }
-
-            return false;
+            return medicineDto;
         }
 
         private string SendPrescriptionWithSftp(Pharmacy pharmacy, PrescriptionDTO dto)
@@ -112,33 +100,33 @@ namespace IntegrationAPI.Controllers.Medicine
                 string fileName = adapter.MakePrescriptionPdf(dto, "sftp");
                 string path = "Prescriptions" + Path.DirectorySeparatorChar + "Sftp" + Path.DirectorySeparatorChar +
                               fileName;
-                SftpClient sftpClient = new SftpClient(new PasswordConnectionInfo(_sftpCredentials.Host,
-                    _sftpCredentials.Username, _sftpCredentials.Password));
-                sftpClient.Connect();
-                Stream fileStream = System.IO.File.OpenRead(path);
-                string filePath = Path.GetFileName(path);
-                sftpClient.UploadFile(fileStream, filePath);
-                sftpClient.Disconnect();
-                fileStream.Close();
+                SendPrescriptionToSftpServer(path);
 
                 PrescriptionSendSftpDto prescDto = new PrescriptionSendSftpDto()
                 {
                     ApiKey = pharmacy.ApiKey,
                     FileName = fileName
                 };
-                RestClient client = new RestClient();
-                string targetUrl = pharmacy.BaseUrl + "/api/Prescription/ReceivePrescriptionSftp";
-                RestRequest request = new RestRequest(targetUrl);
-                request.AddJsonBody(prescDto);
-                var response = client.Post(request).Content;
-
-                return response;
+                var response = _httpRequestSender.Post(pharmacy.BaseUrl + "/api/Prescription/ReceivePrescriptionSftp", prescDto);
+                return response.Content;
             }
             catch
             {
-                return "Cannot send prescription";
+                return PrescriptionMessages.CannotSend;
             }
             
+        }
+
+        private void SendPrescriptionToSftpServer(string path)
+        {
+            SftpClient sftpClient = new SftpClient(new PasswordConnectionInfo(_sftpCredentials.Host,
+                _sftpCredentials.Username, _sftpCredentials.Password));
+            sftpClient.Connect();
+            Stream fileStream = System.IO.File.OpenRead(path);
+            string filePath = Path.GetFileName(path);
+            sftpClient.UploadFile(fileStream, filePath);
+            sftpClient.Disconnect();
+            fileStream.Close();
         }
 
         private string SendPrescriptionWithHttp(Pharmacy pharmacy, PrescriptionDTO dto)
@@ -156,17 +144,12 @@ namespace IntegrationAPI.Controllers.Medicine
                     FileContent = file,
                     FileName = fileName
                 };
-                RestClient client = new RestClient();
-                string targetUrl = pharmacy.BaseUrl + "/api/Prescription/ReceivePrescriptionHttp";
-                RestRequest request = new RestRequest(targetUrl);
-                request.AddJsonBody(prescDto);
-                var response = client.Post(request).Content;
-
-                return response;
+                var response = _httpRequestSender.Post(pharmacy.BaseUrl + "/api/Prescription/ReceivePrescriptionHttp", prescDto);
+                return response.Content;
             }
             catch
             {
-                return "Cannot send prescription";
+                return PrescriptionMessages.CannotSend;
             }
         }
     }

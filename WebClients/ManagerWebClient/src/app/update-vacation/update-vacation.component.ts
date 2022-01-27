@@ -65,7 +65,7 @@ export class UpdateVacationComponent implements OnInit {
 
   updateVacation() {
     let newVacation: VacationRequest = {
-      type: this.doctor.vacations[0].type,
+      type: this.doctor.doctorSchedule.vacations[0].type,
       startDate: this.fromTime,
       endDate: this.toTime,
       doctorId: this.selectedItemId

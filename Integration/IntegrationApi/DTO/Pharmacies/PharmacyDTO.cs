@@ -13,6 +13,7 @@ namespace IntegrationAPI.DTO.Pharmacies
         public string StreetNumber { get; set; }
         public string CountryName { get; set; }
         public bool GrpcSupported { get; set; }
+        public string Email { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
     }

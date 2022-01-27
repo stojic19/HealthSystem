@@ -125,7 +125,9 @@ export class RoomScheduleComponent implements OnInit {
       }
 
       setTimeout(() => {
-        window.location.reload();
+        this.getAllEquipmentTransfers();
+        this.getAllRenovations();
+        this.getAllAppointments();
       }, 500);
     });
   }

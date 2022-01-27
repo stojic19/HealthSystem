@@ -58,7 +58,7 @@ export class BasicAppointmentComponent implements OnInit {
 
     this.doctorService
       .getAllSpecializations()
-      .subscribe((res) => (this.specializations = res));
+      .subscribe((res) => (this.specializations = res.filter((item, i , arr)  => arr.findIndex((t) => t.name === item.name) === i)));
   }
 
   getDocsForSpec(event: any) {

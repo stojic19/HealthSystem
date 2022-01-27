@@ -8,6 +8,7 @@ img {
  /* max-width: 1200px; /* Maximum width */
  /* margin: 0 auto; /* Center it */
   text-align: center;
+  max-height: 500px;
   background: #2427273b;
   background: rgba(44, 46, 46, 0.158); 
   color: rgb(255, 255, 255);

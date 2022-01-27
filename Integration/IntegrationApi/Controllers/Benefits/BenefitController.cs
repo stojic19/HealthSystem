@@ -62,9 +62,11 @@ namespace IntegrationAPI.Controllers.Benefits
         public IActionResult GetRelevantBenefits()
         {
             IEnumerable<Benefit> benefits = _uow.GetRepository<IBenefitReadRepository>().GetRelevantBenefits();
-            var pharmacies = _uow.GetRepository<IPharmacyReadRepository>().GetAll().ToList();
+            
             foreach (var benefit in benefits)
+            {
                 if (benefit.Pharmacy == null)
+                {
                     benefit.Pharmacy = _uow.GetRepository<IPharmacyReadRepository>().GetById(benefit.PharmacyId);
                 }
             }

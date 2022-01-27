@@ -15,6 +15,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { PrescriptionComponent } from '../prescription/prescription.component';
 import { PrescriptionService } from 'src/app/services/PrescriptionService/prescription.service';
 import { identifierModuleUrl } from '@angular/compiler';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-patient-medical-record',
@@ -134,10 +135,16 @@ export class PatientMedicalRecordComponent implements OnInit {
   cancelAppointment(id: number) {
     this.sub = this._service
       .cancelAppointments(id, this.authService.currentUserValue.userName)
-      .subscribe((res: string) => {
+      .subscribe(
+        (res: string) => {
         console.log(res);
         this.refresh();
-      });
+      },
+      (err:HttpErrorResponse)=>{
+        console.log(err);
+        
+      }
+        );
   }
 
   openPrescription(id: number) {

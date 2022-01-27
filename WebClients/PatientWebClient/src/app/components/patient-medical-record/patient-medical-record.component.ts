@@ -142,7 +142,8 @@ export class PatientMedicalRecordComponent implements OnInit {
         this.refresh();
       },
       (err:HttpErrorResponse) => {
-        console.log(err.message);
+        this._snackBar.open(err.error.text, 'Dismiss');
+        console.log(err.error.text);
             
       } );
   }

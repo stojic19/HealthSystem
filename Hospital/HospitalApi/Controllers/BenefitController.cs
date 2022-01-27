@@ -31,8 +31,7 @@ namespace HospitalApi.Controllers
             var result = _httpRequestSender.Get( _integrationBaseUrl +"/api/Benefit/GetRelevantBenefits");
             var benefits = JsonConvert.DeserializeObject<List<BenefitDTO>>(result.Content);
             if (result.StatusCode != HttpStatusCode.OK) return NoContent();
-            var relevantBenefits = benefits.Where(x => x.StartTime < DateTime.Now && x.EndTime > DateTime.Now);
-            return Ok(relevantBenefits);
+            return Ok(benefits);
         }
     }
 }

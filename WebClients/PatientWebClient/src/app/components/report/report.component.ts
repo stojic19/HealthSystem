@@ -3,7 +3,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { IReport } from 'src/app/interfaces/report';
 
-import { AuthService } from 'src/app/services/AuthService/auth.service';
 import { MedicalRecordService } from 'src/app/services/MedicalRecordService/medicalrecord.service';
 
 @Component({

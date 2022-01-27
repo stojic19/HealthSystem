@@ -44,23 +44,8 @@ namespace HospitalApi.Controllers
             catch(Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error!Failed loading comments!");
-            }   
-        }
-
-        
-        [HttpGet("public")]
-        public IEnumerable<Feedback> GetPublicApprovedFeedbacks()
-        {
-            var feedbackReadRepo = _uow.GetRepository<IFeedbackReadRepository>();
-
-            List<Feedback> feedbacks = feedbackReadRepo.GetAll().Include(x => x.Patient).Where(x => x.IsPublishable && x.FeedbackStatus == FeedbackStatus.Approved).ToList();
-
-            int count = feedbacks.Count;
-            if (count > 10)
-            {
-                count = 10;
             }
-            return feedbacks.GetRange(0,count);
+            
         }
 
         [Authorize(Roles = "Patient")]
@@ -70,8 +55,6 @@ namespace HospitalApi.Controllers
             var feedbackReadRepo = _uow.GetRepository<IFeedbackReadRepository>();
             return feedbackReadRepo.GetAll().Include(x => x.Patient).Where(x => x.IsPublishable && x.FeedbackStatus == FeedbackStatus.Approved);
         }
-      
-
 
         [Authorize(Roles = "Patient")]
         [HttpPost]

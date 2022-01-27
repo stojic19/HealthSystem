@@ -83,7 +83,7 @@ namespace HospitalUnitTests
         }
 
 
-        [Fact]
+      /*  [Fact]
         public void Get_statistics_per_day_of_week()
         {
             ClearDbContext();
@@ -113,7 +113,7 @@ namespace HospitalUnitTests
             statistics.Thursday[0].ShouldBe(1);
             statistics.Thursday[1].ShouldBe(0);
             statistics.Sunday[1].ShouldBe(1);
-        }
+        }*/
         [Fact]
         public void Get_statistics_per_month()
         {

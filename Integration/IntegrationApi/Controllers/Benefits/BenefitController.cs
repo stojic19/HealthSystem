@@ -6,6 +6,7 @@ using IntegrationAPI.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.IO;
 using IntegrationApi.DTO.Benefits;
 using System.Linq;
 using IntegrationAPI.DTO.Benefits;
@@ -80,7 +81,9 @@ namespace IntegrationAPI.Controllers.Benefits
                     PharmacyName = benefit.Pharmacy.Name,
                     Title = benefit.Title,
                     StartTime = benefit.StartTime,
-                    EndTime = benefit.EndTime
+                    EndTime = benefit.EndTime,
+                    Picture =  benefit.Pharmacy.ImageName,
+                    PharmacyId = benefit.PharmacyId
                 });
                 
             }

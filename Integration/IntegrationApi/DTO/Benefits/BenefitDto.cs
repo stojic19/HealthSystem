@@ -12,5 +12,7 @@ namespace IntegrationApi.DTO.Benefits
         public string Description { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
+        public string Picture { get; set; }
+        public int PharmacyId { get; set; }
     }
 }

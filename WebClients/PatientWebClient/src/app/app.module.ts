@@ -27,6 +27,8 @@ import { JwtInterceptor } from './JwtInterceptor/jwt-interceptor';
 import { AuthGuard } from 'src/app/AuthGuard/AuthGuard';
 import { AuthService } from './services/AuthService/auth.service';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
+import { ReportComponent } from './components/report/report.component';
+import { PrescriptionComponent } from './components/prescription/prescription.component';
 
 
 @NgModule({
@@ -49,6 +51,8 @@ import { LandingPageComponent } from './components/landing-page/landing-page.com
     SurveyPageComponent,
     RecommendedAppointmentComponent,
     LandingPageComponent,
+    ReportComponent,
+    PrescriptionComponent,
    
   ],
   imports: [

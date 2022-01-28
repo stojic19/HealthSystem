@@ -159,9 +159,6 @@ namespace Integration.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<int>("ManagerId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("PharmacyId")
                         .HasColumnType("integer");
 
@@ -169,8 +166,6 @@ namespace Integration.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ManagerId");
 
                     b.HasIndex("PharmacyId");
 
@@ -443,19 +438,11 @@ namespace Integration.Migrations
 
             modelBuilder.Entity("Integration.Pharmacies.Model.Complaint", b =>
                 {
-                    b.HasOne("Integration.Shared.Model.Manager", "Manager")
-                        .WithMany()
-                        .HasForeignKey("ManagerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Integration.Pharmacies.Model.Pharmacy", "Pharmacy")
                         .WithMany("Complaints")
                         .HasForeignKey("PharmacyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Manager");
 
                     b.Navigation("Pharmacy");
                 });

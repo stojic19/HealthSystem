@@ -6,12 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using RestSharp;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Integration;
-using IntegrationAPI.Adapters;
-using RestSharp;
 using IntegrationAPI.DTO.Complaints;
+using IntegrationApi.Messages;
 
 namespace IntegrationAPI.Controllers.Complaints
 {
@@ -41,28 +37,36 @@ namespace IntegrationAPI.Controllers.Complaints
             return complaints;
         }
         [HttpGet("{id:int}")]
-        public Complaint GetComplaintById(int id)
+        public IActionResult GetComplaintById(int id)
         {
             Complaint complaint = _complaintMasterService.GetComplaintById(id);
+            if (complaint == null) return NotFound(ComplaintMessages.WrongId);
             complaint.Pharmacy.Complaints = null;
             if (complaint.ComplaintResponse != null) complaint.ComplaintResponse.Complaint = null;
-            return complaint;
+            return Ok(complaint);
         }
         [HttpPost]
         public IActionResult SendComplaint(CreateComplaintDTO createComplaintDTO)
         {
             Pharmacy pharmacy = _pharmacyMasterService.GetPharmacyById(createComplaintDTO.PharmacyId);
-            if (pharmacy == null) return BadRequest("Pharmacy does not exist");
-            var timeZodeDif = DateTime.Now - DateTime.Now.ToUniversalTime();
-            Complaint complaint = new Complaint
-            {
-                Title = createComplaintDTO.Title,
-                Description = createComplaintDTO.Description,
-                PharmacyId = pharmacy.Id,
-                CreatedDate = DateTime.Now.ToUniversalTime() + timeZodeDif,
-                ManagerId = 1
-            };
+            if (pharmacy == null) return BadRequest(PharmacyMessages.WrongId);
+
+            var timeZoneDif = DateTime.Now - DateTime.Now.ToUniversalTime();
+            var complaint = CreateComplaint(createComplaintDTO, pharmacy, timeZoneDif);
             _complaintMasterService.SaveComplaint(complaint);
+
+            var complaintDTO = CreateComplaintDto(complaint);
+            IRestResponse response = SendComplaintToPharmacy(pharmacy.BaseUrl, complaintDTO);
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                _complaintMasterService.DeleteComplaint(complaint);
+                return Problem(ComplaintMessages.DidNotReceive);
+            }
+            return Ok(ComplaintMessages.Received);
+        }
+
+        private static ComplaintDTO CreateComplaintDto(Complaint complaint)
+        {
             ComplaintDTO complaintDTO = new ComplaintDTO
             {
                 ApiKey = complaint.Pharmacy.ApiKey,
@@ -70,14 +74,22 @@ namespace IntegrationAPI.Controllers.Complaints
                 Description = complaint.Description,
                 Title = complaint.Title,
             };
-            IRestResponse response = SendComplaintToPharmacy(pharmacy.BaseUrl, complaintDTO);
-            if (response.StatusCode != System.Net.HttpStatusCode.OK)
-            {
-                _complaintMasterService.DeleteComplaint(complaint);
-                return BadRequest("Pharmacy failed to receive complaint! Try again");
-            }
-            return Ok("Complaint saved and sent to pharmacy!");
+            return complaintDTO;
         }
+
+        private static Complaint CreateComplaint(CreateComplaintDTO createComplaintDTO, Pharmacy pharmacy, TimeSpan timeZoneDif)
+        {
+            Complaint complaint = new Complaint
+            {
+                Title = createComplaintDTO.Title,
+                Description = createComplaintDTO.Description,
+                PharmacyId = pharmacy.Id,
+                CreatedDate = DateTime.Now.ToUniversalTime() + timeZoneDif,
+                ManagerId = 1
+            };
+            return complaint;
+        }
+
         private IRestResponse SendComplaintToPharmacy(string baseUrl, ComplaintDTO complaintDTO)
         {
             RestClient client = new RestClient();

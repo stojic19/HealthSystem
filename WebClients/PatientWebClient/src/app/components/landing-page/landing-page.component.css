@@ -3,3 +3,40 @@ img {
   width: 1000px;
   border-radius: 10%;
 }
+.containerImg {
+  position: relative;
+ /* max-width: 1200px; /* Maximum width */
+ /* margin: 0 auto; /* Center it */
+  text-align: center;
+  max-height: 500px;
+  background: #2427273b;
+  background: rgba(44, 46, 46, 0.158); 
+  color: rgb(255, 255, 255);
+}
+
+.containerImg .content {
+  position: absolute; /* Position the background text */
+  bottom: 0; /* At the bottom. Use top:0 to append it to the top */
+  background: #bcecec3b; /* Fallback color */
+  background: rgba(210, 239, 241, 0.158); /* Black background with 0.5 opacity */
+  color: #ffffff; /* Grey text */
+  width: 100%; /* Full width */
+  padding: 20px; /* Some padding */
+  height: 200px;
+  text-align: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  
+}
+
+.containerImg .pls {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width:500px;
+  background: #bcecec3b; 
+  background: rgba(58, 68, 68, 0.781); 
+  
+}

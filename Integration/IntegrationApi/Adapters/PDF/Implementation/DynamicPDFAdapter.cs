@@ -161,9 +161,9 @@ namespace IntegrationAPI.Adapters.PDF.Implementation
             WriteLine(0, 40, "Hospital info");
             HospitalDTO hospitalDto = new HospitalDTO()
             {
-                Name = "Nasa bolnica",
-                StreetName = "Vojvode Stepe",
-                StreetNumber = "14",
+                Name = "Heaven's Pass Medicare",
+                StreetName = "Dunavska",
+                StreetNumber = "17",
                 CityName = "Novi Sad"
             };
             WriteLine(0, 20, "Hospital name: "
@@ -265,7 +265,7 @@ namespace IntegrationAPI.Adapters.PDF.Implementation
             Title title = new Title(titleText);
             chart.HeaderTitles.Add(title);
 
-            IndexedColumnSeries firstColumn = FillDataAndXAxis(labels, values, plotArea); ;
+            IndexedColumnSeries firstColumn = FillDataAndXAxis(labels, values, plotArea);
 
             Title lTitle = new Title(label);
             if (labels.Count > 0)

@@ -198,6 +198,12 @@
                 >
                   <a class="nav-link" routerLink="/blocking">Blocking</a>
                 </li>
+                <li
+                class="nav-item active"
+                *ngIf="loginStatus$ | async as LoginStatus"
+              >
+                <a class="nav-link" routerLink="/eventStatistics">Appointment statistics</a>
+              </li>
               </ul>
             </div>
           </li>
@@ -299,6 +305,23 @@
               >Tenders</a
             >
           </li>
+          <li
+          class="nav-item active"
+          *ngIf="loginStatus$ | async as LoginStatus"
+        >
+          <a class="nav-link" *ngIf="!isProd && !notifications?.length" routerLink="/notifications"
+            >Notifications</a
+          >
+          <a class="nav-link" *ngIf="isProd && !notifications?.length" routerLink="/manager/notifications"
+            >Notifications</a
+          >
+          <a class="nav-link text-success" *ngIf="isProd && notifications?.length" routerLink="/manager/notifications"
+            >Notifications!</a
+          >
+          <a class="nav-link text-success" *ngIf="!isProd && notifications?.length" routerLink="/notifications"
+            >Notifications!</a
+          >
+        </li>
         </ul>
         <div style="width: 30px; margin-left: 50px">
           <form

@@ -19,7 +19,7 @@ namespace Hospital.Migrations
                 .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-            modelBuilder.Entity("DoctorOnCallDuty", b =>
+            modelBuilder.Entity("DoctorScheduleOnCallDuty", b =>
                 {
                     b.Property<int>("DoctorsOnDutyId")
                         .HasColumnType("integer");
@@ -31,7 +31,7 @@ namespace Hospital.Migrations
 
                     b.HasIndex("OnCallDutiesId");
 
-                    b.ToTable("DoctorOnCallDuty");
+                    b.ToTable("DoctorScheduleOnCallDuty");
                 });
 
             modelBuilder.Entity("Hospital.EventStoring.Model.StoredEvent", b =>
@@ -40,14 +40,14 @@ namespace Hospital.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("StateData")
-                        .HasColumnType("text");
+                    b.Property<int>("Step")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("Time")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
+                    b.Property<string>("Username")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -276,6 +276,9 @@ namespace Hospital.Migrations
                     b.Property<int?>("PatientId")
                         .HasColumnType("integer");
 
+                    b.Property<int?>("ScheduledEventId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("timestamp without time zone");
 
@@ -287,7 +290,33 @@ namespace Hospital.Migrations
 
                     b.HasIndex("PatientId");
 
+                    b.HasIndex("ScheduledEventId");
+
                     b.ToTable("Prescriptions");
+                });
+
+            modelBuilder.Entity("Hospital.MedicalRecords.Model.Report", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("ScheduledEventId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("WrittenReport")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ScheduledEventId")
+                        .IsUnique();
+
+                    b.ToTable("Report");
                 });
 
             modelBuilder.Entity("Hospital.RoomsAndEquipment.Model.EquipmentTransferEvent", b =>
@@ -297,31 +326,20 @@ namespace Hospital.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int?>("DestinationRoomId")
+                    b.Property<int?>("DestinationRoomInventoryId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int?>("InitialRoomId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("InventoryItemId")
+                    b.Property<int?>("InitialRoomInventoryId")
                         .HasColumnType("integer");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("timestamp without time zone");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("DestinationRoomId");
+                    b.HasIndex("DestinationRoomInventoryId");
 
-                    b.HasIndex("InitialRoomId");
-
-                    b.HasIndex("InventoryItemId");
+                    b.HasIndex("InitialRoomInventoryId");
 
                     b.ToTable("EquipmentTransferEvents");
                 });
@@ -693,6 +711,18 @@ namespace Hospital.Migrations
                     b.ToTable("Surveys");
                 });
 
+            modelBuilder.Entity("Hospital.SharedModel.Model.DoctorSchedule", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DoctorSchedule");
+                });
+
             modelBuilder.Entity("Hospital.SharedModel.Model.User", b =>
                 {
                     b.Property<int>("Id")
@@ -952,11 +982,16 @@ namespace Hospital.Migrations
                 {
                     b.HasBaseType("Hospital.SharedModel.Model.User");
 
+                    b.Property<int>("DoctorScheduleId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("RoomId")
                         .HasColumnType("integer");
 
                     b.Property<int>("ShiftId")
                         .HasColumnType("integer");
+
+                    b.HasIndex("DoctorScheduleId");
 
                     b.HasIndex("RoomId");
 
@@ -972,9 +1007,9 @@ namespace Hospital.Migrations
                     b.HasDiscriminator().HasValue("Manager");
                 });
 
-            modelBuilder.Entity("DoctorOnCallDuty", b =>
+            modelBuilder.Entity("DoctorScheduleOnCallDuty", b =>
                 {
-                    b.HasOne("Hospital.SharedModel.Model.Doctor", null)
+                    b.HasOne("Hospital.SharedModel.Model.DoctorSchedule", null)
                         .WithMany()
                         .HasForeignKey("DoctorsOnDutyId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1097,30 +1132,64 @@ namespace Hospital.Migrations
                         .WithMany()
                         .HasForeignKey("PatientId");
 
+                    b.HasOne("Hospital.Schedule.Model.ScheduledEvent", "ScheduledEvent")
+                        .WithMany()
+                        .HasForeignKey("ScheduledEventId");
+
                     b.Navigation("Medication");
 
                     b.Navigation("Patient");
+
+                    b.Navigation("ScheduledEvent");
+                });
+
+            modelBuilder.Entity("Hospital.MedicalRecords.Model.Report", b =>
+                {
+                    b.HasOne("Hospital.Schedule.Model.ScheduledEvent", "ScheduledEvent")
+                        .WithOne("Report")
+                        .HasForeignKey("Hospital.MedicalRecords.Model.Report", "ScheduledEventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ScheduledEvent");
                 });
 
             modelBuilder.Entity("Hospital.RoomsAndEquipment.Model.EquipmentTransferEvent", b =>
                 {
-                    b.HasOne("Hospital.RoomsAndEquipment.Model.Room", "DestinationRoom")
+                    b.HasOne("Hospital.RoomsAndEquipment.Model.RoomInventory", "DestinationRoomInventory")
                         .WithMany()
-                        .HasForeignKey("DestinationRoomId");
+                        .HasForeignKey("DestinationRoomInventoryId");
 
-                    b.HasOne("Hospital.RoomsAndEquipment.Model.Room", "InitialRoom")
+                    b.HasOne("Hospital.RoomsAndEquipment.Model.RoomInventory", "InitialRoomInventory")
                         .WithMany()
-                        .HasForeignKey("InitialRoomId");
+                        .HasForeignKey("InitialRoomInventoryId");
 
-                    b.HasOne("Hospital.RoomsAndEquipment.Model.InventoryItem", "InventoryItem")
-                        .WithMany()
-                        .HasForeignKey("InventoryItemId");
+                    b.OwnsOne("Hospital.SharedModel.Model.Wrappers.TimePeriod", "TimePeriod", b1 =>
+                        {
+                            b1.Property<int>("EquipmentTransferEventId")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("integer")
+                                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Navigation("DestinationRoom");
+                            b1.Property<DateTime>("EndTime")
+                                .HasColumnType("timestamp without time zone");
 
-                    b.Navigation("InitialRoom");
+                            b1.Property<DateTime>("StartTime")
+                                .HasColumnType("timestamp without time zone");
 
-                    b.Navigation("InventoryItem");
+                            b1.HasKey("EquipmentTransferEventId");
+
+                            b1.ToTable("EquipmentTransferEvents");
+
+                            b1.WithOwner()
+                                .HasForeignKey("EquipmentTransferEventId");
+                        });
+
+                    b.Navigation("DestinationRoomInventory");
+
+                    b.Navigation("InitialRoomInventory");
+
+                    b.Navigation("TimePeriod");
                 });
 
             modelBuilder.Entity("Hospital.RoomsAndEquipment.Model.Room", b =>
@@ -1293,6 +1362,38 @@ namespace Hospital.Migrations
                     b.Navigation("Room");
                 });
 
+            modelBuilder.Entity("Hospital.SharedModel.Model.DoctorSchedule", b =>
+                {
+                    b.OwnsMany("Hospital.Schedule.Model.Vacation", "Vacations", b1 =>
+                        {
+                            b1.Property<int>("DoctorScheduleId")
+                                .HasColumnType("integer");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("integer")
+                                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                            b1.Property<DateTime>("EndDate")
+                                .HasColumnType("timestamp without time zone");
+
+                            b1.Property<DateTime>("StartDate")
+                                .HasColumnType("timestamp without time zone");
+
+                            b1.Property<int>("Type")
+                                .HasColumnType("integer");
+
+                            b1.HasKey("DoctorScheduleId", "Id");
+
+                            b1.ToTable("Vacation");
+
+                            b1.WithOwner()
+                                .HasForeignKey("DoctorScheduleId");
+                        });
+
+                    b.Navigation("Vacations");
+                });
+
             modelBuilder.Entity("Hospital.SharedModel.Model.User", b =>
                 {
                     b.OwnsOne("Hospital.SharedModel.Model.City", "City", b1 =>
@@ -1418,6 +1519,12 @@ namespace Hospital.Migrations
 
             modelBuilder.Entity("Hospital.SharedModel.Model.Doctor", b =>
                 {
+                    b.HasOne("Hospital.SharedModel.Model.DoctorSchedule", "DoctorSchedule")
+                        .WithMany()
+                        .HasForeignKey("DoctorScheduleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Hospital.RoomsAndEquipment.Model.Room", "Room")
                         .WithMany("Doctors")
                         .HasForeignKey("RoomId")
@@ -1429,33 +1536,6 @@ namespace Hospital.Migrations
                         .HasForeignKey("ShiftId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.OwnsMany("Hospital.Schedule.Model.Vacation", "Vacations", b1 =>
-                        {
-                            b1.Property<int>("DoctorId")
-                                .HasColumnType("integer");
-
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("integer")
-                                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                            b1.Property<DateTime>("EndDate")
-                                .HasColumnType("timestamp without time zone");
-
-                            b1.Property<DateTime>("StartDate")
-                                .HasColumnType("timestamp without time zone");
-
-                            b1.Property<int>("Type")
-                                .HasColumnType("integer");
-
-                            b1.HasKey("DoctorId", "Id");
-
-                            b1.ToTable("Vacation");
-
-                            b1.WithOwner()
-                                .HasForeignKey("DoctorId");
-                        });
 
                     b.OwnsOne("Hospital.SharedModel.Model.Specialization", "Specialization", b1 =>
                         {
@@ -1478,13 +1558,13 @@ namespace Hospital.Migrations
                                 .HasForeignKey("DoctorId");
                         });
 
+                    b.Navigation("DoctorSchedule");
+
                     b.Navigation("Room");
 
                     b.Navigation("Shift");
 
                     b.Navigation("Specialization");
-
-                    b.Navigation("Vacations");
                 });
 
             modelBuilder.Entity("Hospital.MedicalRecords.Model.MedicalRecord", b =>
@@ -1511,6 +1591,11 @@ namespace Hospital.Migrations
             modelBuilder.Entity("Hospital.Schedule.Model.AnsweredSurvey", b =>
                 {
                     b.Navigation("AnsweredQuestions");
+                });
+
+            modelBuilder.Entity("Hospital.Schedule.Model.ScheduledEvent", b =>
+                {
+                    b.Navigation("Report");
                 });
 
             modelBuilder.Entity("Hospital.Schedule.Model.Survey", b =>

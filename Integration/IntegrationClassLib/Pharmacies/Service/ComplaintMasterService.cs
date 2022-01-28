@@ -17,7 +17,7 @@ namespace Integration.Pharmacies.Service
         public IEnumerable<Complaint> GetComplaints()
         {
             var complaintsRepo = unitOfWork.GetRepository<IComplaintReadRepository>();
-            IEnumerable<Complaint> complaints = complaintsRepo.GetAll().Include(x => x.ComplaintResponse).Include(x => x.Manager).Include(x => x.Pharmacy);
+            IEnumerable<Complaint> complaints = complaintsRepo.GetAll().Include(x => x.ComplaintResponse).Include(x => x.Pharmacy);
             return complaints;
         }
         public Complaint GetComplaintById(int id)

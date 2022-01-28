@@ -1,0 +1,65 @@
+name: Run Integration Tests Integration
+on:
+  pull_request:
+    branches: [master, development]
+    paths:
+      - 'Integration/**'
+
+env:
+  PROJECT_PATH_HOSPITAL: './Hospital'
+  PROJECT_PATH_INTEGRATION: './Integration'
+  PROJECT_PATH_PHARMACY: './Pharmacy'
+  DB_PATH: 'Host=postgres;Database=HOSPITAL;Username=postgres;Password=postgres'
+  DB_PATH_INTEGRATION: 'Host=postgres;Database=INTEGRATION;Username=postgres;Password=postgres'
+  DB_PATH_PHARMACY: 'Host=postgres;Database=PHARMACY;Username=postgres;Password=postgres'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: mcr.microsoft.com/dotnet/sdk:5.0
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+      rabbitmq:
+        image: rabbitmq:3-management-alpine
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Restore NuGet packages
+        run: |
+          dotnet restore ${{ env.PROJECT_PATH_HOSPITAL }}
+          dotnet restore ${{ env.PROJECT_PATH_INTEGRATION }}
+          dotnet restore ${{ env.PROJECT_PATH_PHARMACY }}
+
+      - name: Build
+        run: |
+          dotnet build ${{ env.PROJECT_PATH_HOSPITAL }}
+          dotnet build ${{ env.PROJECT_PATH_INTEGRATION }}
+          dotnet build ${{ env.PROJECT_PATH_PHARMACY }}
+
+      - name: Start
+        env:
+          HOSPITAL_DB_PATH: ${{ env.DB_PATH }}
+          INTEGRATION_DB_PATH: ${{ env.DB_PATH_INTEGRATION }}
+          PHARMACY_DB_PATH: ${{ env.DB_PATH_PHARMACY }}
+          RABBITMQ_HOST: 'rabbitmq'
+        run: |
+          dotnet run --project Hospital/HospitalApi/ --urls=https://localhost:44303 &
+          dotnet run --project Integration/IntegrationApi/ --urls=https://localhost:44302 &
+          dotnet run --project Pharmacy/PharmacyApi/ --urls=https://localhost:44304 &
+
+      - name: Sleep for 15 seconds
+        run: sleep 15s
+
+      - name: Test
+        env:
+          HOSPITAL_DB_PATH: ${{ env.DB_PATH }}
+          INTEGRATION_DB_PATH: ${{ env.DB_PATH_INTEGRATION }}
+          PHARMACY_DB_PATH: ${{ env.DB_PATH_PHARMACY }}
+        run: dotnet test ${{ env.PROJECT_PATH_INTEGRATION }}/IntegrationIntegrationTests

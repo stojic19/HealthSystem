@@ -15,8 +15,5 @@ namespace Integration.Pharmacies.Model
         public Pharmacy Pharmacy { get; set; }
 
         public ComplaintResponse ComplaintResponse { get; set; }
-
-        public int ManagerId { get; set; }
-        public Manager Manager { get; set; }
     }
 }

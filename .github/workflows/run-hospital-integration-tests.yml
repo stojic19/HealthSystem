@@ -1,7 +1,7 @@
 name: Run Integration Tests Hospital
 on:
-  push:
-    branches: [master, development ]
+  pull_request:
+    branches: [master, development]
 
 env:
   PROJECT_PATH_HOSPITAL: './Hospital'
@@ -28,7 +28,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Restore NuGet packages
-        run: | 
+        run: |
           dotnet restore ${{ env.PROJECT_PATH_HOSPITAL }}
           dotnet restore ${{ env.PROJECT_PATH_INTEGRATION }}
 
@@ -41,8 +41,8 @@ jobs:
         env:
           HOSPITAL_DB_PATH: ${{ env.DB_PATH }}
           INTEGRATION_DB_PATH: ${{ env.DB_PATH_INTEGRATION }}
-          RABBITMQ_HOST: "rabbitmq"
-        run: | 
+          RABBITMQ_HOST: 'rabbitmq'
+        run: |
           dotnet run --project Hospital/HospitalApi/ --urls=https://localhost:44303 &
           dotnet run --project Integration/IntegrationApi/ --urls=https://localhost:44302 &
 

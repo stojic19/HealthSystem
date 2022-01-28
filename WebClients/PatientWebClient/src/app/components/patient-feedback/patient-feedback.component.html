@@ -1,29 +1,48 @@
 <div *ngIf="allFeedbacks">
-    <ul>
-        <div *ngFor='let feedback of allFeedbacks'>
-            <div class="container mt-5 ">
-                <div class="d-flex justify-content-center row">
-                    <div class=" col-md-12 border " style="border-radius: 5rem;">
-                        <div class=" d-flex flex-column comment-section">
-                            <div class="bg-white p-2">
-                                <div class="d-flex flex-row user-info"><img class="rounded-circle"
-                                        src="https://t4.ftcdn.net/jpg/03/46/93/61/360_F_346936114_RaxE6OQogebgAWTalE1myseY1Hbb5qPM.jpg"
-                                        width="40">
-                                    <div class="d-flex flex-column justify-content-start ml-2"><span
-                                            class="d-block font-weight-bold name">{{feedback.patient.firstName}}
-                                            {{feedback.patient.lastName}}</span><span class="date text-black-50">Shared
-                                            publicly
-                                            - {{feedback.createdDate | date}}</span></div>
-                                </div>
-                                <div class="mt-2">
-                                    <p class="comment-text">{{feedback.text}}
-                                </div>
-                            </div>
-                        </div>
+  <ul>
+    <div *ngFor="let feedback of allFeedbacks">
+      <div class="container mt-5">
+        <div class="d-flex justify-content-center row">
+          <div class="col-md-12 border" style="border-radius: 5rem">
+            <div class="d-flex flex-column comment-section">
+              <div class="bg-white p-2">
+                <div class="d-flex flex-row user-info">
+                  <img
+                    class="rounded-circle"
+                    src="https://t4.ftcdn.net/jpg/03/46/93/61/360_F_346936114_RaxE6OQogebgAWTalE1myseY1Hbb5qPM.jpg"
+                    width="40"
+                  />
+                  <div
+                    *ngIf="!feedback.isAnonymous; else elseBlock"
+                    class="d-flex flex-column justify-content-start ml-2"
+                  >
+                    <span class="d-block font-weight-bold name"
+                      >{{ feedback.patient.firstName }}
+                      {{ feedback.patient.lastName }}</span
+                    ><span class="date text-black-50"
+                      >Shared publicly - {{ feedback.createdDate | date }}</span
+                    >
+                  </div>
+                  <ng-template #elseBlock
+                    ><div class="d-flex flex-column justify-content-start ml-2">
+                      <span class="d-block font-weight-bold name"
+                        >Anonymous user</span
+                      ><span class="date text-black-50"
+                        >Shared publicly -
+                        {{ feedback.createdDate | date }}</span
+                      >
                     </div>
+                  </ng-template>
                 </div>
+                <div class="mt-2">
+                  <p class="comment-text">{{ feedback.text }}</p>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
-    </ul>
+      </div>
+    </div>
+  </ul>
 </div>
-<br>
+<br />

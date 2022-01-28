@@ -84,8 +84,7 @@ namespace IntegrationAPI.Controllers.Complaints
                 Title = createComplaintDTO.Title,
                 Description = createComplaintDTO.Description,
                 PharmacyId = pharmacy.Id,
-                CreatedDate = DateTime.Now.ToUniversalTime() + timeZoneDif,
-                ManagerId = 1
+                CreatedDate = DateTime.Now.ToUniversalTime() + timeZoneDif
             };
             return complaint;
         }

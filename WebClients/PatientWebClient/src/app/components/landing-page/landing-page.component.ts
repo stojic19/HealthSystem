@@ -34,10 +34,9 @@ export class LandingPageComponent implements OnInit {
     this.sub1 = this._benefitService.getBenefits().subscribe({
       next: (b) => {
         this.benefits = b;
-        this.getImage(0); 
-        this.getImage(1); 
-        this.getImage(2); 
-        this.getImage(3);
+        for (let i = 0; i < this.benefits.length; i++){
+          this.getImage(i);
+        }
       },
     });
   }

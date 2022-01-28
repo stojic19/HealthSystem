@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BenefitsService } from 'src/app/services/benefits.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { BenefitsService } from 'src/app/services/benefits.service';
 })
 export class BenefitDetailsComponent implements OnInit {
 
-  constructor(private _route: ActivatedRoute, private _benefitsService: BenefitsService) { }
+  constructor(private _route: ActivatedRoute, private _benefitsService: BenefitsService, private router:Router) { }
 
   benefit: any;
   id: number = -1;
@@ -25,13 +25,13 @@ export class BenefitDetailsComponent implements OnInit {
   publishBenefit(id: any) {
     var json = {benefitId: id}
     this._benefitsService.publishBenefit(json).subscribe(data => {console.log(data)});
-    location.reload()
+    this.router.navigate(['/benefit-list']);
   }
 
   hideBenefit(id: any) {
     var json = {benefitId: id}
     this._benefitsService.hideBenefit(json).subscribe(data => {console.log(data)});
-    location.reload()
+    this.router.navigate(['/benefit-list']);
   }
 
 }

@@ -2,6 +2,8 @@ name: Run Integration Tests Integration
 on:
   pull_request:
     branches: [master, development]
+    paths:
+      - 'Integration/**'
 
 env:
   PROJECT_PATH_HOSPITAL: './Hospital'

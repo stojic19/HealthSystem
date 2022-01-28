@@ -52,7 +52,7 @@ jobs:
           cd ../..
 
       - name: Restore NuGet packages
-        run: | 
+        run: |
           dotnet restore ${{ env.PROJECT_PATH_HOSPITAL }}
           dotnet restore ${{ env.PROJECT_PATH_INTEGRATION }}
 
@@ -65,16 +65,16 @@ jobs:
         env:
           HOSPITAL_DB_PATH: ${{ env.DB_PATH }}
           INTEGRATION_DB_PATH: ${{ env.DB_PATH_INTEGRATION }}
-          RABBITMQ_HOST: "rabbitmq"
-        run: | 
+          RABBITMQ_HOST: 'rabbitmq'
+        run: |
           dotnet run --project Hospital/HospitalApi/ --urls=https://localhost:44303 &
           dotnet run --project Integration/IntegrationApi/ --urls=https://localhost:44302 &
 
       - name: Sleep for 15 seconds
         run: sleep 15s
 
-      - name: Test
-        env:
-          HOSPITAL_DB_PATH: ${{ env.DB_PATH }}
-          INTEGRATION_DB_PATH: ${{ env.DB_PATH_INTEGRATION }}
-        run: dotnet test ${{ env.PROJECT_PATH_HOSPITAL }}/SeleniumTests
+      # - name: Test
+      #   env:
+      #     HOSPITAL_DB_PATH: ${{ env.DB_PATH }}
+      #     INTEGRATION_DB_PATH: ${{ env.DB_PATH_INTEGRATION }}
+      #   run: dotnet test ${{ env.PROJECT_PATH_HOSPITAL }}/SeleniumTests

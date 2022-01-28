@@ -31,7 +31,7 @@ namespace IntegrationAPI.Controllers.Medicine
         [HttpPost]
         public MedicineConsumptionReportDTO CreateConsumptionReport(TimePeriodDTO timeRange)
         {
-            string targetUrl = _hospitalBaseUrl + "api/MedicationExpenditureReport/GetMedicationExpenditureReport";
+            string targetUrl = _hospitalBaseUrl + "/api/MedicationExpenditureReport/GetMedicationExpenditureReport";
             var response = _httpRequestSender.Post(targetUrl, timeRange);
 
             if (response.StatusCode != HttpStatusCode.OK) return null;

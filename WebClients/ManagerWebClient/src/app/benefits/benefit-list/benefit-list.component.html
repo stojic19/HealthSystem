@@ -2,7 +2,7 @@
     <div class="panel-heading m-3">
         <h2>Benefit List</h2>
     </div>
-    <div *ngIf="benefits?.length" class="form-control form-control-lg">
+    <div class="form-control form-control-lg">
         <input [(ngModel)]="SearchString"  (keyup)="FilterFn()" placeholder="Filter" > 
         <mat-checkbox class="checkbox-margin" [(ngModel)]="onlyActive" (change)="FilterFn()" ngDefaultControl >Show only active benefits</mat-checkbox>
         <mat-form-field appearance="fill">

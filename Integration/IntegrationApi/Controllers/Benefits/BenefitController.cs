@@ -30,7 +30,7 @@ namespace IntegrationAPI.Controllers.Benefits
         {
             IEnumerable<Benefit> benefits = _uow.GetRepository<IBenefitReadRepository>().GetAll()
                 .Include(x => x.Pharmacy);
-            return benefits;
+            return benefits.OrderBy(benefit => benefit.Id);
         }
         [HttpGet("{id:int}"), Produces("application/json")]
         public IActionResult GetBenefitById(int id)
@@ -46,7 +46,7 @@ namespace IntegrationAPI.Controllers.Benefits
             IEnumerable<Benefit> benefits = _uow.GetRepository<IBenefitReadRepository>().GetVisibleBenefits();
             foreach(var benefit in benefits)
                 if(benefit.Pharmacy == null) benefit.Pharmacy = _uow.GetRepository<IPharmacyReadRepository>().GetById(benefit.PharmacyId);
-            return benefits;
+            return benefits.OrderBy(benefit => benefit.Id);
         }
 
         [HttpGet]
@@ -56,7 +56,7 @@ namespace IntegrationAPI.Controllers.Benefits
             foreach (var benefit in benefits)
                 if (benefit.Pharmacy == null)
                     benefit.Pharmacy = _uow.GetRepository<IPharmacyReadRepository>().GetById(benefit.PharmacyId);
-            return benefits;
+            return benefits.OrderBy(benefit => benefit.Id);
         }
 
         [HttpGet]
@@ -72,6 +72,7 @@ namespace IntegrationAPI.Controllers.Benefits
                 }
             }
 
+            benefits = benefits.OrderBy(b => b.Id);
             List<BenefitDto> retVal = new List<BenefitDto>();
             foreach (var benefit in benefits)
             {

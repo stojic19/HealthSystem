@@ -1,87 +1,35 @@
 <section class="hero" id="hero">
-  <div class="container d-flex justify-content-center">
-    <div class="row">
-      <div class="col-12">
-        <div id="myCarousel" class="carousel-fade" data-bs-ride="carousel">
-          <div class="carousel-inner">
-            <div class="carousel-item active">
-              <div class="containerImg">
-                <img
-                  [src]="benefits[0].imageSrc"
-                  class="img-fluid"
-                  alt=""
-                />
-                <div class="pls" >
-                  <label style="font-size: xx-large;">{{benefits[0].pharmacyName}}</label><br>
-                  <label style="font-size: xx-large;">{{benefits[0].title}}</label><br>
-                  <label style="font-size: x-large;">{{benefits[0].description}}</label><br>
-                  <label style="font-size: large;">{{benefits[0].startTime | date:'shortDate'}} - {{benefits[0].endTime | date:'shortDate'}}</label>
+    <div class="container d-flex justify-content-center">
+        <div class="row">
+            <div class="col-12">
+                <div id="myCarousel" class="carousel-fade" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item" *ngFor="let benefit of benefits;let isFirst = first" [ngClass]="{active:isFirst}">
+                            <div class="containerImg">
+                                <img [src]="benefit.imageSrc" class="img-fluid" alt="" />
+                                <div class="pls">
+                                    <label style="font-size: xx-large;">{{benefit.pharmacyName}}</label><br>
+                                    <label style="font-size: xx-large;">{{benefit.title}}</label><br>
+                                    <label style="font-size: x-large;">{{benefit.description}}</label><br>
+                                    <label style="font-size: large;">{{benefit.startTime | date:'shortDate'}} - {{benefit.endTime | date:'shortDate'}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
 
-            <div class="carousel-item">
-              <div class="containerImg">
-                <img
-                [src]="benefits[1].imageSrc"
-                  class="img-fluid"
-                  alt=""
-                />
-                <div class="pls" >
-                  <label style="font-size: xx-large;">{{benefits[1].pharmacyName}}</label><br>
-                  <label style="font-size: xx-large;">{{benefits[1].title}}</label><br>
-                  <label style="font-size: x-large;">{{benefits[1].description}}</label><br>
-                  <label style="font-size: large;">{{benefits[1].startTime | date:'shortDate'}} - {{benefits[1].endTime | date:'shortDate'}}</label>
-                </div>
-              </div>
-            </div>
+                <div class="mb-5 heroText">
+                    <h1 class="mt-auto mb-2">
+                        Better
+                        <div class="animated-info">
+                            <span class="animated-item">health</span>
+                            <span class="animated-item">days</span>
+                            <span class="animated-item">lives</span>
+                        </div>
+                    </h1>
 
-            <div class="carousel-item">
-              <div class="containerImg">
-                <img
-                [src]="benefits[2].imageSrc"
-                  class="img-fluid"
-                  alt=""
-                />
-                <div class="pls" >
-                  <label style="font-size: xx-large;">{{benefits[2].pharmacyName}}</label><br>
-                  <label style="font-size: xx-large;">{{benefits[2].title}}</label><br>
-                  <label style="font-size: x-large;">{{benefits[2].description}}</label><br>
-                  <label style="font-size: large;">{{benefits[2].startTime | date:'shortDate'}} - {{benefits[2].endTime | date:'shortDate'}}</label>
-                </div>
-              </div>
-            </div>  
-            <div class="carousel-item">
-              <div class="containerImg">
-                <img
-                [src]="benefits[3].imageSrc"
-                  class="img-fluid"
-                  alt=""
-                />
-                <div class="pls" >
-                  <label style="font-size: xx-large;">{{benefits[3].pharmacyName}}</label><br>
-                  <label style="font-size: xx-large;">{{benefits[3].title}}</label><br>
-                  <label style="font-size: x-large;">{{benefits[3].description}}</label><br>
-                  <label style="font-size: large;">{{benefits[3].startTime | date:'shortDate'}} - {{benefits[3].endTime | date:'shortDate'}}</label>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="mb-5 heroText">
-          <h1 class="mt-auto mb-2">
-            Better
-            <div class="animated-info">
-              <span class="animated-item">health</span>
-              <span class="animated-item">days</span>
-              <span class="animated-item">lives</span>
-            </div>
-          </h1>
-
-          <div>
-            <span
-              >Become our patients.
+                    <div>
+                        <span>Become our patients.
               <button
                 type="button"
                 class="btn btn-primary btn-lg"

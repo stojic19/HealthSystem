@@ -8,6 +8,8 @@ using Integration.Partnership.Model;
 using Integration.Partnership.Repository;
 using Integration.Pharmacies.Model;
 using Integration.Pharmacies.Repository;
+using Integration.Shared.Model;
+using Integration.Shared.Repository;
 using Integration.Shared.Repository.Base;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
@@ -86,6 +88,14 @@ namespace Integration.Partnership.Service
                 _uow.GetRepository<IBenefitWriteRepository>().Add(benefit);
                 Console.WriteLine(jsonMessage);
                 Console.WriteLine(benefit.Description);
+
+                Notification notification = new Notification
+                {
+                    Title = "Medicine received",
+                    Description = "Benefit received from pharmacy " + pharmacy.Name,
+                    CreatedDate = DateTime.Now,
+                };
+                _uow.GetRepository<INotificationWriteRepository>().Add(notification);
 
                 _channel.BasicAck(ea.DeliveryTag, false);
             };

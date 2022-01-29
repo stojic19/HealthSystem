@@ -48,6 +48,21 @@ namespace HospitalApi.Controllers
             
         }
 
+        [HttpGet("public")]
+        public IEnumerable<Feedback> GetPublicApprovedFeedbacks()
+        {
+            var feedbackReadRepo = _uow.GetRepository<IFeedbackReadRepository>();
+
+            List<Feedback> feedbacks = feedbackReadRepo.GetAll().Include(x => x.Patient).Where(x => x.IsPublishable && x.FeedbackStatus == FeedbackStatus.Approved).ToList();
+
+            int count = feedbacks.Count;
+            if (count > 10)
+            {
+                count = 10;
+            }
+            return feedbacks.GetRange(0, count);
+        }
+
         [Authorize(Roles = "Patient")]
         [HttpGet("approved")]
         public IEnumerable<Feedback> GetApprovedFeedbacks()

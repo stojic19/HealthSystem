@@ -51,8 +51,8 @@ jobs:
       - name: Sleep for 15 seconds
         run: sleep 15s
 
-      - name: Test
-        env:
-          HOSPITAL_DB_PATH: ${{ env.DB_PATH }}
-          INTEGRATION_DB_PATH: ${{ env.DB_PATH_INTEGRATION }}
-        run: dotnet test ${{ env.PROJECT_PATH_HOSPITAL }}/HospitalIntegrationTests
+      # - name: Test
+      #   env:
+      #     HOSPITAL_DB_PATH: ${{ env.DB_PATH }}
+      #     INTEGRATION_DB_PATH: ${{ env.DB_PATH_INTEGRATION }}
+      #   run: dotnet test ${{ env.PROJECT_PATH_HOSPITAL }}/HospitalIntegrationTests

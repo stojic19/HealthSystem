@@ -19,6 +19,8 @@ namespace HospitalUnitTests
         [Fact]
         public void Rooms_should_be_neighbors()
         {
+            #region Arrange
+
             ClearDbContext();
             Context.Rooms.Add(new Room()
             {
@@ -38,6 +40,7 @@ namespace HospitalUnitTests
             });
             
             Context.SaveChanges();
+            #endregion
 
             var firstRoom = UoW.GetRepository<IRoomReadRepository>().GetById(1);
             var secondRoom = UoW.GetRepository<IRoomReadRepository>().GetById(2);
@@ -49,6 +52,8 @@ namespace HospitalUnitTests
         [Fact]
         public void Rooms_should_not_be_neighbors()
         {
+            #region Arrange
+
             ClearDbContext();
             Context.Rooms.Add(new Room()
             {
@@ -69,6 +74,7 @@ namespace HospitalUnitTests
             });
             
             Context.SaveChanges();
+            #endregion
 
             var firstRoom = UoW.GetRepository<IRoomReadRepository>().GetById(1);
             var secondRoom = UoW.GetRepository<IRoomReadRepository>().GetById(2);
@@ -76,10 +82,14 @@ namespace HospitalUnitTests
 
             result.ShouldBeFalse();
         }
-
+        /**
+         * Test nema smisla
+         */
         [Fact]
         public void Rooms_should_be_neighbors_again()
         {
+            #region Arrange
+
             ClearDbContext();
             Context.Rooms.Add(new Room()
             {
@@ -99,6 +109,7 @@ namespace HospitalUnitTests
             });
       
             Context.SaveChanges();
+            #endregion
 
             var firstRoom = UoW.GetRepository<IRoomReadRepository>().GetById(1);
             var secondRoom = UoW.GetRepository<IRoomReadRepository>().GetById(2);
@@ -110,6 +121,8 @@ namespace HospitalUnitTests
         [Fact]
         public void Should_find_two_neighbors()
         {
+            #region Arrange
+
             ClearDbContext();
             Context.Rooms.Add(new Room()
             {
@@ -137,6 +150,7 @@ namespace HospitalUnitTests
             });
           
             Context.SaveChanges();
+            #endregion
 
             var service = new FindingSurroundingRoomsService(UoW);
             var room= UoW.GetRepository<IRoomReadRepository>().GetById(2);
@@ -148,6 +162,8 @@ namespace HospitalUnitTests
         [Fact]
         public void Should_find_one_neighbor()
         {
+            #region Arrange
+
             ClearDbContext();
             Context.Rooms.Add(new Room()
             {
@@ -167,6 +183,7 @@ namespace HospitalUnitTests
             });
          
             Context.SaveChanges();
+            #endregion
 
             var service = new FindingSurroundingRoomsService(UoW);
             var room = UoW.GetRepository<IRoomReadRepository>().GetById(2);

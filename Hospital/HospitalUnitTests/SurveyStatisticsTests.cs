@@ -12,14 +12,15 @@ namespace HospitalUnitTests
 {
     public class SurveyStatisticsTests : BaseTest
     {
+        private readonly SurveyStatisticsService _surveyStatisticsService;
         public SurveyStatisticsTests(BaseFixture fixture) : base(fixture)
         {
-
+            _surveyStatisticsService = new(UoW);
         }
         [Fact]
         public void Correct_average_rating_for_questions()
         {
-            #region
+            #region Arrange
 
             ClearDbContext();
             var survey = new Survey(true);
@@ -106,8 +107,8 @@ namespace HospitalUnitTests
             Context.AnsweredSurveys.Add(new AnsweredSurvey(UoW.GetRepository<IAnsweredQuestionReadRepository>().GetAll().Where(x => x.AnsweredSurveyId == 2).ToList(), new DateTime(), 1, survey, 1, null, 1, null));
             Context.SaveChanges();
             #endregion
-            SurveyStatisticsService service = new SurveyStatisticsService(UoW);
-            var temp = service.GetAverageQuestionRatingForAllSurveyQuestions().OrderBy(o => o.QuestionId).ToList();
+            
+            var temp = _surveyStatisticsService.GetAverageQuestionRatingForAllSurveyQuestions().OrderBy(o => o.QuestionId).ToList();
             double avg1 = temp[0].AverageRating;
             double avg2 = temp[1].AverageRating;
             avg1.ShouldBe(3);
@@ -118,7 +119,7 @@ namespace HospitalUnitTests
         
         public void Incorrect_average_rating_for_questions()
         {
-            #region
+            #region Arrange
 
             ClearDbContext();
             var survey = new Survey(true);
@@ -214,16 +215,16 @@ namespace HospitalUnitTests
             Context.AnsweredSurveys.Add(new AnsweredSurvey(UoW.GetRepository<IAnsweredQuestionReadRepository>().GetAll().Where(x => x.AnsweredSurveyId == 2).ToList(), new DateTime(), 1, survey, 1, null, 1, null));
 
             Context.SaveChanges();
-            #endregion
-            SurveyStatisticsService service = new SurveyStatisticsService(UoW);
-            double avg = service.GetAverageQuestionRatingForAllSurveyQuestions()[2].AverageRating;
+            #endregion 
+    
+            double avg = _surveyStatisticsService.GetAverageQuestionRatingForAllSurveyQuestions()[2].AverageRating;
             avg.ShouldNotBe(2);
         }
 
         [Fact]
         public void Correct_average_rating_for_section()
         {
-            #region
+            #region Arrange
 
             ClearDbContext();
             var survey = new Survey(true);
@@ -319,8 +320,8 @@ namespace HospitalUnitTests
 
             Context.SaveChanges();
             #endregion
-            SurveyStatisticsService service = new SurveyStatisticsService(UoW);
-            var category = service.GetAverageQuestionRatingForAllSurveyCategories()
+
+            var category = _surveyStatisticsService.GetAverageQuestionRatingForAllSurveyCategories()
                 .Where(x => x.Category.Equals(SurveyCategory.DoctorSurvey)).ToList();
             var avg = category.First().AverageRating;
             avg.ShouldBe(3);
@@ -329,7 +330,7 @@ namespace HospitalUnitTests
         [Fact]
         public void Incorrect_average_rating_for_section()
         {
-            #region
+            #region Arrange
 
             ClearDbContext();
             var survey = new Survey(true);
@@ -425,8 +426,8 @@ namespace HospitalUnitTests
 
             Context.SaveChanges();
             #endregion
-            SurveyStatisticsService service = new SurveyStatisticsService(UoW);
-            var category = service.GetAverageQuestionRatingForAllSurveyCategories()
+     
+            var category = _surveyStatisticsService.GetAverageQuestionRatingForAllSurveyCategories()
                 .Where(x => x.Category.Equals(SurveyCategory.HospitalSurvey)).ToList();
             var avg = category.First().AverageRating;
             avg.ShouldNotBe(3);
@@ -436,7 +437,7 @@ namespace HospitalUnitTests
         [Fact]
         public void Correct_number_of_each_rating()
         {
-            #region
+            #region Arrange
 
             ClearDbContext();
             var survey = new Survey(true);
@@ -549,9 +550,9 @@ namespace HospitalUnitTests
             #endregion
 
             var repo = UoW.GetRepository<IAnsweredQuestionReadRepository>();
-            var service = new SurveyStatisticsService(UoW);
+          
             var ratings = repo.GetNumberOfEachRatingForEachQuestion();
-            var countsForQuestion = service.RatingCountsForOneQuestion(ratings, 1);
+            var countsForQuestion = _surveyStatisticsService.RatingCountsForOneQuestion(ratings, 1);
             countsForQuestion[0].ShouldBe(0);
             countsForQuestion[1].ShouldBe(3);
             countsForQuestion[2].ShouldBe(0);

@@ -37,7 +37,5 @@ namespace HospitalUnitTests
             doctors.ShouldNotBeNull();
             doctors.Count.ShouldBe(2);
         }
-
-
     }
 }

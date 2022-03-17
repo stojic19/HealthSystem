@@ -5,29 +5,26 @@ using Hospital.RoomsAndEquipment.Service;
 using Hospital.SharedModel.Model.Enumerations;
 using HospitalUnitTests.Base;
 using Shouldly;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace HospitalUnitTests
 {
     public class MergeRoomsTests : BaseTest
     {
+        private readonly RenovatingRoomsService _renovatingRoomsService;
         public MergeRoomsTests(BaseFixture baseFixture) : base(baseFixture)
         {
-
+            _renovatingRoomsService = new(UoW);
         }
 
         [Fact]
         public void Two_rooms_should_be_merged()
         {
             PrepareData();
-            var service = new RenovatingRoomsService(UoW);
+            
             var roomRenovationEvent = UoW.GetRepository<IRoomRenovationEventReadRepository>().GetById(1);
-            service.MergeRooms(roomRenovationEvent);
+            _renovatingRoomsService.MergeRooms(roomRenovationEvent);
             var rooms = UoW.GetRepository<IRoomReadRepository>().GetAll();
             rooms.Count().ShouldBe(1);
         }
@@ -36,9 +33,9 @@ namespace HospitalUnitTests
         public void Inventory_should_be_moved()
         {
             PrepareData();
-            var service = new RenovatingRoomsService(UoW);
+   
             var roomRenovationEvent = UoW.GetRepository<IRoomRenovationEventReadRepository>().GetById(1);
-            service.MergeRooms(roomRenovationEvent);
+            _renovatingRoomsService.MergeRooms(roomRenovationEvent);
             var roomInventory = UoW.GetRepository<IRoomInventoryReadRepository>().GetById(2);
             roomInventory.RoomId.ShouldBe(1);
             var roomInventoryNew = UoW.GetRepository<IRoomInventoryReadRepository>().GetById(1);
@@ -49,21 +46,20 @@ namespace HospitalUnitTests
         public void Room_size_should_change()
         {
             PrepareData();
+   
             var firstRoom = UoW.GetRepository<IRoomReadRepository>().GetById(1);
-            firstRoom.Width.ShouldBe(5);
+            firstRoom.Width.ShouldBe(5); //Bespotrebno 
             firstRoom.Height.ShouldBe(6);
             var secondRoom = UoW.GetRepository<IRoomReadRepository>().GetById(2);
             secondRoom.Width.ShouldBe(5);
             secondRoom.Height.ShouldBe(6);
-            var service = new RenovatingRoomsService(UoW);
+
             var roomRenovationEvent = UoW.GetRepository<IRoomRenovationEventReadRepository>().GetById(1);
-            service.MergeRooms(roomRenovationEvent);
+            _renovatingRoomsService.MergeRooms(roomRenovationEvent);
             var newRoom = UoW.GetRepository<IRoomReadRepository>().GetById(1);
             newRoom.Width.ShouldBe(5);
             newRoom.Height.ShouldBe(12);
         }
-
-
 
         private void PrepareData() {
 
@@ -116,11 +112,8 @@ namespace HospitalUnitTests
             });
 
             Context.RoomInventories.Add(new RoomInventory(1, 1, 1, 2));
-
             Context.RoomInventories.Add(new RoomInventory(2, 2, 2, 2));
-
             Context.RoomInventories.Add(new RoomInventory(3, 2, 1, 2));
-
             Context.SaveChanges();
         }
     }

@@ -6,7 +6,6 @@ using Hospital.Schedule.Service;
 using Hospital.SharedModel.Model;
 using Hospital.SharedModel.Repository;
 using HospitalUnitTests.Base;
-using Microsoft.EntityFrameworkCore;
 using Shouldly;
 using Xunit;
 
@@ -14,13 +13,17 @@ namespace HospitalUnitTests
 {
     public class ScheduleAppointmentTests : BaseTest
     {
+        private readonly ScheduleAppointmentService _scheduleAppointmentService; 
         public ScheduleAppointmentTests(BaseFixture fixture) : base(fixture)
         {
+            _scheduleAppointmentService = new(UoW);
         }
 
         [Fact]
-        public void Should_return_is_available_true()
+        public void Appointment_is_available()
         {
+            #region Arrange
+
             ClearDbContext();
             var shift = new Shift()
             {
@@ -44,21 +47,20 @@ namespace HospitalUnitTests
             Context.ScheduledEvents.Add(new ScheduledEvent(0, false, false, new DateTime(2022, 12, 10, 7, 00, 00),
                 new DateTime(2022, 12, 10, 7, 30, 00), new DateTime(), 1, doctor.Id, doctor));
             Context.SaveChanges();
+            #endregion
 
             var preferredDate = new DateTime(2022, 12, 10);
 
-            var dr = UoW.GetRepository<IDoctorReadRepository>().GetAll().Include(d => d.Specialization)
-                .FirstOrDefault(s => s.Specialization.Name.ToLower().Equals("general practice"));
-
             var repo = UoW.GetRepository<IDoctorReadRepository>();
-            var isDoctorAvailable = dr != null && repo.IsDoctorAvailableInTerm(dr.Id, preferredDate);
-
-            isDoctorAvailable.ShouldBeTrue();
-        }
+            repo.IsDoctorAvailableInTerm(doctor.Id, preferredDate).ShouldBeTrue();
+       }
 
         [Fact]
-        public void Should_return_is_available_false()
+        public void Appointment_is_not_available()
         {
+
+            #region Arrange
+
             ClearDbContext();
             var shift = new Shift()
             {
@@ -72,31 +74,29 @@ namespace HospitalUnitTests
                 Name = "test rooom"
             };
             Context.Rooms.Add(room);
-            var dr = new Doctor()
+            var doctor = new Doctor()
             {
                 RoomId = room.Id,
                 ShiftId = shift.Id,
                 Specialization = new Specialization("General Practice", "")
             };
-            Context.Doctors.Add(dr);
+            Context.Doctors.Add(doctor);
             Context.ScheduledEvents.Add(new ScheduledEvent(0, false, false, new DateTime(2022, 12, 10, 7, 00, 00),
-                new DateTime(2022, 12, 10, 7, 30, 00), new DateTime(), 1, dr.Id, dr));
+                new DateTime(2022, 12, 10, 7, 30, 00), new DateTime(), 1, doctor.Id, doctor));
             Context.SaveChanges();
-            
+            #endregion
+
             var preferredDate = new DateTime(2022, 12, 10, 7, 00, 00);
 
-            var doctor = UoW.GetRepository<IDoctorReadRepository>().GetAll().Include(d => d.Specialization)
-                .FirstOrDefault(s => s.Specialization.Name.ToLower().Equals("general practice"));
-
             var repo = UoW.GetRepository<IDoctorReadRepository>();
-            var isDoctorAvailable = repo.IsDoctorAvailableInTerm(doctor.Id, preferredDate);
-
-            isDoctorAvailable.ShouldBeFalse();
+            repo.IsDoctorAvailableInTerm(doctor.Id, preferredDate).ShouldBeFalse();
         }
 
         [Fact]
         public void Should_return_available_appointments()
         {
+            #region Arrange
+
             ClearDbContext();
             var shift = new Shift()
             {
@@ -110,35 +110,32 @@ namespace HospitalUnitTests
                 Name = "test rooom"
             };
             Context.Rooms.Add(room);
-            var dr = new Doctor()
+            var doctor = new Doctor()
             {
                 RoomId = room.Id,
                 ShiftId = shift.Id,
                 Specialization = new Specialization("General Practice", "")
             };
-            Context.Doctors.Add(dr);
+            Context.Doctors.Add(doctor);
             Context.ScheduledEvents.Add(new ScheduledEvent(0, false, false, new DateTime(2022, 12, 9, 13, 00, 00),
-                new DateTime(2022, 12, 9, 13, 30, 00), new DateTime(), 1, dr.Id, dr));
+                new DateTime(2022, 12, 9, 13, 30, 00), new DateTime(), 1, doctor.Id, doctor));
             Context.ScheduledEvents.Add(new ScheduledEvent(0, false, false, new DateTime(2022, 12, 10, 15, 00, 00),
-                new DateTime(2022, 12, 10, 15, 30, 00), new DateTime(), 1, dr.Id, dr));
+                new DateTime(2022, 12, 10, 15, 30, 00), new DateTime(), 1, doctor.Id, doctor));
             Context.SaveChanges();
+            #endregion
 
-            var preferredDate = new DateTime(2021, 12, 9);
-
-            var doctor = UoW.GetRepository<IDoctorReadRepository>().GetAll().Include(d => d.Specialization)
-                .FirstOrDefault(s => s.Specialization.Name.ToLower().Equals("general practice"));
-            
-            var service = new ScheduleAppointmentService(UoW);
-            var availableTerms = service.GetAvailableTermsForDoctorAndDate(doctor.Id, preferredDate).ToList();
+            var preferredDate = new DateTime(2021, 12, 9); 
+         
+            var availableTerms = _scheduleAppointmentService.GetAvailableTermsForDoctorAndDate(doctor.Id, preferredDate).ToList();
 
             availableTerms.ShouldNotBeNull();
             availableTerms.Count.ShouldBe(16);
         }
 
-
         [Fact]
         public void Should_return_empty_available_appointments()
         {
+            #region Arrange
             ClearDbContext();
             var shift = new Shift()
             {
@@ -152,23 +149,20 @@ namespace HospitalUnitTests
                 Name = "test rooom"
             };
             Context.Rooms.Add(room);
-            var dr = new Doctor()
+            var doctor = new Doctor()
             {
                 RoomId = room.Id,
                 ShiftId = shift.Id,
                 Specialization = new Specialization("General Practice", "")
             };
-            Context.Doctors.Add(dr);
-            AddScheduledEvents(dr);
+            Context.Doctors.Add(doctor);
+            AddScheduledEvents(doctor);
             Context.SaveChanges();
+            #endregion
 
             var preferredDate = new DateTime(2022, 12, 10);
 
-            var doctor = UoW.GetRepository<IDoctorReadRepository>().GetAll().Include(d => d.Specialization)
-                .FirstOrDefault(s => s.Specialization.Name.ToLower().Equals("general practice"));
-
-            var service = new ScheduleAppointmentService(UoW);
-            var availableTerms = service.GetAvailableTermsForDoctorAndDate(doctor.Id, preferredDate).ToList();
+            var availableTerms = _scheduleAppointmentService.GetAvailableTermsForDoctorAndDate(doctor.Id, preferredDate).ToList();
 
             availableTerms.ShouldBeEmpty();
             availableTerms.Count.ShouldBe(0);

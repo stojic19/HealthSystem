@@ -20,10 +20,10 @@ namespace Hospital.MedicalRecords.Service
             if(medicine == null)
             {
                 var medicineWriteRepo = unitOfWork.GetRepository<IMedicationWriteRepository>();
-                Medication newMedicine = new Medication { Name = MedicineName, HowToUse = "", TimesPerDay = 0, MedicationIngredients = new List<MedicationIngredient>() };
+                Medication newMedicine = new() { Name = MedicineName, HowToUse = "", TimesPerDay = 0, MedicationIngredients = new List<MedicationIngredient>() };
                 medicineWriteRepo.Add(newMedicine);
                 newMedicine = medicineReadRepo.GetMedicationByName(MedicineName);
-                MedicationInventory newMedicineInventory = new MedicationInventory { Medication = newMedicine, MedicationId = newMedicine.Id, Quantity = Quantity };
+                MedicationInventory newMedicineInventory = new() { Medication = newMedicine, MedicationId = newMedicine.Id, Quantity = Quantity };
                 var medicineInventoryWriteRepo = unitOfWork.GetRepository<IMedicationInventoryWriteRepository>();
                 medicineInventoryWriteRepo.Add(newMedicineInventory);
             }

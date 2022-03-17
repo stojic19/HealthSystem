@@ -7,8 +7,6 @@ using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Hospital.SharedModel.Model;
 using Xunit;
 
@@ -16,16 +14,17 @@ namespace HospitalUnitTests
 {
     public class AvailableTermsTests : BaseTest
     {
+        private readonly  AvailableTermsService _availableTermsService;
         public AvailableTermsTests(BaseFixture baseFixture) : base(baseFixture)
         {
-
+            _availableTermsService = new(UoW);
         }
 
         [Theory]
         [MemberData(nameof(Data))]
         public void Checks_finding_available_terms(TimePeriod timePeriod, int foundAvailableTerms)
         {
-
+            #region Arrange
             ClearDbContext();
             var room1 = new Room()
             {
@@ -48,8 +47,9 @@ namespace HospitalUnitTests
                 new DateTime(2022, 12, 5, 3, 30, 0), new DateTime(), 1, 1, new Doctor() { Room = room2 }));
 
             Context.SaveChanges();
+            #endregion
 
-            var availableTerms = new AvailableTermsService(UoW)
+            var availableTerms = _availableTermsService
                 .GetAvailableTerms(timePeriod, 1, 2, 1);
             availableTerms.ShouldNotBeNull();
             availableTerms.Count().ShouldBe(foundAvailableTerms);

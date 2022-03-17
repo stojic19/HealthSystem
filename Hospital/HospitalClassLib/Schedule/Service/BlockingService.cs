@@ -6,6 +6,7 @@ using Hospital.MedicalRecords.Repository;
 using Hospital.Schedule.Repository;
 using Hospital.Schedule.Service.Interfaces;
 using Hospital.SharedModel.Repository.Base;
+using Hospital.SharedModel.Model;
 
 namespace Hospital.Schedule.Service
 {
@@ -24,13 +25,13 @@ namespace Hospital.Schedule.Service
             patient.Block();
             _uow.GetRepository<IPatientWriteRepository>().Update(patient);
         }
-
+        
         public List<Patient> GetMaliciousPatients()
         {
             var patients = _uow.GetRepository<IPatientReadRepository>().GetAll().Where(x => x.IsBlocked == false).ToList();
             return (from patient in patients
                 let numOfCanceledEventsInLastMonth = CalculateInLastMonthForPatient(patient.Id)
-                where SharedModel.Model.User.IsMalicious(numOfCanceledEventsInLastMonth)
+                where User.IsMalicious(numOfCanceledEventsInLastMonth) 
                 select patient).ToList();
         }
         private int CalculateInLastMonthForPatient(int patientId)

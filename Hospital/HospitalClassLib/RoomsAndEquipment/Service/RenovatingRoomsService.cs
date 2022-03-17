@@ -108,7 +108,7 @@ namespace Hospital.RoomsAndEquipment.Service
 
             return newRoomPosition;
         }
-
+        
         public void MergeRooms(RoomRenovationEvent roomRenovationEvent)
         {
             var roomRepo = uow.GetRepository<IRoomReadRepository>();
@@ -139,8 +139,6 @@ namespace Hospital.RoomsAndEquipment.Service
 
         private RoomPosition GetNewPositionWhenMerging(Room firstRoom, Room secondRoom)
         {
-
-
             RoomPosition newPosition;
 
             if (firstRoom.BuildingName == "Building 1")

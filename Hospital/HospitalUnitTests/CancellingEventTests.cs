@@ -12,13 +12,16 @@ namespace HospitalUnitTests
 {
     public class CancellingEventTests : BaseTest
     {
+        private readonly CancellingEventsService _cancellingEventsService;
         public CancellingEventTests(BaseFixture fixture) : base(fixture)
         {
+            _cancellingEventsService = new(UoW);
         }
 
         [Fact]
         public void Transfer_event_should_be_cancelled()
         {
+            #region Arrange
             ClearDbContext();
             Context.Rooms.Add(new Room()
             {
@@ -35,7 +38,8 @@ namespace HospitalUnitTests
                 BuildingName = "Test building"
             });
 
-            Context.InventoryItems.Add(new InventoryItem() {
+            Context.InventoryItems.Add(new InventoryItem()
+            {
                 Id = 1,
                 InventoryItemType = InventoryItemType.Dynamic,
                 Name = "Test item"
@@ -45,18 +49,19 @@ namespace HospitalUnitTests
           
             Context.EquipmentTransferEvents.Add(transferEvent);
             Context.SaveChanges();
+            #endregion
+            _cancellingEventsService.CancelEquipmentTransferEvent(transferEvent);
 
-            var cancellingService = new CancellingEventsService(UoW);
-            cancellingService.CancelEquipmentTransferEvent(transferEvent);
-
-            var updatedEvent = UoW.GetRepository<IEquipmentTransferEventReadRepository>()
+            var transferEvents = UoW.GetRepository<IEquipmentTransferEventReadRepository>()
                 .GetById(transferEvent.Id);
-            updatedEvent.ShouldBeNull();
+            transferEvents.ShouldBeNull();
         }
 
         [Fact]
         public void Renovation_should_not_be_cancelled()
         {
+            #region Arrange
+
             ClearDbContext();
             Context.Rooms.Add(new Room()
             {
@@ -75,9 +80,12 @@ namespace HospitalUnitTests
             };
             Context.RoomRenovationEvents.Add(renovation);
             Context.SaveChanges();
-
-            var cancellingService = new CancellingEventsService(UoW);
-            cancellingService.CancelRoomRenovationEvent(renovation);
+            #endregion
+            /**
+             * Instead of testing private methods directly, test them indirectly as part of the overarching observable behavior
+             * DOMENSKI ZNACAJNA I ISPITUJE PRIVATNU METODU
+             */
+            _cancellingEventsService.CancelRoomRenovationEvent(renovation);
 
             var updatedEvent = UoW.GetRepository<IRoomRenovationEventReadRepository>()
                 .GetById(renovation.Id);

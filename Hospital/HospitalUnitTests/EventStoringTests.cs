@@ -4,23 +4,25 @@ using Hospital.EventStoring.Service;
 using HospitalUnitTests.Base;
 using Shouldly;
 using System;
-using System.Diagnostics;
 using System.Linq;
-using Hospital.EventStoring.Repository;
 using Xunit;
 
 namespace HospitalUnitTests
 {
     public class EventStoringTests : BaseTest
     {
+        //TODO: POPRAVI TEST
+        private readonly EventStoringService _eventStoringService;
         public EventStoringTests(BaseFixture fixture) : base(fixture)
         {
-
+            _eventStoringService = new(UoW);
         }
 
         [Fact]
         public void Get_statistics_per_part_of_day()
         {
+            #region Arrange
+
             ClearDbContext();
             Context.StoredEvents.Add(new StoredEvent
             {
@@ -71,9 +73,9 @@ namespace HospitalUnitTests
                 Step = Step.StartScheduling
             });
             Context.SaveChanges();
+            #endregion
 
-            var eventStoringService = new EventStoringService(UoW);
-            var statistics = eventStoringService.GetStatisticsPerPartOfDay().ToList();
+            var statistics = _eventStoringService.GetStatisticsPerPartOfDay().ToList();
 
             statistics[0].ShouldBe(1);
             statistics[1].ShouldBe(3);

@@ -6,7 +6,6 @@ namespace Hospital.MedicalRecords.Repository
 {
     public interface IReportReadRepository : IReadBaseRepository<int, Report>
     {
-
         public Report GetReport(int eventId);
         public IEnumerable<Report> GetAllReports(string userName);
     }

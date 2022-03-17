@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Hospital.MedicalRecords.Model;
 
 namespace Hospital.MedicalRecords.Service
@@ -12,7 +8,7 @@ namespace Hospital.MedicalRecords.Service
         public IEnumerable<MedicationConsumption> CalculateMedicationConsumptions(
             IEnumerable<MedicationExpenditureLog> allLogs)
         {
-            List<MedicationConsumption> medicationConsumptions = new List<MedicationConsumption>();
+            List<MedicationConsumption> medicationConsumptions = new();
             foreach (var medicationExpenditureLog in allLogs)
             {
                 var medicationAlreadyInList = false;

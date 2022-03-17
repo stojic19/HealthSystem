@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Hospital.Database.EfStructures;
 using Hospital.MedicalRecords.Model;
 using Hospital.SharedModel.Model.Wrappers;
@@ -19,7 +15,7 @@ namespace Hospital.MedicalRecords.Repository.Implementation
 
         public IEnumerable<MedicationExpenditureLog> GetMedicationExpenditureLogsInTimePeriod(TimePeriod timePeriod)
         {
-            List<MedicationExpenditureLog> medicationsExpenditureLogsInTimePeriod = new List<MedicationExpenditureLog>();
+            List<MedicationExpenditureLog> medicationsExpenditureLogsInTimePeriod = new();
             IEnumerable<MedicationExpenditureLog> medicationsExpenditureLogs = GetAll().Include(x => x.Medication);
             foreach (var medicationExpenditureLog in medicationsExpenditureLogs)
                 if (timePeriod.StartTime < medicationExpenditureLog.Date && medicationExpenditureLog.Date < timePeriod.EndTime)

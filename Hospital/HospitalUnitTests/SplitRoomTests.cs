@@ -1,25 +1,21 @@
 ﻿using Hospital.GraphicalEditor.Model;
 using Hospital.RoomsAndEquipment.Model;
 using Hospital.RoomsAndEquipment.Repository;
-using Hospital.RoomsAndEquipment.Repository.Implementation;
 using Hospital.RoomsAndEquipment.Service;
 using Hospital.SharedModel.Model.Enumerations;
 using HospitalUnitTests.Base;
 using Shouldly;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace HospitalUnitTests
 {
     public class SplitRoomTests : BaseTest
     {
+        private readonly RenovatingRoomsService _renovatingRoomsService;
         public SplitRoomTests(BaseFixture baseFixture) : base(baseFixture)
         {
-
+            _renovatingRoomsService = new(UoW);
         }
 
         [Fact]
@@ -27,9 +23,8 @@ namespace HospitalUnitTests
         {
             PrepareData();
 
-            var service = new RenovatingRoomsService(UoW);
             var roomRenovationEvent = UoW.GetRepository<IRoomRenovationEventReadRepository>().GetById(1);
-            service.SplitRoom(roomRenovationEvent);
+            _renovatingRoomsService.SplitRoom(roomRenovationEvent);
             var rooms = UoW.GetRepository<IRoomReadRepository>().GetAll();
             rooms.Count().ShouldBe(2);
         }
@@ -42,9 +37,9 @@ namespace HospitalUnitTests
             var oldRoom = UoW.GetRepository<IRoomReadRepository>().GetById(1);
             oldRoom.Width.ShouldBe(5);
             oldRoom.Height.ShouldBe(6);
-            var service = new RenovatingRoomsService(UoW);
+
             var roomRenovationEvent = UoW.GetRepository<IRoomRenovationEventReadRepository>().GetById(1);
-            service.SplitRoom(roomRenovationEvent);
+            _renovatingRoomsService.SplitRoom(roomRenovationEvent);
             var firstRoom = UoW.GetRepository<IRoomReadRepository>().GetById(1);
             firstRoom.Width.ShouldBe(5);
             firstRoom.Height.ShouldBe(3);

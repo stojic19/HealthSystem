@@ -12,9 +12,10 @@ namespace HospitalUnitTests
 {
     public class ObserveAppointmentsTest : BaseTest
     {
+        private readonly ScheduledEventService _scheduledEventService;
         public ObserveAppointmentsTest(BaseFixture baseFixture) : base(baseFixture)
         {
-
+            _scheduledEventService = new(UoW);
         }
 
         [Fact]
@@ -22,12 +23,11 @@ namespace HospitalUnitTests
         {
             ClearDbContext();
 
-            createDbContext(isCanceled: false, isDone: true);
+            CreateDbContext(isCanceled: false, isDone: true);
 
-            ScheduledEventService scheduledEventsService = new ScheduledEventService(UoW);
-            scheduledEventsService.GetFinishedUserEvents("testPatient").Count.ShouldBe(1);
-            scheduledEventsService.GetCanceledUserEvents("testPatient").Count.ShouldBe(0);
-            scheduledEventsService.GetUpcomingUserEvents("testPatient").Count.ShouldBe(0);
+            _scheduledEventService.GetFinishedUserEvents("testPatient").Count.ShouldBe(1);
+            _scheduledEventService.GetCanceledUserEvents("testPatient").Count.ShouldBe(0);
+            _scheduledEventService.GetUpcomingUserEvents("testPatient").Count.ShouldBe(0);
         }
 
         [Fact]
@@ -35,12 +35,11 @@ namespace HospitalUnitTests
         {
             ClearDbContext();
 
-            createDbContext(isCanceled: true, isDone: false);
+            CreateDbContext(isCanceled: true, isDone: false);
 
-            ScheduledEventService scheduledEventsService = new ScheduledEventService(UoW);
-            scheduledEventsService.GetFinishedUserEvents("testPatient").Count.ShouldBe(0);
-            scheduledEventsService.GetCanceledUserEvents("testPatient").Count.ShouldBe(1);
-            scheduledEventsService.GetUpcomingUserEvents("testPatient").Count.ShouldBe(0);
+            _scheduledEventService.GetFinishedUserEvents("testPatient").Count.ShouldBe(0);
+            _scheduledEventService.GetCanceledUserEvents("testPatient").Count.ShouldBe(1);
+            _scheduledEventService.GetUpcomingUserEvents("testPatient").Count.ShouldBe(0);
 
         }
 
@@ -49,31 +48,28 @@ namespace HospitalUnitTests
         {
             ClearDbContext();
 
-            createDbContext(isCanceled: false, isDone: false);
+            CreateDbContext(isCanceled: false, isDone: false);
 
-            ScheduledEventService scheduledEventsService = new ScheduledEventService(UoW);
-            scheduledEventsService.GetFinishedUserEvents("testPatient").Count.ShouldBe(0);
-            scheduledEventsService.GetCanceledUserEvents("testPatient").Count.ShouldBe(0);
-            scheduledEventsService.GetUpcomingUserEvents("testPatient").Count.ShouldBe(1);
+            _scheduledEventService.GetFinishedUserEvents("testPatient").Count.ShouldBe(0);
+            _scheduledEventService.GetCanceledUserEvents("testPatient").Count.ShouldBe(0);
+            _scheduledEventService.GetUpcomingUserEvents("testPatient").Count.ShouldBe(1);
 
         }
 
-
-        private void createDbContext(bool isCanceled, bool isDone)
+        private void CreateDbContext(bool isCanceled, bool isDone)
         {
 
-            Patient testPatient = new Patient(1, "testPatient", new MedicalRecord());
+            Patient testPatient = new(1, "testPatient", new MedicalRecord());
             Context.Patients.Add(testPatient);
 
-            Doctor testDoctor = new Doctor(2, new Shift().Id, new Specialization(), new Room());
+            Doctor testDoctor = new(2, new Shift().Id, new Specialization(), new Room());
             Context.Doctors.Add(testDoctor);
 
-            ScheduledEvent scheduledEvent = new ScheduledEvent(0, isCanceled, isDone, new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(1).Day), new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(1).Day),
+            ScheduledEvent scheduledEvent = new(0, isCanceled, isDone, new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(1).Day), new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(1).Day),
                        new DateTime(), testPatient.Id, testDoctor.Id, testDoctor);
 
             Context.ScheduledEvents.Add(scheduledEvent);
             Context.SaveChanges();
         }
-
     }
 }

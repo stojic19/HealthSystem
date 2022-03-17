@@ -71,7 +71,7 @@ namespace HospitalUnitTests
         public void Should_get_one_item()
         {
             ClearDbContext();
-            Room room = new Room()
+            Room room = new()
             {
                 Id = 1,
                 Name = "Test name",
@@ -79,7 +79,7 @@ namespace HospitalUnitTests
                 FloorNumber = 1,
                 BuildingName = "Test building"
             };
-            InventoryItem inventoryItem = new InventoryItem()
+            InventoryItem inventoryItem = new()
             {
                 Id = 1,
                 Name = "Test item",

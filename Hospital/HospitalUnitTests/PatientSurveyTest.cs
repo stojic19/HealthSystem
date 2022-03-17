@@ -20,11 +20,12 @@ namespace HospitalUnitTests
         }
 
         [Fact]
-        public void one_answered_surveys_created()
+        public void One_answered_surveys_created()
         {
+            #region Arrange
+            
             ClearDbContext();
-            #region
-            Survey testSurvey = new Survey(true);
+            Survey testSurvey = new(true);
             Context.Surveys.Add(testSurvey);
           
             Context.Questions.Add(new Question()
@@ -50,17 +51,16 @@ namespace HospitalUnitTests
                 Text = "Pitanje 3"
             });
 
-            Patient testPatient = new Patient(1, "testPatient", new MedicalRecord());
+            Patient testPatient = new(1, "testPatient", new MedicalRecord());
             Context.Patients.Add(testPatient);
 
-            Doctor testDoctor = new Doctor(2, new Shift().Id, new Specialization(), new Room());
+            Doctor testDoctor = new(2, new Shift().Id, new Specialization(), new Room());
             Context.Doctors.Add(testDoctor);
 
-            ScheduledEvent events = new ScheduledEvent(0, false, true, new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(-3).Day), new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(-3).Day),
+            ScheduledEvent events = new(0, false, true, new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(-3).Day), new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(-3).Day),
                  new DateTime(), testPatient.Id, testDoctor.Id, testDoctor);
             Context.ScheduledEvents.Add(events);
 
-            //////////////////////
             Context.AnsweredSurveys.Add(new AnsweredSurvey(new List<AnsweredQuestion>(), DateTime.Now, testSurvey.Id, testSurvey, testPatient.Id, testPatient, events.Id, events));
            
             Context.AnsweredQuestions.Add(new AnsweredQuestion()
@@ -85,8 +85,9 @@ namespace HospitalUnitTests
                 Rating = 5
             });
 
-            #endregion
             Context.SaveChanges();
+            #endregion
+
             var answeredSurvey = UoW.GetRepository<IAnsweredSurveyReadRepository>()
                .GetAll();
             answeredSurvey.ShouldNotBeNull();

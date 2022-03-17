@@ -1,11 +1,9 @@
 ﻿using Hospital.RoomsAndEquipment.Model;
 using Hospital.RoomsAndEquipment.Repository;
-using Hospital.Schedule.Model;
 using Hospital.SharedModel.Model.Wrappers;
 using HospitalUnitTests.Base;
 using Shouldly;
 using System;
-using System.Linq;
 using Hospital.RoomsAndEquipment.Service;
 using Xunit;
 using Hospital.SharedModel.Model.Enumerations;
@@ -15,9 +13,10 @@ namespace HospitalUnitTests
 {
     public class TransferingEquipmentTests : BaseTest
     {
+        private readonly TransferingEquipmentService _transferingEquipmentService;
         public TransferingEquipmentTests(BaseFixture baseFixture) : base(baseFixture)
         {
-
+            _transferingEquipmentService = new(UoW);
         }
         
         [Fact]
@@ -31,8 +30,8 @@ namespace HospitalUnitTests
 
             Context.SaveChanges();
 
-            var transferingService = new TransferingEquipmentService(UoW);
-            transferingService.StartEquipmentTransferEvent();
+
+            _transferingEquipmentService.StartEquipmentTransferEvent();
 
             var initialRoomInventory = UoW.GetRepository<IRoomInventoryReadRepository>()
                 .GetById(1);

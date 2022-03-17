@@ -1,12 +1,10 @@
 ﻿using Hospital.Database.EfStructures;
 using Hospital.Schedule.Model;
-using Hospital.SharedModel.Model.Wrappers;
 using Hospital.SharedModel.Repository.Base;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Hospital.SharedModel.Model;
 
 namespace Hospital.Schedule.Repository.Implementation
 {
@@ -28,13 +26,23 @@ namespace Hospital.Schedule.Repository.Implementation
         {
             return GetAll().Where(x => x.IsCanceled  && x.Patient.Id == id).ToList();
         }
-
+        /**
+         * Sta se desava?
+         */
         public List<ScheduledEvent> GetCanceledUserEvents(string userName)
         {
+            //set breakpoint
+            var se = GetAll().Where(x => x.IsCanceled == true && x.Patient.UserName.Equals(userName))
+                            .ToList();
+            
+            var se1 = GetAll().Where(x => x.Patient.UserName.Equals(userName))
+                           .ToList();
+
+            var sth = se1[0].IsCanceled;
             return GetAll().Include(x => x.Doctor)
                             .Include(x => x.Room)
                             .Include(x => x.Doctor.Specialization)
-                            .Where(x => x.IsCanceled && !x.IsDone && x.Patient.UserName.Equals(userName))
+                            .Where(x => x.Patient.UserName.Equals(userName) && x.IsCanceled == true && x.IsDone == false )
                             .ToList();
         }
 
@@ -57,11 +65,11 @@ namespace Hospital.Schedule.Repository.Implementation
 
         public ScheduledEvent GetScheduledEvent(int eventId)
         {
+
             return GetAll().Where(x => x.Id == eventId)
                             .Include(x => x.Room)
                             .Include(x => x.Doctor.Specialization).FirstOrDefault();
         }
-
         public List<ScheduledEvent> GetUpcomingUserEvents(string userName)
         {
             return GetAll().Include(x => x.Doctor)

@@ -18,26 +18,25 @@ namespace HospitalUnitTests
 
         }
 
-
         [Fact]
         public void Report_count_should_not_be_zero()
         {
             ClearDbContext();
-            var eventId = createDbContext();
-            ReportService service = new ReportService(UoW);
+            var eventId = CreateDbContext();
+            ReportService service = new(UoW);
             service.GetReport(eventId).ShouldNotBe(null);
             service.GetAllReports().ToList().Count.ShouldNotBe(0);
         }
 
-        private int createDbContext()
+        private int CreateDbContext()
         {
-            Patient testPatient = new Patient(1, "testPatient", new MedicalRecord());
+            Patient testPatient = new(1, "testPatient", new MedicalRecord());
             Context.Patients.Add(testPatient);
 
-            Doctor testDoctor = new Doctor(2, new Shift().Id, new Specialization(), new Room());
+            Doctor testDoctor = new(2, new Shift().Id, new Specialization(), new Room());
             Context.Doctors.Add(testDoctor);
 
-            ScheduledEvent scheduledEvent = new ScheduledEvent(0, false, false, new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(1).Day), new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(1).Day),
+            ScheduledEvent scheduledEvent = new(0, false, false, new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(1).Day), new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(1).Day),
                        new DateTime(), testPatient.Id, testDoctor.Id, testDoctor);
 
             Context.ScheduledEvents.Add(scheduledEvent);

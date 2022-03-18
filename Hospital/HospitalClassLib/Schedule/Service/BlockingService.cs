@@ -39,5 +39,17 @@ namespace Hospital.Schedule.Service
             return _uow.GetRepository<IScheduledEventReadRepository>()
                 .GetNumberOfCanceledEventsForPatient(patientId).Count(e => e.CancellationDate > DateTime.Now.AddDays(-30));
         }
+
+        public void BlockMaliciousPatient(Patient patient)
+        {
+            var maliciousPatients = GetMaliciousPatients();
+
+            var pat = maliciousPatients.Where(malicious => malicious.Id == patient.Id).FirstOrDefault();
+
+            if(pat !=null)
+            {
+                BlockPatient(patient.UserName);
+            }
+        }
     }
 }

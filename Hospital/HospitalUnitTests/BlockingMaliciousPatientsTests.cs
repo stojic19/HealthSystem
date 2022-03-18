@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Hospital.MedicalRecords.Model;
-using Hospital.MedicalRecords.Repository;
 using Hospital.RoomsAndEquipment.Model;
 using Hospital.Schedule.Model;
 using Hospital.Schedule.Service;
@@ -43,9 +42,7 @@ namespace HospitalUnitTests
 
             Context.SaveChanges();
             #endregion
-
-            //var patient = UoW.GetRepository<IPatientReadRepository>().GetById(2);
-            //if (patient == null) return;    //TODO: Da hell je ovaj uslov ?
+          
             var maliciousPatients = _blockingService.GetMaliciousPatients();
             maliciousPatients.ShouldNotBe(null);
             maliciousPatients.ShouldContain(testPatient);
@@ -73,9 +70,7 @@ namespace HospitalUnitTests
 
             Context.SaveChanges();
             #endregion
-       
-            //var patient = UoW.GetRepository<IPatientReadRepository>().GetById(2);
-            //if (patient == null) return;
+
             var maliciousPatients = _blockingService.GetMaliciousPatients();
             maliciousPatients.ShouldNotBe(null);
             maliciousPatients.ShouldNotContain(testPatient);
@@ -106,18 +101,13 @@ namespace HospitalUnitTests
 
             #endregion
 
-            testPatient.Block();
-            var maliciousPatients = _blockingService.GetMaliciousPatients();
-            maliciousPatients.ShouldContain(testPatient);
+            _blockingService.BlockMaliciousPatient(testPatient);
+            var maliciousPatients = _blockingService.GetMaliciousPatients().ToList();
+            maliciousPatients.ShouldNotContain(testPatient);
             testPatient.IsBlocked.ShouldBe(true);
 
         }
         [Fact]
-        /**
-         * //NE TREBA DA RADI STA POSLOVNA LOGIKA RADI 
-            //Leaking algorithm Implementation
-            //Aim at the end result instead of implementation details = Resistence to refactoring
-         */
         public void Patient_should_not_be_blocked()
         {
             #region Arange
@@ -139,52 +129,11 @@ namespace HospitalUnitTests
 
             Context.SaveChanges();
             #endregion
-      
-            var patient = UoW.GetRepository<IPatientReadRepository>().GetById(3);
-            if (patient == null) return;
-            var maliciousPatients = _blockingService.GetMaliciousPatients();
-            
-            foreach (var malicious in maliciousPatients.Where(malicious => malicious.Id == patient.Id))
-            {
-                _blockingService.BlockPatient(patient.UserName);
-            }
-            var blockedPatient = UoW.GetRepository<IPatientReadRepository>().GetById(2);
-            blockedPatient.IsBlocked.ShouldBe(false);
+          
+            _blockingService.BlockMaliciousPatient(testPatient);
+            testPatient.IsBlocked.ShouldBe(false);           
         }
 
-        [Fact]
-        public void Patient_should_be_blocked()
-        {
-            #region Arange
-
-            ClearDbContext();
-            Context.Rooms.Add(new Room { Id = 1, Name = "Ordination" });
-            Context.Shifts.Add(new Shift(3, "first", 7, 15));
-            var room = new Room()
-            {
-                Id = 2,
-                BuildingName = "hf",
-                Description = "dada",
-                FloorNumber = 2,
-                Name = "duno"
-            };
-            Context.Rooms.Add(room);
-            var firstDoctor = new Doctor(1, 3, new Specialization("General Practice", ""), room);
-            Context.Doctors.Add(firstDoctor);
-            var medicalRecord = new MedicalRecord(1, null, 0, 0, 1, null);
-            Context.MedicalRecords.Add(medicalRecord);
-            var newPatient = new Patient(2, "testPatient", medicalRecord);
-            Context.Patients.Add(newPatient);
-
-            Context.SaveChanges();
-
-            #endregion
-           
-            var patient = UoW.GetRepository<IPatientReadRepository>().GetById(newPatient.Id);
-            _blockingService.BlockPatient(patient.UserName);
-            var blockedPatient = UoW.GetRepository<IPatientReadRepository>().GetById(newPatient.Id);
-            blockedPatient.IsBlocked.ShouldBe(true);
-        }
         private (Doctor doctor, Patient patient) ArrangeData()
         {
             Context.Shifts.Add(new Shift(3, "first", 7, 15));

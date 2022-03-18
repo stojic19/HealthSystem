@@ -1,5 +1,4 @@
 ﻿using Hospital.MedicalRecords.Model;
-using Hospital.MedicalRecords.Repository;
 using Hospital.RoomsAndEquipment.Model;
 using Hospital.Schedule.Model;
 using Hospital.Schedule.Service;

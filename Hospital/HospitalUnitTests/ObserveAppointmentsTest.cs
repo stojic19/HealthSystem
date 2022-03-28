@@ -7,6 +7,7 @@ using Hospital.SharedModel.Model;
 using Hospital.RoomsAndEquipment.Model;
 using Shouldly;
 using Hospital.Schedule.Service;
+using System.Collections.Generic;
 
 namespace HospitalUnitTests
 {
@@ -18,42 +19,29 @@ namespace HospitalUnitTests
             _scheduledEventService = new(UoW);
         }
 
-        [Fact]
-        public void Finished_events_count_should_not_be_zero()
+        [Theory]
+        [MemberData(nameof(Data))]
+        public void Observe_appointments(bool isCanceled, bool isDone, int finished, int canceled, int upcoming)
         {
             ClearDbContext();
 
-            CreateDbContext(isCanceled: false, isDone: true);
+            CreateDbContext(isCanceled, isDone);
 
-            _scheduledEventService.GetFinishedUserEvents("testPatient").Count.ShouldBe(1);
-            _scheduledEventService.GetCanceledUserEvents("testPatient").Count.ShouldBe(0);
-            _scheduledEventService.GetUpcomingUserEvents("testPatient").Count.ShouldBe(0);
+            _scheduledEventService.GetFinishedUserEvents("testPatient").Count.ShouldBe(finished);
+            _scheduledEventService.GetCanceledUserEvents("testPatient").Count.ShouldBe(canceled);
+            _scheduledEventService.GetUpcomingUserEvents("testPatient").Count.ShouldBe(upcoming);
         }
 
-        [Fact]
-        public void Canceled_events_count_should_not_be_zero()
+        public static IEnumerable<object[]> Data()
         {
-            ClearDbContext();
+            var retVal = new List<object[]>
+            {
+                new object[] { false, true, 1, 0, 0 },
+                new object[] { true, false, 0, 1, 0 },
+                new object[] { false, false, 0, 0, 1 }
+            };
 
-            CreateDbContext(isCanceled: true, isDone: false);
-
-            _scheduledEventService.GetFinishedUserEvents("testPatient").Count.ShouldBe(0);
-            _scheduledEventService.GetCanceledUserEvents("testPatient").Count.ShouldBe(1);
-            _scheduledEventService.GetUpcomingUserEvents("testPatient").Count.ShouldBe(0);
-
-        }
-
-        [Fact]
-        public void Upcoming_events_count_should_not_be_zero()
-        {
-            ClearDbContext();
-
-            CreateDbContext(isCanceled: false, isDone: false);
-
-            _scheduledEventService.GetFinishedUserEvents("testPatient").Count.ShouldBe(0);
-            _scheduledEventService.GetCanceledUserEvents("testPatient").Count.ShouldBe(0);
-            _scheduledEventService.GetUpcomingUserEvents("testPatient").Count.ShouldBe(1);
-
+            return retVal;
         }
 
         private void CreateDbContext(bool isCanceled, bool isDone)

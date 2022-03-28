@@ -1,12 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Moq;
-using Shouldly;
+﻿using Shouldly;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Castle.Core.Internal;
 using Xunit;
 using IntegrationUnitTests.Base;
 using Integration.Partnership.Repository;

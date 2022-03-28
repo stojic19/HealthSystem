@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
-using System.Threading.Tasks;
 using Integration.Pharmacies.Model;
-using Integration.Pharmacies.Repository;
-using Integration.Shared.Repository.Base;
+using Integration.Shared.Repository;
+using Integration.Shared.Repository.Implementation;
 using Integration.Tendering.Model;
 
 namespace Integration.Shared.Service
@@ -18,15 +16,16 @@ namespace Integration.Shared.Service
         private readonly string _hospitalName = "Nasa bolnica";
         private readonly string _hospitalEmail = "psw.company2@gmail.com";
         private readonly string _emailPassword = Environment.GetEnvironmentVariable("HOSPITAL_EMAIL_PASSWORD");
+        private ISmtpClient _smtpClient;
+
         public EmailService()
         {
 
         }
 
-        public EmailService(string hospitalEmail, string password)
+        public EmailService(ISmtpClient smtpClient)
         {
-            _hospitalEmail = hospitalEmail;
-            _emailPassword = password;
+            _smtpClient = smtpClient;
         }
 
         public void SendNewTenderMail(Tender tender, IEnumerable<Pharmacy> pharmacies)
@@ -99,25 +98,21 @@ namespace Integration.Shared.Service
         }
 
 
-        public void SendMail(string mail, string title, string text)
+        virtual public void SendMail(string mail, string title, string text)
         {
-            MailMessage mailMessage = new MailMessage();
+            MailMessage mailMessage = new();
             mailMessage.From = new MailAddress(_hospitalEmail);
             mailMessage.To.Add(mail);
 
             mailMessage.Subject = title;
             mailMessage.IsBodyHtml = true;
             mailMessage.Body = text;
-
-            var smtpClient = new SmtpClient("smtp.gmail.com")
-            {
-                Port = 587,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                EnableSsl = true,
-                Credentials = new NetworkCredential(_hospitalEmail, _emailPassword)
-            };
-            smtpClient.Send(mailMessage);
+          
+        
+            _smtpClient = new SmtpClientWrapper("smtp.gmail.com", 587, SmtpDeliveryMethod.Network, false, true, new NetworkCredential("psw.company2@gmail.com", "Dont panic!"));
+          
+            //unamanaged dependency
+            _smtpClient.Send(mailMessage);
         }
     }
 }

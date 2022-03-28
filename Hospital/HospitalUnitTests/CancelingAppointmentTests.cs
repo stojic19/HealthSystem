@@ -31,7 +31,7 @@ namespace HospitalUnitTests
             testPatient.CancelAppointment(events.Id);
             testPatient.ScheduledEvents.Count.ShouldNotBe(0);
             testPatient.ScheduledEvents[0].IsCanceled.ShouldBeTrue();
-            _scheduledEventService.GetCanceledUserEvents("testPatient").Count.ShouldBe(1); //FALSE POSITIVE            
+            _scheduledEventService.GetCanceledUserEvents("testPatient").Count.ShouldBe(1); //FALSE POSITIVE //novi act & assert
         }
 
         [Fact]

@@ -1,10 +1,6 @@
 ﻿using IntegrationUnitTests.Base;
 using Shouldly;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Integration.Partnership.Model;
 using Integration.Partnership.Repository;
 using Integration.Partnership.Service;

@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net.Mail;
 using Integration.Pharmacies.Model;
 using Integration.Shared.Model;
+using Integration.Shared.Repository;
 using Integration.Shared.Service;
 using Integration.Tendering.Model;
 using IntegrationUnitTests.Base;
+using Moq;
 using Xunit;
 
 namespace IntegrationUnitTests
@@ -37,6 +37,25 @@ namespace IntegrationUnitTests
                 exceptionCaught = true;
             }
             Assert.False(exceptionCaught);
+        }
+        [Fact]
+        public void Send_email_verify()
+        {
+            var mock = new Mock<ISmtpClient>();
+            
+                
+            EmailService emailService = new(mock.Object);
+            emailService.SendMail("psw.company2.pharmacy@gmail.com,psw.company2@gmail.com", "testTitle", "testText");
+
+            /** MailMessage mailMessage = new();
+             mailMessage.From = new MailAddress("psw.company2@gmail.com");
+             mailMessage.To.Add("psw.company2.pharmacy@gmail.com,psw.company2@gmail.com");
+
+             mailMessage.Subject = "testTitle";
+             mailMessage.IsBodyHtml = true;
+             mailMessage.Body = "testText";*/
+            mock.Verify(t => t.Send(It.Is<MailMessage>(s => s.Subject.Equals("testTitle"))));
+             // mock.Verify(x => x.Send(mailMessage), Times.Once);
         }
 
         [SkippableFact]

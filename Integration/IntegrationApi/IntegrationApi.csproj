@@ -41,4 +41,8 @@
     <Folder Include="Prescriptions\Sftp\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\IntegrationClassLib\Integration.csproj" />
+  </ItemGroup>
+
 </Project>

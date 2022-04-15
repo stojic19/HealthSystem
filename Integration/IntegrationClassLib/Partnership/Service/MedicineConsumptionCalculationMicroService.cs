@@ -5,9 +5,9 @@ namespace Integration.Partnership.Service
 {
     public class MedicineConsumptionCalculationMicroService
     {
-        public IEnumerable<MedicineConsumption> CalculateMedicineConsumptions(IEnumerable<Receipt> allLogs)
+        public static IEnumerable<MedicineConsumption> CalculateMedicineConsumptions(IEnumerable<Receipt> allLogs)
         {
-            List<MedicineConsumption> medicineConsumptions = new List<MedicineConsumption>();
+            List<MedicineConsumption> medicineConsumptions = new();
             foreach (var receiptLog in allLogs)
             {
                 var medicationAlreadyInList = false;

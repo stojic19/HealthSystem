@@ -13,19 +13,38 @@ namespace HospitalUnitTests
     public class MergeRoomsTests : BaseTest
     {
         private readonly RenovatingRoomsService _renovatingRoomsService;
+        private readonly IRoomRenovationEventReadRepository _roomRenovationEventRead;
+        private readonly IRoomReadRepository _roomReadRepository;
         public MergeRoomsTests(BaseFixture baseFixture) : base(baseFixture)
         {
             _renovatingRoomsService = new(UoW);
+            _roomRenovationEventRead = UoW.GetRepository<IRoomRenovationEventReadRepository>();
+            _roomReadRepository = UoW.GetRepository<IRoomReadRepository>();
         }
 
+        [Fact]
+        public void Room_position_should_change()
+        {
+            PrepareData();
+            var roomRenovationEvent = _roomRenovationEventRead.GetById(1);
+            _renovatingRoomsService.MergeRooms(roomRenovationEvent);
+            var newRoom = UoW.GetRepository<IRoomReadRepository>().GetById(1);
+           /*newRoom.RoomPosition.Height.ShouldBe(244);
+            newRoom.RoomPosition.Width.ShouldBe(244);
+            newRoom.RoomPosition.DimensionX.ShouldBe(0);
+            newRoom.RoomPosition.DimensionY.ShouldBe(0);*/
+            Assert.Equal(newRoom.RoomPosition, new RoomPosition(0, 0, 150, 244), new RoomPositionComparer());
+
+        }
         [Fact]
         public void Two_rooms_should_be_merged()
         {
             PrepareData();
             
-            var roomRenovationEvent = UoW.GetRepository<IRoomRenovationEventReadRepository>().GetById(1);
+            var roomRenovationEvent = _roomRenovationEventRead.GetById(1);
             _renovatingRoomsService.MergeRooms(roomRenovationEvent);
-            var rooms = UoW.GetRepository<IRoomReadRepository>().GetAll();
+
+            var rooms = _roomReadRepository.GetAll();
             rooms.Count().ShouldBe(1);
         }
 
@@ -34,7 +53,7 @@ namespace HospitalUnitTests
         {
             PrepareData();
    
-            var roomRenovationEvent = UoW.GetRepository<IRoomRenovationEventReadRepository>().GetById(1);
+            var roomRenovationEvent = _roomRenovationEventRead.GetById(1);
             _renovatingRoomsService.MergeRooms(roomRenovationEvent);
             var roomInventory = UoW.GetRepository<IRoomInventoryReadRepository>().GetById(2);
             roomInventory.RoomId.ShouldBe(1);
@@ -47,13 +66,6 @@ namespace HospitalUnitTests
         {
             PrepareData();
    
-            var firstRoom = UoW.GetRepository<IRoomReadRepository>().GetById(1);
-            firstRoom.Width.ShouldBe(5); //Bespotrebno 
-            firstRoom.Height.ShouldBe(6);
-            var secondRoom = UoW.GetRepository<IRoomReadRepository>().GetById(2);
-            secondRoom.Width.ShouldBe(5);
-            secondRoom.Height.ShouldBe(6);
-
             var roomRenovationEvent = UoW.GetRepository<IRoomRenovationEventReadRepository>().GetById(1);
             _renovatingRoomsService.MergeRooms(roomRenovationEvent);
             var newRoom = UoW.GetRepository<IRoomReadRepository>().GetById(1);

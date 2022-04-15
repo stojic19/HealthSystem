@@ -1,7 +1,6 @@
 ﻿using Hospital.Database.EfStructures;
 using Hospital.Schedule.Model;
 using Hospital.Schedule.Model.Wrappers;
-using Hospital.SharedModel.Model.Enumerations;
 using Hospital.SharedModel.Repository.Base;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,10 +36,10 @@ namespace Hospital.Schedule.Repository.Implementation
             var questionsAverageRatings = GetAll()
                 .GroupBy(t => new { ID = t.QuestionId })
                 .Select(g => new { AverageQuestionRating = g.Average(p => p.Rating), QuestionId = g.Key.ID }).ToList();
-            List<QuestionStatistic> listOfQuestionsAverageRating = new List<QuestionStatistic>();
+            List<QuestionStatistic> listOfQuestionsAverageRating = new();
             foreach (var g in questionsAverageRatings)
             {
-                QuestionStatistic dto = new QuestionStatistic
+                QuestionStatistic dto = new()
                 {
                     AverageRating = g.AverageQuestionRating,
                     QuestionId = g.QuestionId

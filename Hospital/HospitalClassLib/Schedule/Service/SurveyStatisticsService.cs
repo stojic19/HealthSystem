@@ -9,32 +9,52 @@ namespace Hospital.Schedule.Service
     public class SurveyStatisticsService
     {
         private readonly IUnitOfWork _uow;
+        private readonly IAnsweredQuestionReadRepository _answeredQuestionRepo;
         public SurveyStatisticsService(IUnitOfWork uow)
         {
             _uow = uow;
+            _answeredQuestionRepo = _uow.GetRepository<IAnsweredQuestionReadRepository>();
         }
-
+        /**
+         *  double AverageRating 
+            int QuestionId 
+            List<double> RatingCounts 
+         */
         public List<QuestionStatistic> GetAverageQuestionRatingForAllSurveyQuestions()
         {
-            var answeredQuestionRepo = _uow.GetRepository<IAnsweredQuestionReadRepository>();
-            var questionRatings = answeredQuestionRepo.GetAverageQuestionRatingForAllQuestions();
-            var ratingCounts = answeredQuestionRepo.GetNumberOfEachRatingForEachQuestion();
+          
+            var questionStatistics = _answeredQuestionRepo.GetAverageQuestionRatingForAllQuestions();
+            /**
+            double AverageRating 
+            int QuestionId 
+             */
+            var ratingCounts = _answeredQuestionRepo.GetNumberOfEachRatingForEachQuestion();
+            /**
+             *      QuestionId 
+                    Rating 
+                    Count  
+             */
 
-            foreach (var v in questionRatings)
+            foreach (var statistic in questionStatistics)
             {
-                v.RatingCounts = RatingCountsForOneQuestion(ratingCounts, v.QuestionId);
+                statistic.RatingCounts = RatingCountsForOneQuestion(ratingCounts, statistic.QuestionId);
             }
 
-            return questionRatings;
+            return questionStatistics;
         }
         public List<CategoryStatistic> GetAverageQuestionRatingForAllSurveyCategories()
         {
-            var answeredQuestionRepo = _uow.GetRepository<IAnsweredQuestionReadRepository>();
-            var a = answeredQuestionRepo.GetAverageQuestionRatingForAllCategories();
-            return a;
+           
+            var all = _answeredQuestionRepo.GetAverageQuestionRatingForAllCategories();
+            return all;
         }
+        /*
+         Exposing private method state so it can be testted
+         Ova metoda se ne poziva u kontroleru 
+         */
 
-        public List<double> RatingCountsForOneQuestion(List<RatingCount> ratingCounts, int QuestionId)
+
+        public static List<double> RatingCountsForOneQuestion(List<RatingCount> ratingCounts, int QuestionId)
         {
             double[] ratings = new double[5];
             foreach (var r in ratingCounts.Where(r => r.QuestionId.Equals(QuestionId)))

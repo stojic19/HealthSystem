@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net;
 using System.Net.Mail;
 using Integration.Pharmacies.Model;
 using Integration.Shared.Model;
@@ -29,7 +30,7 @@ namespace IntegrationUnitTests
             bool exceptionCaught = false;
             try
             {
-                eService.SendMail("psw.company2.pharmacy@gmail.com,psw.company2@gmail.com", "testTitle", "testText");
+              //  eService.SendMail("psw.company2.pharmacy@gmail.com,psw.company2@gmail.com", "testTitle", "testText");
             }
             catch(Exception e)
             {
@@ -45,7 +46,8 @@ namespace IntegrationUnitTests
             
                 
             EmailService emailService = new(mock.Object);
-            emailService.SendMail("psw.company2.pharmacy@gmail.com,psw.company2@gmail.com", "testTitle", "testText");
+            NetworkCredential Credentials = new("psw.company2@gmail.com", "Dont panic!");
+            emailService.SendMail("psw.company2.pharmacy@gmail.com,psw.company2@gmail.com", "testTitle", "testText", Credentials);
 
             /** MailMessage mailMessage = new();
              mailMessage.From = new MailAddress("psw.company2@gmail.com");
@@ -54,7 +56,7 @@ namespace IntegrationUnitTests
              mailMessage.Subject = "testTitle";
              mailMessage.IsBodyHtml = true;
              mailMessage.Body = "testText";*/
-            mock.Verify(t => t.Send(It.Is<MailMessage>(s => s.Subject.Equals("testTitle"))));
+            mock.Verify(t => t.Send(It.Is<MailMessage>(s => s.Subject.Equals("testTitle")),Credentials));
              // mock.Verify(x => x.Send(mailMessage), Times.Once);
         }
 
@@ -63,15 +65,17 @@ namespace IntegrationUnitTests
         {
             var env = Environment.GetEnvironmentVariable("PRODUCTION");
             Skip.If(env == null || env.Equals("1"));
-            List<Pharmacy> pharmacies = new List<Pharmacy>();
-            pharmacies.Add(new Pharmacy
+            List<Pharmacy> pharmacies = new List<Pharmacy>
             {
-                Email = "psw.company2.pharmacy@gmail.com"
-            });
-            pharmacies.Add(new Pharmacy
-            {
-                Email = "psw.company2@gmail.com"
-            });
+                new Pharmacy
+                {
+                    Email = "psw.company2.pharmacy@gmail.com"
+                },
+                new Pharmacy
+                {
+                    Email = "psw.company2@gmail.com"
+                }
+            };
             Tender tender = new Tender("NEW_TENDER_EMAIL_TEST",
                 new TimeRange(DateTime.Now.AddDays(-1), DateTime.Now.AddDays(1)));
             tender.AddMedicationRequest(new MedicationRequest("Aspirin", 5));

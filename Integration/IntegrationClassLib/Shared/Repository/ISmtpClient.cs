@@ -4,6 +4,6 @@ namespace Integration.Shared.Repository
 {
     public interface ISmtpClient 
     {
-        void Send(MailMessage mailMessage);
+        void Send(MailMessage mailMessage, System.Net.NetworkCredential networkCredential);
     }
 }

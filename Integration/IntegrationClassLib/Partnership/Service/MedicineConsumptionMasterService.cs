@@ -22,7 +22,7 @@ namespace Integration.Partnership.Service
             var repo = _unitOfWork.GetRepository<IReceiptReadRepository>();
             IEnumerable<Receipt> receiptsInTimeRange = repo.GetReceiptLogsInTimeRange(timeRange);
             IEnumerable<MedicineConsumption> medicineConsumptions =
-                medicineConsumptionCalculationMicroService.CalculateMedicineConsumptions(receiptsInTimeRange);
+                MedicineConsumptionCalculationMicroService.CalculateMedicineConsumptions(receiptsInTimeRange);
             MedicineConsumptionReport retVal = new MedicineConsumptionReport
             {
                 startDate = timeRange.StartDate,

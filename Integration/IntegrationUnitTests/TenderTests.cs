@@ -12,23 +12,34 @@ namespace IntegrationUnitTests
 {
     public class TenderTests : BaseTest
     {
+        private readonly IPharmacyWriteRepository _pharmacyWrite;
+        private readonly ITenderWriteRepository _tenderWrite;
         public TenderTests(BaseFixture fixture) : base(fixture)
         {
             ClearDbContext();
+            _pharmacyWrite = UoW.GetRepository<IPharmacyWriteRepository>();
+            _tenderWrite = UoW.GetRepository<ITenderWriteRepository>();
         }
 
         [Fact]
         public void Database_test()
         {
-            Tender tender = new Tender("Test_tender", new TimeRange(new DateTime(2020,1,1), new DateTime(2020, 2,2)));
+            Tender tender = new("Test_tender", new TimeRange(new DateTime(2020,1,1), new DateTime(2020, 2,2)));
             tender.AddMedicationRequest(new MedicationRequest("testlek1", 2));
-            Pharmacy pharmacy = new Pharmacy();
-            pharmacy.Name = "TestPharmacy";
-            UoW.GetRepository<IPharmacyWriteRepository>().Add(pharmacy);
-            TenderOffer tenderOffer = new TenderOffer(pharmacy, new Money(20, Currency.Din), DateTime.Now);
+
+            Pharmacy pharmacy = new()
+            {
+                Name = "TestPharmacy"
+            };
+            _pharmacyWrite.Add(pharmacy);
+            TenderOffer tenderOffer = new(pharmacy,
+                                          new Money(20, Currency.Din),
+                                          DateTime.Now);
+
             tenderOffer.AddMedicationRequest(new MedicationRequest("testLek1", 1));
             tender.AddTenderOffer(tenderOffer);
-            UoW.GetRepository<ITenderWriteRepository>().Add(tender);
+
+            _tenderWrite.Add(tender);
             Tender fromRepo = UoW.GetRepository<ITenderReadRepository>().GetById(tender.Id);
             fromRepo.ShouldNotBeNull();
         }
@@ -36,14 +47,14 @@ namespace IntegrationUnitTests
         [Fact]
         public void Closed_test()
         {
-            Tender closedTender1 = new Tender("closedTender1",
+            Tender closedTender1 = new("closedTender1",
                 new TimeRange(new DateTime(2021, 12, 14), DateTime.Now.AddDays(-1)));
-            Tender closedTender2 = new Tender("closedTender2",
+            Tender closedTender2 = new("closedTender2",
                 new TimeRange(new DateTime(2021, 12, 14), DateTime.Now.AddDays(1)));
-            Tender closedTender3 = new Tender("closedTender3",
+            Tender closedTender3 = new("closedTender3",
                 new TimeRange(new DateTime(2021, 12, 14), DateTime.Now.AddDays(-1)));
             closedTender3.CloseTender();
-            Tender activeTender1 = new Tender("activeTender1",
+            Tender activeTender1 = new("activeTender1",
                 new TimeRange(new DateTime(2021, 12, 14), DateTime.Now.AddDays(3)));
             closedTender2.CloseTender();
             Assert.False(closedTender1.IsActive());

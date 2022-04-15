@@ -5,11 +5,8 @@ using Hospital.Schedule.Repository;
 using Hospital.SharedModel.Model.Wrappers;
 using Hospital.SharedModel.Repository.Base;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hospital.Schedule.Service
 {
@@ -58,7 +55,7 @@ namespace Hospital.Schedule.Service
             {
                 if (scheduledEvent.RoomId == roomId)
                 {
-                    TimePeriod period = new TimePeriod(scheduledEvent.StartDate, scheduledEvent.EndDate);
+                    TimePeriod period = new(scheduledEvent.StartDate, scheduledEvent.EndDate);
                     if (timePeriod.OverlapsWith(period))
                         return true;
                 }
@@ -78,7 +75,7 @@ namespace Hospital.Schedule.Service
             {
                 if (scheduledTransfer.InitialRoomInventory.RoomId == roomId || scheduledTransfer.DestinationRoomInventory.RoomId == roomId)
                 {
-                    TimePeriod period = new TimePeriod(scheduledTransfer.TimePeriod.StartTime, scheduledTransfer.TimePeriod.EndTime);
+                    TimePeriod period = new(scheduledTransfer.TimePeriod.StartTime, scheduledTransfer.TimePeriod.EndTime);
                     if (timePeriod.OverlapsWith(period))
                         return true;
                 }
@@ -97,7 +94,7 @@ namespace Hospital.Schedule.Service
             {
                 if (renovationEvent.RoomId == roomId || renovationEvent.MergeRoomId == roomId)
                 {
-                    TimePeriod period = new TimePeriod(renovationEvent.StartDate, renovationEvent.EndDate);
+                    TimePeriod period = new(renovationEvent.StartDate, renovationEvent.EndDate);
                     if (timePeriod.OverlapsWith(period))
                         return true;
                 }

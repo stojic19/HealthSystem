@@ -31,6 +31,7 @@ namespace HospitalApi.Controllers
             var service = new SurveyStatisticsService(_uow);
             var surveys = _uow.GetRepository<ISurveyReadRepository>().GetAll();
             if (!surveys.Any()) return NoContent();
+
             var survey = surveys.First();
             var questionRepo = _uow.GetRepository<IQuestionReadRepository>();
             var surveyQuestions = questionRepo.GetAll().Where(x => x.SurveyId.Equals(survey.Id)).ToList();

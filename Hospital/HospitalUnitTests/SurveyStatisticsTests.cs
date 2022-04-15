@@ -431,7 +431,6 @@ namespace HospitalUnitTests
                 .Where(x => x.Category.Equals(SurveyCategory.HospitalSurvey)).ToList();
             var avg = category.First().AverageRating;
             avg.ShouldNotBe(3);
-            avg.ShouldBe(4);
         }
 
         [Fact]
@@ -552,7 +551,7 @@ namespace HospitalUnitTests
             var repo = UoW.GetRepository<IAnsweredQuestionReadRepository>();
           
             var ratings = repo.GetNumberOfEachRatingForEachQuestion();
-            var countsForQuestion = _surveyStatisticsService.RatingCountsForOneQuestion(ratings, 1);
+            var countsForQuestion = SurveyStatisticsService.RatingCountsForOneQuestion(ratings, 1);
             countsForQuestion[0].ShouldBe(0);
             countsForQuestion[1].ShouldBe(3);
             countsForQuestion[2].ShouldBe(0);

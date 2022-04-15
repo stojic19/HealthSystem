@@ -33,15 +33,17 @@ namespace IntegrationUnitTests
 
         public static IEnumerable<object[]> GetReceiptsData()
         {
-            List<object[]> retVal = new List<object[]>();
-            retVal.Add(new object[]
-                {new TimeRange (new DateTime(2021, 9, 1), new DateTime(2021, 10, 1)), 3});
-            retVal.Add(new object[]
-                {new TimeRange (new DateTime(2020, 9, 1), new DateTime(2021, 11, 1)), 5});
-            retVal.Add(new object[]
-                {new TimeRange (new DateTime(2021, 10, 1),new DateTime(2021, 11, 1)), 1});
-            retVal.Add(new object[]
-                {new TimeRange (new DateTime(2021, 11, 1), new DateTime(2021, 12, 1)), 1});
+            List<object[]> retVal = new()
+            {
+                new object[]
+                {new TimeRange (new DateTime(2021, 9, 1), new DateTime(2021, 10, 1)), 3},
+                new object[]
+                {new TimeRange (new DateTime(2020, 9, 1), new DateTime(2021, 11, 1)), 5},
+                new object[]
+                {new TimeRange (new DateTime(2021, 10, 1),new DateTime(2021, 11, 1)), 1},
+                new object[]
+                {new TimeRange (new DateTime(2021, 11, 1), new DateTime(2021, 12, 1)), 1}
+            };
             return retVal;
         }
 
@@ -49,71 +51,67 @@ namespace IntegrationUnitTests
         public void Calculate_medicine_consumptions()
         {
             var receipts = UoW.GetRepository<IReceiptReadRepository>().GetAll().Include(x => x.Medicine);
-            MedicineConsumptionCalculationMicroService medicineConsumptionConsumptionCalculationMicroService = new MedicineConsumptionCalculationMicroService();
-            IEnumerable<MedicineConsumption> medicineConsumptions = medicineConsumptionConsumptionCalculationMicroService.CalculateMedicineConsumptions(receipts);
+            IEnumerable<MedicineConsumption> medicineConsumptions = MedicineConsumptionCalculationMicroService.CalculateMedicineConsumptions(receipts);
             medicineConsumptions.Count().ShouldBe(3);
         }
         [Theory]
         [MemberData(nameof(GetTimeRanges))]
         public void Create_medication_report(TimeRange timeRange, int shouldBe)
         {
-            TimeRange september = new TimeRange
-                (new DateTime(2021, 9, 1), new DateTime(2021, 10, 1));
-            MedicineConsumptionMasterService service = new MedicineConsumptionMasterService(UoW);
+            MedicineConsumptionMasterService service = new(UoW);
             MedicineConsumptionReport report = service.CreateConsumptionReportInTimeRange(timeRange);
             report.MedicineConsumptions.Count().ShouldBe(shouldBe);
         }
         public static IEnumerable<object[]> GetTimeRanges()
         {
-            TimeRange september = new TimeRange
-                (new DateTime(2021, 9, 1), new DateTime(2021, 10, 1) );
-            TimeRange november = new TimeRange
-                (new DateTime(2021, 11, 1), new DateTime(2021, 12, 1));
-            TimeRange december = new TimeRange
-                (new DateTime(2021, 12, 1), new DateTime(2022, 1, 1));
-            List<object[]> retVal = new List<object[]>();
-            retVal.Add(new object[] {september, 3});
-            retVal.Add(new object[] {november, 1});
-            retVal.Add(new object[] { december, 2});
+            TimeRange september = new (new DateTime(2021, 9, 1), new DateTime(2021, 10, 1) );
+            TimeRange november = new  (new DateTime(2021, 11, 1), new DateTime(2021, 12, 1));
+            TimeRange december = new (new DateTime(2021, 12, 1), new DateTime(2022, 1, 1));
+            List<object[]> retVal = new()
+            {
+                new object[] { september, 3 },
+                new object[] { november, 1 },
+                new object[] { december, 2 }
+            };
             return retVal;
         }
         private void MakeReceipts()
         {
-            Medicine aspirin = new Medicine { Id = 1, Name = "Aspirin" };
-            Medicine probiotik = new Medicine { Id = 2, Name = "Probiotik" };
-            Medicine brufen = new Medicine { Id = 3, Name = "Brufen" };
+            Medicine aspirin = new() { Id = 1, Name = "Aspirin" };
+            Medicine probiotik = new() { Id = 2, Name = "Probiotik" };
+            Medicine brufen = new() { Id = 3, Name = "Brufen" };
             Context.Medicines.Add(aspirin);
             Context.Medicines.Add(probiotik);
             Context.Medicines.Add(brufen);
-            Receipt receipt1 = new Receipt
+            Receipt receipt1 = new()
             {
                 Id = 1,
                 ReceiptDate = new DateTime(2021, 9, 30),
                 Medicine = brufen,
                 AmountSpent = 4
             };
-            Receipt receipt2 = new Receipt
+            Receipt receipt2 = new()
             {
                 Id = 2,
                 ReceiptDate = new DateTime(2021, 5, 19),
                 Medicine = probiotik,
                 AmountSpent = 2
             };
-            Receipt receipt3 = new Receipt
+            Receipt receipt3 = new()
             {
                 Id = 3,
                 ReceiptDate = new DateTime(2021, 9, 19),
                 Medicine = probiotik,
                 AmountSpent = 4
             };
-            Receipt receipt4 = new Receipt
+            Receipt receipt4 = new()
             {
                 Id = 4,
                 ReceiptDate = new DateTime(2021, 10, 19),
                 Medicine = brufen,
                 AmountSpent = 1
             };
-            Receipt receipt5 = new Receipt
+            Receipt receipt5 = new()
             {
                 Id = 5,
                 ReceiptDate = new DateTime(2021, 9, 5),
@@ -127,14 +125,14 @@ namespace IntegrationUnitTests
                 Medicine = aspirin,
                 AmountSpent = 5
             };
-            Receipt receipt7 = new Receipt
+            Receipt receipt7 = new()
             {
                 Id = 7,
                 ReceiptDate = new DateTime(2021, 12, 5),
                 Medicine = brufen,
                 AmountSpent = 8
             };
-            Receipt receipt8 = new Receipt
+            Receipt receipt8 = new()
             {
                 Id = 8,
                 ReceiptDate = new DateTime(2021, 12, 6),

@@ -2,10 +2,6 @@
 using Hospital.RoomsAndEquipment.Repository;
 using Hospital.SharedModel.Repository.Base;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hospital.RoomsAndEquipment.Service
 {
@@ -17,7 +13,7 @@ namespace Hospital.RoomsAndEquipment.Service
             this.uow = unitOfWork;
         }
 
-        private bool EventStartsTomorrow(DateTime startDate)
+        private static bool EventStartsTomorrow(DateTime startDate)
         {
             if (startDate <= DateTime.Now.AddDays(1))
                 return true;

@@ -32,13 +32,13 @@ namespace Hospital.Schedule.Repository.Implementation
         public List<ScheduledEvent> GetCanceledUserEvents(string userName)
         {
             //set breakpoint
-            var se = GetAll().Where(x => x.IsCanceled && x.Patient.UserName.Equals(userName)) //isCanceled
+            /**var se = GetAll().Where(x => x.IsCanceled && x.Patient.UserName.Equals(userName)) //isCanceled
                             .ToList();
             
             var se1 = GetAll().Where(x => x.Patient.UserName.Equals(userName))
                            .ToList();
 
-            var sth = se1[0].IsCanceled;
+            var sth = se1[0].IsCanceled;*/
             return GetAll().Include(x => x.Doctor)
                             .Include(x => x.Room)
                             .Include(x => x.Doctor.Specialization)

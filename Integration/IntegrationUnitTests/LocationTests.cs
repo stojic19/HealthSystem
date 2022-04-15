@@ -1,9 +1,4 @@
 ﻿using IntegrationUnitTests.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Integration.Shared.Model;
 using Shouldly;
 using Xunit;
@@ -16,12 +11,12 @@ namespace IntegrationUnitTests
         {
 
         }
-
+        
         [Fact]
         public void Get_return_of_city_in_location()
         {
             ClearDbContext();
-            Location location = new Location(45.258253, 19.8012564);
+            Location location = new(45.258253, 19.8012564);
 
             City city = location.GetCity();
 
@@ -34,7 +29,7 @@ namespace IntegrationUnitTests
         public void Get_return_of_country_in_location()
         {
             ClearDbContext();
-            Location location = new Location(45.258253, 19.8012564);
+            Location location = new(45.258253, 19.8012564);
 
             Country country = location.GetCountry();
 
@@ -46,7 +41,7 @@ namespace IntegrationUnitTests
         public void Get_return_of_full_address_in_location()
         {
             ClearDbContext();
-            Location location = new Location(45.258253, 19.8012564);
+            Location location = new(45.258253, 19.8012564);
 
             string address = location.GetFullAddress();
 
@@ -58,7 +53,7 @@ namespace IntegrationUnitTests
         public void Get_return_of_street_name_in_location()
         {
             ClearDbContext();
-            Location location = new Location(45.258253, 19.8012564);
+            Location location = new(45.258253, 19.8012564);
 
             string address = location.GetStreetName();
 
@@ -70,7 +65,7 @@ namespace IntegrationUnitTests
         public void Get_return_of_house_number_in_location()
         {
             ClearDbContext();
-            Location location = new Location(45.258253, 19.8012564);
+            Location location = new(45.258253, 19.8012564);
 
             string address = location.GetHouseNumber();
 

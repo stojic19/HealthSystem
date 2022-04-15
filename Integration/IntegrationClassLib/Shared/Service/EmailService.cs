@@ -6,7 +6,6 @@ using System.Net.Mail;
 using System.Text;
 using Integration.Pharmacies.Model;
 using Integration.Shared.Repository;
-using Integration.Shared.Repository.Implementation;
 using Integration.Tendering.Model;
 
 namespace Integration.Shared.Service
@@ -36,7 +35,7 @@ namespace Integration.Shared.Service
             text = MakeMedicationList(tender.MedicationRequests, text);
             text += "</p>";
             text = MakeRegardsText(text);
-            SendMail(mail, "New Tender", text);
+            //SendMail(mail, "New Tender", text);
         }
 
         public void SendWinningOfferMail(Tender tender)
@@ -48,7 +47,7 @@ namespace Integration.Shared.Service
             text = MakeMedicationList(tender.WinningOffer.MedicationRequests, text);
             text += "</p>";
             text = MakeRegardsText(text);
-            SendMail(mail, "Winning tender offer", text);
+            //SendMail(mail, "Winning tender offer", text);
         }
 
         public void SendCloseTenderMail(Tender tender, IEnumerable<Pharmacy> pharmacies)
@@ -57,7 +56,7 @@ namespace Integration.Shared.Service
             string text = "<p>Greetings</p><p>We inform you that our tender named " +
                           tender.Name + " has been closed.</p>";
             text = MakeRegardsText(text);
-            SendMail(mail, "Tender closed", text);
+           // SendMail(mail, "Tender closed", text);
         }
 
         private string MakeRegardsText(string text)
@@ -98,7 +97,7 @@ namespace Integration.Shared.Service
         }
 
 
-        virtual public void SendMail(string mail, string title, string text)
+        virtual public void SendMail(string mail, string title, string text, NetworkCredential credentials)
         {
             MailMessage mailMessage = new();
             mailMessage.From = new MailAddress(_hospitalEmail);
@@ -107,12 +106,9 @@ namespace Integration.Shared.Service
             mailMessage.Subject = title;
             mailMessage.IsBodyHtml = true;
             mailMessage.Body = text;
-          
-        
-            _smtpClient = new SmtpClientWrapper("smtp.gmail.com", 587, SmtpDeliveryMethod.Network, false, true, new NetworkCredential("psw.company2@gmail.com", "Dont panic!"));
-          
+                   
             //unamanaged dependency
-            _smtpClient.Send(mailMessage);
+            _smtpClient.Send(mailMessage, credentials);
         }
     }
 }

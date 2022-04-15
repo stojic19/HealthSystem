@@ -4,6 +4,9 @@ using Hospital.Schedule.Repository;
 using Hospital.SharedModel.Repository.Base;
 using System.Collections.Generic;
 using Hospital.Schedule.Service.Interfaces;
+using Hospital.MedicalRecords.Repository;
+using Hospital.SharedModel.Model;
+using System;
 
 namespace Hospital.Schedule.Service
 {
@@ -17,7 +20,14 @@ namespace Hospital.Schedule.Service
 
         public List<ScheduledEvent> GetCanceledUserEvents(string userName)
         {
-            return UoW.GetRepository<IScheduledEventReadRepository>().GetCanceledUserEvents(userName);
+            User user = UoW.GetRepository<IPatientReadRepository>().GetByUsername(userName);
+            if (user != null)
+            {
+                return UoW.GetRepository<IScheduledEventReadRepository>().GetCanceledUserEvents(userName);
+            }
+            else {
+                throw new Exception("USER NOT FOUND.");
+            }
         }
 
         public List<ScheduledEvent> GetFinishedUserEvents(string userName)

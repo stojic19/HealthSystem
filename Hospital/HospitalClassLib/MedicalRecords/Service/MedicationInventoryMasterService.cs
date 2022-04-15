@@ -14,26 +14,35 @@ namespace Hospital.MedicalRecords.Service
             this.unitOfWork = unitOfWork;
         }
         public void AddMedicineToInventory(String MedicineName, int Quantity)
-        {
-            var medicineReadRepo = unitOfWork.GetRepository<IMedicationReadRepository>();
-            Medication medicine = medicineReadRepo.GetMedicationByName(MedicineName);
+        {          
+
+            Medication medicine = unitOfWork.GetRepository<IMedicationReadRepository>().GetMedicationByName(MedicineName);
+            
             if(medicine == null)
             {
                 var medicineWriteRepo = unitOfWork.GetRepository<IMedicationWriteRepository>();
-                Medication newMedicine = new() { Name = MedicineName, HowToUse = "", TimesPerDay = 0, MedicationIngredients = new List<MedicationIngredient>() };
+                Medication newMedicine = new() {
+                    Name = MedicineName, 
+                    HowToUse = "", 
+                    TimesPerDay = 0, 
+                    MedicationIngredients = new List<MedicationIngredient>()
+                };
                 medicineWriteRepo.Add(newMedicine);
-                newMedicine = medicineReadRepo.GetMedicationByName(MedicineName);
-                MedicationInventory newMedicineInventory = new() { Medication = newMedicine, MedicationId = newMedicine.Id, Quantity = Quantity };
-                var medicineInventoryWriteRepo = unitOfWork.GetRepository<IMedicationInventoryWriteRepository>();
-                medicineInventoryWriteRepo.Add(newMedicineInventory);
+
+                newMedicine = unitOfWork.GetRepository<IMedicationReadRepository>().GetMedicationByName(MedicineName);
+                MedicationInventory newMedicineInventory = new() 
+                {
+                    Medication = newMedicine,
+                    MedicationId = newMedicine.Id, 
+                    Quantity = Quantity
+                };
+                unitOfWork.GetRepository<IMedicationInventoryWriteRepository>().Add(newMedicineInventory);
             }
             else
             {
-                var medicineInventoryReadRepo = unitOfWork.GetRepository<IMedicationInventoryReadRepository>();
-                MedicationInventory updateMedicineInventory = medicineInventoryReadRepo.GetMedicationByMedicationId(medicine.Id);
+                MedicationInventory updateMedicineInventory = unitOfWork.GetRepository<IMedicationInventoryReadRepository>().GetMedicationByMedicationId(medicine.Id);
                 updateMedicineInventory.Quantity += Quantity;
-                var medicineInventoryWriteRepo = unitOfWork.GetRepository<IMedicationInventoryWriteRepository>();
-                medicineInventoryWriteRepo.Update(updateMedicineInventory);
+                unitOfWork.GetRepository<IMedicationInventoryWriteRepository>().Update(updateMedicineInventory);
             }
         }
     }

@@ -46,6 +46,7 @@ namespace HospitalUnitTests
             var secondRoom = UoW.GetRepository<IRoomReadRepository>().GetAll().Where(room => room.Name == "New Room").FirstOrDefault();
             secondRoom.Width.ShouldBe(5);
             secondRoom.Height.ShouldBe(3);
+
         }
 
         private void PrepareData()

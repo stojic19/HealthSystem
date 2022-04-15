@@ -15,7 +15,7 @@ namespace Integration.Partnership.Repository.Implementation
 
         public IEnumerable<Receipt> GetReceiptLogsInTimeRange(TimeRange timeRange)
         {
-            List<Receipt> receiptLogsInTimeRange = new List<Receipt>();
+            List<Receipt> receiptLogsInTimeRange = new();
             IEnumerable <Receipt> receipts = GetAll().Include(x => x.Medicine);
             foreach (var receiptLog in receipts)
                 if (timeRange.StartDate < receiptLog.ReceiptDate && receiptLog.ReceiptDate < timeRange.EndDate)

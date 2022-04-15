@@ -40,7 +40,7 @@ namespace IntegrationUnitTests
         public void Add_existing_medication_check_quantity_in_inventory()
         {
             ClearAndMakeData();
-            MedicineInventoryMasterService medicineInventoryMasterService = new MedicineInventoryMasterService(UoW);
+            MedicineInventoryMasterService medicineInventoryMasterService = new(UoW);
             medicineInventoryMasterService.AddMedicineToInventory("Brufen", 10);
 
             var medicineInventory = UoW.GetRepository<IMedicineInventoryReadRepository>().GetById(1);
@@ -50,7 +50,7 @@ namespace IntegrationUnitTests
         public void Add_existing_medication_check_count_in_medicines()
         {
             ClearAndMakeData();
-            MedicineInventoryMasterService medicineInventoryMasterService = new MedicineInventoryMasterService(UoW);
+            MedicineInventoryMasterService medicineInventoryMasterService = new(UoW);
             medicineInventoryMasterService.AddMedicineToInventory("Brufen", 10);
 
             var medicineInventory = UoW.GetRepository<IMedicineReadRepository>().GetAll();
@@ -60,7 +60,7 @@ namespace IntegrationUnitTests
         public void Add_existing_medication_check_count_in_medicine_inventory()
         {
             ClearAndMakeData();
-            MedicineInventoryMasterService medicineInventoryMasterService = new MedicineInventoryMasterService(UoW);
+            MedicineInventoryMasterService medicineInventoryMasterService = new(UoW);
             medicineInventoryMasterService.AddMedicineToInventory("Brufen", 10);
 
             var medicineInventory = UoW.GetRepository<IMedicineInventoryReadRepository>().GetAll();
@@ -70,7 +70,7 @@ namespace IntegrationUnitTests
         public void Add_new_medication_check_name_in_medicines()
         {
             ClearAndMakeData();
-            MedicineInventoryMasterService medicineInventoryMasterService = new MedicineInventoryMasterService(UoW);
+            MedicineInventoryMasterService medicineInventoryMasterService = new(UoW);
             medicineInventoryMasterService.AddMedicineToInventory("Diklofenat", 10);
 
             var medicineInventory = UoW.GetRepository<IMedicineInventoryReadRepository>().GetById(3);

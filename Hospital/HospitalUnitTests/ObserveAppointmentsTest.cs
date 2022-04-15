@@ -8,6 +8,8 @@ using Hospital.RoomsAndEquipment.Model;
 using Shouldly;
 using Hospital.Schedule.Service;
 using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 
 namespace HospitalUnitTests
 {
@@ -19,19 +21,30 @@ namespace HospitalUnitTests
             _scheduledEventService = new(UoW);
         }
 
-        [Theory]
+        [Xunit.Theory]
         [MemberData(nameof(Data))]
-        public void Observe_appointments(bool isCanceled, bool isDone, int finished, int canceled, int upcoming)
+        public void Observe_appointments(bool isCanceled, bool isDone, int expectedFinishedCount, int expectedCanceledCount, int expectedUpcomingCount)
         {
             ClearDbContext();
 
             CreateDbContext(isCanceled, isDone);
 
-            _scheduledEventService.GetFinishedUserEvents("testPatient").Count.ShouldBe(finished);
-            _scheduledEventService.GetCanceledUserEvents("testPatient").Count.ShouldBe(canceled);
-            _scheduledEventService.GetUpcomingUserEvents("testPatient").Count.ShouldBe(upcoming);
+            _scheduledEventService.GetFinishedUserEvents("testPatient").Count.ShouldBe(expectedFinishedCount);
+            _scheduledEventService.GetCanceledUserEvents("testPatient").Count.ShouldBe(expectedCanceledCount);
+            _scheduledEventService.GetUpcomingUserEvents("testPatient").Count.ShouldBe(expectedUpcomingCount);
         }
+        /**
+         * Insufficient code coverage
+         * Dodaj error ako pokusa da pristupi nekom username koji ne postoji
+         */
+        [Fact]
+        [ExpectedException(typeof(System.Exception))]
+        public void Invalid_username()
+        {     
+            Exception ex = Xunit.Assert.Throws<Exception>(() => _scheduledEventService.GetCanceledUserEvents("invalidPatient"));
+            Xunit.Assert.Equal("USER NOT FOUND.", ex.Message);
 
+        }
         public static IEnumerable<object[]> Data()
         {
             var retVal = new List<object[]>

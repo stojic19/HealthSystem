@@ -47,17 +47,17 @@ namespace IntegrationUnitTests
         [Fact]
         public void Time_range_includes_test()
         {
-            TimeRange timeRange = new TimeRange(new DateTime(2021, 1, 1), new DateTime(2021, 1, 3));
-            DateTime included = new DateTime(2021, 1, 2);
-            DateTime notIncluded = new DateTime(2021, 1, 4);
+            TimeRange timeRange = new(new DateTime(2021, 1, 1), new DateTime(2021, 1, 3));
+            DateTime included = new(2021, 1, 2);
+            DateTime notIncluded = new(2021, 1, 4);
             Assert.True(timeRange.Includes(included));
             Assert.False(timeRange.Includes(notIncluded));
         }
         [Fact]
         public void Time_range_in_past_test()
         {
-            TimeRange notInPast = new TimeRange(new DateTime(2021, 1, 1), DateTime.Now.AddDays(1));
-            TimeRange inPast = new TimeRange(new DateTime(2021, 1, 1), DateTime.Now.AddDays(-1));
+            TimeRange notInPast = new(new DateTime(2021, 1, 1), DateTime.Now.AddDays(1));
+            TimeRange inPast = new(new DateTime(2021, 1, 1), DateTime.Now.AddDays(-1));
             Assert.False(notInPast.IsInPast());
             Assert.True(inPast.IsInPast());
         }

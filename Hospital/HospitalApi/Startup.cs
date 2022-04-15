@@ -32,6 +32,7 @@ using Hospital.MedicalRecords.Service;
 using Hospital.MedicalRecords.Service.Interfaces;
 using Hospital.EventStoring.Service.Interfaces;
 using Hospital.EventStoring.Service;
+using System.IO;
 
 namespace HospitalApi
 {
@@ -58,10 +59,6 @@ namespace HospitalApi
                 opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
 
-            services.AddControllers().AddNewtonsoftJson(options =>
-                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-             );
-
             services.AddScoped<IJWTTokenGenerator, JWTTokenGenerator>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -75,12 +72,10 @@ namespace HospitalApi
             {
                 var connectionString = Environment.GetEnvironmentVariable("HOSPITAL_DB_PATH");
                 options.UseNpgsql(connectionString);
-                using (var context = new AppDbContext((DbContextOptions<AppDbContext>)options.Options))
+                using var context = new AppDbContext((DbContextOptions<AppDbContext>)options.Options);
+                if (context.Database.GetPendingMigrations().Any())
                 {
-                    if (context.Database.GetPendingMigrations().Any())
-                    {
-                        context.Database.Migrate();
-                    }
+                    context.Database.Migrate();
                 }
             });
 
@@ -115,9 +110,10 @@ namespace HospitalApi
             services.AddScoped<IScheduledEventService, ScheduledEventService>();
             services.AddScoped<ISurveyService, SurveyService>();
             services.AddScoped<IScheduleAppointmentService, ScheduleAppointmentService>();
-            services.AddScoped<IReportService, ReportService>();
-       
+            services.AddScoped<IReportService, ReportService>();  
             services.AddScoped<IEventStoringService, EventStoringService>();
+
+           
 
 
             var builder = new ContainerBuilder();
@@ -133,12 +129,26 @@ namespace HospitalApi
 
 
             });
-            
+            //
+            var sp = services.BuildServiceProvider();
+            using var scope = sp.CreateScope();
+            var scopedServices = scope.ServiceProvider;
+            var db = scopedServices.GetRequiredService<DbContext>();
+
+            db.Database.EnsureCreated();
+            InitializeDbForTests(db);
+
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
             builder.RegisterType<HttpRequestSender>().As<IHttpRequestSender>();
             builder.Populate(services);
             var container = builder.Build();
             return new AutofacServiceProvider(container);
+        }
+
+        private void InitializeDbForTests(DbContext db)
+        {
+            var startingDb = File.ReadAllText("../../../Integration/Scripts/data.sql");
+            db.Database.ExecuteSqlRaw(startingDb);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
